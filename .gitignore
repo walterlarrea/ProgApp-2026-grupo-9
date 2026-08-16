@@ -1,0 +1,55 @@
+# ====================================================================
+# Apache NetBeans Specific Excludes
+# ====================================================================
+**/nbproject/private/
+**/nbproject/Makefile-*.mk
+**/nbproject/Package-*.bash
+build/
+nbbuild/
+dist/
+nbdist/
+nbactions.xml
+nb-configuration.xml
+.nb-gradle/
+
+# ====================================================================
+# Java Compiled Output and Packages
+# ====================================================================
+*.class
+*.jar
+*.war
+*.ear
+*.nar
+*.mwb
+*.bak
+*.log
+hs_err_pid*
+
+# ====================================================================
+# Build Automation Tools (Keep configs, ignore build artifacts)
+# ====================================================================
+# Maven
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+pom.xml.bak
+release.properties
+
+# Gradle
+.gradle/
+/build/
+
+# ====================================================================
+# Operating System System Files
+# ====================================================================
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
