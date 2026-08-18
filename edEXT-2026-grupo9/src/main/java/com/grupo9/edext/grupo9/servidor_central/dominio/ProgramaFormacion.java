@@ -1,3 +1,5 @@
+package com.grupo9.edext.grupo9.servidor_central.dominio;
+
 import java.time.LocalDate;
 import java.util.Set;
 
