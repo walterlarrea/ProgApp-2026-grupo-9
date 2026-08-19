@@ -4,12 +4,17 @@
  */
 package com.grupo9.edext.grupo9.estacion_de_trabajo.gui;
 
+import javax.swing.JPanel;
+import java.util.ArrayList;
+
 /**
  *
  * @author Walter
  */
 public class MainJFrame extends javax.swing.JFrame {
 
+    ArrayList<JPanel> allJPanels = new ArrayList<JPanel>();
+    
     /**
      * Creates new form MainJFrame
      */
@@ -26,99 +31,147 @@ public class MainJFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        frameUsuarios = new javax.swing.JInternalFrame();
+        JPanelCrearUsuario = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        frameCursos = new javax.swing.JInternalFrame();
+        JPanelConsultarUsuarios = new javax.swing.JPanel();
+        jLabel3 = new javax.swing.JLabel();
+        JPanelCrearCurso = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
+        JPanelConsultarCursos = new javax.swing.JPanel();
+        jLabel4 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
-        jMenu1 = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
-        jMenuItem2 = new javax.swing.JMenuItem();
-        jMenu2 = new javax.swing.JMenu();
-        jMenuItem3 = new javax.swing.JMenuItem();
-        jMenuItem4 = new javax.swing.JMenuItem();
+        jMenuUsuarios = new javax.swing.JMenu();
+        jMenuItemCrearUsuario = new javax.swing.JMenuItem();
+        jMenuItemConsultarUsuario = new javax.swing.JMenuItem();
+        jMenuCursos = new javax.swing.JMenu();
+        jMenuItemCrearCurso = new javax.swing.JMenuItem();
+        jMenuItemConsultarCurso = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowActivated(java.awt.event.WindowEvent evt) {
+                formWindowActivated(evt);
+            }
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
+        });
 
-        frameUsuarios.setVisible(true);
+        jLabel1.setText("Crear Usuario");
 
-        jLabel1.setText("Usuarios");
-
-        javax.swing.GroupLayout frameUsuariosLayout = new javax.swing.GroupLayout(frameUsuarios.getContentPane());
-        frameUsuarios.getContentPane().setLayout(frameUsuariosLayout);
-        frameUsuariosLayout.setHorizontalGroup(
-            frameUsuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(frameUsuariosLayout.createSequentialGroup()
+        javax.swing.GroupLayout JPanelCrearUsuarioLayout = new javax.swing.GroupLayout(JPanelCrearUsuario);
+        JPanelCrearUsuario.setLayout(JPanelCrearUsuarioLayout);
+        JPanelCrearUsuarioLayout.setHorizontalGroup(
+            JPanelCrearUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(JPanelCrearUsuarioLayout.createSequentialGroup()
                 .addGap(15, 15, 15)
-                .addComponent(jLabel1))
+                .addComponent(jLabel1)
+                .addContainerGap(446, Short.MAX_VALUE))
         );
-        frameUsuariosLayout.setVerticalGroup(
-            frameUsuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(frameUsuariosLayout.createSequentialGroup()
+        JPanelCrearUsuarioLayout.setVerticalGroup(
+            JPanelCrearUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(JPanelCrearUsuarioLayout.createSequentialGroup()
                 .addGap(15, 15, 15)
-                .addComponent(jLabel1))
+                .addComponent(jLabel1)
+                .addContainerGap(292, Short.MAX_VALUE))
         );
 
-        frameCursos.setVisible(false);
+        jLabel3.setText("Consultar Usuarios");
 
-        jLabel2.setText("Cursos");
+        javax.swing.GroupLayout JPanelConsultarUsuariosLayout = new javax.swing.GroupLayout(JPanelConsultarUsuarios);
+        JPanelConsultarUsuarios.setLayout(JPanelConsultarUsuariosLayout);
+        JPanelConsultarUsuariosLayout.setHorizontalGroup(
+            JPanelConsultarUsuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(JPanelConsultarUsuariosLayout.createSequentialGroup()
+                .addGap(15, 15, 15)
+                .addComponent(jLabel3)
+                .addContainerGap(418, Short.MAX_VALUE))
+        );
+        JPanelConsultarUsuariosLayout.setVerticalGroup(
+            JPanelConsultarUsuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(JPanelConsultarUsuariosLayout.createSequentialGroup()
+                .addGap(15, 15, 15)
+                .addComponent(jLabel3)
+                .addContainerGap(292, Short.MAX_VALUE))
+        );
 
-        javax.swing.GroupLayout frameCursosLayout = new javax.swing.GroupLayout(frameCursos.getContentPane());
-        frameCursos.getContentPane().setLayout(frameCursosLayout);
-        frameCursosLayout.setHorizontalGroup(
-            frameCursosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(frameCursosLayout.createSequentialGroup()
+        jLabel2.setText("Crear Curso");
+
+        javax.swing.GroupLayout JPanelCrearCursoLayout = new javax.swing.GroupLayout(JPanelCrearCurso);
+        JPanelCrearCurso.setLayout(JPanelCrearCursoLayout);
+        JPanelCrearCursoLayout.setHorizontalGroup(
+            JPanelCrearCursoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(JPanelCrearCursoLayout.createSequentialGroup()
                 .addGap(15, 15, 15)
                 .addComponent(jLabel2)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(455, Short.MAX_VALUE))
         );
-        frameCursosLayout.setVerticalGroup(
-            frameCursosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(frameCursosLayout.createSequentialGroup()
+        JPanelCrearCursoLayout.setVerticalGroup(
+            JPanelCrearCursoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(JPanelCrearCursoLayout.createSequentialGroup()
                 .addGap(15, 15, 15)
                 .addComponent(jLabel2)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(292, Short.MAX_VALUE))
         );
 
-        jMenu1.setText("Usuarios");
+        jLabel4.setText("Consultar Cursos");
 
-        jMenuItem1.setText("Crear nuevo");
-        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+        javax.swing.GroupLayout JPanelConsultarCursosLayout = new javax.swing.GroupLayout(JPanelConsultarCursos);
+        JPanelConsultarCursos.setLayout(JPanelConsultarCursosLayout);
+        JPanelConsultarCursosLayout.setHorizontalGroup(
+            JPanelConsultarCursosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(JPanelConsultarCursosLayout.createSequentialGroup()
+                .addGap(15, 15, 15)
+                .addComponent(jLabel4)
+                .addContainerGap(427, Short.MAX_VALUE))
+        );
+        JPanelConsultarCursosLayout.setVerticalGroup(
+            JPanelConsultarCursosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(JPanelConsultarCursosLayout.createSequentialGroup()
+                .addGap(15, 15, 15)
+                .addComponent(jLabel4)
+                .addContainerGap(292, Short.MAX_VALUE))
+        );
+
+        jMenuUsuarios.setText("Usuarios");
+
+        jMenuItemCrearUsuario.setText("Crear nuevo");
+        jMenuItemCrearUsuario.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem1ActionPerformed(evt);
+                jMenuItemCrearUsuarioActionPerformed(evt);
             }
         });
-        jMenu1.add(jMenuItem1);
+        jMenuUsuarios.add(jMenuItemCrearUsuario);
 
-        jMenuItem2.setText("Ver todos");
-        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+        jMenuItemConsultarUsuario.setText("Ver todos");
+        jMenuItemConsultarUsuario.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem2ActionPerformed(evt);
+                jMenuItemConsultarUsuarioActionPerformed(evt);
             }
         });
-        jMenu1.add(jMenuItem2);
+        jMenuUsuarios.add(jMenuItemConsultarUsuario);
 
-        jMenuBar1.add(jMenu1);
+        jMenuBar1.add(jMenuUsuarios);
 
-        jMenu2.setText("Cursos");
+        jMenuCursos.setText("Cursos");
 
-        jMenuItem3.setText("Crear nuevo");
-        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
+        jMenuItemCrearCurso.setText("Crear nuevo");
+        jMenuItemCrearCurso.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem3ActionPerformed(evt);
+                jMenuItemCrearCursoActionPerformed(evt);
             }
         });
-        jMenu2.add(jMenuItem3);
+        jMenuCursos.add(jMenuItemCrearCurso);
 
-        jMenuItem4.setText("Ver todos");
-        jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
+        jMenuItemConsultarCurso.setText("Ver todos");
+        jMenuItemConsultarCurso.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem4ActionPerformed(evt);
+                jMenuItemConsultarCursoActionPerformed(evt);
             }
         });
-        jMenu2.add(jMenuItem4);
+        jMenuCursos.add(jMenuItemConsultarCurso);
 
-        jMenuBar1.add(jMenu2);
+        jMenuBar1.add(jMenuCursos);
 
         setJMenuBar(jMenuBar1);
 
@@ -126,44 +179,107 @@ public class MainJFrame extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGap(0, 544, Short.MAX_VALUE)
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(frameUsuarios))
+                .addGroup(layout.createSequentialGroup()
+                    .addContainerGap()
+                    .addComponent(JPanelCrearUsuario, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addContainerGap()))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(frameCursos, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                    .addContainerGap()
+                    .addComponent(JPanelCrearCurso, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addContainerGap()))
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addContainerGap()
+                    .addComponent(JPanelConsultarUsuarios, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addContainerGap()))
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addContainerGap()
+                    .addComponent(JPanelConsultarCursos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addContainerGap()))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 277, Short.MAX_VALUE)
+            .addGap(0, 335, Short.MAX_VALUE)
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(frameUsuarios))
+                .addGroup(layout.createSequentialGroup()
+                    .addContainerGap()
+                    .addComponent(JPanelCrearUsuario, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addContainerGap()))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(frameCursos, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                    .addContainerGap()
+                    .addComponent(JPanelCrearCurso, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addContainerGap()))
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addContainerGap()
+                    .addComponent(JPanelConsultarUsuarios, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addContainerGap()))
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addContainerGap()
+                    .addComponent(JPanelConsultarCursos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addContainerGap()))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        this.frameUsuarios.setVisible(true);
-        this.frameCursos.setVisible(false);
-    }//GEN-LAST:event_jMenuItem1ActionPerformed
+    private void jMenuItemCrearUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemCrearUsuarioActionPerformed
+        showOnePanelAndHideTheRest(this.JPanelCrearUsuario);
+        System.out.println("Show Usuarios");
+    }//GEN-LAST:event_jMenuItemCrearUsuarioActionPerformed
 
-    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
-        this.frameUsuarios.setVisible(true);
-        this.frameCursos.setVisible(false);
-    }//GEN-LAST:event_jMenuItem2ActionPerformed
+    private void jMenuItemConsultarUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemConsultarUsuarioActionPerformed
+        showOnePanelAndHideTheRest(this.JPanelConsultarUsuarios);
+        System.out.println("Show Usuarios");
+    }//GEN-LAST:event_jMenuItemConsultarUsuarioActionPerformed
 
-    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
-        this.frameUsuarios.setVisible(false);
-        this.frameCursos.setVisible(true);
-    }//GEN-LAST:event_jMenuItem3ActionPerformed
+    private void jMenuItemCrearCursoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemCrearCursoActionPerformed
+        showOnePanelAndHideTheRest(this.JPanelCrearCurso);
+        System.out.println("Show Cursos");
+    }//GEN-LAST:event_jMenuItemCrearCursoActionPerformed
 
-    private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
-        this.frameUsuarios.setVisible(false);
-        this.frameCursos.setVisible(true);
-    }//GEN-LAST:event_jMenuItem4ActionPerformed
+    private void jMenuItemConsultarCursoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemConsultarCursoActionPerformed
+        showOnePanelAndHideTheRest(this.JPanelConsultarCursos);
+        System.out.println("Show Cursos");
+    }//GEN-LAST:event_jMenuItemConsultarCursoActionPerformed
 
+    private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
+        
+    }//GEN-LAST:event_formWindowActivated
+
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        // Walter: Agrega todos los paneles a una lista para que sea facil 
+        // ocular todos los demas cuando queremos mostrar uno.
+        this.allJPanels.add(JPanelCrearUsuario);
+        this.allJPanels.add(JPanelConsultarUsuarios);
+        this.allJPanels.add(JPanelCrearCurso);
+        this.allJPanels.add(JPanelConsultarCursos);
+        this.hideAllJPanels();
+        System.out.println("WindowOpened");
+    }//GEN-LAST:event_formWindowOpened
+
+    private void hideAllJPanels() {
+        for (JPanel panel : this.allJPanels) {
+            panel.setVisible(false);
+        }
+    }
+    
+    private void showOnePanelAndHideTheRest(JPanel panelToShow){
+        for (JPanel panel : this.allJPanels) {
+            if (panel == panelToShow ){
+                panel.setVisible(true);
+            } else {
+                panel.setVisible(false);
+            }
+        }
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -200,16 +316,20 @@ public class MainJFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JInternalFrame frameCursos;
-    private javax.swing.JInternalFrame frameUsuarios;
+    private javax.swing.JPanel JPanelConsultarCursos;
+    private javax.swing.JPanel JPanelConsultarUsuarios;
+    private javax.swing.JPanel JPanelCrearCurso;
+    private javax.swing.JPanel JPanelCrearUsuario;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenuItem jMenuItem2;
-    private javax.swing.JMenuItem jMenuItem3;
-    private javax.swing.JMenuItem jMenuItem4;
+    private javax.swing.JMenu jMenuCursos;
+    private javax.swing.JMenuItem jMenuItemConsultarCurso;
+    private javax.swing.JMenuItem jMenuItemConsultarUsuario;
+    private javax.swing.JMenuItem jMenuItemCrearCurso;
+    private javax.swing.JMenuItem jMenuItemCrearUsuario;
+    private javax.swing.JMenu jMenuUsuarios;
     // End of variables declaration//GEN-END:variables
 }
