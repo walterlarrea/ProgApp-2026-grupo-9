@@ -6,6 +6,7 @@ package com.grupo9.edext.grupo9.estacion_de_trabajo.gui;
 
 import javax.swing.JPanel;
 import java.util.ArrayList;
+import com.grupo9.edext.grupo9.estacion_de_trabajo.cliente.ProgramaDeFormacion;
 
 /**
  *
@@ -13,7 +14,9 @@ import java.util.ArrayList;
  */
 public class MainJFrame extends javax.swing.JFrame {
 
-    ArrayList<JPanel> allJPanels = new ArrayList<JPanel>();
+    private final ProgramaDeFormacion programaDeFormacion = new ProgramaDeFormacion();
+    
+    private final ArrayList<JPanel> allJPanels = new ArrayList<JPanel>();
     
     /**
      * Creates new form MainJFrame
@@ -462,7 +465,7 @@ public class MainJFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_formWindowOpened
 
     private void jButtonGuardarProgramaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonGuardarProgramaActionPerformed
-        // TODO add your handling code here:
+        programaDeFormacion.guardarNuevoProgramaDeFormacion();
     }//GEN-LAST:event_jButtonGuardarProgramaActionPerformed
 
     private void jMenuItemCrearProgDeFormacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemCrearProgDeFormacionActionPerformed
