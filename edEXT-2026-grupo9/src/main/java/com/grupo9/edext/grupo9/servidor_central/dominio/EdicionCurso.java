@@ -2,8 +2,6 @@ package com.grupo9.edext.grupo9.servidor_central.dominio;
 
 import java.time.LocalDate;
 import java.util.Set;
-import com.grupo9.edext.grupo9.interfaces.IServidorCentral;
-import com.grupo9.edext.grupo9.servidor_central.controller.ServidorCentralController;
 
 public class EdicionCurso {
     private String nombreEdi;

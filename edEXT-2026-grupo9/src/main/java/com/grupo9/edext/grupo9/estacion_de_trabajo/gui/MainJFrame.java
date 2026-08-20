@@ -1,17 +1,9 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package com.grupo9.edext.grupo9.estacion_de_trabajo.gui;
 
 import javax.swing.JPanel;
 import java.util.ArrayList;
 import com.grupo9.edext.grupo9.estacion_de_trabajo.cliente.ProgramaDeFormacion;
 
-/**
- *
- * @author Walter
- */
 public class MainJFrame extends javax.swing.JFrame {
 
     private final ProgramaDeFormacion programaDeFormacion = new ProgramaDeFormacion();
