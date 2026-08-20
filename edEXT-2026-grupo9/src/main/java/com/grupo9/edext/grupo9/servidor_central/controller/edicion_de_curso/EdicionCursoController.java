@@ -12,6 +12,6 @@ public class EdicionCursoController implements IEdicionCurso {
     
     @Override
     public void guardarNuevaEdicionCurso(){
-        System.out.printnl("nueva edicion de curso...");
+        System.out.println("nueva edicion de curso...");
     }
 }

@@ -14,8 +14,6 @@ public class EdicionCurso {
     private Set<Docente> docentes;
     private LocalDate fechaPub;
     
-    IServidorCentral servidorCentral = ServidorCentralController.getInstance();
-    
     public EdicionCurso(String nombreEdi, Curso cursoAsoc, LocalDate fechaInicio, LocalDate fechaFin, int cupo, Set<Docente> docentes, LocalDate fechaPub) {
         this.nombreEdi = nombreEdi;
         this.cursoAsoc = cursoAsoc;
