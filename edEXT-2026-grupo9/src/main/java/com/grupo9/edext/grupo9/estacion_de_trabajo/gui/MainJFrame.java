@@ -2,11 +2,11 @@ package com.grupo9.edext.grupo9.estacion_de_trabajo.gui;
 
 import javax.swing.JPanel;
 import java.util.ArrayList;
-import com.grupo9.edext.grupo9.estacion_de_trabajo.cliente.ProgramaDeFormacion;
+import com.grupo9.edext.grupo9.estacion_de_trabajo.cliente.ProgramaDeFormacionPres;
 
 public class MainJFrame extends javax.swing.JFrame {
 
-    private final ProgramaDeFormacion programaDeFormacion = new ProgramaDeFormacion();
+    private final ProgramaDeFormacionPres programaDeFormacion = new ProgramaDeFormacionPres();
     
     private final ArrayList<JPanel> allJPanels = new ArrayList<JPanel>();
     
