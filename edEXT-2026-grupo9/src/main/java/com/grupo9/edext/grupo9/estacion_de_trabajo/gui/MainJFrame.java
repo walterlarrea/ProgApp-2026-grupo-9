@@ -62,12 +62,18 @@ public class MainJFrame extends javax.swing.JFrame {
         jMenuUsuarios = new javax.swing.JMenu();
         jMenuItemCrearUsuario = new javax.swing.JMenuItem();
         jMenuItemConsultarUsuario = new javax.swing.JMenuItem();
+        jMenuItemModificar = new javax.swing.JMenuItem();
         jMenuCursos = new javax.swing.JMenu();
         jMenuItemCrearCurso = new javax.swing.JMenuItem();
         jMenuItemConsultarCurso = new javax.swing.JMenuItem();
         jMenuProgDeFormacion = new javax.swing.JMenu();
         jMenuItemCrearProgDeFormacion = new javax.swing.JMenuItem();
         jMenuItemConsultarProgDeFormacion = new javax.swing.JMenuItem();
+        jMenuItemAgregarProgDeFormacion = new javax.swing.JMenuItem();
+        jMenuEdicionDeCurso = new javax.swing.JMenu();
+        jMenuItemCrearEdicionCurso = new javax.swing.JMenuItem();
+        jMenuItemConsultarEdicionCurso = new javax.swing.JMenuItem();
+        jMenuItemInscripcionEdicionCurso = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -297,7 +303,6 @@ public class MainJFrame extends javax.swing.JFrame {
 
         jMenuBar1.setToolTipText("");
         jMenuBar1.setAlignmentX(0.0F);
-        jMenuBar1.setAlignmentY(0.0F);
 
         jMenuUsuarios.setText("Usuarios");
 
@@ -309,13 +314,16 @@ public class MainJFrame extends javax.swing.JFrame {
         });
         jMenuUsuarios.add(jMenuItemCrearUsuario);
 
-        jMenuItemConsultarUsuario.setText("Ver todos");
+        jMenuItemConsultarUsuario.setText("Consultar");
         jMenuItemConsultarUsuario.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItemConsultarUsuarioActionPerformed(evt);
             }
         });
         jMenuUsuarios.add(jMenuItemConsultarUsuario);
+
+        jMenuItemModificar.setText("Modificar datos");
+        jMenuUsuarios.add(jMenuItemModificar);
 
         jMenuBar1.add(jMenuUsuarios);
 
@@ -329,7 +337,7 @@ public class MainJFrame extends javax.swing.JFrame {
         });
         jMenuCursos.add(jMenuItemCrearCurso);
 
-        jMenuItemConsultarCurso.setText("Ver todos");
+        jMenuItemConsultarCurso.setText("Consultar");
         jMenuItemConsultarCurso.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItemConsultarCursoActionPerformed(evt);
@@ -341,7 +349,7 @@ public class MainJFrame extends javax.swing.JFrame {
 
         jMenuProgDeFormacion.setText("Prog. de Formación");
 
-        jMenuItemCrearProgDeFormacion.setText("Crear nuevo Programa");
+        jMenuItemCrearProgDeFormacion.setText("Crear nuevo");
         jMenuItemCrearProgDeFormacion.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItemCrearProgDeFormacionActionPerformed(evt);
@@ -349,7 +357,7 @@ public class MainJFrame extends javax.swing.JFrame {
         });
         jMenuProgDeFormacion.add(jMenuItemCrearProgDeFormacion);
 
-        jMenuItemConsultarProgDeFormacion.setText("Consultar Programa");
+        jMenuItemConsultarProgDeFormacion.setText("Consultar");
         jMenuItemConsultarProgDeFormacion.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItemConsultarProgDeFormacionActionPerformed(evt);
@@ -357,7 +365,23 @@ public class MainJFrame extends javax.swing.JFrame {
         });
         jMenuProgDeFormacion.add(jMenuItemConsultarProgDeFormacion);
 
+        jMenuItemAgregarProgDeFormacion.setText("Agregar curso");
+        jMenuProgDeFormacion.add(jMenuItemAgregarProgDeFormacion);
+
         jMenuBar1.add(jMenuProgDeFormacion);
+
+        jMenuEdicionDeCurso.setText("Edición de Curso");
+
+        jMenuItemCrearEdicionCurso.setText("Crear nueva Edición");
+        jMenuEdicionDeCurso.add(jMenuItemCrearEdicionCurso);
+
+        jMenuItemConsultarEdicionCurso.setText("Consultar");
+        jMenuEdicionDeCurso.add(jMenuItemConsultarEdicionCurso);
+
+        jMenuItemInscripcionEdicionCurso.setText("Inscribirse");
+        jMenuEdicionDeCurso.add(jMenuItemInscripcionEdicionCurso);
+
+        jMenuBar1.add(jMenuEdicionDeCurso);
 
         setJMenuBar(jMenuBar1);
 
@@ -551,12 +575,18 @@ public class MainJFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabelCrearUsuario;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenu jMenuCursos;
+    private javax.swing.JMenu jMenuEdicionDeCurso;
+    private javax.swing.JMenuItem jMenuItemAgregarProgDeFormacion;
     private javax.swing.JMenuItem jMenuItemConsultarCurso;
+    private javax.swing.JMenuItem jMenuItemConsultarEdicionCurso;
     private javax.swing.JMenuItem jMenuItemConsultarProgDeFormacion;
     private javax.swing.JMenuItem jMenuItemConsultarUsuario;
     private javax.swing.JMenuItem jMenuItemCrearCurso;
+    private javax.swing.JMenuItem jMenuItemCrearEdicionCurso;
     private javax.swing.JMenuItem jMenuItemCrearProgDeFormacion;
     private javax.swing.JMenuItem jMenuItemCrearUsuario;
+    private javax.swing.JMenuItem jMenuItemInscripcionEdicionCurso;
+    private javax.swing.JMenuItem jMenuItemModificar;
     private javax.swing.JMenu jMenuProgDeFormacion;
     private javax.swing.JMenu jMenuUsuarios;
     private javax.swing.JTable jTableCrearProgramaCursos;

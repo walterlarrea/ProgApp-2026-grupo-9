@@ -6,7 +6,6 @@
       <Properties>
         <Property name="toolTipText" type="java.lang.String" value=""/>
         <Property name="alignmentX" type="float" value="0.0"/>
-        <Property name="alignmentY" type="float" value="0.0"/>
       </Properties>
       <SubComponents>
         <Menu class="javax.swing.JMenu" name="jMenuUsuarios">
@@ -24,11 +23,16 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="jMenuItemConsultarUsuario">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Ver todos"/>
+                <Property name="text" type="java.lang.String" value="Consultar"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItemConsultarUsuarioActionPerformed"/>
               </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="jMenuItemModificar">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Modificar datos"/>
+              </Properties>
             </MenuItem>
           </SubComponents>
         </Menu>
@@ -47,7 +51,7 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="jMenuItemConsultarCurso">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Ver todos"/>
+                <Property name="text" type="java.lang.String" value="Consultar"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItemConsultarCursoActionPerformed"/>
@@ -62,7 +66,7 @@
           <SubComponents>
             <MenuItem class="javax.swing.JMenuItem" name="jMenuItemCrearProgDeFormacion">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Crear nuevo Programa"/>
+                <Property name="text" type="java.lang.String" value="Crear nuevo"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItemCrearProgDeFormacionActionPerformed"/>
@@ -70,11 +74,38 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="jMenuItemConsultarProgDeFormacion">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Consultar Programa"/>
+                <Property name="text" type="java.lang.String" value="Consultar"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItemConsultarProgDeFormacionActionPerformed"/>
               </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="jMenuItemAgregarProgDeFormacion">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Agregar curso"/>
+              </Properties>
+            </MenuItem>
+          </SubComponents>
+        </Menu>
+        <Menu class="javax.swing.JMenu" name="jMenuEdicionDeCurso">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Edici&#xf3;n de Curso"/>
+          </Properties>
+          <SubComponents>
+            <MenuItem class="javax.swing.JMenuItem" name="jMenuItemCrearEdicionCurso">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Crear nueva Edici&#xf3;n"/>
+              </Properties>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="jMenuItemConsultarEdicionCurso">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Consultar"/>
+              </Properties>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="jMenuItemInscripcionEdicionCurso">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Inscribirse"/>
+              </Properties>
             </MenuItem>
           </SubComponents>
         </Menu>

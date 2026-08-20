@@ -4,14 +4,15 @@ import com.grupo9.edext.grupo9.interfaces.IServidorCentral;
 
 import com.grupo9.edext.grupo9.servidor_central.controller.programa_de_formacion.IProgramaDeFormacion;
 import com.grupo9.edext.grupo9.servidor_central.controller.programa_de_formacion.ProgramaDeFormacionController;
-
-
+import com.grupo9.edext.grupo9.servidor_central.controller.edicion_de_curso.IEdicionCurso;
+import com.grupo9.edext.grupo9.servidor_central.controller.edicion_de_curso.EdicionCursoController;
 /**
  *
  * @author Walter
  */
 public class ServidorCentralController implements IServidorCentral {
     private final IProgramaDeFormacion progDeFormacion = new ProgramaDeFormacionController();
+    private final IEdicionCurso edicionCurso = new EdicionCursoController();
     
     
     // Step 1: Private constructor prevents instantiation from other classes
@@ -41,5 +42,10 @@ public class ServidorCentralController implements IServidorCentral {
     @Override
     public void guardarProgramaDeFormacion(){
         this.progDeFormacion.guardarNuevoProgramaDeFormacion();
+    }
+    
+    @Override
+    public void guardarEdicionCurso(){
+        this.edicionCurso.guardarNuevaEdicionCurso();
     }
 }

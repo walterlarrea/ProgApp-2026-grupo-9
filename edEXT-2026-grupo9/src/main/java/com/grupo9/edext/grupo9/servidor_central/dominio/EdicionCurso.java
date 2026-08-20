@@ -2,6 +2,8 @@ package com.grupo9.edext.grupo9.servidor_central.dominio;
 
 import java.time.LocalDate;
 import java.util.Set;
+import com.grupo9.edext.grupo9.interfaces.IServidorCentral;
+import com.grupo9.edext.grupo9.servidor_central.controller.ServidorCentralController;
 
 public class EdicionCurso {
     private String nombreEdi;
@@ -11,7 +13,9 @@ public class EdicionCurso {
     private int cupo;
     private Set<Docente> docentes;
     private LocalDate fechaPub;
-
+    
+    IServidorCentral servidorCentral = ServidorCentralController.getInstance();
+    
     public EdicionCurso(String nombreEdi, Curso cursoAsoc, LocalDate fechaInicio, LocalDate fechaFin, int cupo, Set<Docente> docentes, LocalDate fechaPub) {
         this.nombreEdi = nombreEdi;
         this.cursoAsoc = cursoAsoc;
