@@ -3,16 +3,16 @@ package com.grupo9.edext.grupo9.servidor_central.dominio;
 import java.time.LocalDate;
 import java.util.Set;
 
-public class EdicionCurso {
+public class DataEdicionCurso {
     private String nombreEdi;
-    private Curso cursoAsoc;
+    private DataCurso cursoAsoc;
     private LocalDate fechaInicio;
     private LocalDate fechaFin;
     private int cupo;
-    private Set<Docente> docentes;
+    private Set<DataDocente> docentes;
     private LocalDate fechaPub;
     
-    public EdicionCurso(String nombreEdi, Curso cursoAsoc, LocalDate fechaInicio, LocalDate fechaFin, int cupo, Set<Docente> docentes, LocalDate fechaPub) {
+    public DataEdicionCurso(String nombreEdi, DataCurso cursoAsoc, LocalDate fechaInicio, LocalDate fechaFin, int cupo, Set<DataDocente> docentes, LocalDate fechaPub) {
         this.nombreEdi = nombreEdi;
         this.cursoAsoc = cursoAsoc;
         this.fechaInicio = fechaInicio;
@@ -30,11 +30,11 @@ public class EdicionCurso {
         this.nombreEdi = nombreEdi;
     }
 
-    public Curso getCursoAsoc() {
+    public DataCurso getCursoAsoc() {
         return cursoAsoc;
     }
 
-    public void setCursoAsoc(Curso cursoAsoc) {
+    public void setCursoAsoc(DataCurso cursoAsoc) {
         this.cursoAsoc = cursoAsoc;
     }
 
@@ -62,11 +62,11 @@ public class EdicionCurso {
         this.cupo = cupo;
     }
 
-    public Set<Docente> getDocentes() {
+    public Set<DataDocente> getDocentes() {
         return docentes;
     }
 
-    public void setDocentes(Set<Docente> docentes) {
+    public void setDocentes(Set<DataDocente> docentes) {
         this.docentes = docentes;
     }
 

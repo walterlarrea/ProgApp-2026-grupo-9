@@ -2,10 +2,10 @@ package com.grupo9.edext.grupo9.servidor_central.dominio;
 
 import java.time.LocalDate;
 
-public class InscEdicion {
+public class DataInscEdicion {
     private LocalDate fechaInscE;
 
-    public InscEdicion(LocalDate fechaInscE) {
+    public DataInscEdicion(LocalDate fechaInscE) {
         this.fechaInscE = fechaInscE;
     }
 

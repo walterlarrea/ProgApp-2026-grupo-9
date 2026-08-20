@@ -1,6 +1,6 @@
 package com.grupo9.edext.grupo9.servidor_central.dominio;
 
-public class Instituto {
+public class DataInstituto {
     private String nombreI;
     
     public String getNombreI() {

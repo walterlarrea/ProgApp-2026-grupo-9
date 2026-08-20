@@ -2,7 +2,7 @@ package com.grupo9.edext.grupo9.servidor_central.dominio;
 
 import java.time.LocalDate;
 
-public class Curso {
+public class DataCurso {
     private String nombreInst;
     private String nombreCurso;
     private String descCurso;
@@ -12,7 +12,7 @@ public class Curso {
     private LocalDate fechaReg;
     private String url;
 
-    public Curso(String nombreInst, String nombreCurso, String descCurso, int duracion, int cantHoras, int cantCred, LocalDate fechaReg, String url) {
+    public DataCurso(String nombreInst, String nombreCurso, String descCurso, int duracion, int cantHoras, int cantCred, LocalDate fechaReg, String url) {
         this.nombreInst = nombreInst;
         this.nombreCurso = nombreCurso;
         this.descCurso = descCurso;

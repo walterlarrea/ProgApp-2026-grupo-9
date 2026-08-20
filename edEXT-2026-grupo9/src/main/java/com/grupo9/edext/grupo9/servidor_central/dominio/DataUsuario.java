@@ -2,7 +2,7 @@ package com.grupo9.edext.grupo9.servidor_central.dominio;
 
 import java.time.LocalDate;
 
-public class Usuario {
+public class DataUsuario {
     private String nickname;
     private String nombre;
     private String apellido;
@@ -10,7 +10,7 @@ public class Usuario {
     private LocalDate fechaNac;
     private String imagen;
 
-    public Usuario(String nickname, String nombre, String apellido, String email, LocalDate fechaNac) {
+    public DataUsuario(String nickname, String nombre, String apellido, String email, LocalDate fechaNac) {
         this.nickname = nickname;
         this.nombre = nombre;
         this.apellido = apellido;

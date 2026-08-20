@@ -3,14 +3,14 @@ package com.grupo9.edext.grupo9.servidor_central.dominio;
 import java.time.LocalDate;
 import java.util.Set;
 
-public class ProgramaFormacion {
+public class DataProgramaFormacion {
     private String nombreForm;
     private String descForm;
-    private Set<Curso> cursos;
+    private Set<DataCurso> cursos;
     private LocalDate fechaInicio;
     private LocalDate fechaFin;
     
-    public ProgramaFormacion (String nombreForm, String descForm, Set<Curso> cursos, LocalDate fechaInicio, LocalDate fechaFin){
+    public DataProgramaFormacion (String nombreForm, String descForm, Set<DataCurso> cursos, LocalDate fechaInicio, LocalDate fechaFin){
         this.nombreForm = nombreForm;
         this.descForm = descForm;
         this.cursos = cursos;
@@ -34,11 +34,11 @@ public class ProgramaFormacion {
         this.descForm = descForm;
     }
     
-    public Set<Curso> getCursos() {
+    public Set<DataCurso> getCursos() {
         return cursos;
     }
     
-    public void setCursos(Set<Curso> cursos) {
+    public void setCursos(Set<DataCurso> cursos) {
         this.cursos = cursos;
     }
     
