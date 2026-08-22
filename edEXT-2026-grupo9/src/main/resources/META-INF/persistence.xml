@@ -1,21 +1,31 @@
- <?xml version="1.0" encoding="UTF-8"?>
-<persistence version="3.0" xmlns="https://jakarta.ee/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://jakarta.ee/xml/ns/persistence https://jakarta.ee/xml/ns/persistence/persistence_3_0.xsd">
-  <persistence-unit name="edEXT_PU" transaction-type="RESOURCE_LOCAL">
-    <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence 
+    version="3.1" 
+    xmlns="https://jakarta.ee/xml/ns/persistence" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xsi:schemaLocation="
+        https://jakarta.ee/xml/ns/persistence 
+        https://jakarta.ee/xml/ns/persistence/persistence_3_1.xsd">
+  <persistence-unit 
+      name="edEXT_PU" transaction-type="RESOURCE_LOCAL">
+    <provider>
+        org.hibernate.jpa.HibernatePersistenceProvider
+    </provider>
 
     <!-- Clases -->
-    <class>com.grupo9.edext.grupo9.servidor_central.controller.edicion_de_curso.EdicionCurso</class>
+    <class>
+        com.grupo9.edext.grupo9.servidor_central.controller.edicion_de_curso.EdicionCurso
+    </class>
 
-    <properties>
-      <!-- Configuración de la base de datos (Ejemplo con MySQL, ajusta según la que uses) -->
+    <!--<properties>
+       // Para cuando vayamos a enlazar con la base de datos... 
       <property name="jakarta.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
       <property name="jakarta.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/edext_db?serverTimezone=UTC"/>
       <property name="jakarta.persistence.jdbc.user" value="root"/>
       <property name="jakarta.persistence.jdbc.password" value=""/>
-      <property name="jakarta.persistence.schema-generation.database.action" value="create"/>
-      <!-- Propiedades de Hibernate para desarrollo -->
+      Propiedades de Hibernate para desarrollo
       <property name="hibernate.hbm2ddl.auto" value="update"/>
-      <property name="hibernate.show_sql" value="true"/>
-    </properties>
+      <property name="hibernate.show_sql" value="true"/> 
+    </properties> -->
   </persistence-unit>
 </persistence>

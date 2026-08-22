@@ -1,15 +1,20 @@
 package com.grupo9.edext.grupo9.servidor_central.controller.edicion_de_curso;
-import com.grupo9.edext.grupo9.servidor_central.dominio.DataEdicionCurso;
+
+import com.grupo9.edext.grupo9.servidor_central.controller.edicion_de_curso.EdicionCurso;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+//import jakarta.persistence.EntityManager;
+//import jakarta.persistence.EntityManagerFactory;
+//import jakarta.persistence.EntityTransaction;
+//import jakarta.persistence.Persistence;
 
 public class ManejadorEdiciones {
-    private Map<String, DataEdicionCurso> edCurso;
+    private Map<String, EdicionCurso> edCurso;
     private static ManejadorEdiciones instance = null;
     
     private ManejadorEdiciones(){
-        edCurso = new HashMap<String, DataEdicionCurso>();
+        edCurso = new HashMap<String, EdicionCurso>();
     }
     
     public static ManejadorEdiciones getInstance() {
@@ -18,7 +23,7 @@ public class ManejadorEdiciones {
         return instance;
     }
     
-    public void addEdicion(DataEdicionCurso ed) {
+    public void addEdicion(EdicionCurso ed) {
         String nombreEC = ed.getNombreEdi();
         edCurso.put(nombreEC, ed);
         
@@ -38,20 +43,20 @@ public class ManejadorEdiciones {
         em.close();*/
     }
     
-    public DataEdicionCurso obtenerEdicion(String nombreEC){
-        return ((DataEdicionCurso)edCurso.get(nombreEC));
+    public EdicionCurso obtenerEdicion(String nombreEC){
+        return ((EdicionCurso)edCurso.get(nombreEC));
     }
     
-    public DataEdicionCurso[] getEdiciones(){
+    public EdicionCurso[] getEdiciones(){
         if(edCurso.isEmpty()){
             return null;
         }
         else{
-            Collection<DataEdicionCurso> edc = edCurso.values();
+            Collection<EdicionCurso> edc = edCurso.values();
             Object[] obj = edc.toArray();
-            DataEdicionCurso[] ediciones = new DataEdicionCurso[obj.length];
+            EdicionCurso[] ediciones = new EdicionCurso[obj.length];
             for (int i = 0; i < obj.length; i++) {
-                ediciones[i] = (DataEdicionCurso) obj[i];
+                ediciones[i] = (EdicionCurso) obj[i];
             }
             return ediciones;
         }

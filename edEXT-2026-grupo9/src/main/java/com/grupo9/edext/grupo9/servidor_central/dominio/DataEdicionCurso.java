@@ -2,11 +2,6 @@ package com.grupo9.edext.grupo9.servidor_central.dominio;
 
 import java.time.LocalDate;
 import java.util.Set;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityManagerFactory;
-import jakarta.persistence.EntityTransaction;
-import jakarta.persistence.Persistence;
-
 
 public class DataEdicionCurso {
     
