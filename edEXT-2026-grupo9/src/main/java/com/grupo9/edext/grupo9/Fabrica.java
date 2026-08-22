@@ -4,8 +4,12 @@ import com.grupo9.edext.grupo9.servidor_central.controller.programa_de_formacion
 import com.grupo9.edext.grupo9.servidor_central.controller.programa_de_formacion.ProgramaDeFormacionController;
 import com.grupo9.edext.grupo9.servidor_central.controller.edicion_de_curso.IEdicionCurso;
 import com.grupo9.edext.grupo9.servidor_central.controller.edicion_de_curso.EdicionCursoController;
+import com.grupo9.edext.grupo9.servidor_central.controller.curso.ICurso;
+import com.grupo9.edext.grupo9.servidor_central.controller.curso.CursoController;
 import com.grupo9.edext.grupo9.servidor_central.controller.usuario.IUsuario;
 import com.grupo9.edext.grupo9.servidor_central.controller.usuario.UsuarioController;
+import com.grupo9.edext.grupo9.servidor_central.controller.instituto.IInstituto;
+import com.grupo9.edext.grupo9.servidor_central.controller.instituto.InstitutoController;
         
 public class Fabrica {
     private static Fabrica instance;
