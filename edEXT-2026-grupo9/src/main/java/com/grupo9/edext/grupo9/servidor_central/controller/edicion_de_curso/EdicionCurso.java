@@ -1,19 +1,38 @@
-package com.grupo9.edext.grupo9.servidor_central.dominio;
+package com.grupo9.edext.grupo9.servidor_central.controller.edicion_de_curso;
 
+import com.grupo9.edext.grupo9.servidor_central.controller.curso.Curso;
+import com.grupo9.edext.grupo9.servidor_central.controller.docente.Docente;
 import java.time.LocalDate;
 import java.util.Set;
+//import jakarta.persistence.EntityManager;
+//import jakarta.persistence.EntityManagerFactory;
+//import jakarta.persistence.EntityTransaction;
+//import jakarta.persistence.Persistence;
+import jakarta.persistence.Id;
+import jakarta.persistence.Entity;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.JoinColumn;
 
-public class DataEdicionCurso {
-    
+@Entity
+public class EdicionCurso {
+    @Id
     private String nombreEdi;
-    private DataCurso cursoAsoc;
+    @ManyToOne
+    @JoinColumn(name = "curso_nombreCurso")
+    private Curso cursoAsoc;
     private LocalDate fechaInicio;
     private LocalDate fechaFin;
-    private Integer  cupo;
-    private Set<DataDocente> docentes;
+    private Integer cupo;
+    @ManyToMany
+    @JoinTable(name = "edicion_docente",
+    joinColumns = @JoinColumn(name = "edicion_nombreEdi"),
+    inverseJoinColumns = @JoinColumn(name = "docente_nickname"))
+    private Set<Docente> docentes;
     private LocalDate fechaPub;
     
-    public DataEdicionCurso(String nombreEdi, DataCurso cursoAsoc, LocalDate fechaInicio, LocalDate fechaFin, Integer cupo, Set<DataDocente> docentes, LocalDate fechaPub) {
+    public EdicionCurso(String nombreEdi, Curso cursoAsoc, LocalDate fechaInicio, LocalDate fechaFin, Integer cupo, Set<Docente> docentes, LocalDate fechaPub) {
         this.nombreEdi = nombreEdi;
         this.cursoAsoc = cursoAsoc;
         this.fechaInicio = fechaInicio;
@@ -31,11 +50,11 @@ public class DataEdicionCurso {
         this.nombreEdi = nombreEdi;
     }
 
-    public DataCurso getCursoAsoc() {
+    public Curso getCursoAsoc() {
         return cursoAsoc;
     }
 
-    public void setCursoAsoc(DataCurso cursoAsoc) {
+    public void setCursoAsoc(Curso cursoAsoc) {
         this.cursoAsoc = cursoAsoc;
     }
 
@@ -63,11 +82,11 @@ public class DataEdicionCurso {
         this.cupo = cupo;
     }
 
-    public Set<DataDocente> getDocentes() {
+    public Set<Docente> getDocentes() {
         return docentes;
     }
 
-    public void setDocentes(Set<DataDocente> docentes) {
+    public void setDocentes(Set<Docente> docentes) {
         this.docentes = docentes;
     }
 

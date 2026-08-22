@@ -27,7 +27,15 @@ public class Fabrica {
         return new ProgramaDeFormacionController();
     }
     
+    public ICurso getICurso() {
+        return new CursoController();
+    }
+    
     public IUsuario getIUsuario() {
-     return new UsuarioController();
+        return new UsuarioController();
+    }
+    
+    public IInstituto getIInstituto() {
+        return new InstitutoController();
     }
 }
