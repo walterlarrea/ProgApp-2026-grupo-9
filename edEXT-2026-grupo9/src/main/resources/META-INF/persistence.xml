@@ -4,6 +4,7 @@
     <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
     
     <!-- Aquí agregarás las clases de tus entidades con @Entity cuando las crees -->
+    <class>com.grupo9.edext.grupo9.servidor_central.controller.edicion_de_curso.Usuario</class>
     <!-- Ejemplo: <class>com.grupo9.edext.grupo9.servidor_central.dominio.Usuario</class> -->
 
     <properties>
