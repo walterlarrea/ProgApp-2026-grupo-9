@@ -1,6 +1,5 @@
 package com.grupo9.edext.grupo9.servidor_central.controller.edicion_de_curso;
 
-import com.grupo9.edext.grupo9.servidor_central.controller.edicion_de_curso.EdicionCurso;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
