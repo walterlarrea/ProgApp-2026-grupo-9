@@ -15,10 +15,7 @@ import java.util.HashSet;
 
 public class EdicionCursoController implements IEdicionCurso {
     
-    public EdicionCursoController() {
-        //EntityManagerFactory emf = Persistence.createEntityManagerFactory("SwingDemoPU");
-        //em = emf.createEntityManager();
-    }
+    public EdicionCursoController(){}
     
     @Override
     public void guardarNuevaEdicionCurso(){
@@ -42,7 +39,7 @@ public class EdicionCursoController implements IEdicionCurso {
     public DataEdicionCurso consultarEdicionCurso(String nEdi) throws ErrorNoExiste{
         ManejadorEdiciones me = ManejadorEdiciones.getInstance();
         EdicionCurso ed = me.obtenerEdicion(nEdi);
-       
+        
         if(ed != null){
             Curso curso = ed.getCursoAsoc();
             //para que funcione DataCurso
@@ -60,7 +57,6 @@ public class EdicionCursoController implements IEdicionCurso {
         }
     }
 
-    
     @Override
     public void inscripcionEdicionCurso(String nickEstudiante, String nEdi, LocalDate fInsc) throws ErrorRepetidos, ErrorNoExiste{
         ManejadorEdiciones me = ManejadorEdiciones.getInstance();
@@ -68,7 +64,7 @@ public class EdicionCursoController implements IEdicionCurso {
         Estudiante est = mest.obtenerEstudiante(nickEstudiante);
         EdicionCurso ed = me.obtenerEdicion(nEdi);
         
-        if (est == null){
+        if(est == null){
             throw new ErrorRepetidos("El estudiante " + nickEstudiante + " no existe.");
         }
         if(ed != null){

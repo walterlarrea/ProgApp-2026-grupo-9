@@ -3,10 +3,11 @@ package com.grupo9.edext.grupo9.servidor_central.controller.usuario;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-//import jakarta.persistence.EntityManager;
-//import jakarta.persistence.EntityManagerFactory;
-//import jakarta.persistence.EntityTransaction;
-//import jakarta.persistence.Persistence;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.EntityTransaction;
+import jakarta.persistence.Persistence;
+import com.grupo9.edext.grupo9.miscelanea.UtensiliosJPA;
 
 public class ManejadorEstudiantes {
     private Map<String, Estudiante> estudiante;
@@ -16,30 +17,26 @@ public class ManejadorEstudiantes {
         estudiante = new HashMap<String, Estudiante>();
     }
     
-    public static ManejadorEstudiantes getInstance() {
-        if (instance == null)
+    public static ManejadorEstudiantes getInstance(){
+        if(instance == null)
             instance = new ManejadorEstudiantes();
         return instance;
     }
     
-    public void addEstudiante(Estudiante est) {
+    public void addEstudiante(Estudiante est){
         String nickEst = est.getNickname();
         estudiante.put(nickEst, est);
-        
-        /* Esto seria cuando usemos JPA
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("SwingDemoPU");
-        em = emf.createEntityManager();
-        EntityTransaction t = em.getTransaction();
+        EntityManager em = UtensiliosJPA.getEntityManagerFactory().createEntityManager();//
+        EntityTransaction et = em.getTransaction();
         try{
-            t.begin();
+            et.begin();
             em.persist(est);
-            t.commit();
-            
+            et.commit();
         }
         catch(Exception e){
-            t.rollback();    
+            et.rollback();    
         }
-        em.close();*/
+        em.close();
     }
     
     public Estudiante obtenerEstudiante(String nickEst){

@@ -1,4 +1,4 @@
-package com.grupo9.edext.grupo9;
+package com.grupo9.edext.grupo9.miscelanea;
 
 import com.grupo9.edext.grupo9.servidor_central.controller.programa_de_formacion.IProgramaDeFormacion;
 import com.grupo9.edext.grupo9.servidor_central.controller.programa_de_formacion.ProgramaDeFormacionController;

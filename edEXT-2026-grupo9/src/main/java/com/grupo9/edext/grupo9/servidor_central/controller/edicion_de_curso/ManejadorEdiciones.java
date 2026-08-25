@@ -3,10 +3,11 @@ package com.grupo9.edext.grupo9.servidor_central.controller.edicion_de_curso;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-//import jakarta.persistence.EntityManager;
-//import jakarta.persistence.EntityManagerFactory;
-//import jakarta.persistence.EntityTransaction;
-//import jakarta.persistence.Persistence;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.EntityTransaction;
+import jakarta.persistence.Persistence;
+import com.grupo9.edext.grupo9.miscelanea.UtensiliosJPA;
 
 public class ManejadorEdiciones {
     private Map<String, EdicionCurso> edCurso;
@@ -16,30 +17,26 @@ public class ManejadorEdiciones {
         edCurso = new HashMap<String, EdicionCurso>();
     }
     
-    public static ManejadorEdiciones getInstance() {
-        if (instance == null)
+    public static ManejadorEdiciones getInstance(){
+        if(instance == null)
             instance = new ManejadorEdiciones();
         return instance;
     }
     
-    public void addEdicion(EdicionCurso ed) {
+    public void addEdicion(EdicionCurso ed){
         String nombreEC = ed.getNombreEdi();
         edCurso.put(nombreEC, ed);
-        
-        /* Esto seria cuando usemos JPA
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("SwingDemoPU");
-        em = emf.createEntityManager();
-        EntityTransaction t = em.getTransaction();
+        /* Esto sería cuando usamos JPA */
+        EntityManager em = UtensiliosJPA.getEntityManagerFactory().createEntityManager();
+        EntityTransaction et = em.getTransaction();
         try{
-            t.begin();
+            et.begin();
             em.persist(ed);
-            t.commit();
-            
+            et.commit();  
+        }catch(Exception e){
+            et.rollback();    
         }
-        catch(Exception e){
-            t.rollback();    
-        }
-        em.close();*/
+        em.close();
     }
     
     public EdicionCurso obtenerEdicion(String nombreEC){
