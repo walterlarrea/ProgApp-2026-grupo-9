@@ -12,6 +12,6 @@ public class EdicionCursoPres {
 
     public void guardarNuevaEdicionCurso(){
         System.out.println("[CLIENTE] Mock de ENVÍO AL SERVIDOR de una nueva edición de curso");
-        servidorCentral.guardarProgramaDeFormacion();
+        servidorCentral.guardarEdicionCurso();
     }
 }

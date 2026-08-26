@@ -7,46 +7,50 @@ import jakarta.persistence.Entity;
 //import jakarta.persistence.GeneratedValue;
 //import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import java.util.Set;
+import jakarta.persistence.OneToMany;
+import java.util.HashSet;
 
 @Entity
 public class ProgramaDeFormacion implements Serializable{
     @Id
-    private String nombreForm;
-    private String descForm;
-    private Set<Curso> cursos;
+    private String nombre;
+    private String descripcion;
+    @OneToMany
+    private HashSet<Curso> cursos;
     private LocalDate fechaInicio;
     private LocalDate fechaFin;
     
-    public ProgramaDeFormacion (String nombreForm, String descForm, Set<Curso> cursos, LocalDate fechaInicio, LocalDate fechaFin){
-        this.nombreForm = nombreForm;
-        this.descForm = descForm;
+    public ProgramaDeFormacion (String nombre, String descripcion, HashSet<Curso> cursos, LocalDate fechaInicio, LocalDate fechaFin){
+        this.nombre = nombre;
+        this.descripcion = descripcion;
         this.cursos = cursos;
         this.fechaInicio = fechaInicio;
         this.fechaFin = fechaFin;
     }
     
-    public String getNombreFrom() {
-        return nombreForm;
+    protected ProgramaDeFormacion() {}
+    
+    public String getNombre() {
+        return nombre;
     }
     
-    public void setNombreFrom(String nombreForm) {
-        this.nombreForm = nombreForm;
+    public void setNombre(String nombreForm) {
+        this.nombre = nombreForm;
     }
     
-    public String getDescFrom() {
-        return descForm;
+    public String getDesc() {
+        return descripcion;
     }
     
-    public void setDescFrom(String descForm) {
-        this.descForm = descForm;
+    public void setDesc(String descForm) {
+        this.descripcion = descForm;
     }
     
-    public Set<Curso> getCursos() {
+    public HashSet<Curso> getCursos() {
         return cursos;
     }
     
-    public void setCursos(Set<Curso> cursos) {
+    public void setCursos(HashSet<Curso> cursos) {
         this.cursos = cursos;
     }
     

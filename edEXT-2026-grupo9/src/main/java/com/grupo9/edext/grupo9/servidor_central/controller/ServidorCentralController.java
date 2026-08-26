@@ -1,15 +1,13 @@
 package com.grupo9.edext.grupo9.servidor_central.controller;
 
+import com.grupo9.edext.grupo9.dtos.DTOProgramaDeFormacion;
 import com.grupo9.edext.grupo9.interfaces.IServidorCentral;
 
 import com.grupo9.edext.grupo9.servidor_central.controller.programa_de_formacion.IProgramaDeFormacion;
 import com.grupo9.edext.grupo9.servidor_central.controller.programa_de_formacion.ProgramaDeFormacionController;
 import com.grupo9.edext.grupo9.servidor_central.controller.edicion_de_curso.IEdicionCurso;
 import com.grupo9.edext.grupo9.servidor_central.controller.edicion_de_curso.EdicionCursoController;
-/**
- *
- * @author Walter
- */
+
 public class ServidorCentralController implements IServidorCentral {
     private final IProgramaDeFormacion progDeFormacion = new ProgramaDeFormacionController();
     private final IEdicionCurso edicionCurso = new EdicionCursoController();
@@ -40,8 +38,8 @@ public class ServidorCentralController implements IServidorCentral {
     }
     
     @Override
-    public void guardarProgramaDeFormacion(){
-        this.progDeFormacion.guardarNuevoProgramaDeFormacion();
+    public void guardarProgramaDeFormacion(DTOProgramaDeFormacion nuevoPrograma){
+        this.progDeFormacion.guardarNuevoProgramaDeFormacion(nuevoPrograma);
     }
     
     @Override
