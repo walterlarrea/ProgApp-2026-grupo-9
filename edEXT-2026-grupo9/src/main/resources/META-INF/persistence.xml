@@ -3,8 +3,8 @@
     version="3.1" 
     xmlns="https://jakarta.ee/xml/ns/persistence" 
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-    xsi:schemaLocation="
-        https://jakarta.ee/xml/ns/persistence 
+    xsi:schemaLocation=
+        "https://jakarta.ee/xml/ns/persistence 
         https://jakarta.ee/xml/ns/persistence/persistence_3_1.xsd">
   <persistence-unit 
       name="edEXT_PU" transaction-type="RESOURCE_LOCAL">
@@ -15,17 +15,24 @@
     <!-- Clases -->
     <class>
         com.grupo9.edext.grupo9.servidor_central.controller.edicion_de_curso.EdicionCurso
+        com.grupo9.edext.grupo9.servidor_central.controller.edicion_de_curso.InscEdicion
+        com.grupo9.edext.grupo9.servidor_central.controller.curso.Curso
+        com.grupo9.edext.grupo9.servidor_central.controller.usuario.Usuario
+        com.grupo9.edext.grupo9.servidor_central.controller.usuario.Estudiante
+        com.grupo9.edext.grupo9.servidor_central.controller.usuario.Docente
+        com.grupo9.edext.grupo9.servidor_central.controller.programa_de_formacion.ProgramaDeFormacion
     </class>
 
-    <!--<properties>
-       // Para cuando vayamos a enlazar con la base de datos... 
-      <property name="jakarta.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
-      <property name="jakarta.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/edext_db?serverTimezone=UTC"/>
-      <property name="jakarta.persistence.jdbc.user" value="root"/>
-      <property name="jakarta.persistence.jdbc.password" value=""/>
-      Propiedades de Hibernate para desarrollo
-      <property name="hibernate.hbm2ddl.auto" value="update"/>
-      <property name="hibernate.show_sql" value="true"/> 
-    </properties> -->
+    <properties>
+    <!--// Propiedades de MySQL y Connecto/J, acá enlazamos con la base de datos -->
+        <property name="jakarta.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
+        <property name="jakarta.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/edEXT?serverTimezone=UTC"/> <!-- serverTimezone: para sincronizar a la zona horaria -->
+        <property name="jakarta.persistence.jdbc.user" value="root"/>
+        <property name="jakarta.persistence.jdbc.password" value=".mayonesa23."/>-->
+    <!-- Propiedades de Hibernate para desarrollo -->
+        <property name="hibernate.hbm2ddl.auto" value="update"/> <!-- para actualizar las tablas a partir de las entidades que tengamos acá, no inserta los datos automáticamente, no no -->
+        <property name="hibernate.show_sql" value="true"/> 
+        <property name="hibernate.show_sql" value="true"/>
+    </properties>
   </persistence-unit>
 </persistence>

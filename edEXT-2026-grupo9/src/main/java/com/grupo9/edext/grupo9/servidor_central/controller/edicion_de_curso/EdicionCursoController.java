@@ -3,7 +3,9 @@ package com.grupo9.edext.grupo9.servidor_central.controller.edicion_de_curso;
 import com.grupo9.edext.grupo9.mensajes.ErrorNoExiste;
 import com.grupo9.edext.grupo9.mensajes.ErrorRepetidos;
 import com.grupo9.edext.grupo9.servidor_central.controller.curso.Curso;
-import com.grupo9.edext.grupo9.servidor_central.controller.docente.Docente;
+import com.grupo9.edext.grupo9.servidor_central.controller.usuario.Docente;
+import com.grupo9.edext.grupo9.servidor_central.controller.usuario.ManejadorEstudiantes;
+import com.grupo9.edext.grupo9.servidor_central.controller.usuario.Estudiante;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataEdicionCurso;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataCurso;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataDocente;
@@ -13,10 +15,7 @@ import java.util.HashSet;
 
 public class EdicionCursoController implements IEdicionCurso {
     
-    public EdicionCursoController() {
-        //EntityManagerFactory emf = Persistence.createEntityManagerFactory("SwingDemoPU");
-        //em = emf.createEntityManager();
-    }
+    public EdicionCursoController(){}
     
     @Override
     public void guardarNuevaEdicionCurso(){
@@ -40,7 +39,7 @@ public class EdicionCursoController implements IEdicionCurso {
     public DataEdicionCurso consultarEdicionCurso(String nEdi) throws ErrorNoExiste{
         ManejadorEdiciones me = ManejadorEdiciones.getInstance();
         EdicionCurso ed = me.obtenerEdicion(nEdi);
-       
+        
         if(ed != null){
             Curso curso = ed.getCursoAsoc();
             //para que funcione DataCurso
@@ -54,13 +53,32 @@ public class EdicionCursoController implements IEdicionCurso {
         }
             return new DataEdicionCurso(ed.getNombreEdi(), datosCurAsoc, ed.getFechaInicio(), ed.getFechaFin(), ed.getCupo(), datosDocentes, ed.getFechaPub()); 
         }else{
-            throw new ErrorNoExiste("La edición " + nEdi + " no está registrada.");
+            throw new ErrorNoExiste("La Edición " + nEdi + " no está registrada.");
         }
     }
 
-    /*
     @Override
-    public EdicionCurso inscripcionEdicionCurso() throws ErrorNoExiste{
+    public void inscripcionEdicionCurso(String nickEstudiante, String nEdi, LocalDate fInsc) throws ErrorRepetidos, ErrorNoExiste{
+        ManejadorEdiciones me = ManejadorEdiciones.getInstance();
+        ManejadorEstudiantes mest = ManejadorEstudiantes.getInstance();
+        Estudiante est = mest.obtenerEstudiante(nickEstudiante);
+        EdicionCurso ed = me.obtenerEdicion(nEdi);
         
-    };*/
+        if(est == null){
+            throw new ErrorRepetidos("El estudiante " + nickEstudiante + " no existe.");
+        }
+        if(ed != null){
+            for(InscEdicion insc : est.getInscripciones()){//checkeo si ya está inscripto.
+                if(insc.getEdicion().equals(ed)){
+                    throw new ErrorRepetidos("El estudiante " + nickEstudiante + " ya está inscripto.");
+                }
+            }
+            InscEdicion inscripcion = new InscEdicion(est, ed, fInsc);
+            est.getInscripciones().add(inscripcion);
+            //por si consultar edición de curso te muestra las inscripciones. 
+            //ed.getInscripciones().add(inscripcion);   
+        }else{
+            throw new ErrorNoExiste("La Edición " + nEdi + " no existe.");
+        }
+    };
 }

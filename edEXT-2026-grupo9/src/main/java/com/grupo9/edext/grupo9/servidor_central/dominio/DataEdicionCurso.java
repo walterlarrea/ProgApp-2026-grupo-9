@@ -4,13 +4,13 @@ import java.time.LocalDate;
 import java.util.Set;
 
 public class DataEdicionCurso {
-    
     private String nombreEdi;
     private DataCurso cursoAsoc;
     private LocalDate fechaInicio;
     private LocalDate fechaFin;
     private Integer  cupo;
     private Set<DataDocente> docentes;
+    //private Set<DataInscEdicion> inscripciones;
     private LocalDate fechaPub;
     
     public DataEdicionCurso(String nombreEdi, DataCurso cursoAsoc, LocalDate fechaInicio, LocalDate fechaFin, Integer cupo, Set<DataDocente> docentes, LocalDate fechaPub) {

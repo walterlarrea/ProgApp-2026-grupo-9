@@ -4,7 +4,9 @@ import java.time.LocalDate;
 
 public class DataInscEdicion {
     private LocalDate fechaInscE;
-
+    private DataEstudiante estudiante;
+    private DataEdicionCurso edicion;
+    
     public DataInscEdicion(LocalDate fechaInscE) {
         this.fechaInscE = fechaInscE;
     }
@@ -15,5 +17,13 @@ public class DataInscEdicion {
 
     public void setFechaInscE(LocalDate fechaInscE) {
         this.fechaInscE = fechaInscE;
+    }
+    
+    public DataEstudiante getEstudiante(){
+        return estudiante;
+    }
+    
+    public DataEdicionCurso getEdicion(){
+        return edicion;
     }
 }
