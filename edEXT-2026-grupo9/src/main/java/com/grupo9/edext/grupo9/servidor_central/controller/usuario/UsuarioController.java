@@ -1,3 +1,4 @@
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
@@ -19,4 +20,9 @@ public class UsuarioController implements IUsuario{
     public void modificarUsuario(String nick, String nom, String ape, Date fechaNac, String rutaImg) {
         // Tu lógica de actualización
     }
+    
 }
+    
+
+
+

@@ -195,8 +195,8 @@ public class MainJFrame extends javax.swing.JFrame {
                                 .addGap(39, 39, 39)
                                 .addComponent(jLabelFechaNac)
                                 .addGap(36, 36, 36)
-                                .addComponent(jSpinnerFechaNac, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addContainerGap(275, Short.MAX_VALUE))
+                                .addComponent(jSpinnerFechaNac, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addContainerGap(219, Short.MAX_VALUE))
         );
         JPanelAltaUsuarioLayout.setVerticalGroup(
             JPanelAltaUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
