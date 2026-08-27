@@ -1,10 +1,21 @@
 package com.grupo9.edext.grupo9.servidor_central.controller.usuario;
 
+
+import com.grupo9.edext.grupo9.servidor_central.dominio.DataUsuario;
+import com.grupo9.edext.grupo9.servidor_central.dominio.DataDocente;
+import java.time.LocalDate;
+import java.util.Set;
+
+/**
+ *
+ * @author Usuario
+ */
+
+    
+
 import java.io.Serializable;
 import java.time.LocalDate;
 import jakarta.persistence.Entity;
-//import jakarta.persistence.GeneratedValue;
-//import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 @Entity

@@ -22,7 +22,7 @@ public class Fabrica {
         }
         return instance;
     }
-    
+        
     public IEdicionCurso getIEdicionCurso() {
         return new EdicionCursoController();
     }
@@ -31,6 +31,7 @@ public class Fabrica {
         return new ProgramaDeFormacionController();
     }
     
+
     public ICurso getICurso() {
         return new CursoController();
     }
