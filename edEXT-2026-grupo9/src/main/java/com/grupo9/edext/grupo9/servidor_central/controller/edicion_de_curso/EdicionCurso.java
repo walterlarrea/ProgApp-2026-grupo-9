@@ -4,12 +4,7 @@ import com.grupo9.edext.grupo9.servidor_central.controller.curso.Curso;
 import com.grupo9.edext.grupo9.servidor_central.controller.usuario.Docente;
 import java.time.LocalDate;
 import java.util.Set;
-import jakarta.persistence.Id;
-import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.JoinColumn;
+import jakarta.persistence.*;
 
 @Entity
 public class EdicionCurso {
@@ -26,18 +21,18 @@ public class EdicionCurso {
     joinColumns = @JoinColumn(name = "edicion_nombreEdi"),
     inverseJoinColumns = @JoinColumn(name = "docente_nickname"))
     private Set<Docente> docentes;
-    //preguntar si al consultar edición tiene que ver a los inscriptos.
-    //@OneToMany(mappedBy = "edicion")
-    //private Set<InscEdicion> inscripciones;
+    @OneToMany(mappedBy = "edicion")
+    private Set<InscEdicion> inscripciones;
     private LocalDate fechaPub;
     
-    public EdicionCurso(String nombreEdi, Curso cursoAsoc, LocalDate fechaInicio, LocalDate fechaFin, Integer cupo, Set<Docente> docentes, LocalDate fechaPub) {
+    public EdicionCurso(String nombreEdi, Curso cursoAsoc, LocalDate fechaInicio, LocalDate fechaFin, Integer cupo, Set<Docente> docentes, Set<InscEdicion> inscripciones, LocalDate fechaPub) {
         this.nombreEdi = nombreEdi;
         this.cursoAsoc = cursoAsoc;
         this.fechaInicio = fechaInicio;
         this.fechaFin = fechaFin;
         this.cupo = cupo;
         this.docentes = docentes;
+        this.inscripciones = inscripciones;
         this.fechaPub = fechaPub;
     }
 
@@ -95,5 +90,9 @@ public class EdicionCurso {
 
     public void setFechaPub(LocalDate fechaPub) {
         this.fechaPub = fechaPub;
+    }
+    
+    public Set<InscEdicion> getInscripciones(){
+        return inscripciones;
     }
 }

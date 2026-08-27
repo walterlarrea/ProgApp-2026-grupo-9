@@ -24,7 +24,7 @@
     </class>
 
     <properties>
-    <!--// Propiedades de MySQL y Connecto/J, acá enlazamos con la base de datos -->
+    <!--// Propiedades de MySQL y Connector/J, acá enlazamos con la base de datos -->
         <property name="jakarta.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
         <property name="jakarta.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/edEXT?serverTimezone=UTC"/> <!-- serverTimezone: para sincronizar a la zona horaria -->
         <property name="jakarta.persistence.jdbc.user" value="root"/>
