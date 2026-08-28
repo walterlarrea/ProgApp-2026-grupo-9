@@ -49,7 +49,7 @@ public class EdicionCursoController implements IEdicionCurso {
 
             //para obtener los inscriptos
             Set<DataInscEdicion> datosInscriptos = new HashSet<>();
-            for(InscEdicion inscriptos : ed.getInscripciones()){
+            for(InscEdicion inscriptos : new HashSet<InscEdicion>()){
                 Estudiante estudiante = inscriptos.getEstudiante();
                 DataEstudiante datosEst = new DataEstudiante(estudiante.getNickname(),estudiante.getNombre(),estudiante.getApellido(),estudiante.getEmail(), estudiante.getFechaNac(), null);
                 DataInscEdicion datosInsc = new DataInscEdicion(inscriptos.getFechaInscE(), datosEst, inscriptos.getEdicion());
@@ -85,8 +85,8 @@ public class EdicionCursoController implements IEdicionCurso {
             }
             InscEdicion inscripcion = new InscEdicion(fInsc, est, ed.getNombreEdi());
             est.getInscripciones().add(inscripcion);
-            //por si consultar edición de curso te muestra las inscripciones. 
-            ed.getInscripciones().add(inscripcion);   
+//            por si consultar edición de curso te muestra las inscripciones. 
+//            ed.getInscripciones().add(inscripcion);   
         }else{
             throw new ErrorNoExiste("La Edición " + nEdi + " no existe.");
         }

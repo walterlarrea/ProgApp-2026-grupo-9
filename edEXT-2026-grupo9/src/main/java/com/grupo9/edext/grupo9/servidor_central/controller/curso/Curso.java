@@ -1,12 +1,15 @@
 package com.grupo9.edext.grupo9.servidor_central.controller.curso;
 
 //import com.grupo9.edext.grupo9.servidor_central.controller.edicion_de_curso.EdicionCurso;
+import com.grupo9.edext.grupo9.servidor_central.controller.edicion_de_curso.EdicionCurso;
 import java.io.Serializable;
 import java.time.LocalDate;
 //import jakarta.persistence.GeneratedValue;
 //import jakarta.persistence.GenerationType;
 import jakarta.persistence.Entity;       
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import java.util.Set;
 
 @Entity
 public class Curso implements Serializable{
@@ -19,8 +22,8 @@ public class Curso implements Serializable{
     private int cantCred;
     private LocalDate fechaReg;
     private String url;
-    //@OneToMany(mappedBy = "cursoAsoc")
-    //private Set<EdicionCurso> ediciones;
+    @OneToMany(mappedBy = "cursoAsoc")
+    private Set<EdicionCurso> ediciones;
 
     public Curso(String nombreInst, String nombreCurso, String descCurso, int duracion, int cantHoras, int cantCred, LocalDate fechaReg, String url) {
         this.nombreInst = nombreInst;

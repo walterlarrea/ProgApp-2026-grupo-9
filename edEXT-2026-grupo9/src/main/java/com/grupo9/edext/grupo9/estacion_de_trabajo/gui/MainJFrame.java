@@ -1,6 +1,8 @@
 package com.grupo9.edext.grupo9.estacion_de_trabajo.gui;
 import javax.swing.JPanel;
 import java.util.ArrayList;
+import java.util.Date;
+
 import com.grupo9.edext.grupo9.estacion_de_trabajo.cliente.ProgramaDeFormacionPres;
 
 public class MainJFrame extends javax.swing.JFrame {
@@ -308,29 +310,26 @@ public class MainJFrame extends javax.swing.JFrame {
 
         jLabelCearProgramaNombre.setText("Nombre *");
 
-        jTextCrearProgramaNombre.setText("nombre");
-        jTextCrearProgramaNombre.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextCrearProgramaNombreActionPerformed(evt);
-            }
-        });
+        jTextCrearProgramaNombre.setText("Prog1");
 
         jLabelCrearProgramaDesc.setText("Descripción *");
 
         jTextAreaCrearProgramaDesc.setColumns(20);
         jTextAreaCrearProgramaDesc.setRows(5);
-        jTextAreaCrearProgramaDesc.setText("descripción");
+        jTextAreaCrearProgramaDesc.setText("Descripcion de prueba");
 
         jLabelCrearProgramaFechaInicio.setText("Fecha de inicio");
 
-        jFormattedTextFieldCrearProgramaFechaInicio.setText("01/01/2000");
+        jFormattedTextFieldCrearProgramaFechaInicio.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(java.text.DateFormat.getDateInstance(java.text.DateFormat.SHORT))));
+        jFormattedTextFieldCrearProgramaFechaInicio.setText("23/8/26");
         jFormattedTextFieldCrearProgramaFechaInicio.setMinimumSize(new java.awt.Dimension(110, 26));
         jFormattedTextFieldCrearProgramaFechaInicio.setName(""); // NOI18N
         jFormattedTextFieldCrearProgramaFechaInicio.setPreferredSize(new java.awt.Dimension(110, 26));
 
         jLabelCrearProgramaFechaFin.setText("Fecha de finalización");
 
-        jFormattedTextFieldCrearProgramaFechaFin.setText("01/01/2000");
+        jFormattedTextFieldCrearProgramaFechaFin.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(java.text.DateFormat.getDateInstance(java.text.DateFormat.SHORT))));
+        jFormattedTextFieldCrearProgramaFechaFin.setText("28/8/26");
         jFormattedTextFieldCrearProgramaFechaFin.setMinimumSize(new java.awt.Dimension(110, 26));
         jFormattedTextFieldCrearProgramaFechaFin.setPreferredSize(new java.awt.Dimension(110, 26));
 
@@ -388,18 +387,16 @@ public class MainJFrame extends javax.swing.JFrame {
                 .addComponent(jLabelCrearPrograma)
                 .addGap(18, 18, 18)
                 .addGroup(JPanelCrearProgramaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabelCrearProgramaFechaInicio)
                     .addGroup(JPanelCrearProgramaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(jFormattedTextFieldCrearProgramaFechaFin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(JPanelCrearProgramaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jFormattedTextFieldCrearProgramaFechaFin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jFormattedTextFieldCrearProgramaFechaInicio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jTextCrearProgramaNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGroup(JPanelCrearProgramaLayout.createSequentialGroup()
                             .addGroup(JPanelCrearProgramaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                 .addComponent(jLabelCearProgramaNombre)
                                 .addComponent(jLabelCrearProgramaFechaFin))
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(jTextCrearProgramaNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(JPanelCrearProgramaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(jFormattedTextFieldCrearProgramaFechaInicio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGroup(JPanelCrearProgramaLayout.createSequentialGroup()
-                            .addComponent(jLabelCrearProgramaFechaInicio)
                             .addGap(32, 32, 32))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabelCrearProgramaDesc)
@@ -623,7 +620,13 @@ public class MainJFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_formWindowOpened
 
     private void jButtonGuardarProgramaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonGuardarProgramaActionPerformed
-        programaDeFormacion.guardarNuevoProgramaDeFormacion();
+        final String nombre = jTextCrearProgramaNombre.getText();
+        final String descripcion = jTextAreaCrearProgramaDesc.getText();
+        final Date fechaInicio = (Date) jFormattedTextFieldCrearProgramaFechaInicio.getValue();
+        final Date fechaFin = (Date) jFormattedTextFieldCrearProgramaFechaFin.getValue();
+        
+        System.out.println("[GUI] Paso datos al cliente: " + nombre);
+        programaDeFormacion.guardarNuevoProgramaDeFormacion(nombre, descripcion, fechaInicio, fechaFin);
     }//GEN-LAST:event_jButtonGuardarProgramaActionPerformed
 
     private void jMenuItemCrearProgDeFormacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemCrearProgDeFormacionActionPerformed

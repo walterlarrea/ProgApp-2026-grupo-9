@@ -24,7 +24,6 @@ public class Usuario implements Serializable{
     private String nickname;
     private String nombre;
     private String apellido;
-    @Id
     private String email;
     private LocalDate fechaNac;
     private String imagen;
