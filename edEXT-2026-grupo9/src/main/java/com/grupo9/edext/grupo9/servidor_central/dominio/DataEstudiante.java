@@ -8,6 +8,7 @@ public class DataEstudiante extends DataUsuario {
     
     public DataEstudiante(String nickname, String nombreUs, String apellidoUs, String email, LocalDate fechaNac, Set<DataInscEdicion> inscripciones) {
         super(nickname, nombreUs, apellidoUs, email, fechaNac);
+        this.inscripciones = inscripciones;
     }
     
     public Set<DataInscEdicion> getInscripciones(){

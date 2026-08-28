@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.grupo9.edext.grupo9.servidor_central.controller.usuario;
 import com.grupo9.edext.grupo9.servidor_central.controller.usuario.IUsuario;
 import java.util.Date;

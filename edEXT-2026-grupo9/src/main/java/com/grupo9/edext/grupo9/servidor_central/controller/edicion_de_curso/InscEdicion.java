@@ -6,14 +6,14 @@ import jakarta.persistence.Entity;
 
 @Entity
 public class InscEdicion {
-    private Estudiante estudiante;
-    private EdicionCurso edicion;
     private LocalDate fechaInscE;
+    private Estudiante estudiante;
+    private String nombreEdi;
 
-    public InscEdicion(Estudiante estudiante, EdicionCurso edicion, LocalDate fechaInscE) {
-        this.estudiante = estudiante;
-        this.edicion = edicion;
+    public InscEdicion(LocalDate fechaInscE, Estudiante estudiante, String nombreEdi) {
         this.fechaInscE = fechaInscE;
+        this.estudiante = estudiante;
+        this.nombreEdi = nombreEdi;
     }
 
     public LocalDate getFechaInscE() {
@@ -28,7 +28,7 @@ public class InscEdicion {
         return estudiante;
     }
     
-    public EdicionCurso getEdicion(){
-        return edicion;
+    public String getEdicion(){
+        return nombreEdi;
     }
 }

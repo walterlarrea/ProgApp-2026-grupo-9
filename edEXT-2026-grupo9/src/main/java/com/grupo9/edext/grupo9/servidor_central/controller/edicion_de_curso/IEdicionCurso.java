@@ -9,7 +9,7 @@ import java.util.Set;
 
 public interface IEdicionCurso {
     public void guardarNuevaEdicionCurso();
-    public abstract void altaEdicionCurso(String nEdi, Curso cur, LocalDate fInicio, LocalDate fFin, int c, Set<Docente> d) throws ErrorRepetidos;
+    public abstract void altaEdicionCurso(String nEdi, Curso cur, LocalDate fInicio, LocalDate fFin, int c, Set<InscEdicion> insc, Set<Docente> d) throws ErrorRepetidos;
     public abstract DataEdicionCurso consultarEdicionCurso(String nInst) throws ErrorNoExiste;
-    public abstract void inscripcionEdicionCurso(String nickEstudiante, String nEdi, LocalDate fInsc) throws ErrorRepetidos, ErrorNoExiste;
+    public abstract void inscripcionEdicionCurso(LocalDate fInsc, String nickEstudiante, String nEdi) throws ErrorRepetidos, ErrorNoExiste;
 }
