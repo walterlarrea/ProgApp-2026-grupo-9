@@ -595,21 +595,18 @@
                   <Component id="jLabelCrearPrograma" min="-2" max="-2" attributes="0"/>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
+                      <Component id="jLabelCrearProgramaFechaInicio" min="-2" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="1" attributes="0">
-                          <Component id="jFormattedTextFieldCrearProgramaFechaFin" alignment="1" min="-2" max="-2" attributes="0"/>
+                          <Group type="103" alignment="1" groupAlignment="3" attributes="0">
+                              <Component id="jFormattedTextFieldCrearProgramaFechaFin" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="jFormattedTextFieldCrearProgramaFechaInicio" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="jTextCrearProgramaNombre" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
                           <Group type="102" attributes="0">
                               <Group type="103" groupAlignment="1" attributes="0">
                                   <Component id="jLabelCearProgramaNombre" min="-2" max="-2" attributes="0"/>
                                   <Component id="jLabelCrearProgramaFechaFin" alignment="1" min="-2" max="-2" attributes="0"/>
                               </Group>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="jTextCrearProgramaNombre" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                      </Group>
-                      <Group type="103" groupAlignment="1" attributes="0">
-                          <Component id="jFormattedTextFieldCrearProgramaFechaInicio" alignment="1" min="-2" max="-2" attributes="0"/>
-                          <Group type="102" alignment="1" attributes="0">
-                              <Component id="jLabelCrearProgramaFechaInicio" min="-2" max="-2" attributes="0"/>
                               <EmptySpace min="32" pref="32" max="-2" attributes="0"/>
                           </Group>
                       </Group>
@@ -652,11 +649,8 @@
         </Component>
         <Component class="javax.swing.JTextField" name="jTextCrearProgramaNombre">
           <Properties>
-            <Property name="text" type="java.lang.String" value="nombre"/>
+            <Property name="text" type="java.lang.String" value="Prog1"/>
           </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jTextCrearProgramaNombreActionPerformed"/>
-          </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabelCrearProgramaDesc">
           <Properties>
@@ -667,7 +661,7 @@
           <Properties>
             <Property name="columns" type="int" value="20"/>
             <Property name="rows" type="int" value="5"/>
-            <Property name="text" type="java.lang.String" value="descripci&#xf3;n"/>
+            <Property name="text" type="java.lang.String" value="Descripcion de prueba"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabelCrearProgramaFechaInicio">
@@ -677,7 +671,10 @@
         </Component>
         <Component class="javax.swing.JFormattedTextField" name="jFormattedTextFieldCrearProgramaFechaInicio">
           <Properties>
-            <Property name="text" type="java.lang.String" value="01/01/2000"/>
+            <Property name="formatterFactory" type="javax.swing.JFormattedTextField$AbstractFormatterFactory" editor="org.netbeans.modules.form.editors.AbstractFormatterFactoryEditor">
+              <Format subtype="1" type="1"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="23/8/26"/>
             <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
               <Dimension value="[110, 26]"/>
             </Property>
@@ -694,7 +691,10 @@
         </Component>
         <Component class="javax.swing.JFormattedTextField" name="jFormattedTextFieldCrearProgramaFechaFin">
           <Properties>
-            <Property name="text" type="java.lang.String" value="01/01/2000"/>
+            <Property name="formatterFactory" type="javax.swing.JFormattedTextField$AbstractFormatterFactory" editor="org.netbeans.modules.form.editors.AbstractFormatterFactoryEditor">
+              <Format subtype="1" type="1"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="28/8/26"/>
             <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
               <Dimension value="[110, 26]"/>
             </Property>

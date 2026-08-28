@@ -1,5 +1,6 @@
 package com.grupo9.edext.grupo9.servidor_central.controller;
 
+import com.grupo9.edext.grupo9.dtos.DTOProgramaDeFormacion;
 import com.grupo9.edext.grupo9.interfaces.IServidorCentral;
 
 import com.grupo9.edext.grupo9.servidor_central.controller.programa_de_formacion.IProgramaDeFormacion;
@@ -40,8 +41,8 @@ public class ServidorCentralController implements IServidorCentral {
     }
     
     @Override
-    public void guardarProgramaDeFormacion(){
-        this.progDeFormacion.guardarNuevoProgramaDeFormacion();
+    public void guardarProgramaDeFormacion(DTOProgramaDeFormacion nuevoPrograma){
+        this.progDeFormacion.guardarNuevoProgramaDeFormacion(nuevoPrograma);
     }
     
     @Override
