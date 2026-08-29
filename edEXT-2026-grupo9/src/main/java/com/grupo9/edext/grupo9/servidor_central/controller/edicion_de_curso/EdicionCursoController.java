@@ -52,7 +52,7 @@ public class EdicionCursoController implements IEdicionCurso {
             for(InscEdicion inscriptos : ed.getInscripciones()){
                 Estudiante estudiante = inscriptos.getEstudiante();
                 DataEstudiante datosEst = new DataEstudiante(estudiante.getNickname(),estudiante.getNombre(),estudiante.getApellido(),estudiante.getEmail(), estudiante.getFechaNac(), null);
-                DataInscEdicion datosInsc = new DataInscEdicion(inscriptos.getFechaInscE(), datosEst, inscriptos.getEdicion());
+                DataInscEdicion datosInsc = new DataInscEdicion(inscriptos.getFechaInscE(), datosEst, inscriptos.getEdicion().getNombreEdi());
                 datosInscriptos.add(datosInsc);
             }
             //para que funcione DataDocente
@@ -79,11 +79,11 @@ public class EdicionCursoController implements IEdicionCurso {
         }
         if(ed != null){
             for(InscEdicion insc : est.getInscripciones()){//checkeo si ya está inscripto.
-                if(insc.getEdicion().equals(ed.getNombreEdi())){
+                if(insc.getEdicion().equals(ed)){
                     throw new ErrorRepetidos("El estudiante " + nickEstudiante + " ya está inscripto.");
                 }
             }
-            InscEdicion inscripcion = new InscEdicion(fInsc, est, ed.getNombreEdi());
+            InscEdicion inscripcion = new InscEdicion(fInsc, est, ed);
             est.getInscripciones().add(inscripcion);
             //por si consultar edición de curso te muestra las inscripciones. 
             ed.getInscripciones().add(inscripcion);   

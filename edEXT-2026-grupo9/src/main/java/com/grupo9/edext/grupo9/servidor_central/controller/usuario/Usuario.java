@@ -1,22 +1,8 @@
 package com.grupo9.edext.grupo9.servidor_central.controller.usuario;
 
-
-import com.grupo9.edext.grupo9.servidor_central.dominio.DataUsuario;
-import com.grupo9.edext.grupo9.servidor_central.dominio.DataDocente;
-import java.time.LocalDate;
-import java.util.Set;
-
-/**
- *
- * @author Usuario
- */
-
-    
-
 import java.io.Serializable;
 import java.time.LocalDate;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 @Entity
 public class Usuario implements Serializable{
@@ -24,7 +10,6 @@ public class Usuario implements Serializable{
     private String nickname;
     private String nombre;
     private String apellido;
-    @Id
     private String email;
     private LocalDate fechaNac;
     private String imagen;
