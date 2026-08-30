@@ -95,28 +95,24 @@ public class MainJFrame extends javax.swing.JFrame {
 
         jLabelAltaUsuario.setText("Crear Usuario");
 
-        jTextFieldNickname.setText("Nickname");
         jTextFieldNickname.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextFieldNicknameActionPerformed(evt);
             }
         });
 
-        jTextFieldNombre.setText("Nombre");
         jTextFieldNombre.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextFieldNombreActionPerformed(evt);
             }
         });
 
-        jTextFieldApellido.setText("Apellido");
         jTextFieldApellido.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextFieldApellidoActionPerformed(evt);
             }
         });
 
-        jTextFieldEmail.setText("Correo Electrónico");
         jTextFieldEmail.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextFieldEmailActionPerformed(evt);
@@ -132,6 +128,11 @@ public class MainJFrame extends javax.swing.JFrame {
         jRadioButtonDocente.setText("Docente");
 
         jComboBoxInstituto.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Instituto" }));
+        jComboBoxInstituto.addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentHidden(java.awt.event.ComponentEvent evt) {
+                jComboBoxInstitutoComponentHidden(evt);
+            }
+        });
 
         jButtonAceptar.setText("Aceptar");
 
@@ -176,12 +177,12 @@ public class MainJFrame extends javax.swing.JFrame {
                                     .addComponent(jLabelApellido, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(jLabelNombre, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                 .addGap(27, 27, 27)
-                                .addGroup(JPanelAltaUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jTextFieldNickname, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jTextFieldEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jTextFieldApellido, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jTextFieldNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jButtonCancelar)))
+                                .addGroup(JPanelAltaUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jTextFieldNickname, javax.swing.GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE)
+                                    .addComponent(jTextFieldApellido, javax.swing.GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE)
+                                    .addComponent(jTextFieldNombre, javax.swing.GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE)
+                                    .addComponent(jButtonCancelar)
+                                    .addComponent(jTextFieldEmail)))
                             .addComponent(jRadioButtonDocente, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jComboBoxInstituto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGroup(JPanelAltaUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -691,6 +692,10 @@ public class MainJFrame extends javax.swing.JFrame {
     private void jTextFieldNicknameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldNicknameActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextFieldNicknameActionPerformed
+
+    private void jComboBoxInstitutoComponentHidden(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_jComboBoxInstitutoComponentHidden
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jComboBoxInstitutoComponentHidden
 
     // Configurar el JSpinner para que maneje fechas (muestra Día, Mes y Año)
     private void hideAllJPanels() {

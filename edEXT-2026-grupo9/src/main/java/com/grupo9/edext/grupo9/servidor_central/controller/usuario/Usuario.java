@@ -10,13 +10,9 @@ import java.util.Set;
  *
  * @author Usuario
  */
-
-    
-
+import jakarta.persistence.*;
 import java.io.Serializable;
-import java.time.LocalDate;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+
 
 @Entity
 public class Usuario implements Serializable{
@@ -24,7 +20,6 @@ public class Usuario implements Serializable{
     private String nickname;
     private String nombre;
     private String apellido;
-    @Id
     private String email;
     private LocalDate fechaNac;
     private String imagen;
