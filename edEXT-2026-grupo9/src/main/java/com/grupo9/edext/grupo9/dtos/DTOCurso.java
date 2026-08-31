@@ -1,16 +1,9 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.grupo9.edext.grupo9.dtos;
 
-import jakarta.persistence.Id;
+import java.time.LocalDate;
 import java.util.Date;
 
-/**
- *
- * @author Walter
- */
+
 public class DTOCurso {
     private String nombre;
     private String nombreInst;
@@ -18,10 +11,10 @@ public class DTOCurso {
     private int duracion;
     private int cantHoras;
     private int cantCred;
-    private Date fechaReg;
+    private LocalDate fechaReg;
     private String url;
     
-    public DTOCurso(String nombreInst, String nombre, String descripcion, int duracion, int cantHoras, int cantCred, Date fechaReg, String url) {
+    public DTOCurso(String nombreInst, String nombre, String descripcion, int duracion, int cantHoras, int cantCred, LocalDate fechaReg, String url) {
         this.nombreInst = nombreInst;
         this.nombre = nombre;
         this.descripcion = descripcion;
@@ -32,7 +25,48 @@ public class DTOCurso {
         this.url = url;
     }
     
+    // Crea un curso sin fecha de creación.
+    // Se usa al momento de crear un curso nuevo, mientras es creado no tiene fecha de creación.
+    public DTOCurso(String nombreInst, String nombre, String descripcion, int duracion, int cantHoras, int cantCred, String url) {
+        this.nombreInst = nombreInst;
+        this.nombre = nombre;
+        this.descripcion = descripcion;
+        this.duracion = duracion;
+        this.cantHoras = cantHoras;
+        this.cantCred = cantCred;
+        this.fechaReg = null;
+        this.url = url;
+    }
+    
     public String getNombre(){
         return this.nombre;
+    }
+    
+    public String getNombreInstituto(){
+        return this.nombreInst;
+    }
+    
+    public String getDescripcion(){
+        return this.descripcion;
+    }
+
+    public int getDuracion(){
+        return this.duracion;
+    }
+
+    public int getCantHoras(){
+        return this.cantHoras;
+    }
+
+    public int getCantCred(){
+        return this.cantCred;
+    }
+
+    public LocalDate getFechaReg(){
+        return this.fechaReg;
+    }
+
+    public String getUrl(){
+        return this.url;
     }
 }
