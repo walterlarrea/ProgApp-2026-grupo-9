@@ -12,11 +12,14 @@ import jakarta.persistence.OneToMany;
 public class Estudiante extends Usuario implements Serializable{
     @OneToMany(mappedBy = "estudiante")
     private Set<InscEdicion> inscripciones;
-    
-    public Estudiante(String nickname, String nombreUs, String apellidoUs, String email, LocalDate fechaNac, Set<InscEdicion> inscripciones) {
-        super(nickname, nombreUs, apellidoUs, email, fechaNac);
+
+    public Estudiante() {
+        super();
     }
-    
+    public Estudiante(String nickname, String nombre, String apellido, String email, LocalDate fechaNac, String rutaImagen) {
+        super(nickname, nombre, apellido, email, fechaNac, rutaImagen);
+    }
+
     public Set<InscEdicion> getInscripciones(){
         return inscripciones;
     }

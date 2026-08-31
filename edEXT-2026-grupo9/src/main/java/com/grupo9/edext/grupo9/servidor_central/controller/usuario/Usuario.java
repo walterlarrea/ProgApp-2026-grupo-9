@@ -15,6 +15,7 @@ import java.io.Serializable;
 
 
 @Entity
+@Inheritance(strategy = InheritanceType.JOINED)
 public class Usuario implements Serializable{
     @Id
     private String nickname;
@@ -24,12 +25,17 @@ public class Usuario implements Serializable{
     private LocalDate fechaNac;
     private String imagen;
 
-    public Usuario(String nickname, String nombre, String apellido, String email, LocalDate fechaNac) {
+    public Usuario(String nickname, String nombre, String apellido, String email, LocalDate fechaNac, String rutaImagen) {
         this.nickname = nickname;
         this.nombre = nombre;
         this.apellido = apellido;
         this.email = email;
         this.fechaNac = fechaNac;
+        this.imagen = rutaImagen;
+    }
+
+    public Usuario() {
+
     }
 
     public String getNickname() {
