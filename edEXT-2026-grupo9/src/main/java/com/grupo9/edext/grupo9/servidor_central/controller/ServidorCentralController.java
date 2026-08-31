@@ -1,7 +1,5 @@
 package com.grupo9.edext.grupo9.servidor_central.controller;
 
-import com.grupo9.edext.grupo9.dtos.DTOCurso;
-import com.grupo9.edext.grupo9.dtos.DTOProgramaDeFormacion;
 import com.grupo9.edext.grupo9.interfaces.IServidorCentral;
 
 import com.grupo9.edext.grupo9.servidor_central.controller.programa_de_formacion.IProgramaDeFormacion;
@@ -10,6 +8,8 @@ import com.grupo9.edext.grupo9.servidor_central.controller.edicion_de_curso.IEdi
 import com.grupo9.edext.grupo9.servidor_central.controller.edicion_de_curso.EdicionCursoController;
 import com.grupo9.edext.grupo9.servidor_central.controller.curso.ICurso;
 import com.grupo9.edext.grupo9.servidor_central.controller.curso.CursoController;
+import com.grupo9.edext.grupo9.servidor_central.dominio.DataCurso;
+import com.grupo9.edext.grupo9.servidor_central.dominio.DataProgramaFormacion;
 import java.util.HashSet;
 /**
  *
@@ -47,12 +47,12 @@ public class ServidorCentralController implements IServidorCentral {
     
     // Programas de Formación
     @Override
-    public DTOProgramaDeFormacion guardarProgramaDeFormacion(DTOProgramaDeFormacion nuevoPrograma){
+    public DataProgramaFormacion guardarProgramaDeFormacion(DataProgramaFormacion nuevoPrograma){
         return this.progDeFormacionCtrl.guardarNuevoProgramaDeFormacion(nuevoPrograma);
     }
     
     @Override
-    public HashSet<DTOProgramaDeFormacion> consultarTodosLosProgramas(){
+    public HashSet<DataProgramaFormacion> consultarTodosLosProgramas(){
         return this.progDeFormacionCtrl.todosLosProgramas();
     }
     
@@ -64,12 +64,12 @@ public class ServidorCentralController implements IServidorCentral {
     
     // Cursos
     @Override
-    public DTOCurso guardarCurso(DTOCurso nuevoCurso){
+    public DataCurso guardarCurso(DataCurso nuevoCurso){
         return this.cursoCtrl.guardarNuevoCurso(nuevoCurso);
     }
     
     @Override
-    public HashSet<DTOCurso> consultarTodosLosCursos(){
+    public HashSet<DataCurso> consultarTodosLosCursos(){
         return this.cursoCtrl.todosLosCursos();
     }
 }

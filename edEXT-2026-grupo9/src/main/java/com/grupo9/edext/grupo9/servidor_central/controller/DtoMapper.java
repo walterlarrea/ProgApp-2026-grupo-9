@@ -3,32 +3,33 @@ package com.grupo9.edext.grupo9.servidor_central.controller;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.grupo9.edext.grupo9.dtos.DTOCurso;
-import com.grupo9.edext.grupo9.dtos.DTOProgramaDeFormacion;
 import com.grupo9.edext.grupo9.servidor_central.controller.curso.Curso;
 import com.grupo9.edext.grupo9.servidor_central.controller.programa_de_formacion.ProgramaDeFormacion;
+import com.grupo9.edext.grupo9.servidor_central.dominio.DataCurso;
+import com.grupo9.edext.grupo9.servidor_central.dominio.DataProgramaFormacion;
 
 
 public class DtoMapper {
 
     //Cursos
-    public static Curso DTOCursoToCurso(DTOCurso dtoCurso){
+    
+    public static Curso toEntity(DataCurso dataCurso){
         Curso curso = new Curso(
-                dtoCurso.getNombreInstituto(),
-                dtoCurso.getNombre(),
-                dtoCurso.getDescripcion(),
-                dtoCurso.getDuracion(),
-                dtoCurso.getCantHoras(),
-                dtoCurso.getCantCred(),
-                dtoCurso.getFechaReg(),
-                dtoCurso.getUrl()
+                dataCurso.nombreInst(),
+                dataCurso.nombreCurso(),
+                dataCurso.descCurso(),
+                dataCurso.duracion(),
+                dataCurso.cantHoras(),
+                dataCurso.cantCred(),
+                dataCurso.fechaReg(),
+                dataCurso.url()
         );
         
         return curso;
     }
 
-    public static DTOCurso CursoToDTOCurso(Curso curso){
-        DTOCurso dtoCurso = new DTOCurso(
+    public static DataCurso toData(Curso curso){
+        DataCurso dataCurso = new DataCurso(
                 curso.getNombreInst(),
                 curso.getNombreCurso(),
                 curso.getDescCurso(),
@@ -39,42 +40,42 @@ public class DtoMapper {
                 curso.getUrl()
         );
         
-        return dtoCurso;
+        return dataCurso;
     }
     
     // Programas de Formación
 
-    public static ProgramaDeFormacion DTOProgramadeFormToProgramadeForm(DTOProgramaDeFormacion dtoProgramaDeForm){
+    public static ProgramaDeFormacion toData(DataProgramaFormacion dataPrograma){
         Set<Curso> cursos = new HashSet<>();
-        for (DTOCurso dtoCurso : dtoProgramaDeForm.getCursos()) {
-            cursos.add(DTOCursoToCurso(dtoCurso));
+        for (DataCurso dataCurso : dataPrograma.cursos()) {
+            cursos.add(toEntity(dataCurso));
         }
 
         ProgramaDeFormacion programa = new ProgramaDeFormacion(
-                dtoProgramaDeForm.getNombre(),
-                dtoProgramaDeForm.getDescripcion(),
+                dataPrograma.nombre(),
+                dataPrograma.descripcion(),
                 cursos,
-                dtoProgramaDeForm.getFechaInicio(),
-                dtoProgramaDeForm.getFechaFin()
+                dataPrograma.fechaInicio(),
+                dataPrograma.fechaFin()
         );
         
         return programa;
     }
 
-    public static DTOProgramaDeFormacion ProgramadeFormToDTOProgramadeForm(ProgramaDeFormacion programaDeForm){
-        Set<DTOCurso> cursos = new HashSet<>();
-        for (Curso curso : programaDeForm.getCursos()) {
-            cursos.add(CursoToDTOCurso(curso));
+    public static DataProgramaFormacion ProgramadeFormToDTOProgramadeForm(ProgramaDeFormacion programa){
+        Set<DataCurso> cursos = new HashSet<>();
+        for (Curso curso : programa.getCursos()) {
+            cursos.add(toData(curso));
         }
 
-        DTOProgramaDeFormacion dtoPrograma = new DTOProgramaDeFormacion(
-                programaDeForm.getNombre(),
-                programaDeForm.getDescripcion(),
+        DataProgramaFormacion dataPrograma = new DataProgramaFormacion(
+                programa.getNombre(),
+                programa.getDescripcion(),
                 cursos,
-                programaDeForm.getFechaInicio(),
-                programaDeForm.getFechaFin()
+                programa.getFechaInicio(),
+                programa.getFechaFin()
         );
         
-        return dtoPrograma;
+        return dataPrograma;
     }
 }

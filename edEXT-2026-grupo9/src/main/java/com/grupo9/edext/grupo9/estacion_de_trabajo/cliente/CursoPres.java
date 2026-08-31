@@ -1,8 +1,8 @@
 package com.grupo9.edext.grupo9.estacion_de_trabajo.cliente;
 
-import com.grupo9.edext.grupo9.dtos.DTOCurso;
 import com.grupo9.edext.grupo9.interfaces.IServidorCentral;
 import com.grupo9.edext.grupo9.servidor_central.controller.ServidorCentralController;
+import com.grupo9.edext.grupo9.servidor_central.dominio.DataCurso;
 import java.util.HashSet;
 
 
@@ -16,9 +16,9 @@ public class CursoPres {
     
     public void guardarNuevoCurso(String instituto, String nombre, String descripcion, int duracion, int cantHoras, int cantCreditos, String url){
         System.out.println("[CLIENTE] Crear nuevo Curso: " + nombre);
-        DTOCurso nuevoPrograma = new DTOCurso(instituto, nombre, descripcion, duracion, cantHoras, cantCreditos, url);
+        DataCurso nuevoCurso = new DataCurso(instituto, nombre, descripcion, duracion, cantHoras, cantCreditos, null, url);
         
-        DTOCurso cursoCreado = servidorCentral.guardarCurso(nuevoPrograma);
+        DataCurso cursoCreado = servidorCentral.guardarCurso(nuevoCurso);
         if(cursoCreado != null){
             System.out.println("[CLIENTE] Curso creado con exito!");
         } else {
@@ -26,9 +26,9 @@ public class CursoPres {
         }
     }
     
-    public HashSet<DTOCurso> cargarCursos(){
+    public HashSet<DataCurso> cargarCursos(){
         System.out.println("[CLIENTE] Consultar todos los Cursos");
-        HashSet<DTOCurso> cursos = servidorCentral.consultarTodosLosCursos();
+        HashSet<DataCurso> cursos = servidorCentral.consultarTodosLosCursos();
         
         return cursos;
     }

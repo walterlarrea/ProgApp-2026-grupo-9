@@ -1,7 +1,7 @@
 package com.grupo9.edext.grupo9.servidor_central.controller.programa_de_formacion;
 
-import com.grupo9.edext.grupo9.dtos.DTOProgramaDeFormacion;
 import com.grupo9.edext.grupo9.servidor_central.controller.curso.Curso;
+import com.grupo9.edext.grupo9.servidor_central.dominio.DataProgramaFormacion;
 import java.util.HashSet;
 
 public class ProgramaDeFormacionController implements IProgramaDeFormacion {
@@ -12,10 +12,10 @@ public class ProgramaDeFormacionController implements IProgramaDeFormacion {
     }
     
     @Override
-    public DTOProgramaDeFormacion guardarNuevoProgramaDeFormacion(DTOProgramaDeFormacion programa){
-        System.out.println("[SERVIDOR] Persistencia de un nuevo programa de formación: " + programa.getNombre());
+    public DataProgramaFormacion guardarNuevoProgramaDeFormacion(DataProgramaFormacion programa){
+        System.out.println("[SERVIDOR] Persistencia de un nuevo programa de formación: " + programa.nombre());
         
-        ProgramaDeFormacion nuevoProgramaDeFormacion = new ProgramaDeFormacion(programa.getNombre(), programa.getDescripcion(), new HashSet<Curso>(), programa.getFechaInicio(), programa.getFechaFin());
+        ProgramaDeFormacion nuevoProgramaDeFormacion = new ProgramaDeFormacion(programa.nombre(), programa.descripcion(), new HashSet<Curso>(), programa.fechaInicio(), programa.fechaFin());
 
         try{
 //            UtensiliosJPA.save(nuevoProgramaDeFormacion);
@@ -31,10 +31,10 @@ public class ProgramaDeFormacionController implements IProgramaDeFormacion {
     }
     
     @Override
-    public HashSet<DTOProgramaDeFormacion> todosLosProgramas(){
+    public HashSet<DataProgramaFormacion> todosLosProgramas(){
         System.out.println("[SERVIDOR] Consulta todos los Programas a persistencia");
         try {
-            HashSet<DTOProgramaDeFormacion> todosLosProgramas = this.manejadorProgDeFormacion.traerTodos();
+            HashSet<DataProgramaFormacion> todosLosProgramas = this.manejadorProgDeFormacion.traerTodos();
             
             return todosLosProgramas;
         } catch (Exception e) {

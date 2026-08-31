@@ -7,8 +7,8 @@ import jakarta.persistence.Entity;
 //import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import java.time.LocalDate;
 import java.util.Set;
-import java.util.Date;
 
 @Entity
 public class ProgramaDeFormacion implements Serializable{
@@ -17,12 +17,12 @@ public class ProgramaDeFormacion implements Serializable{
     private String descripcion;
     @OneToMany
     private Set<Curso> cursos;
-    private Date fechaInicio;
-    private Date fechaFin;
+    private LocalDate fechaInicio;
+    private LocalDate fechaFin;
     
     public ProgramaDeFormacion(){}
     
-    public ProgramaDeFormacion (String nombre, String descripcion, Set<Curso> cursos, Date fechaInicio, Date fechaFin){
+    public ProgramaDeFormacion (String nombre, String descripcion, Set<Curso> cursos, LocalDate fechaInicio, LocalDate fechaFin){
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.cursos = cursos;
@@ -54,19 +54,19 @@ public class ProgramaDeFormacion implements Serializable{
         this.cursos = cursos;
     }
     
-    public Date getFechaInicio() {
+    public LocalDate getFechaInicio() {
         return fechaInicio;
     }
     
-    public void setFechaInicio(Date fechaInicio) {
+    public void setFechaInicio(LocalDate fechaInicio) {
         this.fechaInicio = fechaInicio;
     }
     
-    public Date getFechaFin() {
+    public LocalDate getFechaFin() {
         return fechaFin;
     }
     
-    public void setFechaFin(Date fechaFin) {
+    public void setFechaFin(LocalDate fechaFin) {
         this.fechaFin = fechaFin;
     }
 }

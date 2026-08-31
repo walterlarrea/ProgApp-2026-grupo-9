@@ -1,20 +1,20 @@
 package com.grupo9.edext.grupo9.interfaces;
 
-import com.grupo9.edext.grupo9.dtos.DTOCurso;
-import com.grupo9.edext.grupo9.dtos.DTOProgramaDeFormacion;
+import com.grupo9.edext.grupo9.servidor_central.dominio.DataCurso;
+import com.grupo9.edext.grupo9.servidor_central.dominio.DataProgramaFormacion;
 import java.util.HashSet;
 
 public interface IServidorCentral {
     public void logStatus();
     
     // Programas de formación
-    public DTOProgramaDeFormacion guardarProgramaDeFormacion(DTOProgramaDeFormacion nuevoPrograma);
-    public HashSet<DTOProgramaDeFormacion> consultarTodosLosProgramas();
+    public DataProgramaFormacion guardarProgramaDeFormacion(DataProgramaFormacion nuevoPrograma);
+    public HashSet<DataProgramaFormacion> consultarTodosLosProgramas();
     
     // Ediciones de cursos
     public void guardarEdicionCurso();
     
     //Cursos
-    public DTOCurso guardarCurso(DTOCurso nuevoCurso);
-    public HashSet<DTOCurso> consultarTodosLosCursos();
+    public DataCurso guardarCurso(DataCurso nuevoCurso);
+    public HashSet<DataCurso> consultarTodosLosCursos();
 }
