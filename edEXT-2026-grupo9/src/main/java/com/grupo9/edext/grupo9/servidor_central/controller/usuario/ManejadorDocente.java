@@ -39,7 +39,7 @@ public class ManejadorDocente {
     }
 
     public Docente obtenerDocente(String nickEst){
-        return ((Docente) Docente.get(nickEst));
+        return Docente.get(nickEst);
     }
 
     public Docente[] getDocente(){
