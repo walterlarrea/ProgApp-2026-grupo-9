@@ -2,44 +2,48 @@ package com.grupo9.edext.grupo9.servidor_central.controller.programa_de_formacio
 
 import com.grupo9.edext.grupo9.servidor_central.controller.curso.Curso;
 import java.io.Serializable;
-import java.time.LocalDate;
 import jakarta.persistence.Entity;
 //import jakarta.persistence.GeneratedValue;
 //import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import java.time.LocalDate;
 import java.util.Set;
 
 @Entity
 public class ProgramaDeFormacion implements Serializable{
     @Id
-    private String nombreForm;
-    private String descForm;
+    private String nombre;
+    private String descripcion;
+    @OneToMany
     private Set<Curso> cursos;
     private LocalDate fechaInicio;
     private LocalDate fechaFin;
     
-    public ProgramaDeFormacion (String nombreForm, String descForm, Set<Curso> cursos, LocalDate fechaInicio, LocalDate fechaFin){
-        this.nombreForm = nombreForm;
-        this.descForm = descForm;
+    public ProgramaDeFormacion(){}
+    
+    public ProgramaDeFormacion (String nombre, String descripcion, Set<Curso> cursos, LocalDate fechaInicio, LocalDate fechaFin){
+        this.nombre = nombre;
+        this.descripcion = descripcion;
         this.cursos = cursos;
         this.fechaInicio = fechaInicio;
         this.fechaFin = fechaFin;
     }
     
-    public String getNombreFrom() {
-        return nombreForm;
+    public String getNombre() {
+        return nombre;
     }
     
-    public void setNombreFrom(String nombreForm) {
-        this.nombreForm = nombreForm;
+    public void setNombre(String nombreForm) {
+        this.nombre = nombreForm;
     }
     
-    public String getDescFrom() {
-        return descForm;
+    public String getDescripcion() {
+        return descripcion;
     }
     
-    public void setDescFrom(String descForm) {
-        this.descForm = descForm;
+    public void setDescripcion(String descForm) {
+        this.descripcion = descForm;
     }
     
     public Set<Curso> getCursos() {

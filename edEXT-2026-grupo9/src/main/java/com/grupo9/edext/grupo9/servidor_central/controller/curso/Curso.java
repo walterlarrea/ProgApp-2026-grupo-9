@@ -19,6 +19,8 @@ public class Curso implements Serializable{
     private String url;
     @OneToMany(mappedBy = "cursoAsoc")
     private Set<EdicionCurso> ediciones;
+    
+    public Curso(){}
 
     public Curso(String nombreInst, String nombreCurso, String descCurso, int duracion, int cantHoras, int cantCred, LocalDate fechaReg, String url) {
         this.nombreInst = nombreInst;
