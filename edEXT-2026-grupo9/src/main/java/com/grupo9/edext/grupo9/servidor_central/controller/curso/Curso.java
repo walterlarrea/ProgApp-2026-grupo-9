@@ -1,15 +1,10 @@
 package com.grupo9.edext.grupo9.servidor_central.controller.curso;
 
-//import com.grupo9.edext.grupo9.servidor_central.controller.edicion_de_curso.EdicionCurso;
 import com.grupo9.edext.grupo9.servidor_central.controller.edicion_de_curso.EdicionCurso;
 import java.io.Serializable;
 import java.time.LocalDate;
-//import jakarta.persistence.GeneratedValue;
-//import jakarta.persistence.GenerationType;
-import jakarta.persistence.Entity;       
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
 import java.util.Set;
+import jakarta.persistence.*;       
 
 @Entity
 public class Curso implements Serializable{
