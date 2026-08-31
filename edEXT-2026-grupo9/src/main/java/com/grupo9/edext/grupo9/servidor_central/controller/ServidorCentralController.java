@@ -8,9 +8,14 @@ import com.grupo9.edext.grupo9.servidor_central.controller.programa_de_formacion
 import com.grupo9.edext.grupo9.servidor_central.controller.edicion_de_curso.IEdicionCurso;
 import com.grupo9.edext.grupo9.servidor_central.controller.edicion_de_curso.EdicionCursoController;
 
+import com.grupo9.edext.grupo9.servidor_central.controller.instituto.IInstituto;
+import com.grupo9.edext.grupo9.servidor_central.controller.instituto.InstitutoController;
+import com.grupo9.edext.grupo9.mensajes.ErrorRepetidos;
+
 public class ServidorCentralController implements IServidorCentral {
     private final IProgramaDeFormacion progDeFormacion = new ProgramaDeFormacionController();
     private final IEdicionCurso edicionCurso = new EdicionCursoController();
+    private final IInstituto instituto = new InstitutoController();
     
     
     // Step 1: Private constructor prevents instantiation from other classes
@@ -45,5 +50,10 @@ public class ServidorCentralController implements IServidorCentral {
     @Override
     public void guardarEdicionCurso(){
         this.edicionCurso.guardarNuevaEdicionCurso();
-    }
+    }    
+    
+    @Override
+    public void altaInstituto(String nombre) throws ErrorRepetidos {
+    this.instituto.altaInstituto(nombre);
+}
 }

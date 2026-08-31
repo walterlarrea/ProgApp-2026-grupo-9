@@ -2,6 +2,8 @@
 
 <Form version="1.5" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
   <NonVisualComponents>
+    <Component class="javax.swing.JSpinner" name="jSpinner1">
+    </Component>
     <Menu class="javax.swing.JMenuBar" name="jMenuBar1">
       <Properties>
         <Property name="toolTipText" type="java.lang.String" value=""/>
@@ -106,6 +108,21 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="Inscribirse"/>
               </Properties>
+            </MenuItem>
+          </SubComponents>
+        </Menu>
+        <Menu class="javax.swing.JMenu" name="jMenuInstituto">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Instituto"/>
+          </Properties>
+          <SubComponents>
+            <MenuItem class="javax.swing.JMenuItem" name="jMenuItemCrearInstituto">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Crear Instituto"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItemCrearInstitutoActionPerformed"/>
+              </Events>
             </MenuItem>
           </SubComponents>
         </Menu>
@@ -606,25 +623,15 @@
                               <Component id="jTextCrearProgramaNombre" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
-                      <Group type="102" attributes="0">
-                          <Group type="103" groupAlignment="1" attributes="0">
-                              <Group type="103" alignment="1" groupAlignment="3" attributes="0">
-                                  <Component id="jFormattedTextFieldCrearProgramaFechaFin" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="jFormattedTextFieldCrearProgramaFechaInicio" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="jTextCrearProgramaNombre" alignment="3" min="-2" max="-2" attributes="0"/>
-                              </Group>
-                              <Group type="102" attributes="0">
-                                  <Group type="103" groupAlignment="1" attributes="0">
-                                      <Component id="jLabelCearProgramaNombre" min="-2" max="-2" attributes="0"/>
-                                      <Component id="jLabelCrearProgramaFechaFin" alignment="1" min="-2" max="-2" attributes="0"/>
-                                      <Component id="jLabelCrearProgramaFechaInicio" alignment="1" min="-2" max="-2" attributes="0"/>
-                                  </Group>
-                                  <EmptySpace min="32" pref="32" max="-2" attributes="0"/>
-                              </Group>
+                      <Group type="103" groupAlignment="1" attributes="0">
+                          <Component id="jFormattedTextFieldCrearProgramaFechaInicio" alignment="1" min="-2" max="-2" attributes="0"/>
+                          <Group type="102" attributes="0">
+                              <Component id="jLabelCrearProgramaFechaInicio" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="32" pref="32" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       </Group>
                   </Group>
+                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Component id="jLabelCrearProgramaDesc" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="jTextAreaCrearProgramaDesc" min="-2" max="-2" attributes="0"/>

@@ -1,11 +1,13 @@
 package com.grupo9.edext.grupo9.estacion_de_trabajo.gui;
+import com.grupo9.edext.grupo9.estacion_de_trabajo.cliente.InstitutoPres;
 import javax.swing.JPanel;
 import java.util.ArrayList;
 import com.grupo9.edext.grupo9.estacion_de_trabajo.cliente.ProgramaDeFormacionPres;
 import java.util.Date;
 
 public class MainJFrame extends javax.swing.JFrame {
-
+    
+    private final InstitutoPres institutoPres = new InstitutoPres();
     private final ProgramaDeFormacionPres programaDeFormacion = new ProgramaDeFormacionPres();
     private java.io.File archivoImagenSeleccionado = null;
     private final ArrayList<JPanel> allJPanels = new ArrayList<JPanel>();
@@ -30,6 +32,7 @@ public class MainJFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jSpinner1 = new javax.swing.JSpinner();
         JPanelAltaUsuario = new javax.swing.JPanel();
         jLabelAltaUsuario = new javax.swing.JLabel();
         jTextFieldNickname = new javax.swing.JTextField();
@@ -86,6 +89,8 @@ public class MainJFrame extends javax.swing.JFrame {
         jMenuItemCrearEdicionCurso = new javax.swing.JMenuItem();
         jMenuItemConsultarEdicionCurso = new javax.swing.JMenuItem();
         jMenuItemInscripcionEdicionCurso = new javax.swing.JMenuItem();
+        jMenuInstituto = new javax.swing.JMenu();
+        jMenuItemCrearInstituto = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -517,6 +522,18 @@ public class MainJFrame extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenuEdicionDeCurso);
 
+        jMenuInstituto.setText("Instituto");
+
+        jMenuItemCrearInstituto.setText("Crear Instituto");
+        jMenuItemCrearInstituto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemCrearInstitutoActionPerformed(evt);
+            }
+        });
+        jMenuInstituto.add(jMenuItemCrearInstituto);
+
+        jMenuBar1.add(jMenuInstituto);
+
         setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -697,6 +714,32 @@ public class MainJFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextFieldNicknameActionPerformed
 
+    private void jMenuItemCrearInstitutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemCrearInstitutoActionPerformed
+        String nombre = javax.swing.JOptionPane.showInputDialog(this, "Nombre del instituto:", "Crear Instituto", javax.swing.JOptionPane.PLAIN_MESSAGE);
+
+    if (nombre == null) {
+        return; // el usuario canceló el diálogo
+    }
+    nombre = nombre.trim();
+    if (nombre.isEmpty()) {
+        javax.swing.JOptionPane.showMessageDialog(this, "El nombre no puede estar vacío.", "Error", javax.swing.JOptionPane.WARNING_MESSAGE);
+        return;
+    }
+
+    try {
+        institutoPres.altaInstituto(nombre);
+        javax.swing.JOptionPane.showMessageDialog(this, "Instituto \"" + nombre + "\" creado correctamente.");
+    } catch (com.grupo9.edext.grupo9.mensajes.ErrorRepetidos e) {
+        int opcion = javax.swing.JOptionPane.showConfirmDialog(this,
+            e.getMessage() + "\n¿Desea ingresar otro nombre?",
+            "Instituto repetido",
+            javax.swing.JOptionPane.YES_NO_OPTION);
+        if (opcion == javax.swing.JOptionPane.YES_OPTION) {
+            jMenuItemCrearInstitutoActionPerformed(evt); // vuelve a pedir el nombre
+        }
+    }
+    }//GEN-LAST:event_jMenuItemCrearInstitutoActionPerformed
+
     // Configurar el JSpinner para que maneje fechas (muestra Día, Mes y Año)
     private void hideAllJPanels() {
         for (JPanel panel : this.allJPanels) {
@@ -784,6 +827,7 @@ public class MainJFrame extends javax.swing.JFrame {
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenu jMenuCursos;
     private javax.swing.JMenu jMenuEdicionDeCurso;
+    private javax.swing.JMenu jMenuInstituto;
     private javax.swing.JMenuItem jMenuItemAgregarProgDeFormacion;
     private javax.swing.JMenuItem jMenuItemConsultarCurso;
     private javax.swing.JMenuItem jMenuItemConsultarEdicionCurso;
@@ -791,6 +835,7 @@ public class MainJFrame extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItemConsultarUsuario;
     private javax.swing.JMenuItem jMenuItemCrearCurso;
     private javax.swing.JMenuItem jMenuItemCrearEdicionCurso;
+    private javax.swing.JMenuItem jMenuItemCrearInstituto;
     private javax.swing.JMenuItem jMenuItemCrearProgDeFormacion;
     private javax.swing.JMenuItem jMenuItemCrearUsuario;
     private javax.swing.JMenuItem jMenuItemInscripcionEdicionCurso;
@@ -798,6 +843,7 @@ public class MainJFrame extends javax.swing.JFrame {
     private javax.swing.JMenu jMenuProgDeFormacion;
     private javax.swing.JMenu jMenuUsuarios;
     private javax.swing.JRadioButton jRadioButtonDocente;
+    private javax.swing.JSpinner jSpinner1;
     private javax.swing.JSpinner jSpinnerFechaNac;
     private javax.swing.JTable jTableCrearProgramaCursos;
     private javax.swing.JTextArea jTextAreaCrearProgramaDesc;
