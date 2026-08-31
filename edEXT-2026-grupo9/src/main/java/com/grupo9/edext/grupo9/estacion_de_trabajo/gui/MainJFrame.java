@@ -1153,6 +1153,11 @@ public class MainJFrame extends javax.swing.JFrame {
 
     private void jMenuItemGestionarInstitutosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemGestionarInstitutosActionPerformed
         showOnePanelAndHideTheRest(this.jPanelGestionarInstitutos);
+        
+        // Cargar la nueva lista y actualizar tabla
+        HashSet<DataInstituto> institutos = this.institutoPres.cargarInstitutos();
+        
+        this.actualizarTablaDeInstitutos(institutos);
     }//GEN-LAST:event_jMenuItemGestionarInstitutosActionPerformed
 
     private void actualizarTablaDeInstitutos(HashSet<DataInstituto> institutos){
@@ -1178,7 +1183,7 @@ public class MainJFrame extends javax.swing.JFrame {
         
         institutoPres.guardarNuevoInstituto(nombre);
         
-        // Cargar l anueva lista y actualizar tabla
+        // Cargar la nueva lista y actualizar tabla
         HashSet<DataInstituto> institutos = this.institutoPres.cargarInstitutos();
         
         this.actualizarTablaDeInstitutos(institutos);
