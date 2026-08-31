@@ -1,8 +1,8 @@
 package com.grupo9.edext.grupo9.servidor_central.controller.programa_de_formacion;
 
-import com.grupo9.edext.grupo9.dtos.DTOProgramaDeFormacion;
 import com.grupo9.edext.grupo9.miscelanea.UtensiliosJPA;
 import com.grupo9.edext.grupo9.servidor_central.controller.DtoMapper;
+import com.grupo9.edext.grupo9.servidor_central.dominio.DataProgramaFormacion;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.EntityTransaction;
@@ -45,7 +45,7 @@ public class ManejadorProgDeFormacion {
         }
     }
     
-    public HashSet<DTOProgramaDeFormacion> traerTodos(){
+    public HashSet<DataProgramaFormacion> traerTodos(){
         try {
             CriteriaBuilder cBuilder = em.getCriteriaBuilder();
             CriteriaQuery<ProgramaDeFormacion> cQuery = cBuilder.createQuery(ProgramaDeFormacion.class);
@@ -56,7 +56,7 @@ public class ManejadorProgDeFormacion {
 
             TypedQuery<ProgramaDeFormacion> queryTodo = em.createQuery(todo);
             
-            HashSet<DTOProgramaDeFormacion> programas = new HashSet();
+            HashSet<DataProgramaFormacion> programas = new HashSet();
             for(ProgramaDeFormacion programa: queryTodo.getResultList()){
                 programas.add(DtoMapper.ProgramadeFormToDTOProgramadeForm(programa));
             }

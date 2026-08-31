@@ -1,10 +1,9 @@
 
 package com.grupo9.edext.grupo9.servidor_central.controller.curso;
 
-import com.grupo9.edext.grupo9.dtos.DTOCurso;
 import com.grupo9.edext.grupo9.miscelanea.UtensiliosJPA;
-import static com.grupo9.edext.grupo9.miscelanea.UtensiliosJPA.getEntityManagerFactory;
 import com.grupo9.edext.grupo9.servidor_central.controller.DtoMapper;
+import com.grupo9.edext.grupo9.servidor_central.dominio.DataCurso;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.EntityTransaction;
@@ -47,7 +46,7 @@ public class ManejadorCurso {
         }
     }
     
-    public HashSet<DTOCurso> traerTodos(){
+    public HashSet<DataCurso> traerTodos(){
         try {
             CriteriaBuilder cBuilder = em.getCriteriaBuilder();
             CriteriaQuery<Curso> cQuery = cBuilder.createQuery(Curso.class);
@@ -58,9 +57,9 @@ public class ManejadorCurso {
 
             TypedQuery<Curso> queryTodo = em.createQuery(todo);
             
-            HashSet<DTOCurso> cursos = new HashSet();
+            HashSet<DataCurso> cursos = new HashSet();
             for(Curso curso: queryTodo.getResultList()){
-                cursos.add(DtoMapper.CursoToDTOCurso(curso));
+                cursos.add(DtoMapper.toData(curso));
             }
             return cursos;
         }catch(Exception e){

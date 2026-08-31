@@ -1,6 +1,6 @@
 package com.grupo9.edext.grupo9.servidor_central.controller.curso;
 
-import com.grupo9.edext.grupo9.dtos.DTOCurso;
+import com.grupo9.edext.grupo9.servidor_central.dominio.DataCurso;
 import java.time.LocalDate;
 import java.util.HashSet;
 
@@ -13,12 +13,12 @@ public class CursoController implements ICurso{
     }
     
     @Override
-    public DTOCurso guardarNuevoCurso(DTOCurso curso){
-        System.out.println("[SERVIDOR] Persistencia de un nuevo curso: " + curso.getNombre());
+    public DataCurso guardarNuevoCurso(DataCurso curso){
+        System.out.println("[SERVIDOR] Persistencia de un nuevo curso: " + curso.nombreCurso());
 //        Date fecha = Date.from(ZonedDateTime.now().toInstant());
         LocalDate fecha = LocalDate.now();
         
-        Curso nuevoCurso = new Curso(curso.getNombreInstituto(), curso.getNombre(), curso.getDescripcion(), curso.getDuracion(), curso.getCantHoras(), curso.getCantCred(), fecha, curso.getUrl());
+        Curso nuevoCurso = new Curso(curso.nombreInst(), curso.nombreCurso(), curso.descCurso(), curso.duracion(), curso.cantHoras(), curso.cantCred(), fecha, curso.url());
 
         try{
             this.manejadorCurso.guardarNuevo(nuevoCurso);
@@ -33,10 +33,10 @@ public class CursoController implements ICurso{
     }
     
     @Override
-    public HashSet<DTOCurso> todosLosCursos(){
+    public HashSet<DataCurso> todosLosCursos(){
         System.out.println("[SERVIDOR] Consulta todos los Cursos a persistencia");
         try {
-            HashSet<DTOCurso> todosLosCursos = this.manejadorCurso.traerTodos();
+            HashSet<DataCurso> todosLosCursos = this.manejadorCurso.traerTodos();
             
             return todosLosCursos;
         } catch (Exception e) {

@@ -1,12 +1,12 @@
 package com.grupo9.edext.grupo9.estacion_de_trabajo.gui;
-import com.grupo9.edext.grupo9.dtos.DTOCurso;
-import com.grupo9.edext.grupo9.dtos.DTOProgramaDeFormacion;
 import com.grupo9.edext.grupo9.estacion_de_trabajo.cliente.CursoPres;
 import javax.swing.JPanel;
 import java.util.ArrayList;
-import java.util.Date;
 
 import com.grupo9.edext.grupo9.estacion_de_trabajo.cliente.ProgramaDeFormacionPres;
+import com.grupo9.edext.grupo9.servidor_central.dominio.DataCurso;
+import com.grupo9.edext.grupo9.servidor_central.dominio.DataProgramaFormacion;
+import java.time.LocalDate;
 import java.util.HashSet;
 import javax.swing.table.DefaultTableModel;
 
@@ -851,10 +851,10 @@ public class MainJFrame extends javax.swing.JFrame {
     private void jButtonGuardarProgramaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonGuardarProgramaActionPerformed
         final String nombre = jTextCrearProgramaNombre.getText();
         final String descripcion = jTextAreaCrearProgramaDesc.getText();
-        final Date fechaInicio = (Date) jFormattedTextFieldCrearProgramaFechaInicio.getValue();
-        final Date fechaFin = (Date) jFormattedTextFieldCrearProgramaFechaFin.getValue();
+        final LocalDate fechaInicio = (LocalDate) jFormattedTextFieldCrearProgramaFechaInicio.getValue();
+        final LocalDate fechaFin = (LocalDate) jFormattedTextFieldCrearProgramaFechaFin.getValue();
         
-        System.out.println("[GUI] Paso datos al cliente: " + nombre);
+        System.out.println("[GUI] Crear nuevo Programa: " + nombre);
         programaDeFormacionPres.guardarNuevoProgramaDeFormacion(nombre, descripcion, fechaInicio, fechaFin);
     }//GEN-LAST:event_jButtonGuardarProgramaActionPerformed
 
@@ -940,7 +940,7 @@ public class MainJFrame extends javax.swing.JFrame {
 
     private void jButtonConsultarCursosRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonConsultarCursosRefreshActionPerformed
         System.out.println("[GUI] Consultar todos los Cursos");
-        HashSet<DTOCurso> cursos = this.cursoPres.cargarCursos();
+        HashSet<DataCurso> cursos = this.cursoPres.cargarCursos();
                 
         if(cursos == null){
             return;
@@ -949,15 +949,15 @@ public class MainJFrame extends javax.swing.JFrame {
         DefaultTableModel model = (DefaultTableModel) jTableConsultaCursos.getModel();
         model.setRowCount(0);
         
-        for(DTOCurso curso: cursos){
-            Object[] cursoObj = new Object[]{curso.getNombre(), curso.getNombreInstituto(), curso.getCantHoras(), curso.getCantCred(), curso.getFechaReg(), curso.getUrl(), curso.getDescripcion()};
+        for(DataCurso curso: cursos){
+            Object[] cursoObj = new Object[]{curso.nombreCurso(), curso.nombreInst(), curso.duracion(), curso.cantHoras(), curso.cantCred(), curso.fechaReg(), curso.url(), curso.descCurso()};
             model.addRow(cursoObj);
         }
     }//GEN-LAST:event_jButtonConsultarCursosRefreshActionPerformed
 
     private void jButtonConsultarProgramasRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonConsultarProgramasRefreshActionPerformed
         System.out.println("[GUI] Consultar todos los Programas");
-        HashSet<DTOProgramaDeFormacion> programas = this.programaDeFormacionPres.cargarProgramas();
+        HashSet<DataProgramaFormacion> programas = this.programaDeFormacionPres.cargarProgramas();
         
         if(programas == null){
             return;
@@ -966,8 +966,8 @@ public class MainJFrame extends javax.swing.JFrame {
         DefaultTableModel model = (DefaultTableModel) jTableConsultaProgramas.getModel();
         model.setRowCount(0);
         
-        for(DTOProgramaDeFormacion programa: programas){
-            Object[] programaObj = new Object[]{programa.getNombre(), programa.getFechaInicio(), programa.getFechaFin(), programa.getDescripcion()};
+        for(DataProgramaFormacion programa: programas){
+            Object[] programaObj = new Object[]{programa.nombre(), programa.fechaInicio(), programa.fechaFin(), programa.descripcion()};
             model.addRow(programaObj);
         }
     }//GEN-LAST:event_jButtonConsultarProgramasRefreshActionPerformed
