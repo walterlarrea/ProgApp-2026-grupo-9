@@ -6,14 +6,14 @@ import java.util.Map;
 import jakarta.persistence.*;
 import com.grupo9.edext.grupo9.miscelanea.UtensiliosJPA;
 
-import javax.print.Doc;
+
 
 public class ManejadorDocente {
     private Map<String, Docente> Docente;
     private static ManejadorDocente instance = null;
 
     private ManejadorDocente(){
-        Docente = new HashMap<String, Docente>();
+        Docente = new HashMap<>();
     }
 
     public static ManejadorDocente getInstance(){
