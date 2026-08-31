@@ -12,14 +12,26 @@ public class ProgramaDeFormacionPres {
     IServidorCentral servidorCentral = ServidorCentralController.getInstance();
   
     public ProgramaDeFormacionPres(){
-        servidorCentral.logStatus();
+//        servidorCentral.logStatus();
     }
 
     
     public void guardarNuevoProgramaDeFormacion(String nombre, String descripcion, Date fechaInicio, Date fechaFin){
         System.out.println("[CLIENTE] Llamada al servidor central: " + nombre);
-        DTOProgramaDeFormacion nuevoPrograma = new DTOProgramaDeFormacion(nombre, descripcion, new HashSet<DTOCurso>(), fechaInicio, fechaFin);
+        DTOProgramaDeFormacion nuevoPrograma = new DTOProgramaDeFormacion(nombre, descripcion, new HashSet<>(), fechaInicio, fechaFin);
         
-        servidorCentral.guardarProgramaDeFormacion(nuevoPrograma);
+        DTOProgramaDeFormacion programaCreado = servidorCentral.guardarProgramaDeFormacion(nuevoPrograma);
+        if(programaCreado != null){
+            System.out.println("[CLIENTE] Programa creado con exito!");
+        } else {
+            System.out.println("[CLIENTE] Algo salio mal creando el nuevo Programa");
+        }
+    }
+    
+    public HashSet<DTOProgramaDeFormacion> cargarProgramas(){
+        System.out.println("[CLIENTE] Consultar todos los Programas");
+        HashSet<DTOProgramaDeFormacion> cursos = servidorCentral.consultarTodosLosProgramas();
+        
+        return cursos;
     }
 }

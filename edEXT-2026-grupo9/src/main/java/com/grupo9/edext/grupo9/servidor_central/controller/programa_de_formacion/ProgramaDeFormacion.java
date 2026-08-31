@@ -7,7 +7,7 @@ import jakarta.persistence.Entity;
 //import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
-import java.util.Collection;
+import java.util.Set;
 import java.util.Date;
 
 @Entity
@@ -16,11 +16,13 @@ public class ProgramaDeFormacion implements Serializable{
     private String nombre;
     private String descripcion;
     @OneToMany
-    private Collection<Curso> cursos;
+    private Set<Curso> cursos;
     private Date fechaInicio;
     private Date fechaFin;
     
-    public ProgramaDeFormacion (String nombre, String descripcion, Collection<Curso> cursos, Date fechaInicio, Date fechaFin){
+    public ProgramaDeFormacion(){}
+    
+    public ProgramaDeFormacion (String nombre, String descripcion, Set<Curso> cursos, Date fechaInicio, Date fechaFin){
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.cursos = cursos;
@@ -44,11 +46,11 @@ public class ProgramaDeFormacion implements Serializable{
         this.descripcion = descForm;
     }
     
-    public Collection<Curso> getCursos() {
+    public Set<Curso> getCursos() {
         return cursos;
     }
     
-    public void setCursos(Collection<Curso> cursos) {
+    public void setCursos(Set<Curso> cursos) {
         this.cursos = cursos;
     }
     

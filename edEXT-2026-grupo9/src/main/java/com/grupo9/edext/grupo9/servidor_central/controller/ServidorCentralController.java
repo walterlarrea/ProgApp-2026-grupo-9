@@ -1,5 +1,6 @@
 package com.grupo9.edext.grupo9.servidor_central.controller;
 
+import com.grupo9.edext.grupo9.dtos.DTOCurso;
 import com.grupo9.edext.grupo9.dtos.DTOProgramaDeFormacion;
 import com.grupo9.edext.grupo9.interfaces.IServidorCentral;
 
@@ -7,13 +8,17 @@ import com.grupo9.edext.grupo9.servidor_central.controller.programa_de_formacion
 import com.grupo9.edext.grupo9.servidor_central.controller.programa_de_formacion.ProgramaDeFormacionController;
 import com.grupo9.edext.grupo9.servidor_central.controller.edicion_de_curso.IEdicionCurso;
 import com.grupo9.edext.grupo9.servidor_central.controller.edicion_de_curso.EdicionCursoController;
+import com.grupo9.edext.grupo9.servidor_central.controller.curso.ICurso;
+import com.grupo9.edext.grupo9.servidor_central.controller.curso.CursoController;
+import java.util.HashSet;
 /**
  *
  * @author Walter
  */
 public class ServidorCentralController implements IServidorCentral {
-    private final IProgramaDeFormacion progDeFormacion = new ProgramaDeFormacionController();
-    private final IEdicionCurso edicionCurso = new EdicionCursoController();
+    private final IProgramaDeFormacion progDeFormacionCtrl = new ProgramaDeFormacionController();
+    private final IEdicionCurso edicionCursoCtrl = new EdicionCursoController();
+    private final ICurso cursoCtrl = new CursoController();
     
     
     // Step 1: Private constructor prevents instantiation from other classes
@@ -40,13 +45,31 @@ public class ServidorCentralController implements IServidorCentral {
         System.out.println("Server ACTIVE");
     }
     
+    // Programas de Formación
     @Override
-    public void guardarProgramaDeFormacion(DTOProgramaDeFormacion nuevoPrograma){
-        this.progDeFormacion.guardarNuevoProgramaDeFormacion(nuevoPrograma);
+    public DTOProgramaDeFormacion guardarProgramaDeFormacion(DTOProgramaDeFormacion nuevoPrograma){
+        return this.progDeFormacionCtrl.guardarNuevoProgramaDeFormacion(nuevoPrograma);
     }
     
     @Override
+    public HashSet<DTOProgramaDeFormacion> consultarTodosLosProgramas(){
+        return this.progDeFormacionCtrl.todosLosProgramas();
+    }
+    
+    // Ediciones de Cursos
+    @Override
     public void guardarEdicionCurso(){
-        this.edicionCurso.guardarNuevaEdicionCurso();
+        this.edicionCursoCtrl.guardarNuevaEdicionCurso();
+    }
+    
+    // Cursos
+    @Override
+    public DTOCurso guardarCurso(DTOCurso nuevoCurso){
+        return this.cursoCtrl.guardarNuevoCurso(nuevoCurso);
+    }
+    
+    @Override
+    public HashSet<DTOCurso> consultarTodosLosCursos(){
+        return this.cursoCtrl.todosLosCursos();
     }
 }
