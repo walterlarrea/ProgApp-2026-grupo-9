@@ -268,12 +268,12 @@
                                       <Component id="jLabelNombre" alignment="0" max="32767" attributes="0"/>
                                   </Group>
                                   <EmptySpace min="-2" pref="27" max="-2" attributes="0"/>
-                                  <Group type="103" groupAlignment="0" attributes="0">
-                                      <Component id="jTextFieldNickname" alignment="0" min="-2" pref="117" max="-2" attributes="0"/>
-                                      <Component id="jTextFieldEmail" alignment="0" min="-2" max="-2" attributes="0"/>
-                                      <Component id="jTextFieldApellido" alignment="0" min="-2" pref="117" max="-2" attributes="0"/>
-                                      <Component id="jTextFieldNombre" alignment="0" min="-2" pref="117" max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                      <Component id="jTextFieldNickname" alignment="0" pref="117" max="32767" attributes="0"/>
+                                      <Component id="jTextFieldApellido" alignment="0" pref="117" max="32767" attributes="0"/>
+                                      <Component id="jTextFieldNombre" alignment="0" pref="117" max="32767" attributes="0"/>
                                       <Component id="jButtonCancelar" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      <Component id="jTextFieldEmail" alignment="0" max="32767" attributes="0"/>
                                   </Group>
                               </Group>
                               <Component id="jRadioButtonDocente" alignment="0" min="-2" pref="83" max="-2" attributes="0"/>
@@ -361,33 +361,21 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="jTextFieldNickname">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Nickname"/>
-          </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jTextFieldNicknameActionPerformed"/>
           </Events>
         </Component>
         <Component class="javax.swing.JTextField" name="jTextFieldNombre">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Nombre"/>
-          </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jTextFieldNombreActionPerformed"/>
           </Events>
         </Component>
         <Component class="javax.swing.JTextField" name="jTextFieldApellido">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Apellido"/>
-          </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jTextFieldApellidoActionPerformed"/>
           </Events>
         </Component>
         <Component class="javax.swing.JTextField" name="jTextFieldEmail">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Correo Electr&#xf3;nico"/>
-          </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jTextFieldEmailActionPerformed"/>
           </Events>
@@ -410,6 +398,9 @@
               </StringArray>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="componentHidden" listener="java.awt.event.ComponentListener" parameters="java.awt.event.ComponentEvent" handler="jComboBoxInstitutoComponentHidden"/>
+          </Events>
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
           </AuxValues>

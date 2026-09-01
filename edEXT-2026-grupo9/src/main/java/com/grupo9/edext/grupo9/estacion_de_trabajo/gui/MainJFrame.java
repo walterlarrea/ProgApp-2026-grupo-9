@@ -985,13 +985,13 @@ public class MainJFrame extends javax.swing.JFrame {
 
     private void jMenuItemCrearCursoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemCrearCursoActionPerformed
         showOnePanelAndHideTheRest(this.JPanelCrearCurso);
-        
+
         HashSet<DataInstituto> institutos = this.institutoPres.cargarInstitutos();
-        
+
         DefaultListModel<DataInstituto> mutableModel = new DefaultListModel<>();
         this.jListCrearCursoInstituto.setModel(mutableModel);
         DefaultListModel<DataInstituto> model = (DefaultListModel<DataInstituto>) this.jListCrearCursoInstituto.getModel();
-        
+
         for(DataInstituto instituto: institutos){
             model.addElement(instituto);
         }
@@ -1020,7 +1020,7 @@ public class MainJFrame extends javax.swing.JFrame {
         final String descripcion = jTextAreaCrearProgramaDesc.getText();
         final LocalDate fechaInicio = (LocalDate) jFormattedTextFieldCrearProgramaFechaInicio.getValue();
         final LocalDate fechaFin = (LocalDate) jFormattedTextFieldCrearProgramaFechaFin.getValue();
-        
+
         System.out.println("[GUI] Crear nuevo Programa: " + nombre);
         programaDeFormacionPres.guardarNuevoProgramaDeFormacion(nombre, descripcion, fechaInicio, fechaFin);
     }//GEN-LAST:event_jButtonGuardarProgramaActionPerformed
@@ -1094,15 +1094,15 @@ public class MainJFrame extends javax.swing.JFrame {
     private void jButtonGuardarCursoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonGuardarCursoActionPerformed
         final String nombre = jTextCrearCursoNombre.getText();
         final String descripcion = jTextAreaCrearCursoDescripcion.getText();
-        
+
         final int duracion = Integer.parseInt(jTextCrearCursoDuracion.getText());
         final int cantHoras = Integer.parseInt(jTextCrearCursoCantHoras.getText());
         final int cantCreditos = Integer.parseInt(jTextCrearCursoCantCreditos.getText());
-        
+
         final String url = jTextCrearCursoUrl.getText();
-        
+
         final DataInstituto instituto = jListCrearCursoInstituto.getSelectedValue();
-        
+
         System.out.println("[GUI] Crear nuevo Curso: " + nombre);
         cursoPres.guardarNuevoCurso(instituto, nombre, descripcion, duracion, cantHoras, cantCreditos, url);
     }//GEN-LAST:event_jButtonGuardarCursoActionPerformed
@@ -1110,14 +1110,14 @@ public class MainJFrame extends javax.swing.JFrame {
     private void jButtonConsultarCursosRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonConsultarCursosRefreshActionPerformed
         System.out.println("[GUI] Consultar todos los Cursos");
         HashSet<DataCurso> cursos = this.cursoPres.cargarCursos();
-                
+
         if(cursos == null){
             return;
         }
-        
+
         DefaultTableModel model = (DefaultTableModel) jTableConsultaCursos.getModel();
         model.setRowCount(0);
-        
+
         for(DataCurso curso: cursos){
             Object[] cursoObj = new Object[]{
                 curso.nombreCurso(),
@@ -1137,14 +1137,14 @@ public class MainJFrame extends javax.swing.JFrame {
     private void jButtonConsultarProgramasRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonConsultarProgramasRefreshActionPerformed
         System.out.println("[GUI] Consultar todos los Programas");
         HashSet<DataProgramaFormacion> programas = this.programaDeFormacionPres.cargarProgramas();
-        
+
         if(programas == null){
             return;
         }
-        
+
         DefaultTableModel model = (DefaultTableModel) jTableConsultaProgramas.getModel();
         model.setRowCount(0);
-        
+
         for(DataProgramaFormacion programa: programas){
             Object[] programaObj = new Object[]{programa.nombre(), programa.fechaInicio(), programa.fechaFin(), programa.descripcion()};
             model.addRow(programaObj);
@@ -1153,46 +1153,46 @@ public class MainJFrame extends javax.swing.JFrame {
 
     private void jMenuItemGestionarInstitutosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemGestionarInstitutosActionPerformed
         showOnePanelAndHideTheRest(this.jPanelGestionarInstitutos);
-        
+
         // Cargar la nueva lista y actualizar tabla
         HashSet<DataInstituto> institutos = this.institutoPres.cargarInstitutos();
-        
+
         this.actualizarTablaDeInstitutos(institutos);
     }//GEN-LAST:event_jMenuItemGestionarInstitutosActionPerformed
 
     private void actualizarTablaDeInstitutos(HashSet<DataInstituto> institutos){
         System.out.println("[GUI] Consultar todos los Institutos");
-        
+
         if(institutos == null){
             return;
         }
-        
+
         DefaultTableModel model = (DefaultTableModel) jTableInstitutos.getModel();
         model.setRowCount(0);
-        
+
         for(DataInstituto instituto: institutos){
             Object[] programaObj = new Object[]{instituto.nombreI()};
             model.addRow(programaObj);
         }
     }
-    
+
     private void jButtonGuardarInstitutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonGuardarInstitutoActionPerformed
         final String nombre = jTextCrearInstituto.getText();
-        
+
         System.out.println("[GUI] Crear nuevo Instituto: " + nombre);
-        
+
         institutoPres.guardarNuevoInstituto(nombre);
-        
+
         // Cargar la nueva lista y actualizar tabla
         HashSet<DataInstituto> institutos = this.institutoPres.cargarInstitutos();
-        
+
         this.actualizarTablaDeInstitutos(institutos);
     }//GEN-LAST:event_jButtonGuardarInstitutoActionPerformed
 
     private void jButtonConsultarInstitutosRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonConsultarInstitutosRefreshActionPerformed
         System.out.println("[GUI] Consultar todos los Institutos");
         HashSet<DataInstituto> institutos = this.institutoPres.cargarInstitutos();
-        
+
         this.actualizarTablaDeInstitutos(institutos);
     }//GEN-LAST:event_jButtonConsultarInstitutosRefreshActionPerformed
 
