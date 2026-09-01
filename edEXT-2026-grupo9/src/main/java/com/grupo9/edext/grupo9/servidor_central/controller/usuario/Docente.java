@@ -29,7 +29,7 @@ public class Docente extends Usuario implements Serializable {
         this.nombreInst = nombreInst;
     }
     
-    public Set<EdicionCurso> getEdiciones(){
-        return ediciones;
-    }
+   public Set<EdicionCurso> getEdiciones(){
+       return ediciones;
+   }
 }

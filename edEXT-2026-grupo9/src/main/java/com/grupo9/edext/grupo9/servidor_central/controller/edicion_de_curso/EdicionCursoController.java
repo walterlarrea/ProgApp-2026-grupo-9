@@ -2,6 +2,7 @@ package com.grupo9.edext.grupo9.servidor_central.controller.edicion_de_curso;
 
 import com.grupo9.edext.grupo9.mensajes.ErrorNoExiste;
 import com.grupo9.edext.grupo9.mensajes.ErrorRepetidos;
+import com.grupo9.edext.grupo9.servidor_central.controller.DtoMapper;
 import com.grupo9.edext.grupo9.servidor_central.controller.curso.Curso;
 import com.grupo9.edext.grupo9.servidor_central.controller.usuario.Docente;
 import com.grupo9.edext.grupo9.servidor_central.controller.usuario.ManejadorEstudiantes;
@@ -45,14 +46,14 @@ public class EdicionCursoController implements IEdicionCurso {
         if(ed != null){
             Curso curso = ed.getCursoAsoc();
             //para que funcione DataCurso
-            DataCurso datosCurAsoc = new DataCurso(curso.getNombreInst(), curso.getNombreCurso(), curso.getDescCurso(), curso.getDuracion(), curso.getCantHoras(), curso.getCantCred(), curso.getFechaReg(), curso.getUrl());
+            DataCurso datosCurAsoc = new DataCurso(DtoMapper.toData(curso.getInstituto()), curso.getNombreCurso(), curso.getDescCurso(), curso.getDuracion(), curso.getCantHoras(), curso.getCantCred(), curso.getFechaReg(), curso.getUrl());
 
             //para obtener los inscriptos
             Set<DataInscEdicion> datosInscriptos = new HashSet<>();
-            for(InscEdicion inscriptos : ed.getInscripciones()){
+            for(InscEdicion inscriptos : new HashSet<InscEdicion>()){
                 Estudiante estudiante = inscriptos.getEstudiante();
                 DataEstudiante datosEst = new DataEstudiante(estudiante.getNickname(),estudiante.getNombre(),estudiante.getApellido(),estudiante.getEmail(), estudiante.getFechaNac(), null);
-                DataInscEdicion datosInsc = new DataInscEdicion(inscriptos.getFechaInscE(), datosEst, inscriptos.getEdicion());
+                DataInscEdicion datosInsc = new DataInscEdicion(inscriptos.getFechaInscE(), datosEst, inscriptos.getEdicion().getNombreEdi());
                 datosInscriptos.add(datosInsc);
             }
             //para que funcione DataDocente
@@ -79,14 +80,14 @@ public class EdicionCursoController implements IEdicionCurso {
         }
         if(ed != null){
             for(InscEdicion insc : est.getInscripciones()){//checkeo si ya está inscripto.
-                if(insc.getEdicion().equals(ed.getNombreEdi())){
+                if(insc.getEdicion().equals(ed)){
                     throw new ErrorRepetidos("El estudiante " + nickEstudiante + " ya está inscripto.");
                 }
             }
-            InscEdicion inscripcion = new InscEdicion(fInsc, est, ed.getNombreEdi());
+            InscEdicion inscripcion = new InscEdicion(fInsc, est, ed);
             est.getInscripciones().add(inscripcion);
-            //por si consultar edición de curso te muestra las inscripciones. 
-            ed.getInscripciones().add(inscripcion);   
+//            por si consultar edición de curso te muestra las inscripciones. 
+//            ed.getInscripciones().add(inscripcion);   
         }else{
             throw new ErrorNoExiste("La Edición " + nEdi + " no existe.");
         }

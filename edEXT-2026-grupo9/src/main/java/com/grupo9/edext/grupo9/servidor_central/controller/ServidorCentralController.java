@@ -6,13 +6,23 @@ import com.grupo9.edext.grupo9.servidor_central.controller.programa_de_formacion
 import com.grupo9.edext.grupo9.servidor_central.controller.programa_de_formacion.ProgramaDeFormacionController;
 import com.grupo9.edext.grupo9.servidor_central.controller.edicion_de_curso.IEdicionCurso;
 import com.grupo9.edext.grupo9.servidor_central.controller.edicion_de_curso.EdicionCursoController;
+import com.grupo9.edext.grupo9.servidor_central.controller.curso.ICurso;
+import com.grupo9.edext.grupo9.servidor_central.controller.curso.CursoController;
+import com.grupo9.edext.grupo9.servidor_central.controller.instituto.IInstituto;
+import com.grupo9.edext.grupo9.servidor_central.controller.instituto.InstitutoController;
+import com.grupo9.edext.grupo9.servidor_central.dominio.DataCurso;
+import com.grupo9.edext.grupo9.servidor_central.dominio.DataInstituto;
+import com.grupo9.edext.grupo9.servidor_central.dominio.DataProgramaFormacion;
+import java.util.HashSet;
 /**
  *
  * @author Walter
  */
 public class ServidorCentralController implements IServidorCentral {
-    private final IProgramaDeFormacion progDeFormacion = new ProgramaDeFormacionController();
-    private final IEdicionCurso edicionCurso = new EdicionCursoController();
+    private final IProgramaDeFormacion progDeFormacionCtrl = new ProgramaDeFormacionController();
+    private final IEdicionCurso edicionCursoCtrl = new EdicionCursoController();
+    private final ICurso cursoCtrl = new CursoController();
+    private final IInstituto institutoCtrl = new InstitutoController();
     
     
     // Step 1: Private constructor prevents instantiation from other classes
@@ -39,13 +49,42 @@ public class ServidorCentralController implements IServidorCentral {
         System.out.println("Server ACTIVE");
     }
     
+    // Programas de Formación
     @Override
-    public void guardarProgramaDeFormacion(){
-        this.progDeFormacion.guardarNuevoProgramaDeFormacion();
+    public DataProgramaFormacion guardarProgramaDeFormacion(DataProgramaFormacion nuevoPrograma){
+        return this.progDeFormacionCtrl.guardarNuevoProgramaDeFormacion(nuevoPrograma);
     }
     
     @Override
+    public HashSet<DataProgramaFormacion> consultarTodosLosProgramas(){
+        return this.progDeFormacionCtrl.todosLosProgramas();
+    }
+    
+    // Ediciones de Cursos
+    @Override
     public void guardarEdicionCurso(){
-        this.edicionCurso.guardarNuevaEdicionCurso();
+        this.edicionCursoCtrl.guardarNuevaEdicionCurso();
+    }
+    
+    // Cursos
+    @Override
+    public DataCurso guardarCurso(DataCurso nuevoCurso){
+        return this.cursoCtrl.guardarNuevoCurso(nuevoCurso);
+    }
+    
+    @Override
+    public HashSet<DataCurso> consultarTodosLosCursos(){
+        return this.cursoCtrl.todosLosCursos();
+    }
+
+    // Institutos
+    @Override
+    public DataInstituto guardarInstituto(DataInstituto nuevoInstituto){
+        return this.institutoCtrl.guardarNuevoInstituto(nuevoInstituto);
+    }
+    
+    @Override
+    public HashSet<DataInstituto> consultarTodosLosInstitutos(){
+        return this.institutoCtrl.todosLosInstitutos();
     }
 }

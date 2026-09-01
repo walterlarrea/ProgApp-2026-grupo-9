@@ -1,16 +1,14 @@
 package com.grupo9.edext.grupo9.servidor_central.controller.curso;
 
-//import com.grupo9.edext.grupo9.servidor_central.controller.edicion_de_curso.EdicionCurso;
+import com.grupo9.edext.grupo9.servidor_central.controller.edicion_de_curso.EdicionCurso;
+import com.grupo9.edext.grupo9.servidor_central.controller.instituto.Instituto;
 import java.io.Serializable;
 import java.time.LocalDate;
-//import jakarta.persistence.GeneratedValue;
-//import jakarta.persistence.GenerationType;
-import jakarta.persistence.Entity;       
-import jakarta.persistence.Id;
+import java.util.Set;
+import jakarta.persistence.*;       
 
 @Entity
 public class Curso implements Serializable{
-    private String nombreInst;
     @Id
     private String nombreCurso;
     private String descCurso;
@@ -19,11 +17,16 @@ public class Curso implements Serializable{
     private int cantCred;
     private LocalDate fechaReg;
     private String url;
-    //@OneToMany(mappedBy = "cursoAsoc")
-    //private Set<EdicionCurso> ediciones;
+    @OneToMany(mappedBy = "cursoAsoc")
+    private Set<EdicionCurso> ediciones;
+    @ManyToOne
+    @JoinColumn(name = "nombreI")
+    private Instituto instituto;
+    
+    public Curso(){}
 
-    public Curso(String nombreInst, String nombreCurso, String descCurso, int duracion, int cantHoras, int cantCred, LocalDate fechaReg, String url) {
-        this.nombreInst = nombreInst;
+    public Curso(Instituto instituto, String nombreCurso, String descCurso, int duracion, int cantHoras, int cantCred, LocalDate fechaReg, String url) {
+        this.instituto = instituto;
         this.nombreCurso = nombreCurso;
         this.descCurso = descCurso;
         this.duracion = duracion;
@@ -33,12 +36,12 @@ public class Curso implements Serializable{
         this.url = url;
     }
 
-    public String getNombreInst() {
-        return nombreInst;
+    public Instituto getInstituto() {
+        return instituto;
     }
 
-    public void setNombreInst(String nombreInst) {
-        this.nombreInst = nombreInst;
+    public void setInstituto(Instituto instituto) {
+        this.instituto = instituto;
     }
 
     public String getNombreCurso() {

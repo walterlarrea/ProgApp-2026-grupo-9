@@ -25,7 +25,7 @@ public class Usuario implements Serializable{
     private LocalDate fechaNac;
     private String imagen;
 
-    public Usuario(String nickname, String nombre, String apellido, String email, LocalDate fechaNac, String rutaImagen) {
+    public Usuario(String nickname, String nombre, String apellido, String email, LocalDate fechaNac) {
         this.nickname = nickname;
         this.nombre = nombre;
         this.apellido = apellido;
