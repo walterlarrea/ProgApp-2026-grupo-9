@@ -85,9 +85,8 @@ public class EdicionCursoController implements IEdicionCurso {
                 }
             }
             InscEdicion inscripcion = new InscEdicion(fInsc, est, ed);
-            est.getInscripciones().add(inscripcion);
-//            por si consultar edición de curso te muestra las inscripciones. 
-//            ed.getInscripciones().add(inscripcion);   
+            est.getInscripciones().add(inscripcion); 
+            ed.getInscripciones().add(inscripcion);   
         }else{
             throw new ErrorNoExiste("La Edición " + nEdi + " no existe.");
         }

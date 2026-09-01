@@ -26,7 +26,6 @@ public class ManejadorEdiciones {
     public void addEdicion(EdicionCurso ed){
         String nombreEC = ed.getNombreEdi();
         edCurso.put(nombreEC, ed);
-        /* Esto sería cuando usamos JPA */
         EntityManager em = UtensiliosJPA.getEntityManagerFactory().createEntityManager();
         EntityTransaction et = em.getTransaction();
         try{

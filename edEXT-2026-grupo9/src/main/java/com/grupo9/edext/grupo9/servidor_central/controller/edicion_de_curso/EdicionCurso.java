@@ -21,8 +21,8 @@ public class EdicionCurso {
     joinColumns = @JoinColumn(name = "edicion_nombreEdi"),
     inverseJoinColumns = @JoinColumn(name = "docente_nickname"))
     private Set<Docente> docentes;
-//    @OneToMany(mappedBy = "edicion")
-//    private Set<InscEdicion> inscripciones;
+    @OneToMany(mappedBy = "edicion")
+    private Set<InscEdicion> inscripciones;
     private LocalDate fechaPub;
     
     public EdicionCurso(String nombreEdi, Curso cursoAsoc, LocalDate fechaInicio, LocalDate fechaFin, Integer cupo, Set<Docente> docentes, Set<InscEdicion> inscripciones, LocalDate fechaPub) {
@@ -32,7 +32,7 @@ public class EdicionCurso {
         this.fechaFin = fechaFin;
         this.cupo = cupo;
        this.docentes = docentes;
-//        this.inscripciones = inscripciones;
+        this.inscripciones = inscripciones;
         this.fechaPub = fechaPub;
     }
 
@@ -92,7 +92,7 @@ public class EdicionCurso {
         this.fechaPub = fechaPub;
     }
     
-//    public Set<InscEdicion> getInscripciones(){
-//        return inscripciones;
-//    }
+    public Set<InscEdicion> getInscripciones(){
+       return inscripciones;
+    }
 }

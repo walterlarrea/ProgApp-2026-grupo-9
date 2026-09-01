@@ -13,15 +13,13 @@
     </provider>
 
     <!-- Clases -->
-    <class>
-        com.grupo9.edext.grupo9.servidor_central.controller.edicion_de_curso.EdicionCurso
-        com.grupo9.edext.grupo9.servidor_central.controller.edicion_de_curso.InscEdicion
-        com.grupo9.edext.grupo9.servidor_central.controller.curso.Curso
-        com.grupo9.edext.grupo9.servidor_central.controller.usuario.Usuario
-        com.grupo9.edext.grupo9.servidor_central.controller.usuario.Estudiante
-        com.grupo9.edext.grupo9.servidor_central.controller.usuario.Docente
-        com.grupo9.edext.grupo9.servidor_central.controller.programa_de_formacion.ProgramaDeFormacion
-    </class>
+    <class>com.grupo9.edext.grupo9.servidor_central.controller.edicion_de_curso.EdicionCurso</class>
+    <class>com.grupo9.edext.grupo9.servidor_central.controller.edicion_de_curso.InscEdicion</class>
+    <class>com.grupo9.edext.grupo9.servidor_central.controller.curso.Curso</class>
+    <class>com.grupo9.edext.grupo9.servidor_central.controller.usuario.Usuario</class>
+    <class>com.grupo9.edext.grupo9.servidor_central.controller.usuario.Estudiante</class>
+    <class>com.grupo9.edext.grupo9.servidor_central.controller.usuario.Docente</class>
+    <class>com.grupo9.edext.grupo9.servidor_central.controller.programa_de_formacion.ProgramaDeFormacion</class>
 
     <properties>
       <!--// Propiedades de MySQL y Connector/J, acá enlazamos con la base de datos -->
@@ -37,10 +35,9 @@
         <property name="jakarta.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
         <property name="jakarta.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/edEXT?serverTimezone=UTC"/> <!-- serverTimezone: para sincronizar a la zona horaria -->
         <property name="jakarta.persistence.jdbc.user" value="root"/>
-        <property name="jakarta.persistence.jdbc.password" value=".mayonesa23."/>-->
+        <property name="jakarta.persistence.jdbc.password" value="1357tecnologo"/>
     <!-- Propiedades de Hibernate para desarrollo -->
         <property name="hibernate.hbm2ddl.auto" value="update"/> <!-- para actualizar las tablas a partir de las entidades que tengamos acá, no inserta los datos automáticamente, no no -->
-        <property name="hibernate.show_sql" value="true"/>
         <property name="hibernate.show_sql" value="true"/>
     </properties>
   </persistence-unit>
