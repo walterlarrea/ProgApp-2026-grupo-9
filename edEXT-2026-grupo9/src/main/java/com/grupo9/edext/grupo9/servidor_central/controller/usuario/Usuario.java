@@ -1,10 +1,7 @@
 package com.grupo9.edext.grupo9.servidor_central.controller.usuario;
 
 
-import com.grupo9.edext.grupo9.servidor_central.dominio.DataUsuario;
-import com.grupo9.edext.grupo9.servidor_central.dominio.DataDocente;
 import java.time.LocalDate;
-import java.util.Set;
 
 /**
  *
@@ -25,7 +22,7 @@ public class Usuario implements Serializable{
     private LocalDate fechaNac;
     private String imagen;
 
-    public Usuario(String nickname, String nombre, String apellido, String email, LocalDate fechaNac) {
+    public Usuario(String nickname, String nombre, String apellido, String email, LocalDate fechaNac, String rutaImagen) {
         this.nickname = nickname;
         this.nombre = nombre;
         this.apellido = apellido;
