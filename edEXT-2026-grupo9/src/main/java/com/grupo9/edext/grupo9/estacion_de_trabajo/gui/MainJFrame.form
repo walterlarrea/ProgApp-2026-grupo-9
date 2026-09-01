@@ -94,7 +94,7 @@
           <SubComponents>
             <MenuItem class="javax.swing.JMenuItem" name="jMenuItemCrearEdicionCurso">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Crear nueva Edici&#xf3;n"/>
+                <Property name="text" type="java.lang.String" value="Crear nueva"/>
               </Properties>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="jMenuItemConsultarEdicionCurso">
@@ -181,6 +181,27 @@
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
           </Group>
+          <Group type="103" rootIndex="7" groupAlignment="0" attributes="0">
+              <Group type="102" attributes="0">
+                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                  <Component id="JPanelAltaEdicion" pref="788" max="32767" attributes="0"/>
+                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+              </Group>
+          </Group>
+          <Group type="103" rootIndex="8" groupAlignment="0" attributes="0">
+              <Group type="102" attributes="0">
+                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                  <Component id="JPanelConsultarEdicion" pref="782" max="32767" attributes="0"/>
+                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+              </Group>
+          </Group>
+          <Group type="103" rootIndex="9" groupAlignment="0" attributes="0">
+              <Group type="102" attributes="0">
+                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                  <Component id="JPanelInscripcionEdicion" pref="782" max="32767" attributes="0"/>
+                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+              </Group>
+          </Group>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
@@ -226,6 +247,27 @@
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="JPanelConsultarProgramas" max="32767" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
+              </Group>
+          </Group>
+          <Group type="103" rootIndex="7" groupAlignment="0" attributes="0">
+              <Group type="102" attributes="0">
+                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                  <Component id="JPanelAltaEdicion" pref="588" max="32767" attributes="0"/>
+                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+              </Group>
+          </Group>
+          <Group type="103" rootIndex="8" groupAlignment="0" attributes="0">
+              <Group type="102" attributes="0">
+                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                  <Component id="JPanelConsultarEdicion" pref="585" max="32767" attributes="0"/>
+                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+              </Group>
+          </Group>
+          <Group type="103" rootIndex="9" groupAlignment="0" attributes="0">
+              <Group type="102" attributes="0">
+                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                  <Component id="JPanelInscripcionEdicion" pref="585" max="32767" attributes="0"/>
+                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
               </Group>
           </Group>
       </Group>
@@ -440,7 +482,7 @@
             </Property>
             <Property name="text" type="java.lang.String" value="Seleccioner Foto de Perfil"/>
             <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
-              <Color id="Default Cursor"/>
+              <Color id="Cursor Por defecto"/>
             </Property>
           </Properties>
           <Events>
@@ -1029,6 +1071,209 @@
           </SubComponents>
         </Container>
       </SubComponents>
+    </Container>
+    <Container class="javax.swing.JPanel" name="JPanelAltaEdicion">
+      <Properties>
+        <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+          <Dimension value="[772, 580]"/>
+        </Property>
+      </Properties>
+
+      <Layout>
+        <DimensionLayout dim="0">
+          <Group type="103" groupAlignment="0" attributes="0">
+              <Group type="102" alignment="0" attributes="0">
+                  <EmptySpace min="-2" pref="22" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" attributes="0">
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Group type="102" alignment="1" attributes="0">
+                                  <Component id="jButtonCancelarEdicion" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                                  <Component id="jButtonGuardarEdicion" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <Group type="102" attributes="0">
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="jLabelEdicionFFin" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      <Component id="jLabelEdicionDocente" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      <Component id="jLabelEdicionNombre" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      <Component id="jTextEdicionNombre" alignment="0" min="-2" pref="300" max="-2" attributes="0"/>
+                                      <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
+                                          <Component id="jTextEdicionFFin" alignment="0" max="32767" attributes="0"/>
+                                          <Component id="jTextEdicionFInicio" alignment="0" max="32767" attributes="0"/>
+                                      </Group>
+                                      <Component id="jLabelAltaEdicion" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace min="0" pref="444" max="32767" attributes="0"/>
+                              </Group>
+                          </Group>
+                          <EmptySpace max="-2" attributes="0"/>
+                      </Group>
+                      <Group type="102" attributes="0">
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="jTextEdicionCupo" min="-2" max="-2" attributes="0"/>
+                              <Component id="jLabelEdicionFInicio" min="-2" max="-2" attributes="0"/>
+                              <Component id="jLabelEdicionCupo" min="-2" max="-2" attributes="0"/>
+                              <Component id="choiceEdicionDocente" alignment="0" min="-2" pref="300" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                      </Group>
+                  </Group>
+              </Group>
+          </Group>
+        </DimensionLayout>
+        <DimensionLayout dim="1">
+          <Group type="103" groupAlignment="1" attributes="0">
+              <Group type="102" attributes="0">
+                  <EmptySpace min="-2" pref="25" max="-2" attributes="0"/>
+                  <Component id="jLabelAltaEdicion" min="-2" pref="28" max="-2" attributes="0"/>
+                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                  <Component id="jLabelEdicionNombre" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Component id="jTextEdicionNombre" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                  <Component id="jLabelEdicionDocente" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Component id="choiceEdicionDocente" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="19" max="-2" attributes="0"/>
+                  <Component id="jLabelEdicionCupo" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace pref="7" max="32767" attributes="0"/>
+                  <Component id="jTextEdicionCupo" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Component id="jLabelEdicionFInicio" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Component id="jTextEdicionFInicio" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="22" max="-2" attributes="0"/>
+                  <Component id="jLabelEdicionFFin" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Component id="jTextEdicionFFin" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="205" max="-2" attributes="0"/>
+              </Group>
+              <Group type="102" alignment="1" attributes="0">
+                  <EmptySpace max="32767" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="jButtonGuardarEdicion" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="jButtonCancelarEdicion" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace max="-2" attributes="0"/>
+              </Group>
+          </Group>
+        </DimensionLayout>
+      </Layout>
+      <SubComponents>
+        <Component class="javax.swing.JLabel" name="jLabelAltaEdicion">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Crear Edici&#xf3;n"/>
+            <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+              <Dimension value="[83, 16]"/>
+            </Property>
+            <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+              <Dimension value="[83, 16]"/>
+            </Property>
+            <Property name="name" type="java.lang.String" value="" noResource="true"/>
+            <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+              <Dimension value="[83, 16]"/>
+            </Property>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="jLabelEdicionNombre">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Nombre"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="jLabelEdicionFInicio">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Fecha Inicio"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="jLabelEdicionFFin">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Fecha Fin"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="jLabelEdicionDocente">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Docente"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="jLabelEdicionCupo">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Cupo"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JButton" name="jButtonGuardarEdicion">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Guardar"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JTextField" name="jTextEdicionNombre">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Programaci&#xf3;n_vespertino_2026"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JTextField" name="jTextEdicionFInicio">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="10/03/2027"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JTextField" name="jTextEdicionFFin">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="15/07/2027"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JButton" name="jButtonCancelarEdicion">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Cancelar"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JTextField" name="jTextEdicionCupo">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="30"/>
+          </Properties>
+        </Component>
+        <Component class="java.awt.Choice" name="choiceEdicionDocente">
+        </Component>
+      </SubComponents>
+    </Container>
+    <Container class="javax.swing.JPanel" name="JPanelConsultarEdicion">
+      <Properties>
+        <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+          <Dimension value="[772, 580]"/>
+        </Property>
+      </Properties>
+
+      <Layout>
+        <DimensionLayout dim="0">
+          <Group type="103" groupAlignment="0" attributes="0">
+              <EmptySpace min="0" pref="782" max="32767" attributes="0"/>
+          </Group>
+        </DimensionLayout>
+        <DimensionLayout dim="1">
+          <Group type="103" groupAlignment="0" attributes="0">
+              <EmptySpace min="0" pref="585" max="32767" attributes="0"/>
+          </Group>
+        </DimensionLayout>
+      </Layout>
+    </Container>
+    <Container class="javax.swing.JPanel" name="JPanelInscripcionEdicion">
+      <Properties>
+        <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+          <Dimension value="[772, 580]"/>
+        </Property>
+      </Properties>
+
+      <Layout>
+        <DimensionLayout dim="0">
+          <Group type="103" groupAlignment="0" attributes="0">
+              <EmptySpace min="0" pref="782" max="32767" attributes="0"/>
+          </Group>
+        </DimensionLayout>
+        <DimensionLayout dim="1">
+          <Group type="103" groupAlignment="0" attributes="0">
+              <EmptySpace min="0" pref="585" max="32767" attributes="0"/>
+          </Group>
+        </DimensionLayout>
+      </Layout>
     </Container>
   </SubComponents>
 </Form>
