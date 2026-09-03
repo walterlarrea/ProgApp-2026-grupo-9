@@ -1,10 +1,18 @@
 package com.grupo9.edext.grupo9.servidor_central.controller.usuario;
 
-import java.io.Serializable;
+
 import java.time.LocalDate;
+
+/**
+ *
+ * @author Usuario
+ */
 import jakarta.persistence.*;
+import java.io.Serializable;
+
 
 @Entity
+@Inheritance(strategy = InheritanceType.JOINED)
 public class Usuario implements Serializable{
     @Id
     private String nickname;
@@ -14,12 +22,17 @@ public class Usuario implements Serializable{
     private LocalDate fechaNac;
     private String imagen;
 
-    public Usuario(String nickname, String nombre, String apellido, String email, LocalDate fechaNac) {
+    public Usuario(String nickname, String nombre, String apellido, String email, LocalDate fechaNac, String rutaImagen) {
         this.nickname = nickname;
         this.nombre = nombre;
         this.apellido = apellido;
         this.email = email;
         this.fechaNac = fechaNac;
+        this.imagen = rutaImagen;
+    }
+
+    public Usuario() {
+
     }
 
     public String getNickname() {
