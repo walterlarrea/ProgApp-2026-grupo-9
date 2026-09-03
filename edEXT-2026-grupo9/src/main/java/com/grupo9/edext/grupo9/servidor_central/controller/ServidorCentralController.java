@@ -13,6 +13,7 @@ import com.grupo9.edext.grupo9.servidor_central.controller.instituto.InstitutoCo
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataCurso;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataInstituto;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataProgramaFormacion;
+import com.grupo9.edext.grupo9.servidor_central.dominio.DataEdicionCurso;
 import java.util.HashSet;
 /**
  *
@@ -62,8 +63,8 @@ public class ServidorCentralController implements IServidorCentral {
     
     // Ediciones de Cursos
     @Override
-    public void guardarEdicionCurso(){
-        this.edicionCursoCtrl.guardarNuevaEdicionCurso();
+    public DataEdicionCurso guardarEdicionCurso(DataEdicionCurso nuevaEdicion){
+        return this.edicionCursoCtrl.guardarNuevaEdicionCurso(nuevaEdicion);
     }
     
     // Cursos
