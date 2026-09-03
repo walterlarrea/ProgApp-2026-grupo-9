@@ -1,11 +1,13 @@
 package com.grupo9.edext.grupo9.estacion_de_trabajo.gui;
-import com.grupo9.edext.grupo9.estacion_de_trabajo.cliente.CursoPres;
-import javax.swing.JPanel;
-import java.util.ArrayList;
 
+import com.grupo9.edext.grupo9.estacion_de_trabajo.cliente.CursoPres;
 import com.grupo9.edext.grupo9.estacion_de_trabajo.cliente.ProgramaDeFormacionPres;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataCurso;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataProgramaFormacion;
+import com.grupo9.edext.grupo9.estacion_de_trabajo.gui.SeleccionarCursoJInternalFrame;
+import java.beans.PropertyVetoException;
+import javax.swing.*;
+import java.util.ArrayList;
 import java.time.LocalDate;
 import java.util.HashSet;
 import javax.swing.table.DefaultTableModel;
@@ -16,18 +18,65 @@ public class MainJFrame extends javax.swing.JFrame {
     private final CursoPres cursoPres = new CursoPres();
     private java.io.File archivoImagenSeleccionado = null;
     private final ArrayList<JPanel> allJPanels = new ArrayList<JPanel>();
+    private final ArrayList<JInternalFrame> allJInternalFrame = new ArrayList<JInternalFrame>();
     
-    /**
-     * Creates new form MainJFrame
-     */
     public MainJFrame() {
         initComponents();
+        setTitle("edEXT");
+        setResizable(true);
+        //alta usuario
         jSpinnerFechaNac.setModel(new javax.swing.SpinnerDateModel(new java.util.Date(), null, null, ICONIFIED));
         javax.swing.JSpinner.DateEditor editor = new javax.swing.JSpinner.DateEditor(jSpinnerFechaNac, "dd/MM/yyyy");
         jSpinnerFechaNac.setEditor(editor);
     }
     
+    //para que se visibilicen los internal frames
+    private void openInternalFrame(JInternalFrame frame) {
+        jDesktopPane1.add(frame);
+        allJInternalFrame.add(frame);
+        frame.setSize(350, 300);
+        frame.setLocation(
+            (jDesktopPane1.getWidth() - frame.getWidth()) / 2,
+            (jDesktopPane1.getHeight() - frame.getHeight()) / 2);
+        frame.setVisible(true);
+        try {
+            frame.setSelected(true);
+        } catch (PropertyVetoException e) {
+            e.printStackTrace();
+        }
+        jDesktopPane1.revalidate();
+        jDesktopPane1.repaint();
+    }
+    
+    //al aparecer uno se cierra el otro
+    private void showInternalFrame(JInternalFrame frameToShow) {
 
+    // Ocultar los demás
+    for (JInternalFrame frame : jDesktopPane1.getAllFrames()) {
+        frame.setVisible(false);
+    }
+
+    // Agregarlo si todavía no pertenece al DesktopPane
+    if (frameToShow.getDesktopPane() == null) {
+        jDesktopPane1.add(frameToShow);
+    }
+
+    frameToShow.setVisible(true);
+
+    // MUY IMPORTANTE
+    jDesktopPane1.revalidate();
+    jDesktopPane1.repaint();
+
+    frameToShow.revalidate();
+    frameToShow.repaint();
+
+    try {
+        frameToShow.setSelected(true);
+    } catch (PropertyVetoException e) {
+        e.printStackTrace();
+    }
+}
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -97,22 +146,8 @@ public class MainJFrame extends javax.swing.JFrame {
         jButtonConsultarProgramasRefresh = new javax.swing.JButton();
         jScrollPaneTablaConsultaCursos1 = new javax.swing.JScrollPane();
         jTableConsultaProgramas = new javax.swing.JTable();
-        JPanelAltaEdicion = new javax.swing.JPanel();
-        jLabelAltaEdicion = new javax.swing.JLabel();
-        jLabelEdicionNombre = new javax.swing.JLabel();
-        jLabelEdicionFInicio = new javax.swing.JLabel();
-        jLabelEdicionFFin = new javax.swing.JLabel();
-        jLabelEdicionDocente = new javax.swing.JLabel();
-        jLabelEdicionCupo = new javax.swing.JLabel();
-        jButtonGuardarEdicion = new javax.swing.JButton();
-        jTextEdicionNombre = new javax.swing.JTextField();
-        jTextEdicionFInicio = new javax.swing.JTextField();
-        jTextEdicionFFin = new javax.swing.JTextField();
-        jButtonCancelarEdicion = new javax.swing.JButton();
-        jTextEdicionCupo = new javax.swing.JTextField();
-        choiceEdicionDocente = new java.awt.Choice();
-        JPanelConsultarEdicion = new javax.swing.JPanel();
         JPanelInscripcionEdicion = new javax.swing.JPanel();
+        jDesktopPane1 = new javax.swing.JDesktopPane();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenuUsuarios = new javax.swing.JMenu();
         jMenuItemCrearUsuario = new javax.swing.JMenuItem();
@@ -677,127 +712,30 @@ public class MainJFrame extends javax.swing.JFrame {
                     .addContainerGap()))
         );
 
-        JPanelAltaEdicion.setPreferredSize(new java.awt.Dimension(772, 580));
-
-        jLabelAltaEdicion.setText("Crear Edición");
-        jLabelAltaEdicion.setMaximumSize(new java.awt.Dimension(83, 16));
-        jLabelAltaEdicion.setMinimumSize(new java.awt.Dimension(83, 16));
-        jLabelAltaEdicion.setName(""); // NOI18N
-        jLabelAltaEdicion.setPreferredSize(new java.awt.Dimension(83, 16));
-
-        jLabelEdicionNombre.setText("Nombre");
-
-        jLabelEdicionFInicio.setText("Fecha Inicio");
-
-        jLabelEdicionFFin.setText("Fecha Fin");
-
-        jLabelEdicionDocente.setText("Docente");
-
-        jLabelEdicionCupo.setText("Cupo");
-
-        jButtonGuardarEdicion.setText("Guardar");
-
-        jTextEdicionNombre.setText("Programación_vespertino_2026");
-
-        jTextEdicionFInicio.setText("10/03/2027");
-
-        jTextEdicionFFin.setText("15/07/2027");
-
-        jButtonCancelarEdicion.setText("Cancelar");
-
-        jTextEdicionCupo.setText("30");
-
-        javax.swing.GroupLayout JPanelAltaEdicionLayout = new javax.swing.GroupLayout(JPanelAltaEdicion);
-        JPanelAltaEdicion.setLayout(JPanelAltaEdicionLayout);
-        JPanelAltaEdicionLayout.setHorizontalGroup(
-            JPanelAltaEdicionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(JPanelAltaEdicionLayout.createSequentialGroup()
-                .addGap(22, 22, 22)
-                .addGroup(JPanelAltaEdicionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(JPanelAltaEdicionLayout.createSequentialGroup()
-                        .addGroup(JPanelAltaEdicionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, JPanelAltaEdicionLayout.createSequentialGroup()
-                                .addComponent(jButtonCancelarEdicion)
-                                .addGap(18, 18, 18)
-                                .addComponent(jButtonGuardarEdicion))
-                            .addGroup(JPanelAltaEdicionLayout.createSequentialGroup()
-                                .addGroup(JPanelAltaEdicionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabelEdicionFFin)
-                                    .addComponent(jLabelEdicionDocente)
-                                    .addComponent(jLabelEdicionNombre)
-                                    .addComponent(jTextEdicionNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(JPanelAltaEdicionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                        .addComponent(jTextEdicionFFin, javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jTextEdicionFInicio, javax.swing.GroupLayout.Alignment.LEADING))
-                                    .addComponent(jLabelAltaEdicion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(0, 467, Short.MAX_VALUE)))
-                        .addContainerGap())
-                    .addGroup(JPanelAltaEdicionLayout.createSequentialGroup()
-                        .addGroup(JPanelAltaEdicionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextEdicionCupo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabelEdicionFInicio)
-                            .addComponent(jLabelEdicionCupo)
-                            .addComponent(choiceEdicionDocente, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 0, Short.MAX_VALUE))))
-        );
-        JPanelAltaEdicionLayout.setVerticalGroup(
-            JPanelAltaEdicionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-            .addGroup(JPanelAltaEdicionLayout.createSequentialGroup()
-                .addGap(25, 25, 25)
-                .addComponent(jLabelAltaEdicion, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jLabelEdicionNombre)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextEdicionNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jLabelEdicionDocente)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(choiceEdicionDocente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(19, 19, 19)
-                .addComponent(jLabelEdicionCupo)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextEdicionCupo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 19, Short.MAX_VALUE)
-                .addComponent(jLabelEdicionFInicio)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextEdicionFInicio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(22, 22, 22)
-                .addComponent(jLabelEdicionFFin)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextEdicionFFin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(205, 205, 205))
-            .addGroup(JPanelAltaEdicionLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(JPanelAltaEdicionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButtonGuardarEdicion)
-                    .addComponent(jButtonCancelarEdicion))
-                .addContainerGap())
-        );
-
-        JPanelConsultarEdicion.setPreferredSize(new java.awt.Dimension(772, 580));
-
-        javax.swing.GroupLayout JPanelConsultarEdicionLayout = new javax.swing.GroupLayout(JPanelConsultarEdicion);
-        JPanelConsultarEdicion.setLayout(JPanelConsultarEdicionLayout);
-        JPanelConsultarEdicionLayout.setHorizontalGroup(
-            JPanelConsultarEdicionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 792, Short.MAX_VALUE)
-        );
-        JPanelConsultarEdicionLayout.setVerticalGroup(
-            JPanelConsultarEdicionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 590, Short.MAX_VALUE)
-        );
-
         JPanelInscripcionEdicion.setPreferredSize(new java.awt.Dimension(772, 580));
 
         javax.swing.GroupLayout JPanelInscripcionEdicionLayout = new javax.swing.GroupLayout(JPanelInscripcionEdicion);
         JPanelInscripcionEdicion.setLayout(JPanelInscripcionEdicionLayout);
         JPanelInscripcionEdicionLayout.setHorizontalGroup(
             JPanelInscripcionEdicionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 792, Short.MAX_VALUE)
+            .addGap(0, 799, Short.MAX_VALUE)
         );
         JPanelInscripcionEdicionLayout.setVerticalGroup(
             JPanelInscripcionEdicionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 590, Short.MAX_VALUE)
+            .addGap(0, 594, Short.MAX_VALUE)
+        );
+
+        jDesktopPane1.setPreferredSize(new java.awt.Dimension(403, 244));
+
+        javax.swing.GroupLayout jDesktopPane1Layout = new javax.swing.GroupLayout(jDesktopPane1);
+        jDesktopPane1.setLayout(jDesktopPane1Layout);
+        jDesktopPane1Layout.setHorizontalGroup(
+            jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 403, Short.MAX_VALUE)
+        );
+        jDesktopPane1Layout.setVerticalGroup(
+            jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 244, Short.MAX_VALUE)
         );
 
         jMenuBar1.setToolTipText("");
@@ -872,6 +810,11 @@ public class MainJFrame extends javax.swing.JFrame {
         jMenuEdicionDeCurso.setText("Edición de Curso");
 
         jMenuItemCrearEdicionCurso.setText("Crear nueva");
+        jMenuItemCrearEdicionCurso.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemCrearEdicionCursoActionPerformed(evt);
+            }
+        });
         jMenuEdicionDeCurso.add(jMenuItemCrearEdicionCurso);
 
         jMenuItemConsultarEdicionCurso.setText("Consultar");
@@ -888,7 +831,7 @@ public class MainJFrame extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 784, Short.MAX_VALUE)
+            .addGap(0, 802, Short.MAX_VALUE)
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addContainerGap()
@@ -922,22 +865,17 @@ public class MainJFrame extends javax.swing.JFrame {
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addGap(0, 0, Short.MAX_VALUE)
-                    .addComponent(JPanelAltaEdicion, javax.swing.GroupLayout.DEFAULT_SIZE, 795, Short.MAX_VALUE)
+                    .addComponent(JPanelInscripcionEdicion, javax.swing.GroupLayout.DEFAULT_SIZE, 800, Short.MAX_VALUE)
                     .addGap(0, 0, Short.MAX_VALUE)))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
-                    .addComponent(JPanelConsultarEdicion, javax.swing.GroupLayout.DEFAULT_SIZE, 792, Short.MAX_VALUE)
-                    .addGap(0, 0, Short.MAX_VALUE)))
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
-                    .addComponent(JPanelInscripcionEdicion, javax.swing.GroupLayout.DEFAULT_SIZE, 792, Short.MAX_VALUE)
-                    .addGap(0, 0, Short.MAX_VALUE)))
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                    .addContainerGap(96, Short.MAX_VALUE)
+                    .addComponent(jDesktopPane1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addContainerGap(258, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 592, Short.MAX_VALUE)
+            .addGap(0, 596, Short.MAX_VALUE)
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addContainerGap()
@@ -970,19 +908,14 @@ public class MainJFrame extends javax.swing.JFrame {
                     .addContainerGap()))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
-                    .addGap(0, 2, Short.MAX_VALUE)
-                    .addComponent(JPanelAltaEdicion, javax.swing.GroupLayout.DEFAULT_SIZE, 592, Short.MAX_VALUE)
-                    .addGap(0, 2, Short.MAX_VALUE)))
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
                     .addGap(0, 0, Short.MAX_VALUE)
-                    .addComponent(JPanelConsultarEdicion, javax.swing.GroupLayout.DEFAULT_SIZE, 590, Short.MAX_VALUE)
+                    .addComponent(JPanelInscripcionEdicion, javax.swing.GroupLayout.DEFAULT_SIZE, 594, Short.MAX_VALUE)
                     .addGap(0, 0, Short.MAX_VALUE)))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
-                    .addComponent(JPanelInscripcionEdicion, javax.swing.GroupLayout.DEFAULT_SIZE, 590, Short.MAX_VALUE)
-                    .addGap(0, 0, Short.MAX_VALUE)))
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                    .addContainerGap(248, Short.MAX_VALUE)
+                    .addComponent(jDesktopPane1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addContainerGap(142, Short.MAX_VALUE)))
         );
 
         pack();
@@ -1013,6 +946,7 @@ public class MainJFrame extends javax.swing.JFrame {
         this.allJPanels.add(JPanelConsultarCursos);
         this.allJPanels.add(JPanelCrearPrograma);
         this.allJPanels.add(JPanelConsultarProgramas);
+        //this.allJPanels.add(JPanelConsultarEdicion);
         this.hideAllJPanels();
         System.out.println("Window Opened");
     }//GEN-LAST:event_formWindowOpened
@@ -1141,6 +1075,15 @@ public class MainJFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButtonConsultarProgramasRefreshActionPerformed
 
+    private void jMenuItemCrearEdicionCursoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemCrearEdicionCursoActionPerformed
+        System.out.println("CLICK ALTA EDICIÓN");
+        
+        SwingUtilities.invokeLater(() -> {
+        SeleccionarCursoJInternalFrame frame = new SeleccionarCursoJInternalFrame(jDesktopPane1);
+        showInternalFrame(frame);}
+        );
+    }//GEN-LAST:event_jMenuItemCrearEdicionCursoActionPerformed
+
     // Configurar el JSpinner para que maneje fechas (muestra Día, Mes y Año)
     private void hideAllJPanels() {
         for (JPanel panel : this.allJPanels) {
@@ -1194,29 +1137,24 @@ public class MainJFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JPanel JPanelAltaEdicion;
     private javax.swing.JPanel JPanelAltaUsuario;
     private javax.swing.JPanel JPanelConsultarCursos;
-    private javax.swing.JPanel JPanelConsultarEdicion;
     private javax.swing.JPanel JPanelConsultarProgramas;
     private javax.swing.JPanel JPanelConsultarUsuarios;
     private javax.swing.JPanel JPanelCrearCurso;
     private javax.swing.JPanel JPanelCrearPrograma;
     private javax.swing.JPanel JPanelInscripcionEdicion;
     private java.awt.Choice choiceCrearProgramaCursos;
-    private java.awt.Choice choiceEdicionDocente;
     private javax.swing.JButton jButtonAceptar;
     private javax.swing.JButton jButtonCancelar;
-    private javax.swing.JButton jButtonCancelarEdicion;
     private javax.swing.JButton jButtonConsultarCursosRefresh;
     private javax.swing.JButton jButtonConsultarProgramasRefresh;
     private javax.swing.JButton jButtonGuardarCurso;
-    private javax.swing.JButton jButtonGuardarEdicion;
     private javax.swing.JButton jButtonGuardarPrograma;
     private javax.swing.JComboBox<String> jComboBoxInstituto;
+    private javax.swing.JDesktopPane jDesktopPane1;
     private javax.swing.JFormattedTextField jFormattedTextFieldCrearProgramaFechaFin;
     private javax.swing.JFormattedTextField jFormattedTextFieldCrearProgramaFechaInicio;
-    private javax.swing.JLabel jLabelAltaEdicion;
     private javax.swing.JLabel jLabelAltaUsuario;
     private javax.swing.JLabel jLabelApellido;
     private javax.swing.JLabel jLabelCearProgramaNombre;
@@ -1235,11 +1173,6 @@ public class MainJFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabelCrearProgramaDesc;
     private javax.swing.JLabel jLabelCrearProgramaFechaFin;
     private javax.swing.JLabel jLabelCrearProgramaFechaInicio;
-    private javax.swing.JLabel jLabelEdicionCupo;
-    private javax.swing.JLabel jLabelEdicionDocente;
-    private javax.swing.JLabel jLabelEdicionFFin;
-    private javax.swing.JLabel jLabelEdicionFInicio;
-    private javax.swing.JLabel jLabelEdicionNombre;
     private javax.swing.JLabel jLabelEmail;
     private javax.swing.JLabel jLabelFechaNac;
     private javax.swing.JLabel jLabelImagen;
@@ -1278,10 +1211,6 @@ public class MainJFrame extends javax.swing.JFrame {
     private javax.swing.JTextField jTextCrearCursoNombre;
     private javax.swing.JTextField jTextCrearCursoUrl;
     private javax.swing.JTextField jTextCrearProgramaNombre;
-    private javax.swing.JTextField jTextEdicionCupo;
-    private javax.swing.JTextField jTextEdicionFFin;
-    private javax.swing.JTextField jTextEdicionFInicio;
-    private javax.swing.JTextField jTextEdicionNombre;
     private javax.swing.JTextField jTextFieldApellido;
     private javax.swing.JTextField jTextFieldEmail;
     private javax.swing.JTextField jTextFieldNickname;

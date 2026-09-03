@@ -5,15 +5,15 @@ import java.util.Set;
 
 public class DataEdicionCurso {
     private String nombreEdi;
-    private DataCurso cursoAsoc;
+    private Set<DataCurso> cursoAsoc;
     private LocalDate fechaInicio;
     private LocalDate fechaFin;
-    private Integer  cupo;
+    private Integer cupo;
     private Set<DataDocente> docentes;
     private Set<DataInscEdicion> inscripciones;
     private LocalDate fechaPub;
     
-    public DataEdicionCurso(String nombreEdi, DataCurso cursoAsoc, LocalDate fechaInicio, LocalDate fechaFin, Integer cupo, Set<DataDocente> docentes, Set<DataInscEdicion> inscripciones, LocalDate fechaPub) {
+    public DataEdicionCurso(String nombreEdi, Set<DataCurso> cursoAsoc, LocalDate fechaInicio, LocalDate fechaFin, Integer cupo, Set<DataDocente> docentes, Set<DataInscEdicion> inscripciones, LocalDate fechaPub) {
         this.nombreEdi = nombreEdi;
         this.cursoAsoc = cursoAsoc;
         this.fechaInicio = fechaInicio;
@@ -32,11 +32,11 @@ public class DataEdicionCurso {
         this.nombreEdi = nombreEdi;
     }
 
-    public DataCurso getCursoAsoc() {
+    public Set<DataCurso> getCursoAsoc() {
         return cursoAsoc;
     }
 
-    public void setCursoAsoc(DataCurso cursoAsoc) {
+    public void setCursoAsoc(Set<DataCurso> cursoAsoc) {
         this.cursoAsoc = cursoAsoc;
     }
 

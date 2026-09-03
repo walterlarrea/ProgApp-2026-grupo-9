@@ -13,7 +13,9 @@ public class Usuario implements Serializable{
     private String email;
     private LocalDate fechaNac;
     private String imagen;
-
+    
+    public Usuario(){}
+    
     public Usuario(String nickname, String nombre, String apellido, String email, LocalDate fechaNac) {
         this.nickname = nickname;
         this.nombre = nombre;
