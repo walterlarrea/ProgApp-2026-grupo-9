@@ -2,6 +2,7 @@ package com.grupo9.edext.grupo9.servidor_central.controller.edicion_de_curso;
 
 import com.grupo9.edext.grupo9.mensajes.ErrorNoExiste;
 import com.grupo9.edext.grupo9.mensajes.ErrorRepetidos;
+import com.grupo9.edext.grupo9.servidor_central.controller.DtoMapper;
 import com.grupo9.edext.grupo9.servidor_central.controller.curso.Curso;
 import com.grupo9.edext.grupo9.servidor_central.controller.usuario.Docente;
 import com.grupo9.edext.grupo9.servidor_central.controller.usuario.ManejadorEstudiantes;
@@ -81,6 +82,10 @@ public class EdicionCursoController implements IEdicionCurso {
                 );
             datosCursosAsoc.add(datosCurAsoc);
             }
+            Curso curso = ed.getCursoAsoc();
+            //para que funcione DataCurso
+            DataCurso datosCurAsoc = new DataCurso(DtoMapper.toData(curso.getInstituto()), curso.getNombreCurso(), curso.getDescCurso(), curso.getDuracion(), curso.getCantHoras(), curso.getCantCred(), curso.getFechaReg(), curso.getUrl());
+
             //para obtener los inscriptos
             Set<DataInscEdicion> datosInscriptos = new HashSet<>();
             for(InscEdicion inscriptos : ed.getInscripciones()){
