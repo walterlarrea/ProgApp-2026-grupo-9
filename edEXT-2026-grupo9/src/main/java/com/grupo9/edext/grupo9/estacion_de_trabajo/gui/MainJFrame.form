@@ -194,21 +194,21 @@
           <Group type="103" rootIndex="7" groupAlignment="0" attributes="0">
               <Group type="102" attributes="0">
                   <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                  <Component id="JPanelAltaEdicion" pref="795" max="32767" attributes="0"/>
+                  <Component id="JPanelAltaEdicion" pref="797" max="32767" attributes="0"/>
                   <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
               </Group>
           </Group>
           <Group type="103" rootIndex="8" groupAlignment="0" attributes="0">
               <Group type="102" attributes="0">
                   <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                  <Component id="JPanelConsultarEdicion" pref="792" max="32767" attributes="0"/>
+                  <Component id="JPanelConsultarEdicion" pref="795" max="32767" attributes="0"/>
                   <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
               </Group>
           </Group>
           <Group type="103" rootIndex="9" groupAlignment="0" attributes="0">
               <Group type="102" attributes="0">
                   <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                  <Component id="JPanelInscripcionEdicion" pref="792" max="32767" attributes="0"/>
+                  <Component id="JPanelInscripcionEdicion" pref="795" max="32767" attributes="0"/>
                   <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
               </Group>
           </Group>
@@ -265,21 +265,21 @@
           <Group type="103" rootIndex="7" groupAlignment="0" attributes="0">
               <Group type="102" attributes="0">
                   <EmptySpace min="0" pref="2" max="32767" attributes="0"/>
-                  <Component id="JPanelAltaEdicion" pref="592" max="32767" attributes="0"/>
+                  <Component id="JPanelAltaEdicion" pref="599" max="32767" attributes="0"/>
                   <EmptySpace min="0" pref="2" max="32767" attributes="0"/>
               </Group>
           </Group>
           <Group type="103" rootIndex="8" groupAlignment="0" attributes="0">
               <Group type="102" attributes="0">
                   <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                  <Component id="JPanelConsultarEdicion" pref="590" max="32767" attributes="0"/>
+                  <Component id="JPanelConsultarEdicion" pref="599" max="32767" attributes="0"/>
                   <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
               </Group>
           </Group>
           <Group type="103" rootIndex="9" groupAlignment="0" attributes="0">
               <Group type="102" attributes="0">
                   <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                  <Component id="JPanelInscripcionEdicion" pref="590" max="32767" attributes="0"/>
+                  <Component id="JPanelInscripcionEdicion" pref="599" max="32767" attributes="0"/>
                   <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
               </Group>
           </Group>
@@ -489,7 +489,7 @@
             </Property>
             <Property name="text" type="java.lang.String" value="Seleccioner Foto de Perfil"/>
             <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
-              <Color id="Cursor Por defecto"/>
+              <Color id="Default Cursor"/>
             </Property>
           </Properties>
           <Events>

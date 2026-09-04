@@ -1180,6 +1180,9 @@ public class MainJFrame extends javax.swing.JFrame {
         this.allJPanels.add(JPanelCrearPrograma);
         this.allJPanels.add(JPanelConsultarProgramas);
         this.allJPanels.add(jPanelGestionarInstitutos);
+        this.allJPanels.add(JPanelAltaEdicion);
+        this.allJPanels.add(JPanelConsultarEdicion);
+        this.allJPanels.add(JPanelInscripcionEdicion);
         this.hideAllJPanels();
         System.out.println("Window Opened");
     }//GEN-LAST:event_formWindowOpened
