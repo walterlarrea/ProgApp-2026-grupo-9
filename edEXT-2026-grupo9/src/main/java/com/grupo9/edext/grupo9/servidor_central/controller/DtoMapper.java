@@ -130,10 +130,6 @@ public class DtoMapper {
     
     // Ediciones de cursos
     public static EdicionCurso toEntity(DataEdicionCurso dataEdicion) {
-        Set<Curso> cursos = new HashSet<>();
-        for(DataCurso dataCurso : dataEdicion.getCursoAsoc()) {
-            cursos.add(toEntity(dataCurso));
-        }
         // Docentes
         Set<Docente> docentes = new HashSet<>();
         for(DataDocente dataDocente : dataEdicion.getDocentes()) {
@@ -144,7 +140,7 @@ public class DtoMapper {
         
         return new EdicionCurso(
             dataEdicion.getNombreEdi(),
-            cursos,
+            toEntity(dataEdicion.getCursoAsoc()),
             dataEdicion.getFechaInicio(),
             dataEdicion.getFechaFin(),
             dataEdicion.getCupo(),
@@ -154,11 +150,6 @@ public class DtoMapper {
     }
     
     public static DataEdicionCurso toData(EdicionCurso edicion) {
-        // Cursos asociados
-        Set<DataCurso> cursos = new HashSet<>();
-        for(Curso curso : edicion.getCursoAsoc()) {
-            cursos.add(toData(curso));
-        }
         // Docentes
         Set<DataDocente> docentes = new HashSet<>();
         for(Docente docente : edicion.getDocentes()) {
@@ -181,7 +172,7 @@ public class DtoMapper {
 
         return new DataEdicionCurso(
             edicion.getNombreEdi(),
-            cursos,
+            toData(edicion.getCursoAsoc()),
             edicion.getFechaInicio(),
             edicion.getFechaFin(),
             edicion.getCupo(),

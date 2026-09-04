@@ -1114,7 +1114,6 @@ public class MainJFrame extends javax.swing.JFrame {
         this.allJPanels.add(JPanelCrearPrograma);
         this.allJPanels.add(JPanelConsultarProgramas);
         this.allJPanels.add(jPanelGestionarInstitutos);
-        // this.allJPanels.add(JPanelAltaEdicion);
         // this.allJPanels.add(JPanelConsultarEdicion);
         this.allJPanels.add(JPanelInscripcionEdicion);
         this.hideAllJPanels();
@@ -1302,7 +1301,6 @@ public class MainJFrame extends javax.swing.JFrame {
         this.actualizarTablaDeInstitutos(institutos);
     }//GEN-LAST:event_jButtonConsultarInstitutosRefreshActionPerformed
     private void jMenuItemCrearEdicionCursoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemCrearEdicionCursoActionPerformed
-        System.out.println("CLICK ALTA EDICIÓN");
         
         SwingUtilities.invokeLater(() -> {
         SeleccionarCursoJInternalFrame frame = new SeleccionarCursoJInternalFrame(jDesktopPane1);

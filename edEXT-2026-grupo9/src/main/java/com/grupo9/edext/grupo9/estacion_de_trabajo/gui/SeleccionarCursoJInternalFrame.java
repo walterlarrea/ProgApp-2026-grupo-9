@@ -2,10 +2,18 @@ package com.grupo9.edext.grupo9.estacion_de_trabajo.gui;
 
 import com.grupo9.edext.grupo9.estacion_de_trabajo.gui.AltaEdicionJInternalFrame;
 import com.grupo9.edext.grupo9.servidor_central.controller.curso.Curso;
+import com.grupo9.edext.grupo9.servidor_central.controller.curso.ManejadorCurso;
+import com.grupo9.edext.grupo9.servidor_central.controller.instituto.ManejadorInstituto;
+import com.grupo9.edext.grupo9.servidor_central.controller.instituto.Instituto;
+import com.grupo9.edext.grupo9.servidor_central.dominio.DataInstituto;
+import com.grupo9.edext.grupo9.servidor_central.controller.DtoMapper;
 import javax.swing.*;
+import java.util.*;
 
 public class SeleccionarCursoJInternalFrame extends javax.swing.JInternalFrame {
     private JDesktopPane jDesktopPane;
+    private List<Curso> cursos;
+    private List<Instituto> institutos;
     
     public SeleccionarCursoJInternalFrame(JDesktopPane jDesktopPane) {
         initComponents();
@@ -13,6 +21,8 @@ public class SeleccionarCursoJInternalFrame extends javax.swing.JInternalFrame {
         setTitle("Selección de Curso");
         setClosable(true);
         setResizable(true);
+        cargarInstitutos();
+        jComboBoxCurso.removeAllItems();
     }
 
     /**
@@ -41,8 +51,10 @@ public class SeleccionarCursoJInternalFrame extends javax.swing.JInternalFrame {
         jButtonSeleccionar.addActionListener(this::jButtonSeleccionarActionPerformed);
 
         jComboBoxCurso.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBoxCurso.addActionListener(this::jComboBoxCursoActionPerformed);
 
         jComboBoxInstituto.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBoxInstituto.addActionListener(this::jComboBoxInstitutoActionPerformed);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -90,13 +102,57 @@ public class SeleccionarCursoJInternalFrame extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonSeleccionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSeleccionarActionPerformed
-        Curso cursoSeleccionado = (Curso) jComboBoxCurso.getSelectedItem();
+        int indice = jComboBoxCurso.getSelectedIndex();
+        if (indice == -1) {
+            return;
+        }
+        Curso cursoSeleccionado = cursos.get(indice);
         AltaEdicionJInternalFrame alta = new AltaEdicionJInternalFrame(cursoSeleccionado);
         jDesktopPane.add(alta);
         alta.setVisible(true);
-    this.dispose();
+        this.dispose();
     }//GEN-LAST:event_jButtonSeleccionarActionPerformed
 
+    private void jComboBoxInstitutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxInstitutoActionPerformed
+        int indice = jComboBoxInstituto.getSelectedIndex();
+        if (indice == -1) {
+            return;
+        }
+        Instituto institutoSeleccionado = institutos.get(indice);
+        obtenerCursosDelInstituto(institutoSeleccionado);
+    }//GEN-LAST:event_jComboBoxInstitutoActionPerformed
+
+    private void jComboBoxCursoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxCursoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jComboBoxCursoActionPerformed
+
+    private void cargarInstitutos() {
+        institutos = new ArrayList<>();
+        HashSet<DataInstituto> datosInstitutos = ManejadorInstituto.getInstance().traerTodos();
+        for(DataInstituto data : datosInstitutos) {
+            institutos.add(DtoMapper.toEntity(data));
+        }
+        jComboBoxInstituto.removeAllItems();
+        for (Instituto instituto : institutos) {
+            jComboBoxInstituto.addItem(instituto.getNombreI());
+        }
+    }
+    
+    private void obtenerCursosDelInstituto(Instituto inst){
+        cursos = new ArrayList<>();
+        HashSet<Curso> todosLosCursos = ManejadorCurso.getInstance().traerTodosEntidades();
+        for (Curso curso : todosLosCursos) {
+            if (curso.getInstituto() != null && curso.getInstituto().getNombreI().equals(inst.getNombreI())) {
+                cursos.add(curso);
+            }
+        }
+        // Limpiamos el combo antes de cargar los nuevos cursos
+        jComboBoxCurso.removeAllItems();
+        for (Curso curso : cursos) {
+            jComboBoxCurso.addItem(curso.getNombreCurso());
+        }
+    }
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonSeleccionar;

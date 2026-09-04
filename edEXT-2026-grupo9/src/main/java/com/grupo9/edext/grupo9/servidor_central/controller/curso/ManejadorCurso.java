@@ -66,4 +66,22 @@ public class ManejadorCurso {
             throw e;
         }
     }
+    
+    public HashSet<Curso> traerTodosEntidades() {
+    try {
+        CriteriaBuilder cBuilder = em.getCriteriaBuilder();
+        CriteriaQuery<Curso> cQuery = cBuilder.createQuery(Curso.class);
+        Root<Curso> rootEntry = cQuery.from(Curso.class);
+        cQuery.select(rootEntry);
+        TypedQuery<Curso> queryTodo = em.createQuery(cQuery);
+        HashSet<Curso> cursos = new HashSet<>();
+        
+        for (Curso curso : queryTodo.getResultList()) {
+            cursos.add(curso);
+        }
+        return cursos;
+    } catch (Exception e) {
+        throw e;
+    }
+}
 }

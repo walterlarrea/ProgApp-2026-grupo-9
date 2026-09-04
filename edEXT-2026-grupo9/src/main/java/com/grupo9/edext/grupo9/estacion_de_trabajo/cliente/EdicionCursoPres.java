@@ -16,11 +16,11 @@ public class EdicionCursoPres {
     
     public EdicionCursoPres(){}
 
-    public void guardarNuevaEdicion(String nombreEdi, Set<DataCurso> cursos, LocalDate fechaInicio, LocalDate fechaFin, Integer cupo, Set<DataDocente> docentes){
+    public void guardarNuevaEdicion(String nombreEdi, DataCurso curso, LocalDate fechaInicio, LocalDate fechaFin, Integer cupo, Set<DataDocente> docentes){
         System.out.println("[CLIENTE] Llamada al servidor central: " + nombreEdi);
         DataEdicionCurso nuevaEdicion = new DataEdicionCurso(
             nombreEdi,
-            cursos,
+            curso,
             fechaInicio,
             fechaFin,
             cupo,

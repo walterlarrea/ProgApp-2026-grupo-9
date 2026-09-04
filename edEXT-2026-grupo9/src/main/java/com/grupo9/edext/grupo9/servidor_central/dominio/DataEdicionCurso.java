@@ -5,7 +5,7 @@ import java.util.Set;
 
 public class DataEdicionCurso {
     private String nombreEdi;
-    private Set<DataCurso> cursoAsoc;
+    private DataCurso cursoAsoc;
     private LocalDate fechaInicio;
     private LocalDate fechaFin;
     private Integer cupo;
@@ -13,7 +13,7 @@ public class DataEdicionCurso {
     private Set<DataInscEdicion> inscripciones;
     private LocalDate fechaPub;
     
-    public DataEdicionCurso(String nombreEdi, Set<DataCurso> cursoAsoc, LocalDate fechaInicio, LocalDate fechaFin, Integer cupo, Set<DataDocente> docentes, Set<DataInscEdicion> inscripciones, LocalDate fechaPub) {
+    public DataEdicionCurso(String nombreEdi, DataCurso cursoAsoc, LocalDate fechaInicio, LocalDate fechaFin, Integer cupo, Set<DataDocente> docentes, Set<DataInscEdicion> inscripciones, LocalDate fechaPub) {
         this.nombreEdi = nombreEdi;
         this.cursoAsoc = cursoAsoc;
         this.fechaInicio = fechaInicio;
@@ -32,11 +32,11 @@ public class DataEdicionCurso {
         this.nombreEdi = nombreEdi;
     }
 
-    public Set<DataCurso> getCursoAsoc() {
+    public DataCurso getCursoAsoc() {
         return cursoAsoc;
     }
 
-    public void setCursoAsoc(Set<DataCurso> cursoAsoc) {
+    public void setCursoAsoc(DataCurso cursoAsoc) {
         this.cursoAsoc = cursoAsoc;
     }
 

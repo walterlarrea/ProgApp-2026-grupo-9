@@ -10,12 +10,12 @@ import jakarta.persistence.*;
 public class EdicionCurso {
     @Id
     private String nombreEdi;
-    @ManyToMany
+    @ManyToOne
     @JoinTable(
     name = "edicion_curso",
     joinColumns = @JoinColumn(name = "edicion_nombreEdi"),
     inverseJoinColumns = @JoinColumn(name = "curso_nombreCurso"))
-    private Set<Curso> cursoAsoc;
+    private Curso cursoAsoc;
     private LocalDate fechaInicio;
     private LocalDate fechaFin;
     private Integer cupo;
@@ -30,7 +30,7 @@ public class EdicionCurso {
     
     public EdicionCurso(){}
     
-    public EdicionCurso(String nombreEdi, Set<Curso> cursoAsoc, LocalDate fechaInicio, LocalDate fechaFin, Integer cupo, Set<Docente> docentes, Set<InscEdicion> inscripciones, LocalDate fechaPub) {
+    public EdicionCurso(String nombreEdi, Curso cursoAsoc, LocalDate fechaInicio, LocalDate fechaFin, Integer cupo, Set<Docente> docentes, Set<InscEdicion> inscripciones, LocalDate fechaPub) {
         this.nombreEdi = nombreEdi;
        this.cursoAsoc = cursoAsoc;
         this.fechaInicio = fechaInicio;
@@ -49,11 +49,11 @@ public class EdicionCurso {
         this.nombreEdi = nombreEdi;
     }
 
-   public Set<Curso> getCursoAsoc() {
+   public Curso getCursoAsoc() {
        return cursoAsoc;
    }
 
-   public void setCursoAsoc(Set<Curso> cursoAsoc) {
+   public void setCursoAsoc(Curso cursoAsoc) {
        this.cursoAsoc = cursoAsoc;
    }
 
