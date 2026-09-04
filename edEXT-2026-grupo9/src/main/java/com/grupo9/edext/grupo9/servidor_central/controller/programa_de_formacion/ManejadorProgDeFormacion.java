@@ -58,7 +58,7 @@ public class ManejadorProgDeFormacion {
             
             HashSet<DataProgramaFormacion> programas = new HashSet();
             for(ProgramaDeFormacion programa: queryTodo.getResultList()){
-                programas.add(DtoMapper.toData(programa));
+                programas.add(DtoMapper.ProgramadeFormToDTOProgramadeForm(programa));
             }
             return programas;
         }catch(Exception e){

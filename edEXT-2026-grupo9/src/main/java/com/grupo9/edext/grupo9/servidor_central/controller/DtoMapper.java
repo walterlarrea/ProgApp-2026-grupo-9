@@ -4,10 +4,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.grupo9.edext.grupo9.servidor_central.controller.curso.Curso;
-import com.grupo9.edext.grupo9.servidor_central.controller.instituto.Instituto;
 import com.grupo9.edext.grupo9.servidor_central.controller.programa_de_formacion.ProgramaDeFormacion;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataCurso;
-import com.grupo9.edext.grupo9.servidor_central.dominio.DataInstituto;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataProgramaFormacion;
 import com.grupo9.edext.grupo9.servidor_central.controller.edicion_de_curso.EdicionCurso;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataEdicionCurso;
@@ -22,11 +20,8 @@ public class DtoMapper {
 
     //Cursos
     public static Curso toEntity(DataCurso dataCurso){
-        if(dataCurso == null){
-            return null;
-        }
         Curso curso = new Curso(
-                toEntity(dataCurso.instituto()),
+                dataCurso.nombreInst(),
                 dataCurso.nombreCurso(),
                 dataCurso.descCurso(),
                 dataCurso.duracion(),
@@ -40,11 +35,8 @@ public class DtoMapper {
     }
 
     public static DataCurso toData(Curso curso){
-        if(curso == null){
-            return null;
-        }
         DataCurso dataCurso = new DataCurso(
-                toData(curso.getInstituto()),
+                curso.getNombreInst(),
                 curso.getNombreCurso(),
                 curso.getDescCurso(),
                 curso.getDuracion(),
@@ -59,10 +51,7 @@ public class DtoMapper {
     
     // Programas de Formación
 
-    public static ProgramaDeFormacion toEntity(DataProgramaFormacion dataPrograma){
-        if(dataPrograma == null){
-            return null;
-        }
+    public static ProgramaDeFormacion toData(DataProgramaFormacion dataPrograma){
         Set<Curso> cursos = new HashSet<>();
         for(DataCurso dataCurso : dataPrograma.cursos()) {
             cursos.add(toEntity(dataCurso));
@@ -79,14 +68,9 @@ public class DtoMapper {
         return programa;
     }
 
-    public static DataProgramaFormacion toData(ProgramaDeFormacion programa){
-        if(programa == null){
-            return null;
-        }
-        
+    public static DataProgramaFormacion ProgramadeFormToDTOProgramadeForm(ProgramaDeFormacion programa){
         Set<DataCurso> cursos = new HashSet<>();
-
-        for (Curso curso : programa.getCursos()) {
+        for(Curso curso : programa.getCursos()) {
             cursos.add(toData(curso));
         }
 
@@ -181,30 +165,5 @@ public class DtoMapper {
             docente.getEmail(),
             docente.getFechaNac(),
             docente.getNombreInst());
-    // Institutos
-    
- 
-    public static Instituto toEntity(DataInstituto dataInstituto){
-        if(dataInstituto == null){
-            return null;
-        }
-
-        Instituto instituto = new Instituto(
-                dataInstituto.nombreI()
-        );
-        
-        return instituto;
-    }
-
-    public static DataInstituto toData(Instituto instituto){
-        if(instituto == null){
-            return null;
-        }
-        
-        DataInstituto dataInstituto = new DataInstituto(
-                instituto.getNombreI()
-        );
-        
-        return dataInstituto;
     }
 }
