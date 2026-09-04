@@ -11,12 +11,6 @@ public class Instituto implements Serializable{
     @Id
     private String nombreI;
     
-    public Instituto(){}
-    
-    public Instituto(String nombre){
-        this.nombreI = nombre;
-    }
-    
     public String getNombreI() {
         return nombreI;
     }

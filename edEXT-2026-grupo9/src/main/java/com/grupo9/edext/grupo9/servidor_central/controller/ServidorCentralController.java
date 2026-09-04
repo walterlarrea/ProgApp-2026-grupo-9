@@ -8,11 +8,9 @@ import com.grupo9.edext.grupo9.servidor_central.controller.edicion_de_curso.IEdi
 import com.grupo9.edext.grupo9.servidor_central.controller.edicion_de_curso.EdicionCursoController;
 import com.grupo9.edext.grupo9.servidor_central.controller.curso.ICurso;
 import com.grupo9.edext.grupo9.servidor_central.controller.curso.CursoController;
-import com.grupo9.edext.grupo9.servidor_central.controller.instituto.IInstituto;
-import com.grupo9.edext.grupo9.servidor_central.controller.instituto.InstitutoController;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataCurso;
-import com.grupo9.edext.grupo9.servidor_central.dominio.DataInstituto;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataProgramaFormacion;
+import com.grupo9.edext.grupo9.servidor_central.dominio.DataEdicionCurso;
 import java.util.HashSet;
 /**
  *
@@ -22,7 +20,6 @@ public class ServidorCentralController implements IServidorCentral {
     private final IProgramaDeFormacion progDeFormacionCtrl = new ProgramaDeFormacionController();
     private final IEdicionCurso edicionCursoCtrl = new EdicionCursoController();
     private final ICurso cursoCtrl = new CursoController();
-    private final IInstituto institutoCtrl = new InstitutoController();
     
     
     // Step 1: Private constructor prevents instantiation from other classes
@@ -62,8 +59,8 @@ public class ServidorCentralController implements IServidorCentral {
     
     // Ediciones de Cursos
     @Override
-    public void guardarEdicionCurso(){
-        this.edicionCursoCtrl.guardarNuevaEdicionCurso();
+    public DataEdicionCurso guardarEdicionCurso(DataEdicionCurso nuevaEdicion){
+        return this.edicionCursoCtrl.guardarNuevaEdicionCurso(nuevaEdicion);
     }
     
     // Cursos
@@ -75,16 +72,5 @@ public class ServidorCentralController implements IServidorCentral {
     @Override
     public HashSet<DataCurso> consultarTodosLosCursos(){
         return this.cursoCtrl.todosLosCursos();
-    }
-
-    // Institutos
-    @Override
-    public DataInstituto guardarInstituto(DataInstituto nuevoInstituto){
-        return this.institutoCtrl.guardarNuevoInstituto(nuevoInstituto);
-    }
-    
-    @Override
-    public HashSet<DataInstituto> consultarTodosLosInstitutos(){
-        return this.institutoCtrl.todosLosInstitutos();
     }
 }
