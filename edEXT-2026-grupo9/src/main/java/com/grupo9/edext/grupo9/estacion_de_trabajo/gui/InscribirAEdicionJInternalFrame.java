@@ -4,6 +4,7 @@
  */
 package com.grupo9.edext.grupo9.estacion_de_trabajo.gui;
 
+import com.grupo9.edext.grupo9.servidor_central.controller.curso.Curso;
 import static java.awt.Frame.ICONIFIED;
 
 /**
@@ -11,12 +12,17 @@ import static java.awt.Frame.ICONIFIED;
  * @author ivomaciel
  */
 public class InscribirAEdicionJInternalFrame extends javax.swing.JInternalFrame {
-
-    public InscribirAEdicionJInternalFrame() {
+    private Curso cursoSeleccionado;
+    
+    public InscribirAEdicionJInternalFrame(Curso cursoSeleccionado) {
         initComponents();
+        this.cursoSeleccionado = cursoSeleccionado;
         jSpinnerFechaInsc.setModel(new javax.swing.SpinnerDateModel(new java.util.Date(), null, null, ICONIFIED));
         javax.swing.JSpinner.DateEditor editor1 = new javax.swing.JSpinner.DateEditor(jSpinnerFechaInsc, "dd/MM/yyyy");
         jSpinnerFechaInsc.setEditor(editor1);
+        setTitle("Inscripción");
+        setClosable(true);
+        setResizable(true);
     }
 
     /**
@@ -28,7 +34,6 @@ public class InscribirAEdicionJInternalFrame extends javax.swing.JInternalFrame 
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabelInscEdi = new javax.swing.JLabel();
         jLabelNombreEdi = new javax.swing.JLabel();
         jComboBoxNombreEdi = new javax.swing.JComboBox<>();
         jLabelEstudiante = new javax.swing.JLabel();
@@ -38,13 +43,11 @@ public class InscribirAEdicionJInternalFrame extends javax.swing.JInternalFrame 
         jButtonGuardarInscripcion = new javax.swing.JButton();
         jButtonCancelarInscripcion = new javax.swing.JButton();
 
-        jLabelInscEdi.setText("Inscripción a Edición");
-
-        jLabelNombreEdi.setText("Ediciones vigentes:");
+        jLabelNombreEdi.setText("Edición");
 
         jComboBoxNombreEdi.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
-        jLabelEstudiante.setText("Nombre del estudiante:");
+        jLabelEstudiante.setText("Estudiante");
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
@@ -61,53 +64,44 @@ public class InscribirAEdicionJInternalFrame extends javax.swing.JInternalFrame 
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabelInscEdi)
-                                    .addComponent(jLabelNombreEdi, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabelEstudiante)
-                                    .addComponent(jComboBoxNombreEdi, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 140, Short.MAX_VALUE))
+                        .addGap(0, 248, Short.MAX_VALUE)
+                        .addComponent(jButtonCancelarInscripcion)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jButtonGuardarInscripcion))
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jSpinnerFechaInsc, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel1)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(0, 0, Short.MAX_VALUE)
-                                .addComponent(jButtonCancelarInscripcion)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jButtonGuardarInscripcion))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jSpinnerFechaInsc, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel1))
-                                .addGap(0, 0, Short.MAX_VALUE)))))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jLabelEstudiante, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jLabelNombreEdi, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jComboBox1, 0, 250, Short.MAX_VALUE)
+                                    .addComponent(jComboBoxNombreEdi, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabelInscEdi)
-                .addGap(24, 24, 24)
-                .addComponent(jLabelNombreEdi)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jComboBoxNombreEdi, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabelEstudiante)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(12, 12, 12)
+                .addGap(27, 27, 27)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jComboBoxNombreEdi, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabelNombreEdi))
+                .addGap(37, 37, 37)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabelEstudiante)
+                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(37, 37, 37)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSpinnerFechaInsc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButtonGuardarInscripcion)
                     .addComponent(jButtonCancelarInscripcion))
@@ -133,7 +127,6 @@ public class InscribirAEdicionJInternalFrame extends javax.swing.JInternalFrame 
     private javax.swing.JComboBox<String> jComboBoxNombreEdi;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabelEstudiante;
-    private javax.swing.JLabel jLabelInscEdi;
     private javax.swing.JLabel jLabelNombreEdi;
     private javax.swing.JSpinner jSpinnerFechaInsc;
     // End of variables declaration//GEN-END:variables
