@@ -17,15 +17,13 @@ public class AltaEdicionJInternalFrame extends javax.swing.JInternalFrame {
         setTitle("Alta de Edición");
         setClosable(true);
         setResizable(true);
-    }
-    public AltaEdicionJInternalFrame() {
-        initComponents();
-        jSpinnerEdicionFInicio.setModel(new javax.swing.SpinnerDateModel(new java.util.Date(), null, null, ICONIFIED));
+        jSpinnerEdicionFInicio.setModel(new javax.swing.SpinnerDateModel(new java.util.Date(), null, null, java.util.Calendar.DAY_OF_MONTH));
         javax.swing.JSpinner.DateEditor editor1 = new javax.swing.JSpinner.DateEditor(jSpinnerEdicionFInicio, "dd/MM/yyyy");
         jSpinnerEdicionFInicio.setEditor(editor1);
-        jSpinnerEdicionFFin.setModel(new javax.swing.SpinnerDateModel(new java.util.Date(), null, null, ICONIFIED));
+        jSpinnerEdicionFFin.setModel(new javax.swing.SpinnerDateModel(new java.util.Date(), null, null, java.util.Calendar.DAY_OF_MONTH));
         javax.swing.JSpinner.DateEditor editor2 = new javax.swing.JSpinner.DateEditor(jSpinnerEdicionFFin, "dd/MM/yyyy");
         jSpinnerEdicionFFin.setEditor(editor2);
+        pack();
     }
 
     /**
@@ -49,7 +47,8 @@ public class AltaEdicionJInternalFrame extends javax.swing.JInternalFrame {
         jLabelEdicionCupo = new javax.swing.JLabel();
         jTextEdicionCupo = new javax.swing.JTextField();
         jButtonGuardarEdicion = new javax.swing.JButton();
-        jButtonCancelarEdicion = new javax.swing.JButton();
+
+        setPreferredSize(new java.awt.Dimension(380, 420));
 
         jLabelAltaEdicion.setText("Crear Edición");
         jLabelAltaEdicion.setMaximumSize(new java.awt.Dimension(83, 16));
@@ -74,9 +73,6 @@ public class AltaEdicionJInternalFrame extends javax.swing.JInternalFrame {
         jButtonGuardarEdicion.setText("Guardar");
         jButtonGuardarEdicion.addActionListener(this::jButtonGuardarEdicionActionPerformed);
 
-        jButtonCancelarEdicion.setText("Cancelar");
-        jButtonCancelarEdicion.addActionListener(this::jButtonCancelarEdicionActionPerformed);
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -95,11 +91,9 @@ public class AltaEdicionJInternalFrame extends javax.swing.JInternalFrame {
                     .addComponent(jTextEdicionCupo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jTextEdicionNombre, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
                     .addComponent(choiceEdicionDocente, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(134, Short.MAX_VALUE))
+                .addContainerGap(108, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButtonCancelarEdicion)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jButtonGuardarEdicion)
                 .addContainerGap())
         );
@@ -129,9 +123,7 @@ public class AltaEdicionJInternalFrame extends javax.swing.JInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jTextEdicionCupo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButtonGuardarEdicion)
-                    .addComponent(jButtonCancelarEdicion))
+                .addComponent(jButtonGuardarEdicion)
                 .addContainerGap())
         );
 
@@ -153,14 +145,9 @@ public class AltaEdicionJInternalFrame extends javax.swing.JInternalFrame {
         System.out.println("[GUI] Docente: " + docente);
     }//GEN-LAST:event_jButtonGuardarEdicionActionPerformed
 
-    private void jButtonCancelarEdicionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCancelarEdicionActionPerformed
-
-    }//GEN-LAST:event_jButtonCancelarEdicionActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private java.awt.Choice choiceEdicionDocente;
-    private javax.swing.JButton jButtonCancelarEdicion;
     private javax.swing.JButton jButtonGuardarEdicion;
     private javax.swing.JLabel jLabelAltaEdicion;
     private javax.swing.JLabel jLabelEdicionCupo;

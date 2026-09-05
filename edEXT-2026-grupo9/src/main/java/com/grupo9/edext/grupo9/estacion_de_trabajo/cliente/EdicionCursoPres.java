@@ -6,9 +6,8 @@ import com.grupo9.edext.grupo9.servidor_central.dominio.DataDocente;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataEdicionCurso;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataInscEdicion;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataCurso;
-import com.grupo9.edext.grupo9.mensajes.ErrorRepetidos;
+import com.grupo9.edext.grupo9.mensajes.ErrorNoExiste;
 import java.time.LocalDate;
-import java.util.Set;
 import java.util.HashSet;
 
 public class EdicionCursoPres {
@@ -16,7 +15,7 @@ public class EdicionCursoPres {
     
     public EdicionCursoPres(){}
 
-    public void guardarNuevaEdicion(String nombreEdi, DataCurso curso, LocalDate fechaInicio, LocalDate fechaFin, Integer cupo, Set<DataDocente> docentes){
+    public void guardarNuevaEdicion(String nombreEdi, DataCurso curso, LocalDate fechaInicio, LocalDate fechaFin, Integer cupo, DataDocente docente){
         System.out.println("[CLIENTE] Llamada al servidor central: " + nombreEdi);
         DataEdicionCurso nuevaEdicion = new DataEdicionCurso(
             nombreEdi,
@@ -24,7 +23,7 @@ public class EdicionCursoPres {
             fechaInicio,
             fechaFin,
             cupo,
-            docentes,
+            docente,
             new HashSet<>(),
             LocalDate.now());
         DataEdicionCurso edicionCreada = servidorCentral.guardarEdicionCurso(nuevaEdicion);
@@ -33,5 +32,11 @@ public class EdicionCursoPres {
         }else{
             System.out.println("[CLIENTE] La Edición "+ nombreEdi + " ya existe.");
         }
+    }
+    
+    public DataEdicionCurso muestroEdicionCurso(String nEdi) throws ErrorNoExiste{
+        System.out.println("[CLIENTE] Consulto una edición de curso.");
+        DataEdicionCurso edicion = servidorCentral.consultarUnaEdicionCurso(nEdi);
+        return edicion;
     }
 }

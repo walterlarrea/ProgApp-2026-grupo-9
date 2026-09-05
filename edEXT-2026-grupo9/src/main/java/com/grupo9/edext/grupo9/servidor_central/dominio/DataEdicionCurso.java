@@ -9,17 +9,17 @@ public class DataEdicionCurso {
     private LocalDate fechaInicio;
     private LocalDate fechaFin;
     private Integer cupo;
-    private Set<DataDocente> docentes;
+    private DataDocente docente;
     private Set<DataInscEdicion> inscripciones;
     private LocalDate fechaPub;
     
-    public DataEdicionCurso(String nombreEdi, DataCurso cursoAsoc, LocalDate fechaInicio, LocalDate fechaFin, Integer cupo, Set<DataDocente> docentes, Set<DataInscEdicion> inscripciones, LocalDate fechaPub) {
+    public DataEdicionCurso(String nombreEdi, DataCurso cursoAsoc, LocalDate fechaInicio, LocalDate fechaFin, Integer cupo, DataDocente docente, Set<DataInscEdicion> inscripciones, LocalDate fechaPub) {
         this.nombreEdi = nombreEdi;
         this.cursoAsoc = cursoAsoc;
         this.fechaInicio = fechaInicio;
         this.fechaFin = fechaFin;
         this.cupo = cupo;
-        this.docentes = docentes;
+        this.docente = docente;
         this.inscripciones = inscripciones;
         this.fechaPub = fechaPub;
     }
@@ -64,12 +64,12 @@ public class DataEdicionCurso {
         this.cupo = cupo;
     }
 
-    public Set<DataDocente> getDocentes() {
-        return docentes;
+    public DataDocente getDocente() {
+        return docente;
     }
 
-    public void setDocentes(Set<DataDocente> docentes) {
-        this.docentes = docentes;
+    public void setDocente(Set<DataDocente> docentes) {
+        this.docente = docente;
     }
 
     public LocalDate getFechaPub() {

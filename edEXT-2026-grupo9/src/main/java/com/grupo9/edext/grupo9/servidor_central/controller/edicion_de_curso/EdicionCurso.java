@@ -19,24 +19,22 @@ public class EdicionCurso {
     private LocalDate fechaInicio;
     private LocalDate fechaFin;
     private Integer cupo;
-    @ManyToMany
-    @JoinTable(name = "edicion_docente",
-    joinColumns = @JoinColumn(name = "edicion_nombreEdi"),
-    inverseJoinColumns = @JoinColumn(name = "docente_nickname"))
-    private Set<Docente> docentes;
+    @ManyToOne
+    @JoinColumn(name = "docente_nickname")
+    private Docente docente;
     @OneToMany(mappedBy = "edicion")
     private Set<InscEdicion> inscripciones;
     private LocalDate fechaPub;
     
     public EdicionCurso(){}
     
-    public EdicionCurso(String nombreEdi, Curso cursoAsoc, LocalDate fechaInicio, LocalDate fechaFin, Integer cupo, Set<Docente> docentes, Set<InscEdicion> inscripciones, LocalDate fechaPub) {
+    public EdicionCurso(String nombreEdi, Curso cursoAsoc, LocalDate fechaInicio, LocalDate fechaFin, Integer cupo, Docente docente, Set<InscEdicion> inscripciones, LocalDate fechaPub) {
         this.nombreEdi = nombreEdi;
        this.cursoAsoc = cursoAsoc;
         this.fechaInicio = fechaInicio;
         this.fechaFin = fechaFin;
         this.cupo = cupo;
-       this.docentes = docentes;
+       this.docente = docente;
         this.inscripciones = inscripciones;
         this.fechaPub = fechaPub;
     }
@@ -81,12 +79,12 @@ public class EdicionCurso {
         this.cupo = cupo;
     }
 
-   public Set<Docente> getDocentes() {
-       return docentes;
+   public Docente getDocente() {
+       return docente;
    }
 
-   public void setDocentes(Set<Docente> docentes) {
-       this.docentes = docentes;
+   public void setDocente(Docente docente) {
+       this.docente = docente;
    }
 
     public LocalDate getFechaPub() {
