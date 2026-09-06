@@ -5,13 +5,14 @@ import com.grupo9.edext.grupo9.servidor_central.controller.edicion_de_curso.Insc
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Set;
+import java.util.HashSet;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
 
 @Entity
 public class Estudiante extends Usuario implements Serializable{
     @OneToMany(mappedBy = "estudiante")
-    private Set<InscEdicion> inscripciones;
+    private Set<InscEdicion> inscripciones = new HashSet<>();
 
     public Estudiante() {
         super();

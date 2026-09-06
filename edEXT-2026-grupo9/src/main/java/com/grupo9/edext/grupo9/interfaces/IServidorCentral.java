@@ -1,5 +1,10 @@
 package com.grupo9.edext.grupo9.interfaces;
 
+import com.grupo9.edext.grupo9.mensajes.ErrorNoExiste;
+import com.grupo9.edext.grupo9.servidor_central.dominio.DataCurso;
+import com.grupo9.edext.grupo9.servidor_central.dominio.DataInstituto;
+import com.grupo9.edext.grupo9.servidor_central.dominio.DataProgramaFormacion;
+import com.grupo9.edext.grupo9.servidor_central.dominio.DataUsuario;
 import com.grupo9.edext.grupo9.mensajes.ErrorRepetidos;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataCurso;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataInstituto;
@@ -26,4 +31,7 @@ public interface IServidorCentral {
     // Institutos
     public DataInstituto guardarInstituto(DataInstituto nuevoInstituto);
     public HashSet<DataInstituto> consultarTodosLosInstitutos();
+    
+    public String[] listarUsuarios();
+    public DataUsuario consultarUsuario(String nickname) throws ErrorNoExiste;
 }

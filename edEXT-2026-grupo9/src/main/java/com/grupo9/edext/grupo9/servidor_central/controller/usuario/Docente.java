@@ -4,14 +4,17 @@ import com.grupo9.edext.grupo9.servidor_central.controller.edicion_de_curso.Edic
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Set;
+import java.util.HashSet;
+import jakarta.persistence.Entity;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.*;
 
 
 @Entity
 public class Docente extends Usuario implements Serializable {
     private String nombreInst;
-    @OneToMany(mappedBy = "docente")
-    private Set<EdicionCurso> ediciones;
+    @ManyToMany(mappedBy = "docentes")
+    private Set<EdicionCurso> ediciones = new HashSet<>();
 
     public Docente() {
         super();
