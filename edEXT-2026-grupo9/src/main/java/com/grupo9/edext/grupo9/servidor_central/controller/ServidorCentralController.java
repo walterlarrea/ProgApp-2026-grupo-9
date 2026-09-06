@@ -17,11 +17,10 @@ import com.grupo9.edext.grupo9.servidor_central.dominio.DataCurso;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataInstituto;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataProgramaFormacion;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataUsuario;
+import com.grupo9.edext.grupo9.servidor_central.dominio.DataEdicionCurso;
+import com.grupo9.edext.grupo9.mensajes.ErrorNoExiste;
 import java.util.HashSet;
-/**
- *
- * @author Walter
- */
+
 public class ServidorCentralController implements IServidorCentral {
     
     private final IProgramaDeFormacion progDeFormacionCtrl = new ProgramaDeFormacionController();
@@ -69,8 +68,13 @@ public class ServidorCentralController implements IServidorCentral {
     
     // Ediciones de Cursos
     @Override
-    public void guardarEdicionCurso(){
-        this.edicionCursoCtrl.guardarNuevaEdicionCurso();
+    public DataEdicionCurso guardarEdicionCurso(DataEdicionCurso nuevaEdicion){
+        return this.edicionCursoCtrl.guardarNuevaEdicionCurso(nuevaEdicion);
+    }
+    
+    @Override
+    public DataEdicionCurso consultarUnaEdicionCurso(String nEdi) throws ErrorNoExiste{
+        return this.edicionCursoCtrl.consultarEdicionCurso(nEdi);
     }
     
     // Cursos

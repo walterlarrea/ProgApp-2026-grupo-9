@@ -5,6 +5,12 @@ import com.grupo9.edext.grupo9.servidor_central.dominio.DataCurso;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataInstituto;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataProgramaFormacion;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataUsuario;
+import com.grupo9.edext.grupo9.mensajes.ErrorRepetidos;
+import com.grupo9.edext.grupo9.servidor_central.dominio.DataCurso;
+import com.grupo9.edext.grupo9.servidor_central.dominio.DataInstituto;
+import com.grupo9.edext.grupo9.servidor_central.dominio.DataProgramaFormacion;
+import com.grupo9.edext.grupo9.servidor_central.dominio.DataEdicionCurso;
+import com.grupo9.edext.grupo9.mensajes.ErrorNoExiste;
 import java.util.HashSet;
 
 public interface IServidorCentral {
@@ -15,7 +21,8 @@ public interface IServidorCentral {
     public HashSet<DataProgramaFormacion> consultarTodosLosProgramas();
     
     // Ediciones de cursos
-    public void guardarEdicionCurso();
+    public DataEdicionCurso guardarEdicionCurso(DataEdicionCurso nuevaEdicion);
+    public DataEdicionCurso consultarUnaEdicionCurso(String nEdi) throws ErrorNoExiste;
     
     // Cursos
     public DataCurso guardarCurso(DataCurso nuevoCurso);

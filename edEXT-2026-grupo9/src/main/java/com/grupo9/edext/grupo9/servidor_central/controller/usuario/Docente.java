@@ -7,6 +7,8 @@ import java.util.Set;
 import java.util.HashSet;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.*;
+
 
 @Entity
 public class Docente extends Usuario implements Serializable {

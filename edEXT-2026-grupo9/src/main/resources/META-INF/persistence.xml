@@ -33,7 +33,6 @@
       <!-- Propiedades de Hibernate para desarrollo -->
       <property name="hibernate.hbm2ddl.auto" value="update"/> <!-- para actualizar las tablas a partir de las entidades que tengamos acá, no inserta los datos automáticamente, no no -->
       <property name="hibernate.show_sql" value="true"/>
-      <property name="hibernate.show_sql" value="true"/>
     </properties>
   </persistence-unit>
 </persistence>

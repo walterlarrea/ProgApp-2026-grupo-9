@@ -12,11 +12,18 @@ import com.grupo9.edext.grupo9.servidor_central.dominio.DataInstituto;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataProgramaFormacion;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataUsuario;
 
+import com.grupo9.edext.grupo9.servidor_central.controller.edicion_de_curso.EdicionCurso;
+import com.grupo9.edext.grupo9.servidor_central.dominio.DataEdicionCurso;
+import com.grupo9.edext.grupo9.servidor_central.dominio.DataInscEdicion;
+import com.grupo9.edext.grupo9.servidor_central.dominio.DataDocente;
+import com.grupo9.edext.grupo9.servidor_central.controller.edicion_de_curso.InscEdicion;
+import com.grupo9.edext.grupo9.servidor_central.controller.usuario.Docente;
+import com.grupo9.edext.grupo9.servidor_central.dominio.DataEstudiante;
+import com.grupo9.edext.grupo9.servidor_central.controller.usuario.Estudiante;
 
 public class DtoMapper {
 
     //Cursos
-    
     public static Curso toEntity(DataCurso dataCurso){
         if(dataCurso == null){
             return null;
@@ -60,7 +67,7 @@ public class DtoMapper {
             return null;
         }
         Set<Curso> cursos = new HashSet<>();
-        for (DataCurso dataCurso : dataPrograma.cursos()) {
+        for(DataCurso dataCurso : dataPrograma.cursos()) {
             cursos.add(toEntity(dataCurso));
         }
 
@@ -82,7 +89,7 @@ public class DtoMapper {
         
         Set<DataCurso> cursos = new HashSet<>();
 
-        for (Curso curso : programa.getCursos()) {
+        for(Curso curso : programa.getCursos()) {
             cursos.add(toData(curso));
         }
 
@@ -146,5 +153,67 @@ public class DtoMapper {
         );
         
         return dataUsuario;
+    // Ediciones de cursos
+    public static EdicionCurso toEntity(DataEdicionCurso dataEdicion) {
+        // Inscripciones, empieza vacía
+        Set<InscEdicion> inscripciones = new HashSet<>();
+        
+        return new EdicionCurso(
+            dataEdicion.getNombreEdi(),
+            toEntity(dataEdicion.getCursoAsoc()),
+            dataEdicion.getFechaInicio(),
+            dataEdicion.getFechaFin(),
+            dataEdicion.getCupo(),
+            toEntity(dataEdicion.getDocente()),
+            inscripciones,
+            dataEdicion.getFechaPub());
+    }
+    
+    public static DataEdicionCurso toData(EdicionCurso edicion) {
+        // Inscripciones
+        Set<DataInscEdicion> inscripciones = new HashSet<>();
+        for(InscEdicion insc : edicion.getInscripciones()) {
+            Estudiante estudiante = insc.getEstudiante();
+            DataEstudiante dataEstudiante = new DataEstudiante(
+                estudiante.getNickname(),
+                estudiante.getNombre(),
+                estudiante.getApellido(),
+                estudiante.getEmail(),
+                estudiante.getFechaNac(),
+                null);
+            DataInscEdicion dataInsc = new DataInscEdicion(insc.getFechaInscE(), dataEstudiante, insc.getEdicion().getNombreEdi());
+            inscripciones.add(dataInsc);
+        }
+
+        return new DataEdicionCurso(
+            edicion.getNombreEdi(),
+            toData(edicion.getCursoAsoc()),
+            edicion.getFechaInicio(),
+            edicion.getFechaFin(),
+            edicion.getCupo(),
+            toData(edicion.getDocente()),
+            inscripciones,
+            edicion.getFechaPub());
+    }
+    
+    public static Docente toEntity(DataDocente dataDocente) {
+        return new Docente(
+            dataDocente.getNickname(),
+            dataDocente.getNombre(),
+            dataDocente.getApellido(),
+            dataDocente.getEmail(),
+            dataDocente.getFechaNac(),
+            null,
+            dataDocente.getNombreInst());
+    }
+    
+    public static DataDocente toData(Docente docente) {
+        return new DataDocente(
+            docente.getNickname(),
+            docente.getNombre(),
+            docente.getApellido(),
+            docente.getEmail(),
+            docente.getFechaNac(),
+            docente.getNombreInst());
     }
 }
