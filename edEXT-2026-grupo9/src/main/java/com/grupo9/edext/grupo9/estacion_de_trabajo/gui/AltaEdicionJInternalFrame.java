@@ -1,16 +1,15 @@
 package com.grupo9.edext.grupo9.estacion_de_trabajo.gui;
 
 import com.grupo9.edext.grupo9.servidor_central.controller.curso.Curso;
-import static java.awt.Frame.ICONIFIED;
+import com.grupo9.edext.grupo9.servidor_central.controller.usuario.Docente;
+import com.grupo9.edext.grupo9.estacion_de_trabajo.cliente.EdicionCursoPres;
 import java.time.LocalDate;
-import java.util.HashSet;
-import javax.swing.table.DefaultTableModel;
 import java.time.ZoneId;
 import java.util.Date;
 
 public class AltaEdicionJInternalFrame extends javax.swing.JInternalFrame {
     private Curso cursoSeleccionado;
-
+    private final EdicionCursoPres edicionCursoPres = new EdicionCursoPres();
     public AltaEdicionJInternalFrame(Curso cursoSeleccionado) {
         initComponents();
         this.cursoSeleccionado = cursoSeleccionado;
@@ -39,7 +38,6 @@ public class AltaEdicionJInternalFrame extends javax.swing.JInternalFrame {
         jLabelEdicionNombre = new javax.swing.JLabel();
         jTextEdicionNombre = new javax.swing.JTextField();
         jLabelEdicionDocente = new javax.swing.JLabel();
-        choiceEdicionDocente = new java.awt.Choice();
         jLabelEdicionFInicio = new javax.swing.JLabel();
         jSpinnerEdicionFInicio = new javax.swing.JSpinner();
         jLabelEdicionFFin = new javax.swing.JLabel();
@@ -47,6 +45,7 @@ public class AltaEdicionJInternalFrame extends javax.swing.JInternalFrame {
         jLabelEdicionCupo = new javax.swing.JLabel();
         jTextEdicionCupo = new javax.swing.JTextField();
         jButtonGuardarEdicion = new javax.swing.JButton();
+        jComboBoxDocenteEdicion = new javax.swing.JComboBox<>();
 
         setPreferredSize(new java.awt.Dimension(380, 420));
 
@@ -73,28 +72,32 @@ public class AltaEdicionJInternalFrame extends javax.swing.JInternalFrame {
         jButtonGuardarEdicion.setText("Guardar");
         jButtonGuardarEdicion.addActionListener(this::jButtonGuardarEdicionActionPerformed);
 
+        jComboBoxDocenteEdicion.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabelEdicionCupo)
-                    .addComponent(jSpinnerEdicionFFin, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabelEdicionFFin)
-                    .addComponent(jSpinnerEdicionFInicio, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabelEdicionFInicio)
-                    .addComponent(jLabelAltaEdicion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabelEdicionNombre)
-                    .addComponent(jLabelEdicionDocente)
-                    .addComponent(jTextEdicionCupo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextEdicionNombre, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
-                    .addComponent(choiceEdicionDocente, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(108, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButtonGuardarEdicion)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jButtonGuardarEdicion))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jLabelEdicionCupo)
+                            .addComponent(jSpinnerEdicionFFin, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabelEdicionFFin)
+                            .addComponent(jSpinnerEdicionFInicio, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabelEdicionFInicio)
+                            .addComponent(jLabelAltaEdicion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabelEdicionNombre)
+                            .addComponent(jLabelEdicionDocente)
+                            .addComponent(jTextEdicionCupo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jTextEdicionNombre, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
+                            .addComponent(jComboBoxDocenteEdicion, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(0, 106, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -109,8 +112,8 @@ public class AltaEdicionJInternalFrame extends javax.swing.JInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabelEdicionDocente)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(choiceEdicionDocente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addComponent(jComboBoxDocenteEdicion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(16, 16, 16)
                 .addComponent(jLabelEdicionFInicio)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSpinnerEdicionFInicio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -122,7 +125,7 @@ public class AltaEdicionJInternalFrame extends javax.swing.JInternalFrame {
                 .addComponent(jLabelEdicionCupo)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jTextEdicionCupo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 13, Short.MAX_VALUE)
                 .addComponent(jButtonGuardarEdicion)
                 .addContainerGap())
         );
@@ -137,18 +140,21 @@ public class AltaEdicionJInternalFrame extends javax.swing.JInternalFrame {
         LocalDate fechaInicio = fecha0.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         Date fecha1 = (Date) jSpinnerEdicionFFin.getValue();
         LocalDate fechaFin = fecha1.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-        String docente = choiceEdicionDocente.getSelectedItem();
+        Docente docente = (Docente) jComboBoxDocenteEdicion.getSelectedItem();
 
         System.out.println("[GUI] Crear nueva Edición: " + nombreEdi);
+        System.out.println("[GUI] De curso: " + cursoSeleccionado);
         System.out.println("[GUI] Fecha de inicio: " + fecha0);
         System.out.println("[GUI] Fecha de finalización: " + fecha1);
         System.out.println("[GUI] Docente: " + docente);
+        
+        edicionCursoPres.guardarNuevaEdicion(nombreEdi, cursoSeleccionado, fechaInicio, fechaFin, cupo, docente);
     }//GEN-LAST:event_jButtonGuardarEdicionActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private java.awt.Choice choiceEdicionDocente;
     private javax.swing.JButton jButtonGuardarEdicion;
+    private javax.swing.JComboBox<String> jComboBoxDocenteEdicion;
     private javax.swing.JLabel jLabelAltaEdicion;
     private javax.swing.JLabel jLabelEdicionCupo;
     private javax.swing.JLabel jLabelEdicionDocente;

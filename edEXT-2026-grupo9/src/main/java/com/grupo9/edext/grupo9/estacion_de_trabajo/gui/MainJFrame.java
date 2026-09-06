@@ -1,9 +1,6 @@
 package com.grupo9.edext.grupo9.estacion_de_trabajo.gui;
-import com.grupo9.edext.grupo9.estacion_de_trabajo.cliente.CursoPres;
+
 import com.grupo9.edext.grupo9.estacion_de_trabajo.cliente.InstitutoPres;
-
-import java.util.ArrayList;
-
 import com.grupo9.edext.grupo9.estacion_de_trabajo.cliente.CursoPres;
 import com.grupo9.edext.grupo9.estacion_de_trabajo.cliente.ProgramaDeFormacionPres;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataCurso;
@@ -18,7 +15,6 @@ import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Optional;
 import java.awt.BorderLayout;
-
 import javax.swing.table.DefaultTableModel;
 
 public class MainJFrame extends javax.swing.JFrame {
@@ -247,7 +243,7 @@ public class MainJFrame extends javax.swing.JFrame {
 
         jButtonCancelar.setText("Cancelar");
 
-        jLabelNick.setText("Nick de Usuario");
+        jLabelNick.setText("Nickname");
 
         jLabelNombre.setText("Nombre");
 
@@ -277,7 +273,7 @@ public class MainJFrame extends javax.swing.JFrame {
                 .addGroup(JPanelAltaUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabelAltaUsuario)
                     .addGroup(JPanelAltaUsuarioLayout.createSequentialGroup()
-                        .addGroup(JPanelAltaUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(JPanelAltaUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(JPanelAltaUsuarioLayout.createSequentialGroup()
                                 .addGroup(JPanelAltaUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(jButtonAceptar)
@@ -293,7 +289,7 @@ public class MainJFrame extends javax.swing.JFrame {
                                     .addComponent(jButtonCancelar)
                                     .addComponent(jTextFieldEmail)))
                             .addComponent(jRadioButtonDocente, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jComboBoxInstituto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jComboBoxInstituto, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGroup(JPanelAltaUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(JPanelAltaUsuarioLayout.createSequentialGroup()
                                 .addGap(54, 54, 54)
@@ -306,7 +302,7 @@ public class MainJFrame extends javax.swing.JFrame {
                                 .addComponent(jLabelFechaNac)
                                 .addGap(36, 36, 36)
                                 .addComponent(jSpinnerFechaNac, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addContainerGap(219, Short.MAX_VALUE))
+                .addContainerGap(226, Short.MAX_VALUE))
         );
         JPanelAltaUsuarioLayout.setVerticalGroup(
             JPanelAltaUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -347,7 +343,7 @@ public class MainJFrame extends javax.swing.JFrame {
                 .addGroup(JPanelAltaUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButtonAceptar)
                     .addComponent(jButtonCancelar))
-                .addContainerGap(228, Short.MAX_VALUE))
+                .addContainerGap(266, Short.MAX_VALUE))
         );
 
         jLabelConsultarUsuarios.setText("Consultar Usuarios");

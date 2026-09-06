@@ -39,6 +39,7 @@ public class ConsultarEdicionJInternalFrame extends javax.swing.JInternalFrame {
         jTextFieldFFinConsultaEdicion = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
         jTextFieldCupoConsultaEdicion = new javax.swing.JTextField();
+        jButtonBuscarEdicion = new javax.swing.JButton();
 
         jLabel1.setText("Ediciones");
 
@@ -77,6 +78,9 @@ public class ConsultarEdicionJInternalFrame extends javax.swing.JInternalFrame {
 
         jTextFieldCupoConsultaEdicion.setText("30");
 
+        jButtonBuscarEdicion.setText("Buscar");
+        jButtonBuscarEdicion.addActionListener(this::jButtonBuscarEdicionActionPerformed);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -108,7 +112,9 @@ public class ConsultarEdicionJInternalFrame extends javax.swing.JInternalFrame {
                             .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jTextFieldDocenteConsultaEdicion, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE))
-                        .addContainerGap(138, Short.MAX_VALUE))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jButtonBuscarEdicion)
+                        .addContainerGap(12, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -116,7 +122,9 @@ public class ConsultarEdicionJInternalFrame extends javax.swing.JInternalFrame {
                 .addGap(18, 18, 18)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButtonBuscarEdicion))
                 .addGap(18, 18, 18)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -150,8 +158,13 @@ public class ConsultarEdicionJInternalFrame extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jButtonBuscarEdicionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBuscarEdicionActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButtonBuscarEdicionActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButtonBuscarEdicion;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

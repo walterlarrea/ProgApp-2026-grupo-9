@@ -287,7 +287,7 @@
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Component id="jLabelAltaUsuario" min="-2" max="-2" attributes="0"/>
                       <Group type="102" alignment="0" attributes="0">
-                          <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
                               <Group type="102" alignment="0" attributes="0">
                                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
                                       <Component id="jButtonAceptar" min="-2" max="-2" attributes="0"/>
@@ -306,7 +306,7 @@
                                   </Group>
                               </Group>
                               <Component id="jRadioButtonDocente" alignment="0" min="-2" pref="83" max="-2" attributes="0"/>
-                              <Component id="jComboBoxInstituto" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="jComboBoxInstituto" alignment="0" max="32767" attributes="0"/>
                           </Group>
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Group type="102" attributes="0">
@@ -326,7 +326,7 @@
                           </Group>
                       </Group>
                   </Group>
-                  <EmptySpace pref="219" max="32767" attributes="0"/>
+                  <EmptySpace pref="226" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -378,7 +378,7 @@
                       <Component id="jButtonAceptar" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="jButtonCancelar" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace type="unrelated" pref="228" max="32767" attributes="0"/>
+                  <EmptySpace type="unrelated" pref="266" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -443,7 +443,7 @@
         </Component>
         <Component class="javax.swing.JLabel" name="jLabelNick">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Nick de Usuario"/>
+            <Property name="text" type="java.lang.String" value="Nickname"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabelNombre">
