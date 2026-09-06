@@ -1,9 +1,6 @@
 package com.grupo9.edext.grupo9.estacion_de_trabajo.gui;
-import com.grupo9.edext.grupo9.estacion_de_trabajo.cliente.CursoPres;
+
 import com.grupo9.edext.grupo9.estacion_de_trabajo.cliente.InstitutoPres;
-
-import java.util.ArrayList;
-
 import com.grupo9.edext.grupo9.estacion_de_trabajo.cliente.CursoPres;
 import com.grupo9.edext.grupo9.estacion_de_trabajo.cliente.ProgramaDeFormacionPres;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataCurso;
@@ -17,7 +14,7 @@ import java.util.ArrayList;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Optional;
-
+import java.awt.BorderLayout;
 import javax.swing.table.DefaultTableModel;
 
 public class MainJFrame extends javax.swing.JFrame {
@@ -37,6 +34,9 @@ public class MainJFrame extends javax.swing.JFrame {
         jSpinnerFechaNac.setModel(new javax.swing.SpinnerDateModel(new java.util.Date(), null, null, ICONIFIED));
         javax.swing.JSpinner.DateEditor editor = new javax.swing.JSpinner.DateEditor(jSpinnerFechaNac, "dd/MM/yyyy");
         jSpinnerFechaNac.setEditor(editor);
+        //para que el panel azul ocupe hasta el borde
+        getContentPane().setLayout(new BorderLayout());
+        getContentPane().add(jDesktopPane1, BorderLayout.CENTER);
     }
     
     //para que se visibilicen los internal frames
@@ -60,31 +60,40 @@ public class MainJFrame extends javax.swing.JFrame {
     //al aparecer uno se cierra el otro
     private void showInternalFrame(JInternalFrame frameToShow) {
 
-    // Ocultar los demás
-    for (JInternalFrame frame : jDesktopPane1.getAllFrames()) {
-        frame.setVisible(false);
+        //ocultar los demás
+        for (JInternalFrame frame : jDesktopPane1.getAllFrames()) {
+            frame.setVisible(false);
+        }
+        //agregarlo si todavía no pertenece al DesktopPane
+        if (frameToShow.getDesktopPane() == null) {
+            jDesktopPane1.add(frameToShow);
+        }
+            frameToShow.setVisible(true);
+            jDesktopPane1.revalidate();
+            jDesktopPane1.repaint();
+            frameToShow.revalidate();
+            frameToShow.repaint();
+        try {
+            frameToShow.setSelected(true);
+        } catch (PropertyVetoException e) {
+            e.printStackTrace();
+        }
     }
-
-    // Agregarlo si todavía no pertenece al DesktopPane
-    if (frameToShow.getDesktopPane() == null) {
-        jDesktopPane1.add(frameToShow);
+    
+    private void abrirSeleccionCursoAlta(){
+        SeleccionarCursoJInternalFrame seleccion = new SeleccionarCursoJInternalFrame(jDesktopPane1, OperacionCurso.ALTA_EDICION);
+        openInternalFrame(seleccion);
     }
-
-    frameToShow.setVisible(true);
-
-    // MUY IMPORTANTE
-    jDesktopPane1.revalidate();
-    jDesktopPane1.repaint();
-
-    frameToShow.revalidate();
-    frameToShow.repaint();
-
-    try {
-        frameToShow.setSelected(true);
-    } catch (PropertyVetoException e) {
-        e.printStackTrace();
+    
+    private void abrirSeleccionCursoConsulta(){
+        SeleccionarCursoJInternalFrame seleccion = new SeleccionarCursoJInternalFrame(jDesktopPane1, OperacionCurso.CONSULTA_EDICION);
+        openInternalFrame(seleccion);
     }
-}
+    
+    private void abrirSeleccionCursoInscripcion(){
+        SeleccionarCursoJInternalFrame seleccion = new SeleccionarCursoJInternalFrame(jDesktopPane1, OperacionCurso.INSCRIPCION_EDICION);
+        openInternalFrame(seleccion);
+    }
     
     /**
      * This method is called from within the constructor to initialize the form.
@@ -158,7 +167,7 @@ public class MainJFrame extends javax.swing.JFrame {
         jButtonConsultarProgramasRefresh = new javax.swing.JButton();
         jScrollPaneTablaConsultaCursos1 = new javax.swing.JScrollPane();
         jTableConsultaProgramas = new javax.swing.JTable();
-        JPanelInscripcionEdicion = new javax.swing.JPanel();
+        jDesktopPane1 = new javax.swing.JDesktopPane();
         jPanelGestionarInstitutos = new javax.swing.JPanel();
         jLabelConsultarUsuarios1 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
@@ -169,7 +178,6 @@ public class MainJFrame extends javax.swing.JFrame {
         jLabelSeccionCrearInstituto = new javax.swing.JLabel();
         jButtonGuardarInstituto = new javax.swing.JButton();
         jButtonConsultarInstitutosRefresh = new javax.swing.JButton();
-        jDesktopPane1 = new javax.swing.JDesktopPane();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenuUsuarios = new javax.swing.JMenu();
         jMenuItemCrearUsuario = new javax.swing.JMenuItem();
@@ -197,28 +205,24 @@ public class MainJFrame extends javax.swing.JFrame {
 
         jLabelAltaUsuario.setText("Crear Usuario");
 
-        jTextFieldNickname.setText("Nickname");
         jTextFieldNickname.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextFieldNicknameActionPerformed(evt);
             }
         });
 
-        jTextFieldNombre.setText("Nombre");
         jTextFieldNombre.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextFieldNombreActionPerformed(evt);
             }
         });
 
-        jTextFieldApellido.setText("Apellido");
         jTextFieldApellido.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextFieldApellidoActionPerformed(evt);
             }
         });
 
-        jTextFieldEmail.setText("Correo Electrónico");
         jTextFieldEmail.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextFieldEmailActionPerformed(evt);
@@ -239,7 +243,7 @@ public class MainJFrame extends javax.swing.JFrame {
 
         jButtonCancelar.setText("Cancelar");
 
-        jLabelNick.setText("Nick de Usuario");
+        jLabelNick.setText("Nickname");
 
         jLabelNombre.setText("Nombre");
 
@@ -250,7 +254,7 @@ public class MainJFrame extends javax.swing.JFrame {
         jLabelFechaNac.setText("Fecha de Nacimiento");
 
         jLabelSeleccionarFoto.setForeground(new java.awt.Color(51, 51, 255));
-        jLabelSeleccionarFoto.setText("Seleccioner Foto de Perfil");
+        jLabelSeleccionarFoto.setText("Seleccionar Foto de Perfil");
         jLabelSeleccionarFoto.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         jLabelSeleccionarFoto.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -269,7 +273,7 @@ public class MainJFrame extends javax.swing.JFrame {
                 .addGroup(JPanelAltaUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabelAltaUsuario)
                     .addGroup(JPanelAltaUsuarioLayout.createSequentialGroup()
-                        .addGroup(JPanelAltaUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(JPanelAltaUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(JPanelAltaUsuarioLayout.createSequentialGroup()
                                 .addGroup(JPanelAltaUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(jButtonAceptar)
@@ -278,14 +282,14 @@ public class MainJFrame extends javax.swing.JFrame {
                                     .addComponent(jLabelApellido, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(jLabelNombre, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                 .addGap(27, 27, 27)
-                                .addGroup(JPanelAltaUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jTextFieldNickname, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jTextFieldEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jTextFieldApellido, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jTextFieldNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jButtonCancelar)))
+                                .addGroup(JPanelAltaUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jTextFieldNickname, javax.swing.GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE)
+                                    .addComponent(jTextFieldApellido, javax.swing.GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE)
+                                    .addComponent(jTextFieldNombre, javax.swing.GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE)
+                                    .addComponent(jButtonCancelar)
+                                    .addComponent(jTextFieldEmail)))
                             .addComponent(jRadioButtonDocente, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jComboBoxInstituto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jComboBoxInstituto, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGroup(JPanelAltaUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(JPanelAltaUsuarioLayout.createSequentialGroup()
                                 .addGap(54, 54, 54)
@@ -298,7 +302,7 @@ public class MainJFrame extends javax.swing.JFrame {
                                 .addComponent(jLabelFechaNac)
                                 .addGap(36, 36, 36)
                                 .addComponent(jSpinnerFechaNac, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addContainerGap(219, Short.MAX_VALUE))
+                .addContainerGap(226, Short.MAX_VALUE))
         );
         JPanelAltaUsuarioLayout.setVerticalGroup(
             JPanelAltaUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -339,7 +343,7 @@ public class MainJFrame extends javax.swing.JFrame {
                 .addGroup(JPanelAltaUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButtonAceptar)
                     .addComponent(jButtonCancelar))
-                .addContainerGap(228, Short.MAX_VALUE))
+                .addContainerGap(266, Short.MAX_VALUE))
         );
 
         jLabelConsultarUsuarios.setText("Consultar Usuarios");
@@ -752,26 +756,13 @@ public class MainJFrame extends javax.swing.JFrame {
                     .addContainerGap()))
         );
 
-        JPanelInscripcionEdicion.setPreferredSize(new java.awt.Dimension(772, 580));
-
-        javax.swing.GroupLayout JPanelInscripcionEdicionLayout = new javax.swing.GroupLayout(JPanelInscripcionEdicion);
-        JPanelInscripcionEdicion.setLayout(JPanelInscripcionEdicionLayout);
-        JPanelInscripcionEdicionLayout.setHorizontalGroup(
-            JPanelInscripcionEdicionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 799, Short.MAX_VALUE)
-        );
-        JPanelInscripcionEdicionLayout.setVerticalGroup(
-            JPanelInscripcionEdicionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 594, Short.MAX_VALUE)
-        );
-
         jDesktopPane1.setPreferredSize(new java.awt.Dimension(403, 244));
 
         javax.swing.GroupLayout jDesktopPane1Layout = new javax.swing.GroupLayout(jDesktopPane1);
         jDesktopPane1.setLayout(jDesktopPane1Layout);
         jDesktopPane1Layout.setHorizontalGroup(
             jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 403, Short.MAX_VALUE)
+            .addGap(0, 434, Short.MAX_VALUE)
         );
         jDesktopPane1Layout.setVerticalGroup(
             jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -959,9 +950,19 @@ public class MainJFrame extends javax.swing.JFrame {
         jMenuEdicionDeCurso.add(jMenuItemCrearEdicionCurso);
 
         jMenuItemConsultarEdicionCurso.setText("Consultar");
+        jMenuItemConsultarEdicionCurso.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemConsultarEdicionCursoActionPerformed(evt);
+            }
+        });
         jMenuEdicionDeCurso.add(jMenuItemConsultarEdicionCurso);
 
         jMenuItemInscripcionEdicionCurso.setText("Inscribirse");
+        jMenuItemInscripcionEdicionCurso.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemInscripcionEdicionCursoActionPerformed(evt);
+            }
+        });
         jMenuEdicionDeCurso.add(jMenuItemInscripcionEdicionCurso);
 
         jMenuBar1.add(jMenuEdicionDeCurso);
@@ -1016,21 +1017,18 @@ public class MainJFrame extends javax.swing.JFrame {
                     .addComponent(JPanelConsultarProgramas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addContainerGap()))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
-                    .addComponent(JPanelInscripcionEdicion, javax.swing.GroupLayout.DEFAULT_SIZE, 800, Short.MAX_VALUE)
-                    .addGap(0, 0, Short.MAX_VALUE)))
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                    .addContainerGap(104, Short.MAX_VALUE)
+                    .addComponent(jDesktopPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 434, Short.MAX_VALUE)
+                    .addContainerGap(264, Short.MAX_VALUE)))
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGap(0, 802, Short.MAX_VALUE))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addComponent(jPanelGestionarInstitutos, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                    .addContainerGap(96, Short.MAX_VALUE)
-                    .addComponent(jDesktopPane1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addContainerGap(258, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 596, Short.MAX_VALUE)
+            .addGap(0, 634, Short.MAX_VALUE)
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addContainerGap()
@@ -1062,17 +1060,14 @@ public class MainJFrame extends javax.swing.JFrame {
                     .addComponent(JPanelConsultarProgramas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addContainerGap()))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
-                    .addComponent(JPanelInscripcionEdicion, javax.swing.GroupLayout.DEFAULT_SIZE, 594, Short.MAX_VALUE)
-                    .addGap(0, 0, Short.MAX_VALUE)))
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(jPanelGestionarInstitutos, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                     .addContainerGap(248, Short.MAX_VALUE)
                     .addComponent(jDesktopPane1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addContainerGap(142, Short.MAX_VALUE)))
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGap(0, 634, Short.MAX_VALUE))
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(jPanelGestionarInstitutos, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -1114,9 +1109,6 @@ public class MainJFrame extends javax.swing.JFrame {
         this.allJPanels.add(JPanelCrearPrograma);
         this.allJPanels.add(JPanelConsultarProgramas);
         this.allJPanels.add(jPanelGestionarInstitutos);
-        // this.allJPanels.add(JPanelAltaEdicion);
-        // this.allJPanels.add(JPanelConsultarEdicion);
-        this.allJPanels.add(JPanelInscripcionEdicion);
         this.hideAllJPanels();
         System.out.println("Window Opened");
     }//GEN-LAST:event_formWindowOpened
@@ -1302,13 +1294,26 @@ public class MainJFrame extends javax.swing.JFrame {
         this.actualizarTablaDeInstitutos(institutos);
     }//GEN-LAST:event_jButtonConsultarInstitutosRefreshActionPerformed
     private void jMenuItemCrearEdicionCursoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemCrearEdicionCursoActionPerformed
-        System.out.println("CLICK ALTA EDICIÓN");
         
         SwingUtilities.invokeLater(() -> {
-        SeleccionarCursoJInternalFrame frame = new SeleccionarCursoJInternalFrame(jDesktopPane1);
+        SeleccionarCursoJInternalFrame frame = new SeleccionarCursoJInternalFrame(jDesktopPane1, OperacionCurso.ALTA_EDICION);
         showInternalFrame(frame);}
         );
     }//GEN-LAST:event_jMenuItemCrearEdicionCursoActionPerformed
+
+    private void jMenuItemConsultarEdicionCursoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemConsultarEdicionCursoActionPerformed
+        SwingUtilities.invokeLater(() -> {
+        SeleccionarCursoJInternalFrame frame = new SeleccionarCursoJInternalFrame(jDesktopPane1, OperacionCurso.CONSULTA_EDICION);
+        showInternalFrame(frame);}
+        );
+    }//GEN-LAST:event_jMenuItemConsultarEdicionCursoActionPerformed
+
+    private void jMenuItemInscripcionEdicionCursoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemInscripcionEdicionCursoActionPerformed
+        SwingUtilities.invokeLater(() -> {
+        SeleccionarCursoJInternalFrame frame = new SeleccionarCursoJInternalFrame(jDesktopPane1, OperacionCurso.INSCRIPCION_EDICION);
+        showInternalFrame(frame);}
+        );
+    }//GEN-LAST:event_jMenuItemInscripcionEdicionCursoActionPerformed
 
     // Configurar el JSpinner para que maneje fechas (muestra Día, Mes y Año)
     private void hideAllJPanels() {
@@ -1369,7 +1374,6 @@ public class MainJFrame extends javax.swing.JFrame {
     private javax.swing.JPanel JPanelConsultarUsuarios;
     private javax.swing.JPanel JPanelCrearCurso;
     private javax.swing.JPanel JPanelCrearPrograma;
-    private javax.swing.JPanel JPanelInscripcionEdicion;
     private java.awt.Choice choiceCrearProgramaCursos;
     private javax.swing.JButton jButtonAceptar;
     private javax.swing.JButton jButtonCancelar;
@@ -1377,7 +1381,6 @@ public class MainJFrame extends javax.swing.JFrame {
     private javax.swing.JButton jButtonConsultarInstitutosRefresh;
     private javax.swing.JButton jButtonConsultarProgramasRefresh;
     private javax.swing.JButton jButtonGuardarCurso;
-    private javax.swing.JButton jButtonGuardarEdicion;
     private javax.swing.JButton jButtonGuardarInstituto;
     private javax.swing.JButton jButtonGuardarPrograma;
     private javax.swing.JComboBox<String> jComboBoxInstituto;

@@ -130,40 +130,21 @@ public class DtoMapper {
     
     // Ediciones de cursos
     public static EdicionCurso toEntity(DataEdicionCurso dataEdicion) {
-        Set<Curso> cursos = new HashSet<>();
-        for(DataCurso dataCurso : dataEdicion.getCursoAsoc()) {
-            cursos.add(toEntity(dataCurso));
-        }
-        // Docentes
-        Set<Docente> docentes = new HashSet<>();
-        for(DataDocente dataDocente : dataEdicion.getDocentes()) {
-            docentes.add(toEntity(dataDocente));
-        }
         // Inscripciones, empieza vacía
         Set<InscEdicion> inscripciones = new HashSet<>();
         
         return new EdicionCurso(
             dataEdicion.getNombreEdi(),
-            cursos,
+            toEntity(dataEdicion.getCursoAsoc()),
             dataEdicion.getFechaInicio(),
             dataEdicion.getFechaFin(),
             dataEdicion.getCupo(),
-            docentes,
+            toEntity(dataEdicion.getDocente()),
             inscripciones,
             dataEdicion.getFechaPub());
     }
     
     public static DataEdicionCurso toData(EdicionCurso edicion) {
-        // Cursos asociados
-        Set<DataCurso> cursos = new HashSet<>();
-        for(Curso curso : edicion.getCursoAsoc()) {
-            cursos.add(toData(curso));
-        }
-        // Docentes
-        Set<DataDocente> docentes = new HashSet<>();
-        for(Docente docente : edicion.getDocentes()) {
-            docentes.add(toData(docente));
-        }
         // Inscripciones
         Set<DataInscEdicion> inscripciones = new HashSet<>();
         for(InscEdicion insc : edicion.getInscripciones()) {
@@ -181,11 +162,11 @@ public class DtoMapper {
 
         return new DataEdicionCurso(
             edicion.getNombreEdi(),
-            cursos,
+            toData(edicion.getCursoAsoc()),
             edicion.getFechaInicio(),
             edicion.getFechaFin(),
             edicion.getCupo(),
-            docentes,
+            toData(edicion.getDocente()),
             inscripciones,
             edicion.getFechaPub());
     }

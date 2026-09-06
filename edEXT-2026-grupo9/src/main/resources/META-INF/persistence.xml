@@ -26,7 +26,7 @@
         <property name="jakarta.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
         <property name="jakarta.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/edEXT?serverTimezone=UTC"/> <!-- serverTimezone: para sincronizar a la zona horaria -->
         <property name="jakarta.persistence.jdbc.user" value="root"/>
-        <property name="jakarta.persistence.jdbc.password" value=".mayonesa23."/>
+        <property name="jakarta.persistence.jdbc.password" value="1357tecnologo"/>
     <!-- Propiedades de Hibernate para desarrollo -->
         <property name="hibernate.hbm2ddl.auto" value="update"/> <!-- para actualizar las tablas a partir de las entidades que tengamos acá, no inserta los datos automáticamente, no no -->
         <property name="hibernate.show_sql" value="true"/>

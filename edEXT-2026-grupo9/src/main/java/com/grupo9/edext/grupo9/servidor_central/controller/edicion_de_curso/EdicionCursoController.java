@@ -2,13 +2,11 @@ package com.grupo9.edext.grupo9.servidor_central.controller.edicion_de_curso;
 
 import com.grupo9.edext.grupo9.mensajes.ErrorNoExiste;
 import com.grupo9.edext.grupo9.mensajes.ErrorRepetidos;
-import com.grupo9.edext.grupo9.servidor_central.controller.DtoMapper;
 import com.grupo9.edext.grupo9.servidor_central.controller.curso.Curso;
 import com.grupo9.edext.grupo9.servidor_central.controller.usuario.Docente;
 import com.grupo9.edext.grupo9.servidor_central.controller.usuario.ManejadorEstudiantes;
 import com.grupo9.edext.grupo9.servidor_central.controller.usuario.Estudiante;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataEdicionCurso;
-import com.grupo9.edext.grupo9.servidor_central.dominio.DataCurso;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataInscEdicion;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataDocente;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataEstudiante;
@@ -24,23 +22,15 @@ public class EdicionCursoController implements IEdicionCurso {
     @Override
     public DataEdicionCurso guardarNuevaEdicionCurso(DataEdicionCurso nuevaEdicion){
         try{
-            Set<Curso> cursos = new HashSet<>();
-            for(DataCurso dataCurso : nuevaEdicion.getCursoAsoc()) {
-                cursos.add(DtoMapper.toEntity(dataCurso));
-            }
-            Set<Docente> docentes = new HashSet<>();
-            for (DataDocente dataDocente : nuevaEdicion.getDocentes()) {
-                docentes.add(DtoMapper.toEntity(dataDocente));
-            }
             Set<InscEdicion> inscripciones = new HashSet<>();
             altaEdicionCurso(
                 nuevaEdicion.getNombreEdi(),
-                cursos,
+                DtoMapper.toEntity(nuevaEdicion.getCursoAsoc()),
                 nuevaEdicion.getFechaInicio(),
                 nuevaEdicion.getFechaFin(),
                 nuevaEdicion.getCupo(),
                 inscripciones,
-                docentes);
+                DtoMapper.toEntity(nuevaEdicion.getDocente()));
             return nuevaEdicion;
         }catch(ErrorRepetidos e) {
             System.out.println("[SERVIDOR] " + e.getMessage());
@@ -50,7 +40,7 @@ public class EdicionCursoController implements IEdicionCurso {
     
     //Cuando se implemente el GUI, ahí se agrega el modificar o cancelar altaEdicionCurso
     @Override
-    public void altaEdicionCurso(String nEdi, Set<Curso> cur, LocalDate fInicio, LocalDate fFin, int c, Set<InscEdicion> insc, Set<Docente> d) throws ErrorRepetidos{
+    public void altaEdicionCurso(String nEdi, Curso cur, LocalDate fInicio, LocalDate fFin, int c, Set<InscEdicion> insc, Docente d) throws ErrorRepetidos{
         ManejadorEdiciones me = ManejadorEdiciones.getInstance();
         EdicionCurso ed = me.obtenerEdicion(nEdi);
         if(ed == null){
@@ -67,21 +57,6 @@ public class EdicionCursoController implements IEdicionCurso {
         EdicionCurso ed = me.obtenerEdicion(nEdi);
         
         if(ed != null){
-            //para obtener los cursos
-            Set<DataCurso> datosCursosAsoc = new HashSet<>();
-            for(Curso curso : ed.getCursoAsoc()) {
-                DataCurso datosCurAsoc = new DataCurso(DtoMapper.toData(
-                    curso.getInstituto()),
-                    curso.getNombreCurso(),
-                    curso.getDescCurso(),
-                    curso.getDuracion(),
-                    curso.getCantHoras(),
-                    curso.getCantCred(),
-                    curso.getFechaReg(),
-                    curso.getUrl()
-                );
-            datosCursosAsoc.add(datosCurAsoc);
-            }
             //para obtener los inscriptos
             Set<DataInscEdicion> datosInscriptos = new HashSet<>();
             for(InscEdicion inscriptos : ed.getInscripciones()){
@@ -90,13 +65,13 @@ public class EdicionCursoController implements IEdicionCurso {
                 DataInscEdicion datosInsc = new DataInscEdicion(inscriptos.getFechaInscE(), datosEst, inscriptos.getEdicion().getNombreEdi());
                 datosInscriptos.add(datosInsc);
             }
-            //para que funcione DataDocente
-            Set<DataDocente> datosDocentes = new HashSet<>();
-            for(Docente docente : ed.getDocentes()) {//para obtener los datos de cada docente.
-                DataDocente datosDoc = new DataDocente(docente.getNickname(),docente.getNombre(),docente.getApellido(),docente.getEmail(),docente.getFechaNac(),docente.getNombreInst());
-                datosDocentes.add(datosDoc);
-        }
-            return new DataEdicionCurso(ed.getNombreEdi(), datosCursosAsoc, ed.getFechaInicio(), ed.getFechaFin(), ed.getCupo(), datosDocentes, datosInscriptos, ed.getFechaPub()); 
+            // Obtener el docente
+            DataDocente datosDoc = null;
+            if (ed.getDocente() != null) {
+                Docente docente = ed.getDocente();
+                datosDoc = new DataDocente(docente.getNickname(), docente.getNombre(), docente.getApellido(), docente.getEmail(), docente.getFechaNac(), docente.getNombreInst());
+            }
+            return new DataEdicionCurso(ed.getNombreEdi(), DtoMapper.toData(ed.getCursoAsoc()), ed.getFechaInicio(), ed.getFechaFin(), ed.getCupo(), datosDoc, datosInscriptos, ed.getFechaPub()); 
         }else{
             throw new ErrorNoExiste("La Edición " + nEdi + " no está registrada.");
         }

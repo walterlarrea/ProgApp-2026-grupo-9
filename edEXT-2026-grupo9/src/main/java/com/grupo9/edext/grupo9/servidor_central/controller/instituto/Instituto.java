@@ -1,10 +1,7 @@
 package com.grupo9.edext.grupo9.servidor_central.controller.instituto;
 
 import java.io.Serializable;
-import jakarta.persistence.Entity;
-//import jakarta.persistence.GeneratedValue;
-//import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 @Entity
 public class Instituto implements Serializable{

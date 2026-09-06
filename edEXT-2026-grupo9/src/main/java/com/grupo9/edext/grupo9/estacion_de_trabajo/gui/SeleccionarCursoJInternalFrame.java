@@ -1,18 +1,32 @@
 package com.grupo9.edext.grupo9.estacion_de_trabajo.gui;
 
 import com.grupo9.edext.grupo9.estacion_de_trabajo.gui.AltaEdicionJInternalFrame;
+import com.grupo9.edext.grupo9.estacion_de_trabajo.gui.ConsultarEdicionJInternalFrame;
+import com.grupo9.edext.grupo9.estacion_de_trabajo.gui.InscribirAEdicionJInternalFrame;
 import com.grupo9.edext.grupo9.servidor_central.controller.curso.Curso;
+import com.grupo9.edext.grupo9.servidor_central.controller.curso.ManejadorCurso;
+import com.grupo9.edext.grupo9.servidor_central.controller.instituto.ManejadorInstituto;
+import com.grupo9.edext.grupo9.servidor_central.controller.instituto.Instituto;
+import com.grupo9.edext.grupo9.servidor_central.dominio.DataInstituto;
+import com.grupo9.edext.grupo9.servidor_central.controller.DtoMapper;
 import javax.swing.*;
+import java.util.*;
 
 public class SeleccionarCursoJInternalFrame extends javax.swing.JInternalFrame {
     private JDesktopPane jDesktopPane;
+    private OperacionCurso operacion;
+    private List<Curso> cursos;
+    private List<Instituto> institutos;
     
-    public SeleccionarCursoJInternalFrame(JDesktopPane jDesktopPane) {
+    public SeleccionarCursoJInternalFrame(JDesktopPane jDesktopPane, OperacionCurso operacion) {
         initComponents();
         this.jDesktopPane = jDesktopPane;
+        this.operacion = operacion;
         setTitle("Selección de Curso");
         setClosable(true);
         setResizable(true);
+        cargarInstitutos();
+        jComboBoxCurso.removeAllItems();
     }
 
     /**
@@ -24,14 +38,11 @@ public class SeleccionarCursoJInternalFrame extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabelSelectCurso = new javax.swing.JLabel();
         jLabelInstituto = new javax.swing.JLabel();
         jLabelCurso = new javax.swing.JLabel();
         jButtonSeleccionar = new javax.swing.JButton();
         jComboBoxCurso = new javax.swing.JComboBox<>();
         jComboBoxInstituto = new javax.swing.JComboBox<>();
-
-        jLabelSelectCurso.setText("Selección de  Curso");
 
         jLabelInstituto.setText("Instituto");
 
@@ -41,8 +52,10 @@ public class SeleccionarCursoJInternalFrame extends javax.swing.JInternalFrame {
         jButtonSeleccionar.addActionListener(this::jButtonSeleccionarActionPerformed);
 
         jComboBoxCurso.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBoxCurso.addActionListener(this::jComboBoxCursoActionPerformed);
 
         jComboBoxInstituto.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBoxInstituto.addActionListener(this::jComboBoxInstitutoActionPerformed);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -56,32 +69,27 @@ public class SeleccionarCursoJInternalFrame extends javax.swing.JInternalFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(16, 16, 16)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabelCurso)
-                                    .addComponent(jLabelInstituto))
-                                .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jComboBoxInstituto, 0, 178, Short.MAX_VALUE)
-                                    .addComponent(jComboBoxCurso, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                            .addComponent(jLabelSelectCurso, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 129, Short.MAX_VALUE)))
+                            .addComponent(jLabelCurso)
+                            .addComponent(jLabelInstituto))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jComboBoxInstituto, 0, 178, Short.MAX_VALUE)
+                            .addComponent(jComboBoxCurso, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(0, 113, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabelSelectCurso, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGap(21, 21, 21)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabelInstituto)
                     .addComponent(jComboBoxInstituto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 37, Short.MAX_VALUE)
+                .addGap(49, 49, 49)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabelCurso)
-                    .addComponent(jComboBoxCurso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(31, 31, 31)
+                    .addComponent(jComboBoxCurso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabelCurso))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 52, Short.MAX_VALUE)
                 .addComponent(jButtonSeleccionar)
                 .addContainerGap())
         );
@@ -90,13 +98,73 @@ public class SeleccionarCursoJInternalFrame extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonSeleccionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSeleccionarActionPerformed
-        Curso cursoSeleccionado = (Curso) jComboBoxCurso.getSelectedItem();
-        AltaEdicionJInternalFrame alta = new AltaEdicionJInternalFrame(cursoSeleccionado);
-        jDesktopPane.add(alta);
-        alta.setVisible(true);
-    this.dispose();
+        int indice = jComboBoxCurso.getSelectedIndex();
+        
+        if (indice == -1) {
+            return;
+        }
+        Curso cursoSeleccionado = cursos.get(indice);
+        JInternalFrame frame = null;
+
+        switch (operacion) {
+            case ALTA_EDICION:
+                frame = new AltaEdicionJInternalFrame(cursoSeleccionado);
+                break;
+            case CONSULTA_EDICION:
+                frame = new ConsultarEdicionJInternalFrame(cursoSeleccionado);
+                break;
+            case INSCRIPCION_EDICION:
+                frame = new InscribirAEdicionJInternalFrame(cursoSeleccionado);
+                break;
+        }
+
+        if(frame != null) {
+            jDesktopPane.add(frame);
+            frame.setVisible(true);
+        }
+        this.dispose();
     }//GEN-LAST:event_jButtonSeleccionarActionPerformed
 
+    private void jComboBoxInstitutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxInstitutoActionPerformed
+        int indice = jComboBoxInstituto.getSelectedIndex();
+        if (indice == -1) {
+            return;
+        }
+        Instituto institutoSeleccionado = institutos.get(indice);
+        obtenerCursosDelInstituto(institutoSeleccionado);
+    }//GEN-LAST:event_jComboBoxInstitutoActionPerformed
+
+    private void jComboBoxCursoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxCursoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jComboBoxCursoActionPerformed
+
+    private void cargarInstitutos() {
+        institutos = new ArrayList<>();
+        HashSet<DataInstituto> datosInstitutos = ManejadorInstituto.getInstance().traerTodos();
+        for(DataInstituto data : datosInstitutos) {
+            institutos.add(DtoMapper.toEntity(data));
+        }
+        jComboBoxInstituto.removeAllItems();
+        for (Instituto instituto : institutos) {
+            jComboBoxInstituto.addItem(instituto.getNombreI());
+        }
+    }
+    
+    private void obtenerCursosDelInstituto(Instituto inst){
+        cursos = new ArrayList<>();
+        HashSet<Curso> todosLosCursos = ManejadorCurso.getInstance().traerTodosEntidades();
+        for (Curso curso : todosLosCursos) {
+            if (curso.getInstituto() != null && curso.getInstituto().getNombreI().equals(inst.getNombreI())) {
+                cursos.add(curso);
+            }
+        }
+        // Limpiamos el combo antes de cargar los nuevos cursos
+        jComboBoxCurso.removeAllItems();
+        for (Curso curso : cursos) {
+            jComboBoxCurso.addItem(curso.getNombreCurso());
+        }
+    }
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonSeleccionar;
@@ -104,6 +172,5 @@ public class SeleccionarCursoJInternalFrame extends javax.swing.JInternalFrame {
     private javax.swing.JComboBox<String> jComboBoxInstituto;
     private javax.swing.JLabel jLabelCurso;
     private javax.swing.JLabel jLabelInstituto;
-    private javax.swing.JLabel jLabelSelectCurso;
     // End of variables declaration//GEN-END:variables
 }
