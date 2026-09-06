@@ -1,10 +1,12 @@
 package com.grupo9.edext.grupo9.estacion_de_trabajo.gui;
 import com.grupo9.edext.grupo9.estacion_de_trabajo.cliente.CursoPres;
 import com.grupo9.edext.grupo9.estacion_de_trabajo.cliente.InstitutoPres;
+import com.grupo9.edext.grupo9.estacion_de_trabajo.cliente.UsuarioPres;
 import javax.swing.JPanel;
 import java.util.ArrayList;
 
 import com.grupo9.edext.grupo9.estacion_de_trabajo.cliente.ProgramaDeFormacionPres;
+import com.grupo9.edext.grupo9.mensajes.ErrorNoExiste;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataCurso;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataInstituto;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataProgramaFormacion;
@@ -18,21 +20,27 @@ import javax.swing.JList;
 import javax.swing.table.DefaultTableModel;
 
 public class MainJFrame extends javax.swing.JFrame {
-
+    
+    private final UsuarioPres usuarioPres = new UsuarioPres();
     private final ProgramaDeFormacionPres programaDeFormacionPres = new ProgramaDeFormacionPres();
     private final CursoPres cursoPres = new CursoPres();
     private final InstitutoPres institutoPres = new InstitutoPres();
     private java.io.File archivoImagenSeleccionado = null;
     private final ArrayList<JPanel> allJPanels = new ArrayList<JPanel>();
+    private Component jScrollPaneTablaConsultaUsuarios;
     
     /**
      * Creates new form MainJFrame
      */
     public MainJFrame() {
         initComponents();
-        jSpinnerFechaNac.setModel(new javax.swing.SpinnerDateModel(new java.util.Date(), null, null, ICONIFIED));
+        setTitle("edEXT");
+        setResizable(true);
+        //alta usuario
+        jSpinnerFechaNac.setModel(new javax.swing.SpinnerDateModel(new java.util.Date(), null, null, java.util.Calendar.DAY_OF_MONTH));
         javax.swing.JSpinner.DateEditor editor = new javax.swing.JSpinner.DateEditor(jSpinnerFechaNac, "dd/MM/yyyy");
         jSpinnerFechaNac.setEditor(editor);
+        jComboBoxInstituto.setEnabled(false);
     }
     
 
@@ -65,6 +73,9 @@ public class MainJFrame extends javax.swing.JFrame {
         jLabelImagen = new javax.swing.JLabel();
         JPanelConsultarUsuarios = new javax.swing.JPanel();
         jLabelConsultarUsuarios = new javax.swing.JLabel();
+        jScrollPaneTablaConsultarUsuarios = new javax.swing.JScrollPane();
+        jTableConsultarUsuarios = new javax.swing.JTable();
+        jButtonConsUsRefresh = new javax.swing.JButton();
         JPanelCrearCurso = new javax.swing.JPanel();
         jLabelCrearCurso = new javax.swing.JLabel();
         jTextCrearCursoNombre = new javax.swing.JTextField();
@@ -145,28 +156,24 @@ public class MainJFrame extends javax.swing.JFrame {
 
         jLabelAltaUsuario.setText("Crear Usuario");
 
-        jTextFieldNickname.setText("Nickname");
         jTextFieldNickname.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextFieldNicknameActionPerformed(evt);
             }
         });
 
-        jTextFieldNombre.setText("Nombre");
         jTextFieldNombre.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextFieldNombreActionPerformed(evt);
             }
         });
 
-        jTextFieldApellido.setText("Apellido");
         jTextFieldApellido.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextFieldApellidoActionPerformed(evt);
             }
         });
 
-        jTextFieldEmail.setText("Correo Electrónico");
         jTextFieldEmail.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextFieldEmailActionPerformed(evt);
@@ -184,6 +191,11 @@ public class MainJFrame extends javax.swing.JFrame {
         jComboBoxInstituto.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Instituto" }));
 
         jButtonAceptar.setText("Aceptar");
+        jButtonAceptar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonAceptarActionPerformed(evt);
+            }
+        });
 
         jButtonCancelar.setText("Cancelar");
 
@@ -226,12 +238,12 @@ public class MainJFrame extends javax.swing.JFrame {
                                     .addComponent(jLabelApellido, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(jLabelNombre, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                 .addGap(27, 27, 27)
-                                .addGroup(JPanelAltaUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jTextFieldNickname, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jTextFieldEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jTextFieldApellido, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jTextFieldNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jButtonCancelar)))
+                                .addGroup(JPanelAltaUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jTextFieldNickname, javax.swing.GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE)
+                                    .addComponent(jTextFieldApellido, javax.swing.GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE)
+                                    .addComponent(jTextFieldNombre, javax.swing.GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE)
+                                    .addComponent(jButtonCancelar)
+                                    .addComponent(jTextFieldEmail)))
                             .addComponent(jRadioButtonDocente, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jComboBoxInstituto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGroup(JPanelAltaUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -292,21 +304,60 @@ public class MainJFrame extends javax.swing.JFrame {
 
         jLabelConsultarUsuarios.setText("Consultar Usuarios");
 
+        jTableConsultarUsuarios.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null}
+            },
+            new String [] {
+                "Tipo de usuario", "Nickname", "Nombre", "Apellido", "Email", "FechaNac", "Imagen"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        });
+        jScrollPaneTablaConsultarUsuarios.setViewportView(jTableConsultarUsuarios);
+
+        jButtonConsUsRefresh.setText("Refrescar");
+        jButtonConsUsRefresh.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonConsUsRefreshActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout JPanelConsultarUsuariosLayout = new javax.swing.GroupLayout(JPanelConsultarUsuarios);
         JPanelConsultarUsuarios.setLayout(JPanelConsultarUsuariosLayout);
         JPanelConsultarUsuariosLayout.setHorizontalGroup(
             JPanelConsultarUsuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(JPanelConsultarUsuariosLayout.createSequentialGroup()
-                .addGap(15, 15, 15)
-                .addComponent(jLabelConsultarUsuarios)
-                .addContainerGap(658, Short.MAX_VALUE))
+                .addGroup(JPanelConsultarUsuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(JPanelConsultarUsuariosLayout.createSequentialGroup()
+                        .addGap(15, 15, 15)
+                        .addComponent(jLabelConsultarUsuarios)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButtonConsUsRefresh))
+                    .addGroup(JPanelConsultarUsuariosLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jScrollPaneTablaConsultarUsuarios, javax.swing.GroupLayout.DEFAULT_SIZE, 778, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         JPanelConsultarUsuariosLayout.setVerticalGroup(
             JPanelConsultarUsuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(JPanelConsultarUsuariosLayout.createSequentialGroup()
-                .addGap(15, 15, 15)
-                .addComponent(jLabelConsultarUsuarios)
-                .addContainerGap(549, Short.MAX_VALUE))
+                .addGap(10, 10, 10)
+                .addGroup(JPanelConsultarUsuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabelConsultarUsuarios)
+                    .addComponent(jButtonConsUsRefresh))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPaneTablaConsultarUsuarios, javax.swing.GroupLayout.DEFAULT_SIZE, 557, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         jLabelCrearCurso.setText("Crear Curso");
@@ -826,6 +877,11 @@ public class MainJFrame extends javax.swing.JFrame {
         jMenuUsuarios.add(jMenuItemConsultarUsuario);
 
         jMenuItemModificar.setText("Modificar datos");
+        jMenuItemModificar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemModificarActionPerformed(evt);
+            }
+        });
         jMenuUsuarios.add(jMenuItemModificar);
 
         jMenuBar1.add(jMenuUsuarios);
@@ -977,6 +1033,16 @@ public class MainJFrame extends javax.swing.JFrame {
 
     private void jMenuItemCrearUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemCrearUsuarioActionPerformed
         showOnePanelAndHideTheRest(this.JPanelAltaUsuario);
+        
+        HashSet<DataInstituto> institutos = this.institutoPres.cargarInstitutos();
+        jComboBoxInstituto.removeAllItems();
+        jComboBoxInstituto.addItem("Seleccione un Instituto...");
+        if (institutos != null) {
+            for (DataInstituto inst : institutos) {
+                jComboBoxInstituto.addItem(inst.nombreI());
+            }
+        }
+        jComboBoxInstituto.setEnabled(jRadioButtonDocente.isSelected());
     }//GEN-LAST:event_jMenuItemCrearUsuarioActionPerformed
 
     private void jMenuItemConsultarUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemConsultarUsuarioActionPerformed
@@ -1040,34 +1106,29 @@ public class MainJFrame extends javax.swing.JFrame {
     private void jLabelSeleccionarFotoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelSeleccionarFotoMouseClicked
         javax.swing.JFileChooser fileChooser = new javax.swing.JFileChooser();
 
-        // 2. Filtrar para que solo permita elegir imágenes JPG o PNG
+        // Filtrar para que solo permita elegir imágenes JPG o PNG
         javax.swing.filechooser.FileNameExtensionFilter filtro = new javax.swing.filechooser.FileNameExtensionFilter("Imágenes JPG y PNG", "jpg", "png");
         fileChooser.setFileFilter(filtro);
 
-        // 3. Mostrar la ventana de selección
         int resultado = fileChooser.showOpenDialog(this);
 
         if (resultado == javax.swing.JFileChooser.APPROVE_OPTION) {
-            java.io.File archivoSeleccionado = fileChooser.getSelectedFile();
-            String rutaImagen = archivoSeleccionado.getAbsolutePath();
+            this.archivoImagenSeleccionado = fileChooser.getSelectedFile();
+            String rutaImagen = this.archivoImagenSeleccionado.getAbsolutePath();
 
-        }
-        if (resultado == javax.swing.JFileChooser.APPROVE_OPTION) {
-            java.io.File archivoSeleccionado = fileChooser.getSelectedFile();
-            String rutaImagen = archivoSeleccionado.getAbsolutePath();
-    
-    // 1. Crear el ícono con la ruta del archivo
             javax.swing.ImageIcon iconoOriginal = new javax.swing.ImageIcon(rutaImagen);
-        
-    // 2. Escalar la imagen para que encaje perfecto dentro del tamaño del JLabel
+
+            int ancho = jLabelImagen.getWidth() > 0 ? jLabelImagen.getWidth() : 160;
+            int alto = jLabelImagen.getHeight() > 0 ? jLabelImagen.getHeight() : 160;
+
             java.awt.Image imagenEscalada = iconoOriginal.getImage().getScaledInstance(
-            jLabelImagen.getWidth(), 
-            jLabelImagen.getHeight(), 
-            java.awt.Image.SCALE_SMOOTH
-    );
-    
-    // 3. Asignar la imagen escalada directamente al JLabel del panel
+                ancho,
+                alto,
+                java.awt.Image.SCALE_SMOOTH
+            );
+
             jLabelImagen.setIcon(new javax.swing.ImageIcon(imagenEscalada));
+            jLabelImagen.setText(""); // Quita el texto "Imagen"
         }
     }//GEN-LAST:event_jLabelSeleccionarFotoMouseClicked
 
@@ -1196,12 +1257,123 @@ public class MainJFrame extends javax.swing.JFrame {
         this.actualizarTablaDeInstitutos(institutos);
     }//GEN-LAST:event_jButtonConsultarInstitutosRefreshActionPerformed
 
+    private void jButtonAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAceptarActionPerformed
+        String nick = jTextFieldNickname.getText().trim();
+        String nombre = jTextFieldNombre.getText().trim();
+        String apellido = jTextFieldApellido.getText().trim();
+        String email = jTextFieldEmail.getText().trim();
+
+        if (nick.isEmpty() || nombre.isEmpty() || apellido.isEmpty() || email.isEmpty()) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Por favor complete todos los campos obligatorios.", "Advertencia", javax.swing.JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        // Obtener la fecha del JSpinner
+        java.util.Date fechaUtil = (java.util.Date) jSpinnerFechaNac.getValue();
+        LocalDate fechaNac = fechaUtil.toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalDate();
+        String rutaImg = (this.archivoImagenSeleccionado != null) ? this.archivoImagenSeleccionado.getAbsolutePath() : null;
+
+        try {
+            // Pedir la interfaz al controlador mediante la Fábrica
+            com.grupo9.edext.grupo9.servidor_central.controller.usuario.IUsuario iu = 
+                com.grupo9.edext.grupo9.miscelanea.Fabrica.getInstance().getIUsuario();
+
+            if (jRadioButtonDocente.isSelected()) {
+                String inst = (String) jComboBoxInstituto.getSelectedItem();
+                if (inst == null || inst.equals("Instituto") || inst.equals("Seleccione un Instituto...") || inst.isEmpty()) {
+                    javax.swing.JOptionPane.showMessageDialog(this, "Debe seleccionar un Instituto para el docente.", "Advertencia", javax.swing.JOptionPane.WARNING_MESSAGE);
+                    return;
+                }
+                iu.registrarDocente(nick, nombre, apellido, email, fechaNac, rutaImg, inst);
+            } else {
+                iu.registrarEstudiante(nick, nombre, apellido, email, fechaNac, rutaImg);
+            }
+
+            javax.swing.JOptionPane.showMessageDialog(this, "¡Usuario registrado y guardado en la base de datos con éxito!", "Éxito", javax.swing.JOptionPane.INFORMATION_MESSAGE);
+            limpiarFormularioAltaUsuario();
+
+        } catch (com.grupo9.edext.grupo9.mensajes.ErrorRepetidos e) {
+            javax.swing.JOptionPane.showMessageDialog(this, e.getMessage(), "Usuario ya registrado", javax.swing.JOptionPane.ERROR_MESSAGE);
+        } catch (Exception e) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Error al guardar: " + e.getMessage(), "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_jButtonAceptarActionPerformed
+
+    private void jMenuItemModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemModificarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jMenuItemModificarActionPerformed
+
+    private void jButtonConsUsRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonConsUsRefreshActionPerformed
+        System.out.println("[GUI] Consultar todos los Usuarios");
+        String[] nicknames = usuarioPres.listarUsuarios();
+
+        if (nicknames == null) {
+            return;
+        }
+
+        DefaultTableModel model = (DefaultTableModel) jTableConsultarUsuarios.getModel();
+        model.setRowCount(0);
+
+        // 2. Recorres los nicknames y consultas los datos completos de cada uno
+        for (String nick : nicknames) {
+            try {
+                com.grupo9.edext.grupo9.servidor_central.dominio.DataUsuario usuario;
+                
+                usuario = usuarioPres.consultarUsuario(nick);
+                
+                // 3. Determinas el tipo según la instancia o clase devuelta
+                String tipo = (usuario instanceof com.grupo9.edext.grupo9.servidor_central.dominio.DataDocente) ? "Docente" : "Estudiante";
+                Object[] usuarioObj = new Object[]{
+                    tipo,
+                    usuario.getNickname(),
+                    usuario.getNombre(),
+                    usuario.getApellido(),
+                    usuario.getEmail(),
+                    usuario.getFechaNac(),
+                    usuario.getImagen()
+                };
+                model.addRow(usuarioObj);
+            } catch (ErrorNoExiste ex) {
+                System.getLogger(MainJFrame.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+            }
+        }
+    }//GEN-LAST:event_jButtonConsUsRefreshActionPerformed
+
+    private void jRadioButtonDocenteActionPerformed(java.awt.event.ActionEvent evt) {
+        jComboBoxInstituto.setEnabled(jRadioButtonDocente.isSelected());
+    }
+
+    private void jButtonCancelarActionPerformed(java.awt.event.ActionEvent evt) {
+        limpiarFormularioAltaUsuario();
+        hideAllJPanels();
+    }
+
+    private void limpiarFormularioAltaUsuario() {
+        jTextFieldNickname.setText("");
+        jTextFieldNombre.setText("");
+        jTextFieldApellido.setText("");
+        jTextFieldEmail.setText("");
+        jSpinnerFechaNac.setValue(new java.util.Date());
+        jRadioButtonDocente.setSelected(false);
+        jComboBoxInstituto.setEnabled(false);
+        if (jComboBoxInstituto.getItemCount() > 0) {
+            jComboBoxInstituto.setSelectedIndex(0);
+        }
+        jLabelImagen.setIcon(null);
+        jLabelImagen.setText("Imagen");
+        this.archivoImagenSeleccionado = null;
+    }
+
     // Configurar el JSpinner para que maneje fechas (muestra Día, Mes y Año)
     private void hideAllJPanels() {
         for (JPanel panel : this.allJPanels) {
             panel.setVisible(false);
         }
     }
+
+    
+
+    
     
     private void showOnePanelAndHideTheRest(JPanel panelToShow){
         for (JPanel panel : this.allJPanels) {
@@ -1258,6 +1430,7 @@ public class MainJFrame extends javax.swing.JFrame {
     private java.awt.Choice choiceCrearProgramaCursos;
     private javax.swing.JButton jButtonAceptar;
     private javax.swing.JButton jButtonCancelar;
+    private javax.swing.JButton jButtonConsUsRefresh;
     private javax.swing.JButton jButtonConsultarCursosRefresh;
     private javax.swing.JButton jButtonConsultarInstitutosRefresh;
     private javax.swing.JButton jButtonConsultarProgramasRefresh;
@@ -1321,9 +1494,11 @@ public class MainJFrame extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPaneTablaConsultaCursos;
     private javax.swing.JScrollPane jScrollPaneTablaConsultaCursos1;
+    private javax.swing.JScrollPane jScrollPaneTablaConsultarUsuarios;
     private javax.swing.JSpinner jSpinnerFechaNac;
     private javax.swing.JTable jTableConsultaCursos;
     private javax.swing.JTable jTableConsultaProgramas;
+    private javax.swing.JTable jTableConsultarUsuarios;
     private javax.swing.JTable jTableCrearProgramaCursos;
     private javax.swing.JTable jTableInstitutos;
     private javax.swing.JTextArea jTextAreaCrearCursoDescripcion;
