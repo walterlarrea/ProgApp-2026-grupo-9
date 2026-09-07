@@ -13,7 +13,7 @@ import jakarta.persistence.*;
 @Entity
 public class Docente extends Usuario implements Serializable {
     private String nombreInst;
-    @ManyToMany(mappedBy = "docentes")
+    @ManyToMany(mappedBy = "docente")
     private Set<EdicionCurso> ediciones = new HashSet<>();
 
     public Docente() {

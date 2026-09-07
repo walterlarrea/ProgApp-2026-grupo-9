@@ -153,6 +153,8 @@ public class DtoMapper {
         );
         
         return dataUsuario;
+    }
+    
     // Ediciones de cursos
     public static EdicionCurso toEntity(DataEdicionCurso dataEdicion) {
         // Inscripciones, empieza vacía

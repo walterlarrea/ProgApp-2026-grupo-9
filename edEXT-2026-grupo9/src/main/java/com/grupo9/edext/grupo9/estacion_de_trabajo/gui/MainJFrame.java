@@ -43,9 +43,6 @@ public class MainJFrame extends javax.swing.JFrame {
         javax.swing.JSpinner.DateEditor editor = new javax.swing.JSpinner.DateEditor(jSpinnerFechaNac, "dd/MM/yyyy");
         jSpinnerFechaNac.setEditor(editor);
         jComboBoxInstituto.setEnabled(false);
-        jSpinnerFechaNac.setModel(new javax.swing.SpinnerDateModel(new java.util.Date(), null, null, ICONIFIED));
-        javax.swing.JSpinner.DateEditor editor = new javax.swing.JSpinner.DateEditor(jSpinnerFechaNac, "dd/MM/yyyy");
-        jSpinnerFechaNac.setEditor(editor);
         //para que el panel azul ocupe hasta el borde
         getContentPane().setLayout(new BorderLayout());
         getContentPane().add(jDesktopPane1, BorderLayout.CENTER);
