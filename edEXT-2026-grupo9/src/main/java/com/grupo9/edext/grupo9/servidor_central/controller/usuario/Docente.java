@@ -35,4 +35,9 @@ public class Docente extends Usuario implements Serializable {
    public Set<EdicionCurso> getEdiciones(){
        return ediciones;
    }
+   
+   @Override
+    public String toString() {
+        return getNombre() + " " + getApellido();
+}
 }

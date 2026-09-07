@@ -6,10 +6,13 @@ import com.grupo9.edext.grupo9.estacion_de_trabajo.cliente.EdicionCursoPres;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
+import java.util.List;
 
 public class AltaEdicionJInternalFrame extends javax.swing.JInternalFrame {
     private Curso cursoSeleccionado;
+    private Docente[] docentes;
     private final EdicionCursoPres edicionCursoPres = new EdicionCursoPres();
+    
     public AltaEdicionJInternalFrame(Curso cursoSeleccionado) {
         initComponents();
         this.cursoSeleccionado = cursoSeleccionado;
@@ -22,6 +25,7 @@ public class AltaEdicionJInternalFrame extends javax.swing.JInternalFrame {
         jSpinnerEdicionFFin.setModel(new javax.swing.SpinnerDateModel(new java.util.Date(), null, null, java.util.Calendar.DAY_OF_MONTH));
         javax.swing.JSpinner.DateEditor editor2 = new javax.swing.JSpinner.DateEditor(jSpinnerEdicionFFin, "dd/MM/yyyy");
         jSpinnerEdicionFFin.setEditor(editor2);
+        cargarDocentes();
         pack();
     }
 
@@ -57,8 +61,6 @@ public class AltaEdicionJInternalFrame extends javax.swing.JInternalFrame {
 
         jLabelEdicionNombre.setText("Nombre");
 
-        jTextEdicionNombre.setText("Programación_vespertino_2026");
-
         jLabelEdicionDocente.setText("Docente");
 
         jLabelEdicionFInicio.setText("Fecha Inicio");
@@ -67,7 +69,7 @@ public class AltaEdicionJInternalFrame extends javax.swing.JInternalFrame {
 
         jLabelEdicionCupo.setText("Cupo");
 
-        jTextEdicionCupo.setText("30");
+        jTextEdicionCupo.setColumns(4);
 
         jButtonGuardarEdicion.setText("Guardar");
         jButtonGuardarEdicion.addActionListener(this::jButtonGuardarEdicionActionPerformed);
@@ -94,9 +96,9 @@ public class AltaEdicionJInternalFrame extends javax.swing.JInternalFrame {
                             .addComponent(jLabelAltaEdicion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabelEdicionNombre)
                             .addComponent(jLabelEdicionDocente)
-                            .addComponent(jTextEdicionCupo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jTextEdicionNombre, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
-                            .addComponent(jComboBoxDocenteEdicion, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(jComboBoxDocenteEdicion, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jTextEdicionCupo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(0, 106, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -132,7 +134,15 @@ public class AltaEdicionJInternalFrame extends javax.swing.JInternalFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+    
+    private void cargarDocentes() {
+        docentes = edicionCursoPres.traerDocentes();
+        jComboBoxDocenteEdicion.removeAllItems();
+        for(Docente docente : docentes) {
+            jComboBoxDocenteEdicion.addItem(docente.getNombre() + " " + docente.getApellido());
+        }
+    }
+    
     private void jButtonGuardarEdicionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonGuardarEdicionActionPerformed
         final String nombreEdi = jTextEdicionNombre.getText();
         final int cupo = Integer.parseInt(jTextEdicionCupo.getText());
@@ -140,7 +150,11 @@ public class AltaEdicionJInternalFrame extends javax.swing.JInternalFrame {
         LocalDate fechaInicio = fecha0.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         Date fecha1 = (Date) jSpinnerEdicionFFin.getValue();
         LocalDate fechaFin = fecha1.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-        Docente docente = (Docente) jComboBoxDocenteEdicion.getSelectedItem();
+        int indice = jComboBoxDocenteEdicion.getSelectedIndex();
+        if(indice == -1) {
+             return;
+        }
+        Docente docente = docentes[indice];
 
         System.out.println("[GUI] Crear nueva Edición: " + nombreEdi);
         System.out.println("[GUI] De curso: " + cursoSeleccionado);

@@ -18,7 +18,10 @@ import com.grupo9.edext.grupo9.servidor_central.dominio.DataInstituto;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataProgramaFormacion;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataUsuario;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataEdicionCurso;
+import com.grupo9.edext.grupo9.servidor_central.controller.usuario.Docente;
+import com.grupo9.edext.grupo9.servidor_central.controller.edicion_de_curso.EdicionCurso;
 import com.grupo9.edext.grupo9.mensajes.ErrorNoExiste;
+import com.grupo9.edext.grupo9.servidor_central.controller.curso.Curso;
 import java.util.HashSet;
 
 public class ServidorCentralController implements IServidorCentral {
@@ -73,10 +76,20 @@ public class ServidorCentralController implements IServidorCentral {
     }
     
     @Override
+    public Docente[] traerDocentes() {
+        return this.edicionCursoCtrl.traerDocentes();
+    }
+    
+    
+    @Override
     public DataEdicionCurso consultarUnaEdicionCurso(String nEdi) throws ErrorNoExiste{
         return this.edicionCursoCtrl.consultarEdicionCurso(nEdi);
     }
     
+    @Override
+    public EdicionCurso[] traerEdiciones(Curso curso){
+        return this.edicionCursoCtrl.traerEdiciones(curso);
+    }
     // Cursos
     @Override
     public DataCurso guardarCurso(DataCurso nuevoCurso){

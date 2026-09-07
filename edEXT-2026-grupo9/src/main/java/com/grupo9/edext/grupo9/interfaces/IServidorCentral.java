@@ -10,7 +10,10 @@ import com.grupo9.edext.grupo9.servidor_central.dominio.DataCurso;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataInstituto;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataProgramaFormacion;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataEdicionCurso;
+import com.grupo9.edext.grupo9.servidor_central.controller.usuario.Docente;
+import com.grupo9.edext.grupo9.servidor_central.controller.edicion_de_curso.EdicionCurso;
 import com.grupo9.edext.grupo9.mensajes.ErrorNoExiste;
+import com.grupo9.edext.grupo9.servidor_central.controller.curso.Curso;
 import java.util.HashSet;
 
 public interface IServidorCentral {
@@ -22,7 +25,9 @@ public interface IServidorCentral {
     
     // Ediciones de cursos
     public DataEdicionCurso guardarEdicionCurso(DataEdicionCurso nuevaEdicion);
+    public Docente[] traerDocentes();
     public DataEdicionCurso consultarUnaEdicionCurso(String nEdi) throws ErrorNoExiste;
+    public EdicionCurso[] traerEdiciones(Curso curso);
     
     // Cursos
     public DataCurso guardarCurso(DataCurso nuevoCurso);
