@@ -6,9 +6,10 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Set;
 import jakarta.persistence.*;       
+import java.util.HashSet;
 
 @Entity
-public class Curso implements Serializable{
+public class Curso implements Serializable {
     @Id
     private String nombreCurso;
     private String descCurso;
@@ -22,10 +23,22 @@ public class Curso implements Serializable{
     @ManyToOne
     @JoinColumn(name = "nombreI")
     private Instituto instituto;
+       
+    // Owning side: Defines the join table layout
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+        name = "cursos_previas",
+        joinColumns = @JoinColumn(name = "nombreCurso"),
+        inverseJoinColumns = @JoinColumn(name = "previa_id")
+    )
+    private Set<Curso> previas = new HashSet<>();
+    // Inverse side: Uses mappedBy to reference the owning side's field
+    @ManyToMany(mappedBy = "previas", fetch = FetchType.LAZY)
+    private Set<Curso> dependientes = new HashSet<>();
     
     public Curso(){}
 
-    public Curso(Instituto instituto, String nombreCurso, String descCurso, int duracion, int cantHoras, int cantCred, LocalDate fechaReg, String url) {
+    public Curso(Instituto instituto, String nombreCurso, String descCurso, int duracion, int cantHoras, int cantCred, LocalDate fechaReg, String url, Set<Curso> previas) {
         this.instituto = instituto;
         this.nombreCurso = nombreCurso;
         this.descCurso = descCurso;
@@ -34,10 +47,11 @@ public class Curso implements Serializable{
         this.cantCred = cantCred;
         this.fechaReg = fechaReg;
         this.url = url;
+        this.previas = previas;
     }
 
     public Instituto getInstituto() {
-        return instituto;
+        return this.instituto;
     }
 
     public void setInstituto(Instituto instituto) {
@@ -45,7 +59,7 @@ public class Curso implements Serializable{
     }
 
     public String getNombreCurso() {
-        return nombreCurso;
+        return this.nombreCurso;
     }
 
     public void setNombreCurso(String nombreCurso) {
@@ -53,7 +67,7 @@ public class Curso implements Serializable{
     }
 
     public String getDescCurso() {
-        return descCurso;
+        return this.descCurso;
     }
 
     public void setDescCurso(String descCurso) {
@@ -61,7 +75,7 @@ public class Curso implements Serializable{
     }
 
     public int getDuracion() {
-        return duracion;
+        return this.duracion;
     }
 
     public void setDuracion(int duracion) {
@@ -69,7 +83,7 @@ public class Curso implements Serializable{
     }
 
     public int getCantHoras() {
-        return cantHoras;
+        return this.cantHoras;
     }
 
     public void setCantHoras(int cantHoras) {
@@ -77,7 +91,7 @@ public class Curso implements Serializable{
     }
 
     public int getCantCred() {
-        return cantCred;
+        return this.cantCred;
     }
 
     public void setCantCred(int cantCred) {
@@ -85,7 +99,7 @@ public class Curso implements Serializable{
     }
 
     public LocalDate getFechaReg() {
-        return fechaReg;
+        return this.fechaReg;
     }
 
     public void setFechaReg(LocalDate fechaReg) {
@@ -93,10 +107,26 @@ public class Curso implements Serializable{
     }
 
     public String getUrl() {
-        return url;
+        return this.url;
     }
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public Set<Curso> getPrevias() {
+        return this.previas;
+    }
+
+    public void setPrevias(Set<Curso> previas) {
+        this.previas = previas;
+    }
+
+    public Set<Curso> getDependientes() {
+        return this.dependientes;
+    }
+
+    public void setDependientes(Set<Curso> dependientes) {
+        this.dependientes = dependientes;
     }
 }

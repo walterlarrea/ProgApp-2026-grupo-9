@@ -1,8 +1,14 @@
 package com.grupo9.edext.grupo9.estacion_de_trabajo.gui;
+import com.grupo9.edext.grupo9.estacion_de_trabajo.cliente.CursoPres;
+import com.grupo9.edext.grupo9.estacion_de_trabajo.cliente.InstitutoPres;
+import com.grupo9.edext.grupo9.estacion_de_trabajo.cliente.UsuarioPres;
+import javax.swing.JPanel;
+import java.util.ArrayList;
 
 import com.grupo9.edext.grupo9.estacion_de_trabajo.cliente.InstitutoPres;
 import com.grupo9.edext.grupo9.estacion_de_trabajo.cliente.CursoPres;
 import com.grupo9.edext.grupo9.estacion_de_trabajo.cliente.ProgramaDeFormacionPres;
+import com.grupo9.edext.grupo9.mensajes.ErrorNoExiste;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataCurso;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataInstituto;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataProgramaFormacion;
@@ -18,12 +24,14 @@ import java.awt.BorderLayout;
 import javax.swing.table.DefaultTableModel;
 
 public class MainJFrame extends javax.swing.JFrame {
-
+    
+    private final UsuarioPres usuarioPres = new UsuarioPres();
     private final ProgramaDeFormacionPres programaDeFormacionPres = new ProgramaDeFormacionPres();
     private final CursoPres cursoPres = new CursoPres();
     private final InstitutoPres institutoPres = new InstitutoPres();
     private java.io.File archivoImagenSeleccionado = null;
     private final ArrayList<JPanel> allJPanels = new ArrayList<JPanel>();
+    private Component jScrollPaneTablaConsultaUsuarios;
     private final ArrayList<JInternalFrame> allJInternalFrame = new ArrayList<JInternalFrame>();
     
     public MainJFrame() {
@@ -31,9 +39,10 @@ public class MainJFrame extends javax.swing.JFrame {
         setTitle("edEXT");
         setResizable(true);
         //alta usuario
-        jSpinnerFechaNac.setModel(new javax.swing.SpinnerDateModel(new java.util.Date(), null, null, ICONIFIED));
+        jSpinnerFechaNac.setModel(new javax.swing.SpinnerDateModel(new java.util.Date(), null, null, java.util.Calendar.DAY_OF_MONTH));
         javax.swing.JSpinner.DateEditor editor = new javax.swing.JSpinner.DateEditor(jSpinnerFechaNac, "dd/MM/yyyy");
         jSpinnerFechaNac.setEditor(editor);
+        jComboBoxInstituto.setEnabled(false);
         //para que el panel azul ocupe hasta el borde
         getContentPane().setLayout(new BorderLayout());
         getContentPane().add(jDesktopPane1, BorderLayout.CENTER);
@@ -124,6 +133,9 @@ public class MainJFrame extends javax.swing.JFrame {
         jLabelImagen = new javax.swing.JLabel();
         JPanelConsultarUsuarios = new javax.swing.JPanel();
         jLabelConsultarUsuarios = new javax.swing.JLabel();
+        jScrollPaneTablaConsultarUsuarios = new javax.swing.JScrollPane();
+        jTableConsultarUsuarios = new javax.swing.JTable();
+        jButtonConsUsRefresh = new javax.swing.JButton();
         JPanelCrearCurso = new javax.swing.JPanel();
         jLabelCrearCurso = new javax.swing.JLabel();
         jTextCrearCursoNombre = new javax.swing.JTextField();
@@ -140,9 +152,18 @@ public class MainJFrame extends javax.swing.JFrame {
         jLabelCrearCursoUrl = new javax.swing.JLabel();
         jTextCrearCursoUrl = new javax.swing.JTextField();
         jButtonGuardarCurso = new javax.swing.JButton();
-        jLabelCrearCursoInstituto = new javax.swing.JLabel();
+        jLabelCrearCursoPrevias = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
-        jListCrearCursoInstituto = new javax.swing.JList<>();
+        jListCrearCursoPrevias = new javax.swing.JList<>();
+        jLabelCrearCursoNombreError = new javax.swing.JLabel();
+        jLabelCrearCursoDuracionError = new javax.swing.JLabel();
+        jLabelCrearCursoUrlError = new javax.swing.JLabel();
+        jLabelCrearCursoPreviasError = new javax.swing.JLabel();
+        jLabelCrearCursoCantHorasError = new javax.swing.JLabel();
+        jLabelCrearCursoCantCreditosError = new javax.swing.JLabel();
+        jLabelCrearCursoDescripcionError = new javax.swing.JLabel();
+        jLabelCrearCursoInstituto = new javax.swing.JLabel();
+        jComboBoxCrearCursoInstituto = new javax.swing.JComboBox<>();
         JPanelConsultarCursos = new javax.swing.JPanel();
         jLabelConsultarCursos = new javax.swing.JLabel();
         jScrollPaneTablaConsultaCursos = new javax.swing.JScrollPane();
@@ -240,6 +261,11 @@ public class MainJFrame extends javax.swing.JFrame {
         jComboBoxInstituto.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Instituto" }));
 
         jButtonAceptar.setText("Aceptar");
+        jButtonAceptar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonAceptarActionPerformed(evt);
+            }
+        });
 
         jButtonCancelar.setText("Cancelar");
 
@@ -348,21 +374,60 @@ public class MainJFrame extends javax.swing.JFrame {
 
         jLabelConsultarUsuarios.setText("Consultar Usuarios");
 
+        jTableConsultarUsuarios.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null}
+            },
+            new String [] {
+                "Tipo de usuario", "Nickname", "Nombre", "Apellido", "Email", "FechaNac", "Imagen"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        });
+        jScrollPaneTablaConsultarUsuarios.setViewportView(jTableConsultarUsuarios);
+
+        jButtonConsUsRefresh.setText("Refrescar");
+        jButtonConsUsRefresh.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonConsUsRefreshActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout JPanelConsultarUsuariosLayout = new javax.swing.GroupLayout(JPanelConsultarUsuarios);
         JPanelConsultarUsuarios.setLayout(JPanelConsultarUsuariosLayout);
         JPanelConsultarUsuariosLayout.setHorizontalGroup(
             JPanelConsultarUsuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(JPanelConsultarUsuariosLayout.createSequentialGroup()
-                .addGap(15, 15, 15)
-                .addComponent(jLabelConsultarUsuarios)
-                .addContainerGap(658, Short.MAX_VALUE))
+                .addGroup(JPanelConsultarUsuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(JPanelConsultarUsuariosLayout.createSequentialGroup()
+                        .addGap(15, 15, 15)
+                        .addComponent(jLabelConsultarUsuarios)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButtonConsUsRefresh))
+                    .addGroup(JPanelConsultarUsuariosLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jScrollPaneTablaConsultarUsuarios, javax.swing.GroupLayout.DEFAULT_SIZE, 778, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         JPanelConsultarUsuariosLayout.setVerticalGroup(
             JPanelConsultarUsuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(JPanelConsultarUsuariosLayout.createSequentialGroup()
-                .addGap(15, 15, 15)
-                .addComponent(jLabelConsultarUsuarios)
-                .addContainerGap(549, Short.MAX_VALUE))
+                .addGap(10, 10, 10)
+                .addGroup(JPanelConsultarUsuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabelConsultarUsuarios)
+                    .addComponent(jButtonConsUsRefresh))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPaneTablaConsultarUsuarios, javax.swing.GroupLayout.DEFAULT_SIZE, 557, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         jLabelCrearCurso.setText("Crear Curso");
@@ -401,21 +466,43 @@ public class MainJFrame extends javax.swing.JFrame {
             }
         });
 
-        jLabelCrearCursoInstituto.setText("Instituto");
+        jLabelCrearCursoPrevias.setText("Previas");
 
-        jListCrearCursoInstituto.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        jScrollPane3.setViewportView(jListCrearCursoInstituto);
-        jListCrearCursoInstituto.setCellRenderer(new DefaultListCellRenderer() {
+        jScrollPane3.setViewportView(jListCrearCursoPrevias);
+        jListCrearCursoPrevias.setCellRenderer(new DefaultListCellRenderer() {
             @Override
             public Component getListCellRendererComponent(JList<?> list, Object value, int index,
                 boolean isSelected, boolean cellHasFocus) {
                 super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-                if (value instanceof DataInstituto di) {
-                    setText(di.nombreI());
+                if (value instanceof DataCurso dc) {
+                    setText(dc.nombreCurso());
                 }
                 return this;
             }
         });
+
+        jLabelCrearCursoNombreError.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
+        jLabelCrearCursoNombreError.setText("Error nombre");
+
+        jLabelCrearCursoDuracionError.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
+        jLabelCrearCursoDuracionError.setText("Error duración");
+
+        jLabelCrearCursoUrlError.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
+        jLabelCrearCursoUrlError.setText("Error url");
+
+        jLabelCrearCursoPreviasError.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
+        jLabelCrearCursoPreviasError.setText("Error previas");
+
+        jLabelCrearCursoCantHorasError.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
+        jLabelCrearCursoCantHorasError.setText("Error cantidad de horas");
+
+        jLabelCrearCursoCantCreditosError.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
+        jLabelCrearCursoCantCreditosError.setText("Error cantidad de Creditos");
+
+        jLabelCrearCursoDescripcionError.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
+        jLabelCrearCursoDescripcionError.setText("Error descipción");
+
+        jLabelCrearCursoInstituto.setText("Instituto");
 
         javax.swing.GroupLayout JPanelCrearCursoLayout = new javax.swing.GroupLayout(JPanelCrearCurso);
         JPanelCrearCurso.setLayout(JPanelCrearCursoLayout);
@@ -423,52 +510,63 @@ public class MainJFrame extends javax.swing.JFrame {
             JPanelCrearCursoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(JPanelCrearCursoLayout.createSequentialGroup()
                 .addGroup(JPanelCrearCursoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(JPanelCrearCursoLayout.createSequentialGroup()
+                    .addComponent(jLabelCrearCursoDescripcion)
+                    .addComponent(jLabelCrearCursoDescripcionError))
+                .addGap(709, 709, 709))
+            .addGroup(JPanelCrearCursoLayout.createSequentialGroup()
+                .addGroup(JPanelCrearCursoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, JPanelCrearCursoLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(jButtonGuardarCurso))
-                    .addGroup(JPanelCrearCursoLayout.createSequentialGroup()
-                        .addGroup(JPanelCrearCursoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(JPanelCrearCursoLayout.createSequentialGroup()
-                                .addGroup(JPanelCrearCursoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(JPanelCrearCursoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, JPanelCrearCursoLayout.createSequentialGroup()
-                                            .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                            .addComponent(jTextCrearCursoNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addGap(18, 18, 18))
-                                        .addGroup(JPanelCrearCursoLayout.createSequentialGroup()
-                                            .addGap(15, 15, 15)
-                                            .addComponent(jLabelCrearCurso)
-                                            .addGap(197, 197, 197)))
-                                    .addGroup(JPanelCrearCursoLayout.createSequentialGroup()
-                                        .addContainerGap()
-                                        .addGroup(JPanelCrearCursoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jLabelCrearCursoCantHoras)
-                                            .addComponent(jTextCrearCursoCantHoras, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(jLabelCrearCursoNombre))
-                                        .addGap(18, 18, 18)))
-                                .addGroup(JPanelCrearCursoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jLabelCrearCursoCantCreditos)
-                                    .addComponent(jTextCrearCursoDuracion, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
-                                    .addComponent(jLabelCrearCursoDuracion)
-                                    .addComponent(jTextCrearCursoCantCreditos)))
-                            .addGroup(JPanelCrearCursoLayout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(jLabelCrearCursoUrl))
-                            .addComponent(jTextCrearCursoUrl, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 418, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addGroup(JPanelCrearCursoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(JPanelCrearCursoLayout.createSequentialGroup()
-                                .addComponent(jLabelCrearCursoInstituto)
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 342, Short.MAX_VALUE))))
-                .addContainerGap())
-            .addGroup(JPanelCrearCursoLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(JPanelCrearCursoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1)
                     .addGroup(JPanelCrearCursoLayout.createSequentialGroup()
-                        .addComponent(jLabelCrearCursoDescripcion)
-                        .addGap(0, 0, Short.MAX_VALUE))))
+                        .addGroup(JPanelCrearCursoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(JPanelCrearCursoLayout.createSequentialGroup()
+                                .addContainerGap()
+                                .addGroup(JPanelCrearCursoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jLabelCrearCursoUrl, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jTextCrearCursoUrl)
+                                    .addComponent(jLabelCrearCursoUrlError, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addGroup(JPanelCrearCursoLayout.createSequentialGroup()
+                                        .addGroup(JPanelCrearCursoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addComponent(jTextCrearCursoCantHoras)
+                                            .addComponent(jLabelCrearCursoCantHoras, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(jLabelCrearCursoCantHorasError, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE))
+                                        .addGap(18, 18, 18)
+                                        .addGroup(JPanelCrearCursoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addComponent(jLabelCrearCursoCantCreditos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(jLabelCrearCursoCantCreditosError, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
+                                            .addComponent(jTextCrearCursoCantCreditos)))))
+                            .addGroup(JPanelCrearCursoLayout.createSequentialGroup()
+                                .addGroup(JPanelCrearCursoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, JPanelCrearCursoLayout.createSequentialGroup()
+                                        .addContainerGap()
+                                        .addComponent(jLabelCrearCursoNombreError, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(JPanelCrearCursoLayout.createSequentialGroup()
+                                        .addGap(15, 15, 15)
+                                        .addComponent(jLabelCrearCurso))
+                                    .addGroup(JPanelCrearCursoLayout.createSequentialGroup()
+                                        .addContainerGap()
+                                        .addComponent(jLabelCrearCursoNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(JPanelCrearCursoLayout.createSequentialGroup()
+                                        .addContainerGap()
+                                        .addComponent(jTextCrearCursoNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(18, 18, 18)
+                                .addGroup(JPanelCrearCursoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jTextCrearCursoDuracion)
+                                    .addComponent(jLabelCrearCursoDuracion, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabelCrearCursoDuracionError, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE))))
+                        .addGap(18, 18, 18)
+                        .addGroup(JPanelCrearCursoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane3)
+                            .addGroup(JPanelCrearCursoLayout.createSequentialGroup()
+                                .addGroup(JPanelCrearCursoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jLabelCrearCursoInstituto, javax.swing.GroupLayout.DEFAULT_SIZE, 187, Short.MAX_VALUE)
+                                    .addComponent(jLabelCrearCursoPrevias, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jLabelCrearCursoPreviasError)
+                                    .addComponent(jComboBoxCrearCursoInstituto, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addGap(0, 0, Short.MAX_VALUE)))))
+                .addContainerGap())
         );
         JPanelCrearCursoLayout.setVerticalGroup(
             JPanelCrearCursoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -478,16 +576,20 @@ public class MainJFrame extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(JPanelCrearCursoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabelCrearCursoDuracion)
-                    .addComponent(jLabelCrearCursoInstituto)
-                    .addComponent(jLabelCrearCursoNombre))
+                    .addComponent(jLabelCrearCursoNombre)
+                    .addComponent(jLabelCrearCursoInstituto))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(JPanelCrearCursoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jTextCrearCursoDuracion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextCrearCursoNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jComboBoxCrearCursoInstituto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(JPanelCrearCursoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jScrollPane3)
+                    .addComponent(jLabelCrearCursoNombreError)
+                    .addComponent(jLabelCrearCursoDuracionError, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(JPanelCrearCursoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(JPanelCrearCursoLayout.createSequentialGroup()
-                        .addGroup(JPanelCrearCursoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jTextCrearCursoDuracion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextCrearCursoNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(JPanelCrearCursoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabelCrearCursoCantHoras)
                             .addComponent(jLabelCrearCursoCantCreditos))
@@ -495,19 +597,52 @@ public class MainJFrame extends javax.swing.JFrame {
                         .addGroup(JPanelCrearCursoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jTextCrearCursoCantCreditos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jTextCrearCursoCantHoras, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(JPanelCrearCursoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabelCrearCursoCantHorasError)
+                            .addComponent(jLabelCrearCursoCantCreditosError))
+                        .addGap(38, 38, 38)
                         .addComponent(jLabelCrearCursoUrl)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jTextCrearCursoUrl, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 40, Short.MAX_VALUE)))
-                .addGap(18, 18, 18)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabelCrearCursoUrlError))
+                    .addGroup(JPanelCrearCursoLayout.createSequentialGroup()
+                        .addComponent(jLabelCrearCursoPrevias)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabelCrearCursoPreviasError)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 35, Short.MAX_VALUE)
                 .addComponent(jLabelCrearCursoDescripcion)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(97, 97, 97)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabelCrearCursoDescripcionError)
+                .addGap(18, 18, 18)
                 .addComponent(jButtonGuardarCurso)
                 .addContainerGap())
         );
+
+        jComboBoxCrearCursoInstituto.setRenderer(new DefaultListCellRenderer() {
+            @Override
+            public Component getListCellRendererComponent(
+                JList<?> list,
+                Object value,
+                int index,
+                boolean isSelected,
+                boolean cellHasFocus) {
+
+                super.getListCellRendererComponent(
+                    list, value, index, isSelected, cellHasFocus);
+
+                if (value instanceof DataInstituto di) {
+                    setText(di.nombreI());
+                }
+
+                return this;
+            }
+        });
 
         jLabelConsultarCursos.setText("Consultar Cursos");
 
@@ -895,6 +1030,11 @@ public class MainJFrame extends javax.swing.JFrame {
         jMenuUsuarios.add(jMenuItemConsultarUsuario);
 
         jMenuItemModificar.setText("Modificar datos");
+        jMenuItemModificar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemModificarActionPerformed(evt);
+            }
+        });
         jMenuUsuarios.add(jMenuItemModificar);
 
         jMenuBar1.add(jMenuUsuarios);
@@ -1075,6 +1215,16 @@ public class MainJFrame extends javax.swing.JFrame {
 
     private void jMenuItemCrearUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemCrearUsuarioActionPerformed
         showOnePanelAndHideTheRest(this.JPanelAltaUsuario);
+        
+        HashSet<DataInstituto> institutos = this.institutoPres.cargarInstitutos();
+        jComboBoxInstituto.removeAllItems();
+        jComboBoxInstituto.addItem("Seleccione un Instituto...");
+        if (institutos != null) {
+            for (DataInstituto inst : institutos) {
+                jComboBoxInstituto.addItem(inst.nombreI());
+            }
+        }
+        jComboBoxInstituto.setEnabled(jRadioButtonDocente.isSelected());
     }//GEN-LAST:event_jMenuItemCrearUsuarioActionPerformed
 
     private void jMenuItemConsultarUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemConsultarUsuarioActionPerformed
@@ -1085,13 +1235,22 @@ public class MainJFrame extends javax.swing.JFrame {
         showOnePanelAndHideTheRest(this.JPanelCrearCurso);
 
         HashSet<DataInstituto> institutos = this.institutoPres.cargarInstitutos();
+        HashSet<DataCurso> cursos = this.cursoPres.cargarCursos();
 
-        DefaultListModel<DataInstituto> mutableModel = new DefaultListModel<>();
-        this.jListCrearCursoInstituto.setModel(mutableModel);
-        DefaultListModel<DataInstituto> model = (DefaultListModel<DataInstituto>) this.jListCrearCursoInstituto.getModel();
+        DefaultComboBoxModel<DataInstituto> mutableModelInsti = new DefaultComboBoxModel<>();
+        this.jComboBoxCrearCursoInstituto.setModel(mutableModelInsti);
+        DefaultComboBoxModel<DataInstituto> modelInsti = (DefaultComboBoxModel<DataInstituto>) this.jComboBoxCrearCursoInstituto.getModel();
+        
+        DefaultListModel<DataCurso> mutableModelCurso = new DefaultListModel<>();
+        this.jListCrearCursoPrevias.setModel(mutableModelCurso);
+        DefaultListModel<DataCurso> modelCurso = (DefaultListModel<DataCurso>) this.jListCrearCursoPrevias.getModel();
 
         for(DataInstituto instituto: institutos){
-            model.addElement(instituto);
+            modelInsti.addElement(instituto);
+        }
+        
+        for(DataCurso curso: cursos){
+            modelCurso.addElement(curso);
         }
     }//GEN-LAST:event_jMenuItemCrearCursoActionPerformed
 
@@ -1138,34 +1297,29 @@ public class MainJFrame extends javax.swing.JFrame {
     private void jLabelSeleccionarFotoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelSeleccionarFotoMouseClicked
         javax.swing.JFileChooser fileChooser = new javax.swing.JFileChooser();
 
-        // 2. Filtrar para que solo permita elegir imágenes JPG o PNG
+        // Filtrar para que solo permita elegir imágenes JPG o PNG
         javax.swing.filechooser.FileNameExtensionFilter filtro = new javax.swing.filechooser.FileNameExtensionFilter("Imágenes JPG y PNG", "jpg", "png");
         fileChooser.setFileFilter(filtro);
 
-        // 3. Mostrar la ventana de selección
         int resultado = fileChooser.showOpenDialog(this);
 
         if (resultado == javax.swing.JFileChooser.APPROVE_OPTION) {
-            java.io.File archivoSeleccionado = fileChooser.getSelectedFile();
-            String rutaImagen = archivoSeleccionado.getAbsolutePath();
+            this.archivoImagenSeleccionado = fileChooser.getSelectedFile();
+            String rutaImagen = this.archivoImagenSeleccionado.getAbsolutePath();
 
-        }
-        if (resultado == javax.swing.JFileChooser.APPROVE_OPTION) {
-            java.io.File archivoSeleccionado = fileChooser.getSelectedFile();
-            String rutaImagen = archivoSeleccionado.getAbsolutePath();
-    
-    // 1. Crear el ícono con la ruta del archivo
             javax.swing.ImageIcon iconoOriginal = new javax.swing.ImageIcon(rutaImagen);
-        
-    // 2. Escalar la imagen para que encaje perfecto dentro del tamaño del JLabel
+
+            int ancho = jLabelImagen.getWidth() > 0 ? jLabelImagen.getWidth() : 160;
+            int alto = jLabelImagen.getHeight() > 0 ? jLabelImagen.getHeight() : 160;
+
             java.awt.Image imagenEscalada = iconoOriginal.getImage().getScaledInstance(
-            jLabelImagen.getWidth(), 
-            jLabelImagen.getHeight(), 
-            java.awt.Image.SCALE_SMOOTH
-    );
-    
-    // 3. Asignar la imagen escalada directamente al JLabel del panel
+                ancho,
+                alto,
+                java.awt.Image.SCALE_SMOOTH
+            );
+
             jLabelImagen.setIcon(new javax.swing.ImageIcon(imagenEscalada));
+            jLabelImagen.setText(""); // Quita el texto "Imagen"
         }
     }//GEN-LAST:event_jLabelSeleccionarFotoMouseClicked
 
@@ -1188,22 +1342,6 @@ public class MainJFrame extends javax.swing.JFrame {
     private void jTextFieldNicknameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldNicknameActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextFieldNicknameActionPerformed
-
-    private void jButtonGuardarCursoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonGuardarCursoActionPerformed
-        final String nombre = jTextCrearCursoNombre.getText();
-        final String descripcion = jTextAreaCrearCursoDescripcion.getText();
-
-        final int duracion = Integer.parseInt(jTextCrearCursoDuracion.getText());
-        final int cantHoras = Integer.parseInt(jTextCrearCursoCantHoras.getText());
-        final int cantCreditos = Integer.parseInt(jTextCrearCursoCantCreditos.getText());
-
-        final String url = jTextCrearCursoUrl.getText();
-
-        final DataInstituto instituto = jListCrearCursoInstituto.getSelectedValue();
-
-        System.out.println("[GUI] Crear nuevo Curso: " + nombre);
-        cursoPres.guardarNuevoCurso(instituto, nombre, descripcion, duracion, cantHoras, cantCreditos, url);
-    }//GEN-LAST:event_jButtonGuardarCursoActionPerformed
 
     private void jButtonConsultarCursosRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonConsultarCursosRefreshActionPerformed
         System.out.println("[GUI] Consultar todos los Cursos");
@@ -1273,6 +1411,23 @@ public class MainJFrame extends javax.swing.JFrame {
             model.addRow(programaObj);
         }
     }
+    
+    private void limpiarFormularioProgDeFormacion() {
+        
+    }
+    
+    private void limpiarFormularioCurso() {
+        jTextCrearCursoNombre.setText("");
+        jTextAreaCrearCursoDescripcion.setText("");
+
+        jTextCrearCursoDuracion.setText("");
+        jTextCrearCursoCantHoras.setText("");
+        jTextCrearCursoCantCreditos.setText("");
+
+        jTextCrearCursoUrl.setText("");
+
+        jListCrearCursoPrevias.setSelectedValue(ABORT, rootPaneCheckingEnabled);
+    }
 
     private void jButtonGuardarInstitutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonGuardarInstitutoActionPerformed
         final String nombre = jTextCrearInstituto.getText();
@@ -1315,12 +1470,142 @@ public class MainJFrame extends javax.swing.JFrame {
         );
     }//GEN-LAST:event_jMenuItemInscripcionEdicionCursoActionPerformed
 
+    private void jButtonGuardarCursoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonGuardarCursoActionPerformed
+        final String nombre = jTextCrearCursoNombre.getText();
+        final String descripcion = jTextAreaCrearCursoDescripcion.getText();
+
+        final int duracion = Integer.parseInt(jTextCrearCursoDuracion.getText());
+        final int cantHoras = Integer.parseInt(jTextCrearCursoCantHoras.getText());
+        final int cantCreditos = Integer.parseInt(jTextCrearCursoCantCreditos.getText());
+
+        final String url = jTextCrearCursoUrl.getText();
+
+        final DataInstituto instituto = (DataInstituto) jComboBoxCrearCursoInstituto.getSelectedItem();
+        final HashSet<DataCurso> previas = new HashSet<>(jListCrearCursoPrevias.getSelectedValuesList());
+
+        System.out.println("[GUI] Crear nuevo Curso: " + nombre);
+        DataCurso nuevoCurso = cursoPres.guardarNuevoCurso(instituto, nombre, descripcion, duracion, cantHoras, cantCreditos, url, previas);
+        if (nuevoCurso != null){
+            limpiarFormularioCurso();
+        }
+    }//GEN-LAST:event_jButtonGuardarCursoActionPerformed
+    private void jButtonAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAceptarActionPerformed
+        String nick = jTextFieldNickname.getText().trim();
+        String nombre = jTextFieldNombre.getText().trim();
+        String apellido = jTextFieldApellido.getText().trim();
+        String email = jTextFieldEmail.getText().trim();
+
+        if (nick.isEmpty() || nombre.isEmpty() || apellido.isEmpty() || email.isEmpty()) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Por favor complete todos los campos obligatorios.", "Advertencia", javax.swing.JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        // Obtener la fecha del JSpinner
+        java.util.Date fechaUtil = (java.util.Date) jSpinnerFechaNac.getValue();
+        LocalDate fechaNac = fechaUtil.toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalDate();
+        String rutaImg = (this.archivoImagenSeleccionado != null) ? this.archivoImagenSeleccionado.getAbsolutePath() : null;
+
+        try {
+            // Pedir la interfaz al controlador mediante la Fábrica
+            com.grupo9.edext.grupo9.servidor_central.controller.usuario.IUsuario iu = 
+                com.grupo9.edext.grupo9.miscelanea.Fabrica.getInstance().getIUsuario();
+
+            if (jRadioButtonDocente.isSelected()) {
+                String inst = (String) jComboBoxInstituto.getSelectedItem();
+                if (inst == null || inst.equals("Instituto") || inst.equals("Seleccione un Instituto...") || inst.isEmpty()) {
+                    javax.swing.JOptionPane.showMessageDialog(this, "Debe seleccionar un Instituto para el docente.", "Advertencia", javax.swing.JOptionPane.WARNING_MESSAGE);
+                    return;
+                }
+                iu.registrarDocente(nick, nombre, apellido, email, fechaNac, rutaImg, inst);
+            } else {
+                iu.registrarEstudiante(nick, nombre, apellido, email, fechaNac, rutaImg);
+            }
+
+            javax.swing.JOptionPane.showMessageDialog(this, "¡Usuario registrado y guardado en la base de datos con éxito!", "Éxito", javax.swing.JOptionPane.INFORMATION_MESSAGE);
+            limpiarFormularioAltaUsuario();
+
+        } catch (com.grupo9.edext.grupo9.mensajes.ErrorRepetidos e) {
+            javax.swing.JOptionPane.showMessageDialog(this, e.getMessage(), "Usuario ya registrado", javax.swing.JOptionPane.ERROR_MESSAGE);
+        } catch (Exception e) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Error al guardar: " + e.getMessage(), "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_jButtonAceptarActionPerformed
+
+    private void jMenuItemModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemModificarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jMenuItemModificarActionPerformed
+
+    private void jButtonConsUsRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonConsUsRefreshActionPerformed
+        System.out.println("[GUI] Consultar todos los Usuarios");
+        String[] nicknames = usuarioPres.listarUsuarios();
+
+        if (nicknames == null) {
+            return;
+        }
+
+        DefaultTableModel model = (DefaultTableModel) jTableConsultarUsuarios.getModel();
+        model.setRowCount(0);
+
+        // 2. Recorres los nicknames y consultas los datos completos de cada uno
+        for (String nick : nicknames) {
+            try {
+                com.grupo9.edext.grupo9.servidor_central.dominio.DataUsuario usuario;
+                
+                usuario = usuarioPres.consultarUsuario(nick);
+                
+                // 3. Determinas el tipo según la instancia o clase devuelta
+                String tipo = (usuario instanceof com.grupo9.edext.grupo9.servidor_central.dominio.DataDocente) ? "Docente" : "Estudiante";
+                Object[] usuarioObj = new Object[]{
+                    tipo,
+                    usuario.getNickname(),
+                    usuario.getNombre(),
+                    usuario.getApellido(),
+                    usuario.getEmail(),
+                    usuario.getFechaNac(),
+                    usuario.getImagen()
+                };
+                model.addRow(usuarioObj);
+            } catch (ErrorNoExiste ex) {
+                System.getLogger(MainJFrame.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+            }
+        }
+    }//GEN-LAST:event_jButtonConsUsRefreshActionPerformed
+
+    private void jRadioButtonDocenteActionPerformed(java.awt.event.ActionEvent evt) {
+        jComboBoxInstituto.setEnabled(jRadioButtonDocente.isSelected());
+    }
+
+    private void jButtonCancelarActionPerformed(java.awt.event.ActionEvent evt) {
+        limpiarFormularioAltaUsuario();
+        hideAllJPanels();
+    }
+
+    private void limpiarFormularioAltaUsuario() {
+        jTextFieldNickname.setText("");
+        jTextFieldNombre.setText("");
+        jTextFieldApellido.setText("");
+        jTextFieldEmail.setText("");
+        jSpinnerFechaNac.setValue(new java.util.Date());
+        jRadioButtonDocente.setSelected(false);
+        jComboBoxInstituto.setEnabled(false);
+        if (jComboBoxInstituto.getItemCount() > 0) {
+            jComboBoxInstituto.setSelectedIndex(0);
+        }
+        jLabelImagen.setIcon(null);
+        jLabelImagen.setText("Imagen");
+        this.archivoImagenSeleccionado = null;
+    }
+
     // Configurar el JSpinner para que maneje fechas (muestra Día, Mes y Año)
     private void hideAllJPanels() {
         for (JPanel panel : this.allJPanels) {
             panel.setVisible(false);
         }
     }
+
+    
+
+    
     
     private void showOnePanelAndHideTheRest(JPanel panelToShow){
         for (JPanel panel : this.allJPanels) {
@@ -1377,12 +1662,14 @@ public class MainJFrame extends javax.swing.JFrame {
     private java.awt.Choice choiceCrearProgramaCursos;
     private javax.swing.JButton jButtonAceptar;
     private javax.swing.JButton jButtonCancelar;
+    private javax.swing.JButton jButtonConsUsRefresh;
     private javax.swing.JButton jButtonConsultarCursosRefresh;
     private javax.swing.JButton jButtonConsultarInstitutosRefresh;
     private javax.swing.JButton jButtonConsultarProgramasRefresh;
     private javax.swing.JButton jButtonGuardarCurso;
     private javax.swing.JButton jButtonGuardarInstituto;
     private javax.swing.JButton jButtonGuardarPrograma;
+    private javax.swing.JComboBox<DataInstituto> jComboBoxCrearCursoInstituto;
     private javax.swing.JComboBox<String> jComboBoxInstituto;
     private javax.swing.JDesktopPane jDesktopPane1;
     private javax.swing.JFormattedTextField jFormattedTextFieldCrearProgramaFechaFin;
@@ -1396,12 +1683,20 @@ public class MainJFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabelConsultarUsuarios1;
     private javax.swing.JLabel jLabelCrearCurso;
     private javax.swing.JLabel jLabelCrearCursoCantCreditos;
+    private javax.swing.JLabel jLabelCrearCursoCantCreditosError;
     private javax.swing.JLabel jLabelCrearCursoCantHoras;
+    private javax.swing.JLabel jLabelCrearCursoCantHorasError;
     private javax.swing.JLabel jLabelCrearCursoDescripcion;
+    private javax.swing.JLabel jLabelCrearCursoDescripcionError;
     private javax.swing.JLabel jLabelCrearCursoDuracion;
+    private javax.swing.JLabel jLabelCrearCursoDuracionError;
     private javax.swing.JLabel jLabelCrearCursoInstituto;
     private javax.swing.JLabel jLabelCrearCursoNombre;
+    private javax.swing.JLabel jLabelCrearCursoNombreError;
+    private javax.swing.JLabel jLabelCrearCursoPrevias;
+    private javax.swing.JLabel jLabelCrearCursoPreviasError;
     private javax.swing.JLabel jLabelCrearCursoUrl;
+    private javax.swing.JLabel jLabelCrearCursoUrlError;
     private javax.swing.JLabel jLabelCrearInstituto;
     private javax.swing.JLabel jLabelCrearPrograma;
     private javax.swing.JLabel jLabelCrearProgramaCursos;
@@ -1415,7 +1710,7 @@ public class MainJFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabelNombre;
     private javax.swing.JLabel jLabelSeccionCrearInstituto;
     private javax.swing.JLabel jLabelSeleccionarFoto;
-    private javax.swing.JList<DataInstituto> jListCrearCursoInstituto;
+    private javax.swing.JList<DataCurso> jListCrearCursoPrevias;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenu jMenuCursos;
     private javax.swing.JMenu jMenuEdicionDeCurso;
@@ -1441,9 +1736,11 @@ public class MainJFrame extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPaneTablaConsultaCursos;
     private javax.swing.JScrollPane jScrollPaneTablaConsultaCursos1;
+    private javax.swing.JScrollPane jScrollPaneTablaConsultarUsuarios;
     private javax.swing.JSpinner jSpinnerFechaNac;
     private javax.swing.JTable jTableConsultaCursos;
     private javax.swing.JTable jTableConsultaProgramas;
+    private javax.swing.JTable jTableConsultarUsuarios;
     private javax.swing.JTable jTableCrearProgramaCursos;
     private javax.swing.JTable jTableInstitutos;
     private javax.swing.JTextArea jTextAreaCrearCursoDescripcion;

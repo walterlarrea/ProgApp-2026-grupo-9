@@ -33,6 +33,9 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="Modificar datos"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItemModificarActionPerformed"/>
+              </Events>
             </MenuItem>
           </SubComponents>
         </Menu>
@@ -435,6 +438,9 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Aceptar"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonAceptarActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="jButtonCancelar">
           <Properties>
@@ -473,7 +479,7 @@
             </Property>
             <Property name="text" type="java.lang.String" value="Seleccionar Foto de Perfil"/>
             <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
-              <Color id="Cursor Por defecto"/>
+              <Color id="Default Cursor"/>
             </Property>
           </Properties>
           <Events>
@@ -492,19 +498,34 @@
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" alignment="0" attributes="0">
-                  <EmptySpace min="15" pref="15" max="-2" attributes="0"/>
-                  <Component id="jLabelConsultarUsuarios" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace pref="658" max="32767" attributes="0"/>
+              <Group type="102" attributes="0">
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" alignment="0" attributes="0">
+                          <EmptySpace min="15" pref="15" max="-2" attributes="0"/>
+                          <Component id="jLabelConsultarUsuarios" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="32767" attributes="0"/>
+                          <Component id="jButtonConsUsRefresh" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <Group type="102" alignment="0" attributes="0">
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="jScrollPaneTablaConsultarUsuarios" pref="778" max="32767" attributes="0"/>
+                      </Group>
+                  </Group>
+                  <EmptySpace max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
-                  <EmptySpace min="15" pref="15" max="-2" attributes="0"/>
-                  <Component id="jLabelConsultarUsuarios" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace pref="549" max="32767" attributes="0"/>
+                  <EmptySpace min="10" pref="10" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="jLabelConsultarUsuarios" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="jButtonConsUsRefresh" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Component id="jScrollPaneTablaConsultarUsuarios" pref="557" max="32767" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -515,6 +536,77 @@
             <Property name="text" type="java.lang.String" value="Consultar Usuarios"/>
           </Properties>
         </Component>
+        <Container class="javax.swing.JScrollPane" name="jScrollPaneTablaConsultarUsuarios">
+
+          <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+          <SubComponents>
+            <Component class="javax.swing.JTable" name="jTableConsultarUsuarios">
+              <Properties>
+                <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
+                  <Table columnCount="7" rowCount="4">
+                    <Column editable="true" title="Tipo de usuario" type="java.lang.String"/>
+                    <Column editable="true" title="Nickname" type="java.lang.String"/>
+                    <Column editable="true" title="Nombre" type="java.lang.String"/>
+                    <Column editable="true" title="Apellido" type="java.lang.String"/>
+                    <Column editable="true" title="Email" type="java.lang.String"/>
+                    <Column editable="true" title="FechaNac" type="java.lang.String"/>
+                    <Column editable="true" title="Imagen" type="java.lang.String"/>
+                  </Table>
+                </Property>
+                <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
+                  <TableColumnModel selectionModel="0">
+                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                      <Title/>
+                      <Editor/>
+                      <Renderer/>
+                    </Column>
+                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                      <Title/>
+                      <Editor/>
+                      <Renderer/>
+                    </Column>
+                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                      <Title/>
+                      <Editor/>
+                      <Renderer/>
+                    </Column>
+                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                      <Title/>
+                      <Editor/>
+                      <Renderer/>
+                    </Column>
+                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                      <Title/>
+                      <Editor/>
+                      <Renderer/>
+                    </Column>
+                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                      <Title/>
+                      <Editor/>
+                      <Renderer/>
+                    </Column>
+                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                      <Title/>
+                      <Editor/>
+                      <Renderer/>
+                    </Column>
+                  </TableColumnModel>
+                </Property>
+                <Property name="tableHeader" type="javax.swing.table.JTableHeader" editor="org.netbeans.modules.form.editors2.JTableHeaderEditor">
+                  <TableHeader reorderingAllowed="true" resizingAllowed="true"/>
+                </Property>
+              </Properties>
+            </Component>
+          </SubComponents>
+        </Container>
+        <Component class="javax.swing.JButton" name="jButtonConsUsRefresh">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Refrescar"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonConsUsRefreshActionPerformed"/>
+          </Events>
+        </Component>
       </SubComponents>
     </Container>
     <Container class="javax.swing.JPanel" name="JPanelCrearCurso">
@@ -524,70 +616,84 @@
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" attributes="0">
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" attributes="0">
+                      <Component id="jLabelCrearCursoDescripcion" alignment="0" min="-2" max="-2" attributes="0"/>
+                      <Component id="jLabelCrearCursoDescripcionError" alignment="0" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace min="-2" pref="709" max="-2" attributes="0"/>
+              </Group>
+              <Group type="102" attributes="0">
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" alignment="1" attributes="0">
                           <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                           <Component id="jButtonGuardarCurso" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <Group type="102" attributes="0">
+                      <Component id="jScrollPane1" alignment="0" max="32767" attributes="0"/>
+                      <Group type="102" alignment="0" attributes="0">
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Group type="102" attributes="0">
+                              <Group type="102" alignment="0" attributes="0">
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                      <Component id="jLabelCrearCursoUrl" alignment="0" min="-2" pref="26" max="-2" attributes="0"/>
+                                      <Component id="jTextCrearCursoUrl" alignment="0" max="32767" attributes="0"/>
+                                      <Component id="jLabelCrearCursoUrlError" alignment="0" max="32767" attributes="0"/>
+                                      <Group type="102" alignment="0" attributes="0">
+                                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                              <Component id="jTextCrearCursoCantHoras" max="32767" attributes="0"/>
+                                              <Component id="jLabelCrearCursoCantHoras" min="-2" pref="96" max="-2" attributes="0"/>
+                                              <Component id="jLabelCrearCursoCantHorasError" alignment="0" pref="250" max="32767" attributes="0"/>
+                                          </Group>
+                                          <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
+                                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                              <Component id="jLabelCrearCursoCantCreditos" max="32767" attributes="0"/>
+                                              <Component id="jLabelCrearCursoCantCreditosError" pref="150" max="32767" attributes="0"/>
+                                              <Component id="jTextCrearCursoCantCreditos" alignment="0" max="32767" attributes="0"/>
+                                          </Group>
+                                      </Group>
+                                  </Group>
+                              </Group>
+                              <Group type="102" alignment="0" attributes="0">
                                   <Group type="103" groupAlignment="0" attributes="0">
-                                      <Group type="103" alignment="0" groupAlignment="0" max="-2" attributes="0">
-                                          <Group type="102" alignment="1" attributes="0">
-                                              <EmptySpace max="32767" attributes="0"/>
-                                              <Component id="jTextCrearCursoNombre" min="-2" pref="250" max="-2" attributes="0"/>
-                                              <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
-                                          </Group>
-                                          <Group type="102" attributes="0">
-                                              <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
-                                              <Component id="jLabelCrearCurso" min="-2" max="-2" attributes="0"/>
-                                              <EmptySpace min="-2" pref="197" max="-2" attributes="0"/>
-                                          </Group>
+                                      <Group type="102" alignment="1" attributes="0">
+                                          <EmptySpace max="-2" attributes="0"/>
+                                          <Component id="jLabelCrearCursoNombreError" min="-2" pref="250" max="-2" attributes="0"/>
+                                      </Group>
+                                      <Group type="102" attributes="0">
+                                          <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
+                                          <Component id="jLabelCrearCurso" min="-2" max="-2" attributes="0"/>
                                       </Group>
                                       <Group type="102" attributes="0">
                                           <EmptySpace max="-2" attributes="0"/>
-                                          <Group type="103" groupAlignment="0" attributes="0">
-                                              <Component id="jLabelCrearCursoCantHoras" alignment="0" min="-2" max="-2" attributes="0"/>
-                                              <Component id="jTextCrearCursoCantHoras" alignment="0" min="-2" pref="250" max="-2" attributes="0"/>
-                                              <Component id="jLabelCrearCursoNombre" alignment="0" min="-2" max="-2" attributes="0"/>
-                                          </Group>
-                                          <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
+                                          <Component id="jLabelCrearCursoNombre" min="-2" pref="44" max="-2" attributes="0"/>
+                                      </Group>
+                                      <Group type="102" alignment="0" attributes="0">
+                                          <EmptySpace max="-2" attributes="0"/>
+                                          <Component id="jTextCrearCursoNombre" min="-2" pref="250" max="-2" attributes="0"/>
                                       </Group>
                                   </Group>
+                                  <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                      <Component id="jLabelCrearCursoCantCreditos" min="-2" max="-2" attributes="0"/>
-                                      <Component id="jTextCrearCursoDuracion" alignment="0" pref="150" max="32767" attributes="0"/>
-                                      <Component id="jLabelCrearCursoDuracion" alignment="0" min="-2" max="-2" attributes="0"/>
-                                      <Component id="jTextCrearCursoCantCreditos" alignment="0" max="32767" attributes="0"/>
+                                      <Component id="jTextCrearCursoDuracion" max="32767" attributes="0"/>
+                                      <Component id="jLabelCrearCursoDuracion" min="-2" pref="48" max="-2" attributes="0"/>
+                                      <Component id="jLabelCrearCursoDuracionError" alignment="0" pref="150" max="32767" attributes="0"/>
                                   </Group>
                               </Group>
-                              <Group type="102" attributes="0">
-                                  <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="jLabelCrearCursoUrl" min="-2" max="-2" attributes="0"/>
-                              </Group>
-                              <Component id="jTextCrearCursoUrl" alignment="1" min="-2" pref="418" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="jScrollPane3" max="32767" attributes="0"/>
                               <Group type="102" attributes="0">
-                                  <Component id="jLabelCrearCursoInstituto" min="-2" max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                      <Component id="jLabelCrearCursoInstituto" pref="187" max="32767" attributes="0"/>
+                                      <Component id="jLabelCrearCursoPrevias" max="32767" attributes="0"/>
+                                      <Component id="jLabelCrearCursoPreviasError" min="-2" max="-2" attributes="0"/>
+                                      <Component id="jComboBoxCrearCursoInstituto" alignment="0" max="32767" attributes="0"/>
+                                  </Group>
                                   <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                               </Group>
-                              <Component id="jScrollPane3" pref="342" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
-              </Group>
-              <Group type="102" attributes="0">
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="jScrollPane1" max="32767" attributes="0"/>
-                      <Group type="102" alignment="0" attributes="0">
-                          <Component id="jLabelCrearCursoDescripcion" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                      </Group>
-                  </Group>
               </Group>
           </Group>
         </DimensionLayout>
@@ -599,18 +705,23 @@
                   <EmptySpace type="separate" min="-2" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="jLabelCrearCursoDuracion" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="jLabelCrearCursoInstituto" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="jLabelCrearCursoNombre" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="jLabelCrearCursoInstituto" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="jTextCrearCursoDuracion" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="jTextCrearCursoNombre" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="jComboBoxCrearCursoInstituto" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="1" attributes="0">
-                      <Component id="jScrollPane3" max="32767" attributes="0"/>
-                      <Group type="102" alignment="1" attributes="0">
-                          <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="jTextCrearCursoDuracion" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="jTextCrearCursoNombre" alignment="3" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <EmptySpace max="-2" attributes="0"/>
+                      <Component id="jLabelCrearCursoNombreError" min="-2" max="-2" attributes="0"/>
+                      <Component id="jLabelCrearCursoDuracionError" min="-2" pref="16" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" attributes="0">
                           <Group type="103" groupAlignment="3" attributes="0">
                               <Component id="jLabelCrearCursoCantHoras" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="jLabelCrearCursoCantCreditos" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -620,18 +731,33 @@
                               <Component id="jTextCrearCursoCantCreditos" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="jTextCrearCursoCantHoras" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="jLabelCrearCursoCantHorasError" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="jLabelCrearCursoCantCreditosError" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace min="-2" pref="38" max="-2" attributes="0"/>
                           <Component id="jLabelCrearCursoUrl" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="jTextCrearCursoUrl" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace min="0" pref="40" max="32767" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="jLabelCrearCursoUrlError" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <Group type="102" attributes="0">
+                          <Component id="jLabelCrearCursoPrevias" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="jScrollPane3" min="-2" pref="168" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="jLabelCrearCursoPreviasError" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
-                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                  <EmptySpace pref="35" max="32767" attributes="0"/>
                   <Component id="jLabelCrearCursoDescripcion" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="jScrollPane1" min="-2" pref="185" max="-2" attributes="0"/>
-                  <EmptySpace min="-2" pref="97" max="-2" attributes="0"/>
+                  <Component id="jScrollPane1" min="-2" pref="143" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Component id="jLabelCrearCursoDescripcionError" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Component id="jButtonGuardarCurso" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
@@ -723,9 +849,9 @@
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonGuardarCursoActionPerformed"/>
           </Events>
         </Component>
-        <Component class="javax.swing.JLabel" name="jLabelCrearCursoInstituto">
+        <Component class="javax.swing.JLabel" name="jLabelCrearCursoPrevias">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Instituto"/>
+            <Property name="text" type="java.lang.String" value="Previas"/>
           </Properties>
         </Component>
         <Container class="javax.swing.JScrollPane" name="jScrollPane3">
@@ -735,20 +861,91 @@
 
           <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
           <SubComponents>
-            <Component class="javax.swing.JList" name="jListCrearCursoInstituto">
+            <Component class="javax.swing.JList" name="jListCrearCursoPrevias">
               <Properties>
                 <Property name="model" type="javax.swing.ListModel" editor="org.netbeans.modules.form.editors2.ListModelEditor">
                   <StringArray count="0"/>
                 </Property>
-                <Property name="selectionMode" type="int" value="0"/>
               </Properties>
               <AuxValues>
-                <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="jListCrearCursoInstituto.setCellRenderer(new DefaultListCellRenderer() {&#xa;        @Override&#xa;        public Component getListCellRendererComponent(JList&lt;?&gt; list, Object value, int index, &#xa;                                                      boolean isSelected, boolean cellHasFocus) {&#xa;            super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);&#xa;            if (value instanceof DataInstituto di) {&#xa;                setText(di.nombreI());&#xa;            }&#xa;            return this;&#xa;        }&#xa;    });"/>
-                <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;DataInstituto&gt;"/>
+                <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="jListCrearCursoPrevias.setCellRenderer(new DefaultListCellRenderer() {&#xa;        @Override&#xa;        public Component getListCellRendererComponent(JList&lt;?&gt; list, Object value, int index, &#xa;                                                      boolean isSelected, boolean cellHasFocus) {&#xa;            super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);&#xa;            if (value instanceof DataCurso dc) {&#xa;                setText(dc.nombreCurso());&#xa;            }&#xa;            return this;&#xa;        }&#xa;    });"/>
+                <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;DataCurso&gt;"/>
               </AuxValues>
             </Component>
           </SubComponents>
         </Container>
+        <Component class="javax.swing.JLabel" name="jLabelCrearCursoNombreError">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Segoe UI" size="12" style="2"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="Error nombre"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="jLabelCrearCursoDuracionError">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Segoe UI" size="12" style="2"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="Error duraci&#xf3;n"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="jLabelCrearCursoUrlError">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Segoe UI" size="12" style="2"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="Error url"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="jLabelCrearCursoPreviasError">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Segoe UI" size="12" style="2"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="Error previas"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="jLabelCrearCursoCantHorasError">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Segoe UI" size="12" style="2"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="Error cantidad de horas"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="jLabelCrearCursoCantCreditosError">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Segoe UI" size="12" style="2"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="Error cantidad de Creditos"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="jLabelCrearCursoDescripcionError">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Segoe UI" size="12" style="2"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="Error descipci&#xf3;n"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="jLabelCrearCursoInstituto">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Instituto"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JComboBox" name="jComboBoxCrearCursoInstituto">
+          <Properties>
+            <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+              <StringArray count="0"/>
+            </Property>
+          </Properties>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="jComboBoxCrearCursoInstituto.setRenderer(new DefaultListCellRenderer() {&#xd;&#xa;    @Override&#xd;&#xa;    public Component getListCellRendererComponent(&#xd;&#xa;            JList&lt;?&gt; list,&#xd;&#xa;            Object value,&#xd;&#xa;            int index,&#xd;&#xa;            boolean isSelected,&#xd;&#xa;            boolean cellHasFocus) {&#xd;&#xa;&#xd;&#xa;        super.getListCellRendererComponent(&#xd;&#xa;                list, value, index, isSelected, cellHasFocus);&#xd;&#xa;&#xd;&#xa;        if (value instanceof DataInstituto di) {&#xd;&#xa;            setText(di.nombreI());&#xd;&#xa;        }&#xd;&#xa;&#xd;&#xa;        return this;&#xd;&#xa;    }&#xd;&#xa;});"/>
+            <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;DataInstituto&gt;"/>
+          </AuxValues>
+        </Component>
       </SubComponents>
     </Container>
     <Container class="javax.swing.JPanel" name="JPanelConsultarCursos">

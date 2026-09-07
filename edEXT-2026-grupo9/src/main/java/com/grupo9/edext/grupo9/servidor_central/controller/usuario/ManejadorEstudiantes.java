@@ -31,27 +31,56 @@ public class ManejadorEstudiantes {
             et.commit();
         }
         catch(Exception e){
-            et.rollback();    
+            if (et.isActive()) et.rollback();
+            e.printStackTrace();
         }
         em.close();
     }
     
     public Estudiante obtenerEstudiante(String nickEst){
-        return ((Estudiante)estudiante.get(nickEst));
+    if (estudiante.containsKey(nickEst)) {
+        return estudiante.get(nickEst);
     }
+    EntityManager em = UtensiliosJPA.getEntityManagerFactory().createEntityManager();
+    try {
+        Estudiante est = em.find(Estudiante.class, nickEst);
+        if (est != null) {
+            // ESTA ES LA LÍNEA CLAVE: Obliga a cargar las inscripciones antes de cerrar la sesión
+            if(est.getInscripciones() != null) {
+                est.getInscripciones().size(); 
+            }
+            estudiante.put(nickEst, est);   
+        }
+        return est;
+    } catch (Exception e) {
+        return null;
+    } finally {
+        em.close();
+    }
+}
     
     public Estudiante[] getEstudiante(){
+        EntityManager em = UtensiliosJPA.getEntityManagerFactory().createEntityManager();
+        try {
+            java.util.List<Estudiante> lista = em.createQuery("SELECT e FROM Estudiante e", Estudiante.class).getResultList();
+            for (Estudiante e : lista) {
+                // Fuerza la inicialización antes de guardarlo en el mapa
+                if (e.getInscripciones() != null) {
+                    e.getInscripciones().size();
+                }
+                estudiante.put(e.getNickname(), e);
+            }
+        } catch (Exception e) {
+            // Manejo de error silencioso
+        } finally {
+            em.close();
+        }
+
         if(estudiante.isEmpty()){
             return null;
-        }
-        else{
+        } else {
             Collection<Estudiante> est = estudiante.values();
-            Object[] obj = est.toArray();
-            Estudiante[] estudiantes = new Estudiante[obj.length];
-            for (int i = 0; i < obj.length; i++) {
-                estudiantes[i] = (Estudiante) obj[i];
-            }
-            return estudiantes;
+            return est.toArray(new Estudiante[0]);
         }
     }
 }
