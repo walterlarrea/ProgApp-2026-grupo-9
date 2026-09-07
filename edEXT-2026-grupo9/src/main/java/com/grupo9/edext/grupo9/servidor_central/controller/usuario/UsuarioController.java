@@ -68,7 +68,73 @@ public class UsuarioController implements IUsuario{
         mDocente.addDocente(doc);
     }
 
+    @Override
+    public String[] listarUsuarios() {
+        ManejadorDocente md = ManejadorDocente.getInstance();
+        ManejadorEstudiantes me = ManejadorEstudiantes.getInstance();
 
+        java.util.Set<String> nicknames = new java.util.TreeSet<>();
+
+        Docente[] docentes = md.getDocente();
+        if (docentes != null) {
+            for (Docente d : docentes) {
+                nicknames.add(d.getNickname());
+            }
+        }
+
+        Estudiante[] estudiantes = me.getEstudiante();
+        if (estudiantes != null) {
+            for (Estudiante e : estudiantes) {
+                nicknames.add(e.getNickname());
+            }
+        }
+
+        return nicknames.toArray(new String[0]);
+    }
+
+    @Override
+    public com.grupo9.edext.grupo9.servidor_central.dominio.DataUsuario consultarUsuario(String nickname) throws com.grupo9.edext.grupo9.mensajes.ErrorNoExiste {
+        ManejadorDocente md = ManejadorDocente.getInstance();
+        Docente doc = md.obtenerDocente(nickname);
+        if (doc != null) {
+            java.util.Set<String> ediciones = new java.util.HashSet<>();
+            if (doc.getEdiciones() != null) {
+                for (com.grupo9.edext.grupo9.servidor_central.controller.edicion_de_curso.EdicionCurso ed : doc.getEdiciones()) {
+                    ediciones.add(ed.getNombreEdi());
+                }
+            }
+            java.util.Set<String> cursos = new java.util.HashSet<>();
+            return new com.grupo9.edext.grupo9.servidor_central.dominio.DataDocente(
+                doc.getNickname(),
+                doc.getNombre(),
+                doc.getApellido(),
+                doc.getEmail(),
+                doc.getFechaNac(),
+                doc.getImagen());
+        }
+
+        ManejadorEstudiantes me = ManejadorEstudiantes.getInstance();
+        Estudiante est = me.obtenerEstudiante(nickname);
+        if (est != null) {
+            java.util.Set<String> edicionesInsc = new java.util.HashSet<>();
+            if (est.getInscripciones() != null) {
+                for (com.grupo9.edext.grupo9.servidor_central.controller.edicion_de_curso.InscEdicion insc : est.getInscripciones()) {
+                    if (insc.getEdicion() != null) {
+                        edicionesInsc.add(insc.getEdicion().getNombreEdi());
+                    }
+                }
+            }
+            return new com.grupo9.edext.grupo9.servidor_central.dominio.DataEstudiante(
+                est.getNickname(),
+                est.getNombre(),
+                est.getApellido(),
+                est.getEmail(),
+                est.getFechaNac(),
+                est.getImagen());
+        }
+
+        throw new com.grupo9.edext.grupo9.mensajes.ErrorNoExiste("El usuario con nickname " + nickname + " no existe.");
+    }
 }
     
 

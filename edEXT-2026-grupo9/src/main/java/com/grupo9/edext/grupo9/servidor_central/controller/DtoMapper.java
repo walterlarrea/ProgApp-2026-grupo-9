@@ -6,9 +6,12 @@ import java.util.Set;
 import com.grupo9.edext.grupo9.servidor_central.controller.curso.Curso;
 import com.grupo9.edext.grupo9.servidor_central.controller.instituto.Instituto;
 import com.grupo9.edext.grupo9.servidor_central.controller.programa_de_formacion.ProgramaDeFormacion;
+import com.grupo9.edext.grupo9.servidor_central.controller.usuario.Usuario;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataCurso;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataInstituto;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataProgramaFormacion;
+import com.grupo9.edext.grupo9.servidor_central.dominio.DataUsuario;
+
 import com.grupo9.edext.grupo9.servidor_central.controller.edicion_de_curso.EdicionCurso;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataEdicionCurso;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataInscEdicion;
@@ -132,6 +135,30 @@ public class DtoMapper {
         );
         
         return dataInstituto;
+    }
+    
+    public static Usuario toEntity(DataUsuario dataUsuario){
+        if(dataUsuario == null){
+            return null;
+        }
+
+        Usuario usuario = new Usuario(
+                dataUsuario.getNickname()
+        );
+        
+        return usuario;
+    }
+
+    public static DataUsuario toData(Usuario usuario){
+        if(usuario == null){
+            return null;
+        }
+        
+        DataUsuario dataUsuario = new DataUsuario(
+                usuario.getNickname()
+        );
+        
+        return dataUsuario;
     }
     
     // Ediciones de cursos

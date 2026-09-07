@@ -5,7 +5,9 @@
 
 package com.grupo9.edext.grupo9.servidor_central.controller.usuario;
 
+import com.grupo9.edext.grupo9.mensajes.ErrorNoExiste;
 import com.grupo9.edext.grupo9.mensajes.ErrorRepetidos;
+import com.grupo9.edext.grupo9.servidor_central.dominio.DataUsuario;
 
 import java.time.LocalDate;
 import java.util.Date;
@@ -20,4 +22,6 @@ public interface IUsuario {
 
     public void registrarEstudiante(String nickname, String nombre, String apellido, String email, LocalDate fechaNac, String rutaImagen) throws ErrorRepetidos;
     public void registrarDocente(String nickname, String nombre, String apellido, String email, LocalDate fechaNac, String rutaImagen, String nombreInst) throws ErrorRepetidos;
+    public String[] listarUsuarios();
+    public DataUsuario consultarUsuario(String nickname) throws ErrorNoExiste;
 }
