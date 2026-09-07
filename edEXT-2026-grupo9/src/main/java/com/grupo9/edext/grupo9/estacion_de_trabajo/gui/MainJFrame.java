@@ -113,6 +113,7 @@ public class MainJFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        buttonGroupEstYDoc = new javax.swing.ButtonGroup();
         JPanelAltaUsuario = new javax.swing.JPanel();
         jLabelAltaUsuario = new javax.swing.JLabel();
         jTextFieldNickname = new javax.swing.JTextField();
@@ -131,11 +132,13 @@ public class MainJFrame extends javax.swing.JFrame {
         jLabelFechaNac = new javax.swing.JLabel();
         jLabelSeleccionarFoto = new javax.swing.JLabel();
         jLabelImagen = new javax.swing.JLabel();
+        jRadioButtonDocente1 = new javax.swing.JRadioButton();
         JPanelConsultarUsuarios = new javax.swing.JPanel();
         jLabelConsultarUsuarios = new javax.swing.JLabel();
         jScrollPaneTablaConsultarUsuarios = new javax.swing.JScrollPane();
         jTableConsultarUsuarios = new javax.swing.JTable();
         jButtonConsUsRefresh = new javax.swing.JButton();
+        jButtonCancelarConsU = new javax.swing.JButton();
         JPanelCrearCurso = new javax.swing.JPanel();
         jLabelCrearCurso = new javax.swing.JLabel();
         jTextCrearCursoNombre = new javax.swing.JTextField();
@@ -155,11 +158,13 @@ public class MainJFrame extends javax.swing.JFrame {
         jLabelCrearCursoInstituto = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
         jListCrearCursoInstituto = new javax.swing.JList<>();
+        jButtonCancelarCurs = new javax.swing.JButton();
         JPanelConsultarCursos = new javax.swing.JPanel();
         jLabelConsultarCursos = new javax.swing.JLabel();
         jScrollPaneTablaConsultaCursos = new javax.swing.JScrollPane();
         jTableConsultaCursos = new javax.swing.JTable();
         jButtonConsultarCursosRefresh = new javax.swing.JButton();
+        jButtonCancelarConsCurs = new javax.swing.JButton();
         JPanelCrearPrograma = new javax.swing.JPanel();
         jLabelCrearPrograma = new javax.swing.JLabel();
         jButtonGuardarPrograma = new javax.swing.JButton();
@@ -174,11 +179,13 @@ public class MainJFrame extends javax.swing.JFrame {
         jLabelCrearProgramaCursos = new javax.swing.JLabel();
         choiceCrearProgramaCursos = new java.awt.Choice();
         jTableCrearProgramaCursos = new javax.swing.JTable();
+        jButtonCancelarAltProg = new javax.swing.JButton();
         JPanelConsultarProgramas = new javax.swing.JPanel();
         jLabelConsultarProgramas = new javax.swing.JLabel();
         jButtonConsultarProgramasRefresh = new javax.swing.JButton();
         jScrollPaneTablaConsultaCursos1 = new javax.swing.JScrollPane();
         jTableConsultaProgramas = new javax.swing.JTable();
+        jButtonCancelarConsProg = new javax.swing.JButton();
         jDesktopPane1 = new javax.swing.JDesktopPane();
         jPanelGestionarInstitutos = new javax.swing.JPanel();
         jLabelConsultarUsuarios1 = new javax.swing.JLabel();
@@ -189,6 +196,7 @@ public class MainJFrame extends javax.swing.JFrame {
         jLabelCrearInstituto = new javax.swing.JLabel();
         jLabelSeccionCrearInstituto = new javax.swing.JLabel();
         jButtonGuardarInstituto = new javax.swing.JButton();
+        jButtonCancelarInst = new javax.swing.JButton();
         jButtonConsultarInstitutosRefresh = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenuUsuarios = new javax.swing.JMenu();
@@ -247,7 +255,13 @@ public class MainJFrame extends javax.swing.JFrame {
             }
         });
 
+        buttonGroupEstYDoc.add(jRadioButtonDocente);
         jRadioButtonDocente.setText("Docente");
+        jRadioButtonDocente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jRadioButtonDocenteActionPerformed(evt);
+            }
+        });
 
         jComboBoxInstituto.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Instituto" }));
 
@@ -259,6 +273,11 @@ public class MainJFrame extends javax.swing.JFrame {
         });
 
         jButtonCancelar.setText("Cancelar");
+        jButtonCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonCancelarActionPerformed(evt);
+            }
+        });
 
         jLabelNick.setText("Nickname");
 
@@ -281,6 +300,14 @@ public class MainJFrame extends javax.swing.JFrame {
 
         jLabelImagen.setText("Imagen");
 
+        buttonGroupEstYDoc.add(jRadioButtonDocente1);
+        jRadioButtonDocente1.setText("Estudiante");
+        jRadioButtonDocente1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jRadioButtonDocente1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout JPanelAltaUsuarioLayout = new javax.swing.GroupLayout(JPanelAltaUsuario);
         JPanelAltaUsuario.setLayout(JPanelAltaUsuarioLayout);
         JPanelAltaUsuarioLayout.setHorizontalGroup(
@@ -290,11 +317,10 @@ public class MainJFrame extends javax.swing.JFrame {
                 .addGroup(JPanelAltaUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabelAltaUsuario)
                     .addGroup(JPanelAltaUsuarioLayout.createSequentialGroup()
-                        .addGroup(JPanelAltaUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(JPanelAltaUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(JPanelAltaUsuarioLayout.createSequentialGroup()
                                 .addGroup(JPanelAltaUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jButtonAceptar)
-                                    .addComponent(jLabelNick, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jLabelNick, javax.swing.GroupLayout.DEFAULT_SIZE, 76, Short.MAX_VALUE)
                                     .addComponent(jLabelEmail, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(jLabelApellido, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(jLabelNombre, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -303,10 +329,15 @@ public class MainJFrame extends javax.swing.JFrame {
                                     .addComponent(jTextFieldNickname, javax.swing.GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE)
                                     .addComponent(jTextFieldApellido, javax.swing.GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE)
                                     .addComponent(jTextFieldNombre, javax.swing.GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE)
-                                    .addComponent(jButtonCancelar)
                                     .addComponent(jTextFieldEmail)))
-                            .addComponent(jRadioButtonDocente, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jComboBoxInstituto, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(JPanelAltaUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addGroup(JPanelAltaUsuarioLayout.createSequentialGroup()
+                                    .addComponent(jButtonAceptar)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jButtonCancelar))
+                                .addComponent(jRadioButtonDocente, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jComboBoxInstituto, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jRadioButtonDocente1, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGroup(JPanelAltaUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(JPanelAltaUsuarioLayout.createSequentialGroup()
                                 .addGap(54, 54, 54)
@@ -327,6 +358,15 @@ public class MainJFrame extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(JPanelAltaUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(JPanelAltaUsuarioLayout.createSequentialGroup()
+                        .addGroup(JPanelAltaUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jSpinnerFechaNac, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabelFechaNac))
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabelImagen, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabelSeleccionarFoto)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(JPanelAltaUsuarioLayout.createSequentialGroup()
                         .addComponent(jLabelAltaUsuario)
                         .addGap(37, 37, 37)
                         .addGroup(JPanelAltaUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -344,23 +384,17 @@ public class MainJFrame extends javax.swing.JFrame {
                         .addGroup(JPanelAltaUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jTextFieldEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabelEmail))
-                        .addGap(20, 20, 20)
-                        .addComponent(jRadioButtonDocente)
-                        .addGap(10, 10, 10)
-                        .addComponent(jComboBoxInstituto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(JPanelAltaUsuarioLayout.createSequentialGroup()
-                        .addGroup(JPanelAltaUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jSpinnerFechaNac, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabelFechaNac))
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabelImagen, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabelSeleccionarFoto)))
-                .addGap(36, 36, 36)
-                .addGroup(JPanelAltaUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButtonAceptar)
-                    .addComponent(jButtonCancelar))
-                .addContainerGap(266, Short.MAX_VALUE))
+                        .addComponent(jRadioButtonDocente1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jRadioButtonDocente)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jComboBoxInstituto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addGroup(JPanelAltaUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jButtonAceptar)
+                            .addComponent(jButtonCancelar))
+                        .addGap(257, 257, 257))))
         );
 
         jLabelConsultarUsuarios.setText("Consultar Usuarios");
@@ -393,6 +427,13 @@ public class MainJFrame extends javax.swing.JFrame {
             }
         });
 
+        jButtonCancelarConsU.setText("Cancelar");
+        jButtonCancelarConsU.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonCancelarConsUActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout JPanelConsultarUsuariosLayout = new javax.swing.GroupLayout(JPanelConsultarUsuarios);
         JPanelConsultarUsuarios.setLayout(JPanelConsultarUsuariosLayout);
         JPanelConsultarUsuariosLayout.setHorizontalGroup(
@@ -403,7 +444,9 @@ public class MainJFrame extends javax.swing.JFrame {
                         .addGap(15, 15, 15)
                         .addComponent(jLabelConsultarUsuarios)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButtonConsUsRefresh))
+                        .addComponent(jButtonConsUsRefresh)
+                        .addGap(18, 18, 18)
+                        .addComponent(jButtonCancelarConsU))
                     .addGroup(JPanelConsultarUsuariosLayout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jScrollPaneTablaConsultarUsuarios, javax.swing.GroupLayout.DEFAULT_SIZE, 778, Short.MAX_VALUE)))
@@ -415,9 +458,10 @@ public class MainJFrame extends javax.swing.JFrame {
                 .addGap(10, 10, 10)
                 .addGroup(JPanelConsultarUsuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabelConsultarUsuarios)
-                    .addComponent(jButtonConsUsRefresh))
+                    .addComponent(jButtonConsUsRefresh)
+                    .addComponent(jButtonCancelarConsU))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPaneTablaConsultarUsuarios, javax.swing.GroupLayout.DEFAULT_SIZE, 557, Short.MAX_VALUE)
+                .addComponent(jScrollPaneTablaConsultarUsuarios, javax.swing.GroupLayout.DEFAULT_SIZE, 573, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -473,6 +517,13 @@ public class MainJFrame extends javax.swing.JFrame {
             }
         });
 
+        jButtonCancelarCurs.setText("Cancelar");
+        jButtonCancelarCurs.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonCancelarCursActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout JPanelCrearCursoLayout = new javax.swing.GroupLayout(JPanelCrearCurso);
         JPanelCrearCurso.setLayout(JPanelCrearCursoLayout);
         JPanelCrearCursoLayout.setHorizontalGroup(
@@ -481,7 +532,9 @@ public class MainJFrame extends javax.swing.JFrame {
                 .addGroup(JPanelCrearCursoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(JPanelCrearCursoLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jButtonGuardarCurso))
+                        .addComponent(jButtonGuardarCurso)
+                        .addGap(18, 18, 18)
+                        .addComponent(jButtonCancelarCurs))
                     .addGroup(JPanelCrearCursoLayout.createSequentialGroup()
                         .addGroup(JPanelCrearCursoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(JPanelCrearCursoLayout.createSequentialGroup()
@@ -558,10 +611,12 @@ public class MainJFrame extends javax.swing.JFrame {
                         .addGap(0, 40, Short.MAX_VALUE)))
                 .addGap(18, 18, 18)
                 .addComponent(jLabelCrearCursoDescripcion)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(97, 97, 97)
-                .addComponent(jButtonGuardarCurso)
+                .addGap(85, 85, 85)
+                .addGroup(JPanelCrearCursoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButtonGuardarCurso)
+                    .addComponent(jButtonCancelarCurs))
                 .addContainerGap())
         );
 
@@ -602,6 +657,13 @@ public class MainJFrame extends javax.swing.JFrame {
             }
         });
 
+        jButtonCancelarConsCurs.setText("Cancelar");
+        jButtonCancelarConsCurs.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonCancelarConsCursActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout JPanelConsultarCursosLayout = new javax.swing.GroupLayout(JPanelConsultarCursos);
         JPanelConsultarCursos.setLayout(JPanelConsultarCursosLayout);
         JPanelConsultarCursosLayout.setHorizontalGroup(
@@ -612,7 +674,9 @@ public class MainJFrame extends javax.swing.JFrame {
                         .addGap(15, 15, 15)
                         .addComponent(jLabelConsultarCursos)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButtonConsultarCursosRefresh))
+                        .addComponent(jButtonConsultarCursosRefresh)
+                        .addGap(18, 18, 18)
+                        .addComponent(jButtonCancelarConsCurs))
                     .addGroup(JPanelConsultarCursosLayout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jScrollPaneTablaConsultaCursos, javax.swing.GroupLayout.DEFAULT_SIZE, 760, Short.MAX_VALUE)))
@@ -624,7 +688,8 @@ public class MainJFrame extends javax.swing.JFrame {
                 .addGap(10, 10, 10)
                 .addGroup(JPanelConsultarCursosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabelConsultarCursos)
-                    .addComponent(jButtonConsultarCursosRefresh))
+                    .addComponent(jButtonConsultarCursosRefresh)
+                    .addComponent(jButtonCancelarConsCurs))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPaneTablaConsultaCursos, javax.swing.GroupLayout.DEFAULT_SIZE, 525, Short.MAX_VALUE)
                 .addContainerGap())
@@ -678,6 +743,14 @@ public class MainJFrame extends javax.swing.JFrame {
             }
         ));
 
+        jButtonCancelarAltProg.setText("Cancelar");
+        jButtonCancelarAltProg.setAlignmentY(0.0F);
+        jButtonCancelarAltProg.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonCancelarAltProgActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout JPanelCrearProgramaLayout = new javax.swing.GroupLayout(JPanelCrearPrograma);
         JPanelCrearPrograma.setLayout(JPanelCrearProgramaLayout);
         JPanelCrearProgramaLayout.setHorizontalGroup(
@@ -700,7 +773,10 @@ public class MainJFrame extends javax.swing.JFrame {
                             .addComponent(jFormattedTextFieldCrearProgramaFechaFin, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, JPanelCrearProgramaLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jButtonGuardarPrograma))
+                        .addComponent(jButtonGuardarPrograma)
+                        .addGap(18, 18, 18)
+                        .addComponent(jButtonCancelarAltProg)
+                        .addGap(1, 1, 1))
                     .addGroup(JPanelCrearProgramaLayout.createSequentialGroup()
                         .addGroup(JPanelCrearProgramaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabelCrearProgramaCursos)
@@ -740,7 +816,9 @@ public class MainJFrame extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jTableCrearProgramaCursos, javax.swing.GroupLayout.DEFAULT_SIZE, 246, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
-                .addComponent(jButtonGuardarPrograma)
+                .addGroup(JPanelCrearProgramaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButtonGuardarPrograma)
+                    .addComponent(jButtonCancelarAltProg))
                 .addContainerGap())
         );
 
@@ -781,6 +859,13 @@ public class MainJFrame extends javax.swing.JFrame {
         });
         jScrollPaneTablaConsultaCursos1.setViewportView(jTableConsultaProgramas);
 
+        jButtonCancelarConsProg.setText("Cancelar");
+        jButtonCancelarConsProg.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonCancelarConsProgActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout JPanelConsultarProgramasLayout = new javax.swing.GroupLayout(JPanelConsultarProgramas);
         JPanelConsultarProgramas.setLayout(JPanelConsultarProgramasLayout);
         JPanelConsultarProgramasLayout.setHorizontalGroup(
@@ -788,8 +873,10 @@ public class MainJFrame extends javax.swing.JFrame {
             .addGroup(JPanelConsultarProgramasLayout.createSequentialGroup()
                 .addGap(15, 15, 15)
                 .addComponent(jLabelConsultarProgramas)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 563, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 483, Short.MAX_VALUE)
                 .addComponent(jButtonConsultarProgramasRefresh)
+                .addGap(18, 18, 18)
+                .addComponent(jButtonCancelarConsProg)
                 .addContainerGap())
             .addGroup(JPanelConsultarProgramasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(JPanelConsultarProgramasLayout.createSequentialGroup()
@@ -803,12 +890,13 @@ public class MainJFrame extends javax.swing.JFrame {
                 .addGap(10, 10, 10)
                 .addGroup(JPanelConsultarProgramasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabelConsultarProgramas)
-                    .addComponent(jButtonConsultarProgramasRefresh))
-                .addContainerGap(543, Short.MAX_VALUE))
+                    .addComponent(jButtonConsultarProgramasRefresh)
+                    .addComponent(jButtonCancelarConsProg))
+                .addContainerGap(585, Short.MAX_VALUE))
             .addGroup(JPanelConsultarProgramasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, JPanelConsultarProgramasLayout.createSequentialGroup()
-                    .addContainerGap(57, Short.MAX_VALUE)
-                    .addComponent(jScrollPaneTablaConsultaCursos1, javax.swing.GroupLayout.PREFERRED_SIZE, 517, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(54, Short.MAX_VALUE)
+                    .addComponent(jScrollPaneTablaConsultaCursos1, javax.swing.GroupLayout.PREFERRED_SIZE, 562, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addContainerGap()))
         );
 
@@ -859,6 +947,14 @@ public class MainJFrame extends javax.swing.JFrame {
             }
         });
 
+        jButtonCancelarInst.setText("Cancelar");
+        jButtonCancelarInst.setAlignmentY(0.0F);
+        jButtonCancelarInst.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonCancelarInstActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanelSeccionCrearNuevoInstitutoLayout = new javax.swing.GroupLayout(jPanelSeccionCrearNuevoInstituto);
         jPanelSeccionCrearNuevoInstituto.setLayout(jPanelSeccionCrearNuevoInstitutoLayout);
         jPanelSeccionCrearNuevoInstitutoLayout.setHorizontalGroup(
@@ -868,21 +964,25 @@ public class MainJFrame extends javax.swing.JFrame {
                 .addGroup(jPanelSeccionCrearNuevoInstitutoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanelSeccionCrearNuevoInstitutoLayout.createSequentialGroup()
                         .addComponent(jTextCrearInstituto, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 464, Short.MAX_VALUE)
                         .addComponent(jButtonGuardarInstituto))
                     .addGroup(jPanelSeccionCrearNuevoInstitutoLayout.createSequentialGroup()
-                        .addGroup(jPanelSeccionCrearNuevoInstitutoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabelSeccionCrearInstituto)
-                            .addComponent(jLabelCrearInstituto))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addComponent(jLabelCrearInstituto)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(jPanelSeccionCrearNuevoInstitutoLayout.createSequentialGroup()
+                        .addComponent(jLabelSeccionCrearInstituto)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButtonCancelarInst)))
                 .addContainerGap())
         );
         jPanelSeccionCrearNuevoInstitutoLayout.setVerticalGroup(
             jPanelSeccionCrearNuevoInstitutoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelSeccionCrearNuevoInstitutoLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabelSeccionCrearInstituto)
-                .addGap(17, 17, 17)
+                .addGroup(jPanelSeccionCrearNuevoInstitutoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabelSeccionCrearInstituto)
+                    .addComponent(jButtonCancelarInst))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabelCrearInstituto)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanelSeccionCrearNuevoInstitutoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -902,18 +1002,18 @@ public class MainJFrame extends javax.swing.JFrame {
         jPanelGestionarInstitutos.setLayout(jPanelGestionarInstitutosLayout);
         jPanelGestionarInstitutosLayout.setHorizontalGroup(
             jPanelGestionarInstitutosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelGestionarInstitutosLayout.createSequentialGroup()
+            .addComponent(jPanelSeccionCrearNuevoInstituto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(jPanelGestionarInstitutosLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanelGestionarInstitutosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanelGestionarInstitutosLayout.createSequentialGroup()
                         .addComponent(jLabelConsultarUsuarios1)
                         .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 790, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelGestionarInstitutosLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jButtonConsultarInstitutosRefresh)))
+                        .addComponent(jButtonConsultarInstitutosRefresh))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 790, Short.MAX_VALUE))
                 .addContainerGap())
-            .addComponent(jPanelSeccionCrearNuevoInstituto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanelGestionarInstitutosLayout.setVerticalGroup(
             jPanelGestionarInstitutosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -924,7 +1024,7 @@ public class MainJFrame extends javax.swing.JFrame {
                 .addComponent(jPanelSeccionCrearNuevoInstituto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jButtonConsultarInstitutosRefresh)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 44, Short.MAX_VALUE)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 395, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -1463,14 +1563,45 @@ public class MainJFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButtonConsUsRefreshActionPerformed
 
-    private void jRadioButtonDocenteActionPerformed(java.awt.event.ActionEvent evt) {
-        jComboBoxInstituto.setEnabled(jRadioButtonDocente.isSelected());
-    }
+    private void jRadioButtonDocente1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButtonDocente1ActionPerformed
+        jComboBoxInstituto.setEnabled(false);
+        jComboBoxInstituto.setSelectedIndex(0);
+    }//GEN-LAST:event_jRadioButtonDocente1ActionPerformed
 
-    private void jButtonCancelarActionPerformed(java.awt.event.ActionEvent evt) {
-        limpiarFormularioAltaUsuario();
+    private void jRadioButtonDocenteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButtonDocenteActionPerformed
+        jComboBoxInstituto.setEnabled(true);
+    }//GEN-LAST:event_jRadioButtonDocenteActionPerformed
+
+    private void jButtonCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCancelarActionPerformed
+       limpiarFormularioAltaUsuario();
+       hideAllJPanels();
+    }//GEN-LAST:event_jButtonCancelarActionPerformed
+
+    private void jButtonCancelarConsUActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCancelarConsUActionPerformed
+       limpiarFormularioAltaUsuario();
+       hideAllJPanels();
+    }//GEN-LAST:event_jButtonCancelarConsUActionPerformed
+
+    private void jButtonCancelarConsCursActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCancelarConsCursActionPerformed
+       hideAllJPanels();
+    }//GEN-LAST:event_jButtonCancelarConsCursActionPerformed
+
+    private void jButtonCancelarConsProgActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCancelarConsProgActionPerformed
+       hideAllJPanels();
+    }//GEN-LAST:event_jButtonCancelarConsProgActionPerformed
+
+    private void jButtonCancelarInstActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCancelarInstActionPerformed
         hideAllJPanels();
-    }
+    }//GEN-LAST:event_jButtonCancelarInstActionPerformed
+
+    private void jButtonCancelarAltProgActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCancelarAltProgActionPerformed
+        hideAllJPanels();
+    }//GEN-LAST:event_jButtonCancelarAltProgActionPerformed
+
+    private void jButtonCancelarCursActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCancelarCursActionPerformed
+        hideAllJPanels();
+    }//GEN-LAST:event_jButtonCancelarCursActionPerformed
+
 
     private void limpiarFormularioAltaUsuario() {
         jTextFieldNickname.setText("");
@@ -1551,9 +1682,16 @@ public class MainJFrame extends javax.swing.JFrame {
     private javax.swing.JPanel JPanelConsultarUsuarios;
     private javax.swing.JPanel JPanelCrearCurso;
     private javax.swing.JPanel JPanelCrearPrograma;
+    private javax.swing.ButtonGroup buttonGroupEstYDoc;
     private java.awt.Choice choiceCrearProgramaCursos;
     private javax.swing.JButton jButtonAceptar;
     private javax.swing.JButton jButtonCancelar;
+    private javax.swing.JButton jButtonCancelarAltProg;
+    private javax.swing.JButton jButtonCancelarConsCurs;
+    private javax.swing.JButton jButtonCancelarConsProg;
+    private javax.swing.JButton jButtonCancelarConsU;
+    private javax.swing.JButton jButtonCancelarCurs;
+    private javax.swing.JButton jButtonCancelarInst;
     private javax.swing.JButton jButtonConsUsRefresh;
     private javax.swing.JButton jButtonConsultarCursosRefresh;
     private javax.swing.JButton jButtonConsultarInstitutosRefresh;
@@ -1614,6 +1752,7 @@ public class MainJFrame extends javax.swing.JFrame {
     private javax.swing.JPanel jPanelGestionarInstitutos;
     private javax.swing.JPanel jPanelSeccionCrearNuevoInstituto;
     private javax.swing.JRadioButton jRadioButtonDocente;
+    private javax.swing.JRadioButton jRadioButtonDocente1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
