@@ -31,14 +31,33 @@ public class ManejadorDocente {
             et.commit();
         }
         catch(Exception e){
-            et.rollback();
+            if (et.isActive()) et.rollback();
+            e.printStackTrace();
         }
         em.close();
     }
 
-    public Docente obtenerDocente(String nickEst){
-        return Docente.get(nickEst);
+    public Docente obtenerDocente(String nickDoc){
+    if (Docente.containsKey(nickDoc)) {
+        return Docente.get(nickDoc);
     }
+    EntityManager em = UtensiliosJPA.getEntityManagerFactory().createEntityManager();
+    try {
+        Docente doc = em.find(Docente.class, nickDoc);
+        if (doc != null) {
+            // ESTA ES LA LÍNEA CLAVE: Obliga a cargar las inscripciones antes de cerrar la sesión
+            if(doc.getEdiciones() != null) {
+                doc.getEdiciones().size(); 
+            }
+            Docente.put(nickDoc, doc);
+        }
+        return doc;
+    } catch (Exception e) {
+        return null;
+    } finally {
+        em.close();
+    }
+}
 
     public Docente[] getDocente(){
         System.out.println("Cantidad de docentes en el Map: " + Docente.size());

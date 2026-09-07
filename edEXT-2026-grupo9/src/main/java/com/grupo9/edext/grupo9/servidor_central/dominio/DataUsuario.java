@@ -10,12 +10,17 @@ public class DataUsuario {
     private LocalDate fechaNac;
     private String imagen;
 
-    public DataUsuario(String nickname, String nombre, String apellido, String email, LocalDate fechaNac) {
+    public DataUsuario(String nickname, String nombre, String apellido, String email, LocalDate fechaNac, String imagen) {
         this.nickname = nickname;
         this.nombre = nombre;
         this.apellido = apellido;
         this.email = email;
         this.fechaNac = fechaNac;
+        this.imagen = imagen;
+    }
+
+    public DataUsuario(String nickname) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     public String getNickname() {
@@ -65,5 +70,10 @@ public class DataUsuario {
     public void setImagen(String imagen) {
         this.imagen = imagen;
     }
+    
+    public String getTipo(){
+        return null;
+    }
+    
 }
    
