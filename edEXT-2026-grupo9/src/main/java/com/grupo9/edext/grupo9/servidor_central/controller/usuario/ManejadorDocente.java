@@ -6,8 +6,6 @@ import java.util.Map;
 import jakarta.persistence.*;
 import com.grupo9.edext.grupo9.miscelanea.UtensiliosJPA;
 
-
-
 public class ManejadorDocente {
     private Map<String, Docente> Docente;
     private static ManejadorDocente instance = null;
@@ -23,8 +21,8 @@ public class ManejadorDocente {
     }
 
     public void addDocente(Docente doc){
-        String nickEst = doc.getNickname();
-        Docente.put(nickEst, doc);
+        String nickDoc = doc.getNickname();
+        Docente.put(nickDoc, doc);
         EntityManager em = UtensiliosJPA.getEntityManagerFactory().createEntityManager();//
         EntityTransaction et = em.getTransaction();
         try{
@@ -43,17 +41,8 @@ public class ManejadorDocente {
     }
 
     public Docente[] getDocente(){
-        if(Docente.isEmpty()){
-            return null;
-        }
-        else{
-            Collection<Docente> est = Docente.values();
-            Object[] obj = est.toArray();
-            Docente[] docentes = new Docente[obj.length];
-            for (int i = 0; i < obj.length; i++) {
-                docentes[i] = (Docente) obj[i];
-            }
-            return docentes;
-        }
+        System.out.println("Cantidad de docentes en el Map: " + Docente.size());
+        Collection<Docente> doc = Docente.values();
+        return doc.toArray(new Docente[0]);
     }
 }

@@ -10,11 +10,8 @@ import java.util.HashSet;
 public class CursoPres {
     IServidorCentral servidorCentral = ServidorCentralController.getInstance();
   
-    public CursoPres(){
-//        servidorCentral.logStatus();
-    }
+    public CursoPres(){}
 
-    
     public void guardarNuevoCurso(DataInstituto instituto, String nombre, String descripcion, int duracion, int cantHoras, int cantCreditos, String url){
         System.out.println("[CLIENTE] Crear nuevo Curso: " + nombre);
         DataCurso nuevoCurso = new DataCurso(instituto, nombre, descripcion, duracion, cantHoras, cantCreditos, null, url);
@@ -33,4 +30,6 @@ public class CursoPres {
         
         return cursos;
     }
+    
+    
 }
