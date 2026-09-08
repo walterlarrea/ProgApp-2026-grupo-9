@@ -1,10 +1,12 @@
 package com.grupo9.edext.grupo9.servidor_central.controller.curso;
 
 import com.grupo9.edext.grupo9.servidor_central.controller.DtoMapper;
+import com.grupo9.edext.grupo9.servidor_central.controller.instituto.Instituto;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataCurso;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataInstituto;
 import java.time.LocalDate;
 import java.util.HashSet;
+import java.util.Set;
 
 
 public class CursoController implements ICurso{
@@ -17,11 +19,13 @@ public class CursoController implements ICurso{
     @Override
     public DataCurso guardarNuevoCurso(DataCurso curso){
         System.out.println("[SERVIDOR] Persistencia de un nuevo Curso: " + curso.nombreCurso());
-        LocalDate fecha = LocalDate.now();
+        LocalDate fechaDeCreacion = LocalDate.now();
         
-        DataInstituto dataInstituto = curso.instituto();
+        Instituto instituto = DtoMapper.toEntity(curso.instituto());
+        Set<Curso> previas = DtoMapper.toEntityList(curso.previas(), Curso.class);
         
-        Curso nuevoCurso = new Curso(DtoMapper.toEntity(dataInstituto), curso.nombreCurso(), curso.descCurso(), curso.duracion(), curso.cantHoras(), curso.cantCred(), fecha, curso.url());
+        
+        Curso nuevoCurso = new Curso(instituto, curso.nombreCurso(), curso.descCurso(), curso.duracion(), curso.cantHoras(), curso.cantCred(), fechaDeCreacion, curso.url(), previas);
 
         try{
             this.manejadorCurso.guardarNuevo(nuevoCurso);
@@ -44,6 +48,20 @@ public class CursoController implements ICurso{
             return todosLosCursos;
         } catch (Exception e) {
             System.out.println("[SERVIDOR] Persistencia FALLÓ al intentar traer todos los Cursos");
+            System.out.println(e);
+        }
+        return null;
+    }
+    
+    @Override
+    public HashSet<DataCurso> cursosNoRelacionadosConUnProgDeFormacion(String idProgramaDeFormacion){
+        System.out.println("[SERVIDOR] Consulta en persistencia los Cursos que no están relacionados a un Prog de Formación específico");
+        try {
+            HashSet<DataCurso> cursosNoRelacionados = this.manejadorCurso.traerCursosNoRelacionadosConUnProgDeFormacion(idProgramaDeFormacion);
+            
+            return cursosNoRelacionados;
+        } catch (Exception e) {
+            System.out.println("[SERVIDOR] Persistencia FALLÓ al intentar traer los Cursos no relacionados a este Prog de Formación");
             System.out.println(e);
         }
         return null;
