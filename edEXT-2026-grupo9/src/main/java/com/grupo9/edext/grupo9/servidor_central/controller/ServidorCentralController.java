@@ -1,8 +1,6 @@
 package com.grupo9.edext.grupo9.servidor_central.controller;
 
 import com.grupo9.edext.grupo9.interfaces.IServidorCentral;
-import com.grupo9.edext.grupo9.mensajes.ErrorNoExiste;
-
 import com.grupo9.edext.grupo9.servidor_central.controller.programa_de_formacion.IProgramaDeFormacion;
 import com.grupo9.edext.grupo9.servidor_central.controller.programa_de_formacion.ProgramaDeFormacionController;
 import com.grupo9.edext.grupo9.servidor_central.controller.edicion_de_curso.IEdicionCurso;
@@ -18,7 +16,10 @@ import com.grupo9.edext.grupo9.servidor_central.dominio.DataInstituto;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataProgramaFormacion;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataUsuario;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataEdicionCurso;
+import com.grupo9.edext.grupo9.servidor_central.controller.usuario.Docente;
+import com.grupo9.edext.grupo9.servidor_central.controller.edicion_de_curso.EdicionCurso;
 import com.grupo9.edext.grupo9.mensajes.ErrorNoExiste;
+import com.grupo9.edext.grupo9.servidor_central.controller.curso.Curso;
 import java.util.HashSet;
 
 public class ServidorCentralController implements IServidorCentral {
@@ -64,7 +65,15 @@ public class ServidorCentralController implements IServidorCentral {
         return this.progDeFormacionCtrl.todosLosProgramas();
     }
     
-    
+    @Override
+    public DataProgramaFormacion traerPorNombreId(String nombreId){
+        return this.progDeFormacionCtrl.traerPorNombreId(nombreId);
+    }
+
+    @Override
+    public Boolean agregarCursoAProgramaDeFormacion(String nombreIdPrograma, String nombreIdCurso){
+        return this.progDeFormacionCtrl.agregarCursoAProgramaDeFormacion(nombreIdPrograma, nombreIdCurso);
+    }
     
     // Ediciones de Cursos
     @Override
@@ -73,10 +82,20 @@ public class ServidorCentralController implements IServidorCentral {
     }
     
     @Override
+    public Docente[] traerDocentes() {
+        return this.edicionCursoCtrl.traerDocentes();
+    }
+    
+    
+    @Override
     public DataEdicionCurso consultarUnaEdicionCurso(String nEdi) throws ErrorNoExiste{
         return this.edicionCursoCtrl.consultarEdicionCurso(nEdi);
     }
     
+    @Override
+    public EdicionCurso[] traerEdiciones(Curso curso){
+        return this.edicionCursoCtrl.traerEdiciones(curso);
+    }
     // Cursos
     @Override
     public DataCurso guardarCurso(DataCurso nuevoCurso){
@@ -86,6 +105,11 @@ public class ServidorCentralController implements IServidorCentral {
     @Override
     public HashSet<DataCurso> consultarTodosLosCursos(){
         return this.cursoCtrl.todosLosCursos();
+    }
+    
+    @Override
+    public HashSet<DataCurso> cursosNoRelacionadosConUnProgDeFormacion(String idProgramaDeFormacion){
+        return this.cursoCtrl.cursosNoRelacionadosConUnProgDeFormacion(idProgramaDeFormacion);
     }
 
     // Institutos

@@ -6,8 +6,6 @@ import java.util.Map;
 import jakarta.persistence.*;
 import com.grupo9.edext.grupo9.miscelanea.UtensiliosJPA;
 
-
-
 public class ManejadorDocente {
     private Map<String, Docente> Docente;
     private static ManejadorDocente instance = null;
@@ -23,8 +21,8 @@ public class ManejadorDocente {
     }
 
     public void addDocente(Docente doc){
-        String nickEst = doc.getNickname();
-        Docente.put(nickEst, doc);
+        String nickDoc = doc.getNickname();
+        Docente.put(nickDoc, doc);
         EntityManager em = UtensiliosJPA.getEntityManagerFactory().createEntityManager();//
         EntityTransaction et = em.getTransaction();
         try{
@@ -62,27 +60,8 @@ public class ManejadorDocente {
 }
 
     public Docente[] getDocente(){
-        EntityManager em = UtensiliosJPA.getEntityManagerFactory().createEntityManager();
-        try {
-            java.util.List<Docente> lista = em.createQuery("SELECT d FROM Docente d", Docente.class).getResultList();
-            for (Docente d : lista) {
-                // Fuerza la inicialización antes de guardarlo en el mapa
-                if (d.getEdiciones() != null) {
-                    d.getEdiciones().size();
-                }
-                Docente.put(d.getNickname(), d);
-            }
-        } catch (Exception e) {
-            // Manejo de error silencioso
-        } finally {
-            em.close();
-        }
-        if(Docente.isEmpty()){
-            return null;
-        }
-        else{
-            Collection<Docente> est = Docente.values();
-            return est.toArray(new Docente[0]);
-        }
+        System.out.println("Cantidad de docentes en el Map: " + Docente.size());
+        Collection<Docente> doc = Docente.values();
+        return doc.toArray(new Docente[0]);
     }
 }

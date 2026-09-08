@@ -5,6 +5,7 @@ import com.grupo9.edext.grupo9.mensajes.ErrorRepetidos;
 import com.grupo9.edext.grupo9.servidor_central.controller.curso.Curso;
 import com.grupo9.edext.grupo9.servidor_central.controller.usuario.Docente;
 import com.grupo9.edext.grupo9.servidor_central.controller.usuario.ManejadorEstudiantes;
+import com.grupo9.edext.grupo9.servidor_central.controller.usuario.ManejadorDocente;
 import com.grupo9.edext.grupo9.servidor_central.controller.usuario.Estudiante;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataEdicionCurso;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataInscEdicion;
@@ -38,7 +39,10 @@ public class EdicionCursoController implements IEdicionCurso {
         }
     }
     
-    //Cuando se implemente el GUI, ahí se agrega el modificar o cancelar altaEdicionCurso
+    public Docente[] traerDocentes() {
+        return ManejadorDocente.getInstance().getDocente();
+    }
+    
     @Override
     public void altaEdicionCurso(String nEdi, Curso cur, LocalDate fInicio, LocalDate fFin, int c, Set<InscEdicion> insc, Docente d) throws ErrorRepetidos{
         ManejadorEdiciones me = ManejadorEdiciones.getInstance();
@@ -76,7 +80,12 @@ public class EdicionCursoController implements IEdicionCurso {
             throw new ErrorNoExiste("La Edición " + nEdi + " no está registrada.");
         }
     }
-
+    
+    @Override
+    public EdicionCurso[] traerEdiciones(Curso curso){
+        return ManejadorEdiciones.getInstance().getEdiciones();
+    } 
+    
     @Override
     public void inscripcionEdicionCurso(LocalDate fInsc, String nickEstudiante, String nEdi) throws ErrorRepetidos, ErrorNoExiste{
         ManejadorEdiciones me = ManejadorEdiciones.getInstance();

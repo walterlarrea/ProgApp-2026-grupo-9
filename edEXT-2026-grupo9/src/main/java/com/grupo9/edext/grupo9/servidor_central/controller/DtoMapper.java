@@ -22,12 +22,14 @@ import com.grupo9.edext.grupo9.servidor_central.dominio.DataEstudiante;
 import com.grupo9.edext.grupo9.servidor_central.controller.usuario.Estudiante;
 
 public class DtoMapper {
-
+    
     //Cursos
     public static Curso toEntity(DataCurso dataCurso){
         if(dataCurso == null){
             return null;
         }
+        
+        Set<Curso> previas = toEntityList(dataCurso.previas(), Curso.class);
         Curso curso = new Curso(
                 toEntity(dataCurso.instituto()),
                 dataCurso.nombreCurso(),
@@ -36,7 +38,8 @@ public class DtoMapper {
                 dataCurso.cantHoras(),
                 dataCurso.cantCred(),
                 dataCurso.fechaReg(),
-                dataCurso.url()
+                dataCurso.url(),
+                previas
         );
         
         return curso;
@@ -46,6 +49,8 @@ public class DtoMapper {
         if(curso == null){
             return null;
         }
+        
+        Set<DataCurso> dataPrevias = toDataList(curso.getPrevias(), DataCurso.class);
         DataCurso dataCurso = new DataCurso(
                 toData(curso.getInstituto()),
                 curso.getNombreCurso(),
@@ -54,7 +59,8 @@ public class DtoMapper {
                 curso.getCantHoras(),
                 curso.getCantCred(),
                 curso.getFechaReg(),
-                curso.getUrl()
+                curso.getUrl(),
+                dataPrevias
         );
         
         return dataCurso;
@@ -76,7 +82,8 @@ public class DtoMapper {
                 dataPrograma.descripcion(),
                 cursos,
                 dataPrograma.fechaInicio(),
-                dataPrograma.fechaFin()
+                dataPrograma.fechaFin(),
+                dataPrograma.fechaDeCreacion()
         );
         
         return programa;
@@ -98,7 +105,8 @@ public class DtoMapper {
                 programa.getDescripcion(),
                 cursos,
                 programa.getFechaInicio(),
-                programa.getFechaFin()
+                programa.getFechaFin(),
+                programa.getFechaDeCreacion()
         );
         
         return dataPrograma;
@@ -217,5 +225,71 @@ public class DtoMapper {
             docente.getEmail(),
             docente.getFechaNac(),
             docente.getNombreInst());
+    }
+
+    private static <Source, Target> HashSet<Target> convertList(
+            Set<Source> sourceList, Class<Target> targetType) {
+        if (sourceList == null) {
+            throw new NullPointerException("The source list cannot be null");
+        }
+        if (targetType == null) {
+            throw new NullPointerException("The target type cannot be null");
+        }
+
+        HashSet<Target> targetList = new HashSet<>();
+        for (Source source : sourceList) {
+            targetList.add(targetType.cast(convertItem(source, targetType)));
+        }
+        return targetList;
+    }
+
+    public static <Source, Target> HashSet<Target> toEntityList(
+            Set<Source> sourceList, Class<Target> targetType) {
+        return convertList(sourceList, targetType);
+    }
+
+    public static <Source, Target> HashSet<Target> toDataList(
+            Set<Source> sourceList, Class<Target> targetType) {
+        return convertList(sourceList, targetType);
+    }
+
+    private static Object convertItem(Object source, Class<?> targetType) {
+        if (source == null) {
+            return null;
+        }
+        if (targetType == Curso.class && source instanceof DataCurso dataCurso) {
+            return toEntity(dataCurso);
+        }
+        if (targetType == DataCurso.class && source instanceof Curso curso) {
+            return toData(curso);
+        }
+        if (targetType == ProgramaDeFormacion.class && source instanceof DataProgramaFormacion dataPrograma) {
+            return toEntity(dataPrograma);
+        }
+        if (targetType == DataProgramaFormacion.class && source instanceof ProgramaDeFormacion programa) {
+            return toData(programa);
+        }
+        if (targetType == Instituto.class && source instanceof DataInstituto dataInstituto) {
+            return toEntity(dataInstituto);
+        }
+        if (targetType == DataInstituto.class && source instanceof Instituto instituto) {
+            return toData(instituto);
+        }
+        if (targetType == EdicionCurso.class && source instanceof DataEdicionCurso dataEdicion) {
+            return toEntity(dataEdicion);
+        }
+        if (targetType == DataEdicionCurso.class && source instanceof EdicionCurso edicion) {
+            return toData(edicion);
+        }
+        if (targetType == Docente.class && source instanceof DataDocente dataDocente) {
+            return toEntity(dataDocente);
+        }
+        if (targetType == DataDocente.class && source instanceof Docente docente) {
+            return toData(docente);
+        }
+
+        throw new IllegalArgumentException(
+            "Unsupported conversion from " + source.getClass().getName()
+                + " to " + targetType.getName());
     }
 }
