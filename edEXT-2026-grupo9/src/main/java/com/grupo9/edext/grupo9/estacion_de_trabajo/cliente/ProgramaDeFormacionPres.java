@@ -14,9 +14,9 @@ public class ProgramaDeFormacionPres {
     }
 
     
-    public void guardarNuevoProgramaDeFormacion(String nombre, String descripcion, LocalDate fechaInicio, LocalDate fechaFin){
+    public DataProgramaFormacion guardarNuevoProgramaDeFormacion(String nombre, String descripcion, LocalDate fechaInicio, LocalDate fechaFin){
         System.out.println("[CLIENTE] Llamada al servidor central: " + nombre);
-        DataProgramaFormacion nuevoPrograma = new DataProgramaFormacion(nombre, descripcion, new HashSet<>(), fechaInicio, fechaFin);
+        DataProgramaFormacion nuevoPrograma = new DataProgramaFormacion(nombre, descripcion, new HashSet<>(), fechaInicio, fechaFin, null);
         
         DataProgramaFormacion programaCreado = servidorCentral.guardarProgramaDeFormacion(nuevoPrograma);
         if(programaCreado != null){
@@ -24,12 +24,28 @@ public class ProgramaDeFormacionPres {
         } else {
             System.out.println("[CLIENTE] Algo salio mal creando el nuevo Programa");
         }
+        
+        return programaCreado;
     }
     
     public HashSet<DataProgramaFormacion> cargarProgramas(){
         System.out.println("[CLIENTE] Consultar todos los Programas");
-        HashSet<DataProgramaFormacion> cursos = servidorCentral.consultarTodosLosProgramas();
+        HashSet<DataProgramaFormacion> programas = servidorCentral.consultarTodosLosProgramas();
         
-        return cursos;
+        return programas;
+    }
+    
+    public DataProgramaFormacion buscarPorNombreId(String nombreId){
+        System.out.println("[CLIENTE] Consultar todos los Programas");
+        DataProgramaFormacion programa = servidorCentral.traerPorNombreId(nombreId);
+        
+        return programa;
+    }
+
+    public Boolean agregarCursoAProgramaDeFormacion(String nombreIdPrograma, String nombreIdCurso){
+        System.out.println("[CLIENTE] Agregar curso " + nombreIdCurso + " al programa " + nombreIdPrograma);
+        Boolean resultado = servidorCentral.agregarCursoAProgramaDeFormacion(nombreIdPrograma, nombreIdCurso);
+        
+        return resultado;
     }
 }

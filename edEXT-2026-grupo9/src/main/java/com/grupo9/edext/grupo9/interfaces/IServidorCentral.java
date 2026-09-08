@@ -19,6 +19,8 @@ public interface IServidorCentral {
     // Programas de formación
     public DataProgramaFormacion guardarProgramaDeFormacion(DataProgramaFormacion nuevoPrograma);
     public HashSet<DataProgramaFormacion> consultarTodosLosProgramas();
+    public DataProgramaFormacion traerPorNombreId(String nombreId);
+    public Boolean agregarCursoAProgramaDeFormacion(String nombreIdPrograma, String nombreIdCurso);
     
     // Ediciones de cursos
     public DataEdicionCurso guardarEdicionCurso(DataEdicionCurso nuevaEdicion);
@@ -27,6 +29,7 @@ public interface IServidorCentral {
     // Cursos
     public DataCurso guardarCurso(DataCurso nuevoCurso);
     public HashSet<DataCurso> consultarTodosLosCursos();
+    public HashSet<DataCurso> cursosNoRelacionadosConUnProgDeFormacion(String idProgramaDeFormacion);
     
     // Institutos
     public DataInstituto guardarInstituto(DataInstituto nuevoInstituto);

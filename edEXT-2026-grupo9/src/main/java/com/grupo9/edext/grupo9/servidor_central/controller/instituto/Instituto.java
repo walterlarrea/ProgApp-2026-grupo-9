@@ -1,12 +1,17 @@
 package com.grupo9.edext.grupo9.servidor_central.controller.instituto;
 
+import com.grupo9.edext.grupo9.servidor_central.controller.usuario.Docente;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 import jakarta.persistence.*;
 
 @Entity
 public class Instituto implements Serializable{
     @Id
     private String nombreI;
+    @ManyToMany(mappedBy = "institutos")
+    private Set<Docente> docentes = new HashSet<>();
     
     public Instituto(){}
     
@@ -20,5 +25,9 @@ public class Instituto implements Serializable{
 
     public void setNombreI(String nombreI) {
         this.nombreI = nombreI;
+    }
+
+    public Set<Docente> getDocentes() {
+        return docentes;
     }
 }
