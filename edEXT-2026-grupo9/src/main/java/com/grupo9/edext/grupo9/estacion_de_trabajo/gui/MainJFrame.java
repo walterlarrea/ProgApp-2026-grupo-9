@@ -1727,7 +1727,7 @@ public class MainJFrame extends javax.swing.JFrame {
         this.actualizarTablaDeInstitutos(institutos);
     }//GEN-LAST:event_jButtonConsultarInstitutosRefreshActionPerformed
     private void jMenuItemCrearEdicionCursoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemCrearEdicionCursoActionPerformed
-        
+        hideAllJPanels();
         SwingUtilities.invokeLater(() -> {
         SeleccionarCursoJInternalFrame frame = new SeleccionarCursoJInternalFrame(jDesktopPane1, OperacionCurso.ALTA_EDICION);
         showInternalFrame(frame);}
@@ -1735,6 +1735,7 @@ public class MainJFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItemCrearEdicionCursoActionPerformed
 
     private void jMenuItemConsultarEdicionCursoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemConsultarEdicionCursoActionPerformed
+        hideAllJPanels();
         SwingUtilities.invokeLater(() -> {
         SeleccionarCursoJInternalFrame frame = new SeleccionarCursoJInternalFrame(jDesktopPane1, OperacionCurso.CONSULTA_EDICION);
         showInternalFrame(frame);}
@@ -1742,6 +1743,7 @@ public class MainJFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItemConsultarEdicionCursoActionPerformed
 
     private void jMenuItemInscripcionEdicionCursoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemInscripcionEdicionCursoActionPerformed
+        hideAllJPanels();
         SwingUtilities.invokeLater(() -> {
         SeleccionarCursoJInternalFrame frame = new SeleccionarCursoJInternalFrame(jDesktopPane1, OperacionCurso.INSCRIPCION_EDICION);
         showInternalFrame(frame);}
