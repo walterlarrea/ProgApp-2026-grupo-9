@@ -936,7 +936,7 @@ public class MainJFrame extends javax.swing.JFrame {
         jLabelSeccionDetProgSelectCursos.setText("Cursos:");
 
         jScrollPane4.setViewportView(jListDetProgSelectCursos);
-        jListCrearCursoPrevias.setCellRenderer(new DefaultListCellRenderer() {
+        jListDetProgSelectCursos.setCellRenderer(new DefaultListCellRenderer() {
             @Override
             public Component getListCellRendererComponent(JList<?> list, Object value, int index,
                 boolean isSelected, boolean cellHasFocus) {
@@ -951,7 +951,7 @@ public class MainJFrame extends javax.swing.JFrame {
         jListSeccionPdeFAgregarCursos.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jListSeccionPdeFAgregarCursos.setEnabled(false);
         jScrollPane5.setViewportView(jListSeccionPdeFAgregarCursos);
-        jListCrearCursoPrevias.setCellRenderer(new DefaultListCellRenderer() {
+        jListSeccionPdeFAgregarCursos.setCellRenderer(new DefaultListCellRenderer() {
             @Override
             public Component getListCellRendererComponent(JList<?> list, Object value, int index,
                 boolean isSelected, boolean cellHasFocus) {
@@ -1368,7 +1368,7 @@ public class MainJFrame extends javax.swing.JFrame {
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                     .addContainerGap(104, Short.MAX_VALUE)
-                    .addComponent(jDesktopPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 434, Short.MAX_VALUE)
+                    .addComponent(jDesktopPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 439, Short.MAX_VALUE)
                     .addContainerGap(264, Short.MAX_VALUE)))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGap(0, 802, Short.MAX_VALUE))
@@ -1411,7 +1411,7 @@ public class MainJFrame extends javax.swing.JFrame {
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                     .addContainerGap(248, Short.MAX_VALUE)
-                    .addComponent(jDesktopPane1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jDesktopPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 248, Short.MAX_VALUE)
                     .addContainerGap(142, Short.MAX_VALUE)))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGap(0, 634, Short.MAX_VALUE))
@@ -1674,7 +1674,9 @@ public class MainJFrame extends javax.swing.JFrame {
 
         jTextCrearCursoUrl.setText("");
 
-        jListCrearCursoPrevias.setSelectedValue(ABORT, rootPaneCheckingEnabled);
+        // No lo limpia por ahora
+//        DefaultListModel<DataCurso> model = (DefaultListModel<DataCurso>) this.jListCrearCursoPrevias.getModel();
+//        model.clear();
     }
 
     private void jButtonGuardarInstitutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonGuardarInstitutoActionPerformed
@@ -1826,12 +1828,14 @@ public class MainJFrame extends javax.swing.JFrame {
         this.jLabelDetProgSelectFechaFin.setText("-");
         this.jLabelDetProgSelectDesc.setText("-");
         
-        this.jListDetProgSelectCursos.setSelectedValue(ABORT, rootPaneCheckingEnabled);
+        DefaultListModel<DataCurso> model = (DefaultListModel<DataCurso>) this.jListDetProgSelectCursos.getModel();
+        model.clear();
         this.jCheckBoxAgregarCursoPrograma.setSelected(false);
     }
     
     private void deshabilitarAgregarCursoDeProgDeForm(){
-        this.jListSeccionPdeFAgregarCursos.setSelectedValue(ABORT, rootPaneCheckingEnabled);
+        DefaultListModel<DataCurso> model = (DefaultListModel<DataCurso>) this.jListSeccionPdeFAgregarCursos.getModel();
+        model.clear();
         this.jButtonConsultarProgAddCurso.setEnabled(false);
         this.jListSeccionPdeFAgregarCursos.setEnabled(false);
     }
@@ -1844,6 +1848,8 @@ public class MainJFrame extends javax.swing.JFrame {
 
 //        JOptionPane.showMessageDialog(null, seleccion + "");
         if(seleccion != null){
+            limpiarDetallesConsultaProgDeForm();
+            
             DataProgramaFormacion programaSeleccionado = this.programaDeFormacionPres.buscarPorNombreId(seleccion);
             
             // Datos básicos del programa de formación

@@ -48,7 +48,7 @@ public class ProgramaDeFormacionController implements IProgramaDeFormacion {
     
     @Override
     public DataProgramaFormacion traerPorNombreId(String nombreId){
-        System.out.println("[SERVIDOR] Consulta de un Programa [nombreID] a persistencia");
+        System.out.println("[SERVIDOR] Consulta de un Programa " + nombreId + " a persistencia");
         try {
             DataProgramaFormacion programa = this.manejadorProgDeFormacion.traerPorNombreId(nombreId);
             
