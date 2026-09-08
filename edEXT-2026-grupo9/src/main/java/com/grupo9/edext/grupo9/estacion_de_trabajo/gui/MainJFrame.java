@@ -116,6 +116,7 @@ public class MainJFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        buttonGroupEstYDoc = new javax.swing.ButtonGroup();
         JPanelAltaUsuario = new javax.swing.JPanel();
         jLabelAltaUsuario = new javax.swing.JLabel();
         jTextFieldNickname = new javax.swing.JTextField();
@@ -134,6 +135,7 @@ public class MainJFrame extends javax.swing.JFrame {
         jLabelFechaNac = new javax.swing.JLabel();
         jLabelSeleccionarFoto = new javax.swing.JLabel();
         jLabelImagen = new javax.swing.JLabel();
+        jRadioButtonDocente1 = new javax.swing.JRadioButton();
         JPanelConsultarUsuarios = new javax.swing.JPanel();
         jLabelConsultarUsuarios = new javax.swing.JLabel();
         jScrollPaneTablaConsultarUsuarios = new javax.swing.JScrollPane();
@@ -283,7 +285,13 @@ public class MainJFrame extends javax.swing.JFrame {
             }
         });
 
+        buttonGroupEstYDoc.add(jRadioButtonDocente);
         jRadioButtonDocente.setText("Docente");
+        jRadioButtonDocente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jRadioButtonDocenteActionPerformed(evt);
+            }
+        });
 
         jComboBoxInstituto.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Instituto" }));
 
@@ -295,6 +303,11 @@ public class MainJFrame extends javax.swing.JFrame {
         });
 
         jButtonCancelar.setText("Cancelar");
+        jButtonCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonCancelarActionPerformed(evt);
+            }
+        });
 
         jLabelNick.setText("Nickname");
 
@@ -317,6 +330,14 @@ public class MainJFrame extends javax.swing.JFrame {
 
         jLabelImagen.setText("Imagen");
 
+        buttonGroupEstYDoc.add(jRadioButtonDocente1);
+        jRadioButtonDocente1.setText("Estudiante");
+        jRadioButtonDocente1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jRadioButtonDocente1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout JPanelAltaUsuarioLayout = new javax.swing.GroupLayout(JPanelAltaUsuario);
         JPanelAltaUsuario.setLayout(JPanelAltaUsuarioLayout);
         JPanelAltaUsuarioLayout.setHorizontalGroup(
@@ -326,11 +347,10 @@ public class MainJFrame extends javax.swing.JFrame {
                 .addGroup(JPanelAltaUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabelAltaUsuario)
                     .addGroup(JPanelAltaUsuarioLayout.createSequentialGroup()
-                        .addGroup(JPanelAltaUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(JPanelAltaUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(JPanelAltaUsuarioLayout.createSequentialGroup()
                                 .addGroup(JPanelAltaUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jButtonAceptar)
-                                    .addComponent(jLabelNick, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jLabelNick, javax.swing.GroupLayout.DEFAULT_SIZE, 76, Short.MAX_VALUE)
                                     .addComponent(jLabelEmail, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(jLabelApellido, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(jLabelNombre, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -339,10 +359,15 @@ public class MainJFrame extends javax.swing.JFrame {
                                     .addComponent(jTextFieldNickname, javax.swing.GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE)
                                     .addComponent(jTextFieldApellido, javax.swing.GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE)
                                     .addComponent(jTextFieldNombre, javax.swing.GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE)
-                                    .addComponent(jButtonCancelar)
                                     .addComponent(jTextFieldEmail)))
-                            .addComponent(jRadioButtonDocente, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jComboBoxInstituto, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(JPanelAltaUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addGroup(JPanelAltaUsuarioLayout.createSequentialGroup()
+                                    .addComponent(jButtonAceptar)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jButtonCancelar))
+                                .addComponent(jRadioButtonDocente, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jComboBoxInstituto, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jRadioButtonDocente1, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGroup(JPanelAltaUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(JPanelAltaUsuarioLayout.createSequentialGroup()
                                 .addGap(54, 54, 54)
@@ -363,6 +388,15 @@ public class MainJFrame extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(JPanelAltaUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(JPanelAltaUsuarioLayout.createSequentialGroup()
+                        .addGroup(JPanelAltaUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jSpinnerFechaNac, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabelFechaNac))
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabelImagen, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabelSeleccionarFoto)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(JPanelAltaUsuarioLayout.createSequentialGroup()
                         .addComponent(jLabelAltaUsuario)
                         .addGap(37, 37, 37)
                         .addGroup(JPanelAltaUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -380,23 +414,17 @@ public class MainJFrame extends javax.swing.JFrame {
                         .addGroup(JPanelAltaUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jTextFieldEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabelEmail))
-                        .addGap(20, 20, 20)
-                        .addComponent(jRadioButtonDocente)
-                        .addGap(10, 10, 10)
-                        .addComponent(jComboBoxInstituto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(JPanelAltaUsuarioLayout.createSequentialGroup()
-                        .addGroup(JPanelAltaUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jSpinnerFechaNac, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabelFechaNac))
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabelImagen, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabelSeleccionarFoto)))
-                .addGap(36, 36, 36)
-                .addGroup(JPanelAltaUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButtonAceptar)
-                    .addComponent(jButtonCancelar))
-                .addContainerGap(266, Short.MAX_VALUE))
+                        .addComponent(jRadioButtonDocente1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jRadioButtonDocente)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jComboBoxInstituto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addGroup(JPanelAltaUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jButtonAceptar)
+                            .addComponent(jButtonCancelar))
+                        .addGap(257, 257, 257))))
         );
 
         jLabelConsultarUsuarios.setText("Consultar Usuarios");
@@ -846,7 +874,7 @@ public class MainJFrame extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jTableCrearProgramaCursos, javax.swing.GroupLayout.DEFAULT_SIZE, 246, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
-                .addComponent(jButtonGuardarPrograma)
+                    .addComponent(jButtonGuardarPrograma)
                 .addContainerGap())
         );
 
@@ -1699,7 +1727,7 @@ public class MainJFrame extends javax.swing.JFrame {
         this.actualizarTablaDeInstitutos(institutos);
     }//GEN-LAST:event_jButtonConsultarInstitutosRefreshActionPerformed
     private void jMenuItemCrearEdicionCursoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemCrearEdicionCursoActionPerformed
-        
+        hideAllJPanels();
         SwingUtilities.invokeLater(() -> {
         SeleccionarCursoJInternalFrame frame = new SeleccionarCursoJInternalFrame(jDesktopPane1, OperacionCurso.ALTA_EDICION);
         showInternalFrame(frame);}
@@ -1707,6 +1735,7 @@ public class MainJFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItemCrearEdicionCursoActionPerformed
 
     private void jMenuItemConsultarEdicionCursoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemConsultarEdicionCursoActionPerformed
+        hideAllJPanels();
         SwingUtilities.invokeLater(() -> {
         SeleccionarCursoJInternalFrame frame = new SeleccionarCursoJInternalFrame(jDesktopPane1, OperacionCurso.CONSULTA_EDICION);
         showInternalFrame(frame);}
@@ -1714,6 +1743,7 @@ public class MainJFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItemConsultarEdicionCursoActionPerformed
 
     private void jMenuItemInscripcionEdicionCursoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemInscripcionEdicionCursoActionPerformed
+        hideAllJPanels();
         SwingUtilities.invokeLater(() -> {
         SeleccionarCursoJInternalFrame frame = new SeleccionarCursoJInternalFrame(jDesktopPane1, OperacionCurso.INSCRIPCION_EDICION);
         showInternalFrame(frame);}
@@ -1821,6 +1851,15 @@ public class MainJFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButtonConsUsRefreshActionPerformed
 
+    private void jRadioButtonDocente1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButtonDocente1ActionPerformed
+        jComboBoxInstituto.setEnabled(false);
+        jComboBoxInstituto.setSelectedIndex(0);
+    }//GEN-LAST:event_jRadioButtonDocente1ActionPerformed
+
+    private void jRadioButtonDocenteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButtonDocenteActionPerformed
+        jComboBoxInstituto.setEnabled(true);
+    }//GEN-LAST:event_jRadioButtonDocenteActionPerformed
+    
     private void limpiarDetallesConsultaProgDeForm(){
         this.jLabelDetProgSelectNombre.setText("-");
         this.jLabelDetProgSelectFechaCreado.setText("-");
@@ -1828,14 +1867,20 @@ public class MainJFrame extends javax.swing.JFrame {
         this.jLabelDetProgSelectFechaFin.setText("-");
         this.jLabelDetProgSelectDesc.setText("-");
         
-        DefaultListModel<DataCurso> model = (DefaultListModel<DataCurso>) this.jListDetProgSelectCursos.getModel();
-        model.clear();
+//        DefaultListModel<DataCurso> model = (DefaultListModel<DataCurso>) this.jListDetProgSelectCursos.getModel();
+        DefaultListModel<DataCurso> mutableModelCurso = new DefaultListModel<>();
+        mutableModelCurso.clear();
+        this.jListDetProgSelectCursos.setModel(mutableModelCurso);
+        
         this.jCheckBoxAgregarCursoPrograma.setSelected(false);
     }
     
     private void deshabilitarAgregarCursoDeProgDeForm(){
-        DefaultListModel<DataCurso> model = (DefaultListModel<DataCurso>) this.jListSeccionPdeFAgregarCursos.getModel();
-        model.clear();
+//        DefaultListModel<DataCurso> model = (DefaultListModel<DataCurso>) this.jListSeccionPdeFAgregarCursos.getModel();
+        DefaultListModel<DataCurso> mutableModelCurso = new DefaultListModel<>();
+        mutableModelCurso.clear();
+        this.jListSeccionPdeFAgregarCursos.setModel(mutableModelCurso);
+        
         this.jButtonConsultarProgAddCurso.setEnabled(false);
         this.jListSeccionPdeFAgregarCursos.setEnabled(false);
     }
@@ -1921,13 +1966,9 @@ public class MainJFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jCheckBoxAgregarCursoProgramaItemStateChanged
 
-    private void jRadioButtonDocenteActionPerformed(java.awt.event.ActionEvent evt) {
-        jComboBoxInstituto.setEnabled(jRadioButtonDocente.isSelected());
-    }
-
     private void jButtonCancelarActionPerformed(java.awt.event.ActionEvent evt) {
-        limpiarFormularioAltaUsuario();
-        hideAllJPanels();
+       limpiarFormularioAltaUsuario();
+       hideAllJPanels();
     }
 
     private void limpiarFormularioAltaUsuario() {
@@ -2009,6 +2050,7 @@ public class MainJFrame extends javax.swing.JFrame {
     private javax.swing.JPanel JPanelConsultarUsuarios;
     private javax.swing.JPanel JPanelCrearCurso;
     private javax.swing.JPanel JPanelCrearPrograma;
+    private javax.swing.ButtonGroup buttonGroupEstYDoc;
     private java.awt.Choice choiceCrearProgramaCursos;
     private javax.swing.JButton jButtonAceptar;
     private javax.swing.JButton jButtonCancelar;
@@ -2099,6 +2141,7 @@ public class MainJFrame extends javax.swing.JFrame {
     private javax.swing.JPanel jPanelGestionarInstitutos;
     private javax.swing.JPanel jPanelSeccionCrearNuevoInstituto;
     private javax.swing.JRadioButton jRadioButtonDocente;
+    private javax.swing.JRadioButton jRadioButtonDocente1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
