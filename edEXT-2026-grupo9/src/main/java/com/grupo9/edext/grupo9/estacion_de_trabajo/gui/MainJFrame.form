@@ -2,8 +2,6 @@
 
 <Form version="1.5" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
   <NonVisualComponents>
-    <Component class="javax.swing.ButtonGroup" name="buttonGroupEstYDoc">
-    </Component>
     <Menu class="javax.swing.JMenuBar" name="jMenuBar1">
       <Properties>
         <Property name="toolTipText" type="java.lang.String" value=""/>
@@ -292,10 +290,11 @@
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Component id="jLabelAltaUsuario" min="-2" max="-2" attributes="0"/>
                       <Group type="102" alignment="0" attributes="0">
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Group type="102" attributes="0">
+                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                              <Group type="102" alignment="0" attributes="0">
                                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                      <Component id="jLabelNick" pref="76" max="32767" attributes="0"/>
+                                      <Component id="jButtonAceptar" min="-2" max="-2" attributes="0"/>
+                                      <Component id="jLabelNick" max="32767" attributes="0"/>
                                       <Component id="jLabelEmail" max="32767" attributes="0"/>
                                       <Component id="jLabelApellido" max="32767" attributes="0"/>
                                       <Component id="jLabelNombre" alignment="0" max="32767" attributes="0"/>
@@ -305,19 +304,12 @@
                                       <Component id="jTextFieldNickname" alignment="0" pref="117" max="32767" attributes="0"/>
                                       <Component id="jTextFieldApellido" alignment="0" pref="117" max="32767" attributes="0"/>
                                       <Component id="jTextFieldNombre" alignment="0" pref="117" max="32767" attributes="0"/>
+                                      <Component id="jButtonCancelar" alignment="0" min="-2" max="-2" attributes="0"/>
                                       <Component id="jTextFieldEmail" alignment="0" max="32767" attributes="0"/>
                                   </Group>
                               </Group>
-                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                  <Group type="102" alignment="0" attributes="0">
-                                      <Component id="jButtonAceptar" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace max="32767" attributes="0"/>
-                                      <Component id="jButtonCancelar" min="-2" max="-2" attributes="0"/>
-                                  </Group>
-                                  <Component id="jRadioButtonDocente" alignment="0" min="-2" pref="83" max="-2" attributes="0"/>
-                                  <Component id="jComboBoxInstituto" alignment="0" max="32767" attributes="0"/>
-                                  <Component id="jRadioButtonDocente1" min="-2" pref="83" max="-2" attributes="0"/>
-                              </Group>
+                              <Component id="jRadioButtonDocente" alignment="0" min="-2" pref="83" max="-2" attributes="0"/>
+                              <Component id="jComboBoxInstituto" alignment="0" max="32767" attributes="0"/>
                           </Group>
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Group type="102" attributes="0">
@@ -346,18 +338,7 @@
               <Group type="102" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="1" attributes="0">
-                      <Group type="102" alignment="1" attributes="0">
-                          <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="jSpinnerFechaNac" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="jLabelFechaNac" alignment="3" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <EmptySpace type="separate" max="-2" attributes="0"/>
-                          <Component id="jLabelImagen" min="-2" pref="160" max="-2" attributes="0"/>
-                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                          <Component id="jLabelSeleccionarFoto" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace max="32767" attributes="0"/>
-                      </Group>
-                      <Group type="102" alignment="1" attributes="0">
+                      <Group type="102" attributes="0">
                           <Component id="jLabelAltaUsuario" min="-2" max="-2" attributes="0"/>
                           <EmptySpace min="-2" pref="37" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
@@ -379,20 +360,28 @@
                               <Component id="jTextFieldEmail" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="jLabelEmail" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                          <Component id="jRadioButtonDocente1" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
                           <Component id="jRadioButtonDocente" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
                           <Component id="jComboBoxInstituto" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                      </Group>
+                      <Group type="102" attributes="0">
                           <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="jButtonAceptar" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="jButtonCancelar" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="jSpinnerFechaNac" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="jLabelFechaNac" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace min="-2" pref="257" max="-2" attributes="0"/>
+                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                          <Component id="jLabelImagen" min="-2" pref="160" max="-2" attributes="0"/>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Component id="jLabelSeleccionarFoto" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
+                  <EmptySpace min="-2" pref="36" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="jButtonAceptar" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="jButtonCancelar" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace type="unrelated" pref="266" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -430,14 +419,8 @@
         </Component>
         <Component class="javax.swing.JRadioButton" name="jRadioButtonDocente">
           <Properties>
-            <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
-              <ComponentRef name="buttonGroupEstYDoc"/>
-            </Property>
             <Property name="text" type="java.lang.String" value="Docente"/>
           </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jRadioButtonDocenteActionPerformed"/>
-          </Events>
         </Component>
         <Component class="javax.swing.JComboBox" name="jComboBoxInstituto">
           <Properties>
@@ -463,9 +446,6 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Cancelar"/>
           </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonCancelarActionPerformed"/>
-          </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabelNick">
           <Properties>
@@ -511,17 +491,6 @@
             <Property name="text" type="java.lang.String" value="Imagen"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JRadioButton" name="jRadioButtonDocente1">
-          <Properties>
-            <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
-              <ComponentRef name="buttonGroupEstYDoc"/>
-            </Property>
-            <Property name="text" type="java.lang.String" value="Estudiante"/>
-          </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jRadioButtonDocente1ActionPerformed"/>
-          </Events>
-        </Component>
       </SubComponents>
     </Container>
     <Container class="javax.swing.JPanel" name="JPanelConsultarUsuarios">
@@ -536,8 +505,6 @@
                           <Component id="jLabelConsultarUsuarios" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="32767" attributes="0"/>
                           <Component id="jButtonConsUsRefresh" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace type="separate" max="-2" attributes="0"/>
-                          <Component id="jButtonCancelarConsU" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace max="-2" attributes="0"/>
@@ -555,10 +522,9 @@
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="jLabelConsultarUsuarios" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="jButtonConsUsRefresh" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="jButtonCancelarConsU" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="jScrollPaneTablaConsultarUsuarios" pref="573" max="32767" attributes="0"/>
+                  <Component id="jScrollPaneTablaConsultarUsuarios" pref="557" max="32767" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
           </Group>
@@ -641,14 +607,6 @@
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonConsUsRefreshActionPerformed"/>
           </Events>
         </Component>
-        <Component class="javax.swing.JButton" name="jButtonCancelarConsU">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Cancelar"/>
-          </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonCancelarConsUActionPerformed"/>
-          </Events>
-        </Component>
       </SubComponents>
     </Container>
     <Container class="javax.swing.JPanel" name="JPanelCrearCurso">
@@ -661,8 +619,6 @@
                       <Group type="102" attributes="0">
                           <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                           <Component id="jButtonGuardarCurso" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace type="separate" max="-2" attributes="0"/>
-                          <Component id="jButtonCancelarCurs" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <Group type="102" attributes="0">
                           <Group type="103" groupAlignment="0" attributes="0">
@@ -765,13 +721,10 @@
                   </Group>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Component id="jLabelCrearCursoDescripcion" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
                   <Component id="jScrollPane1" min="-2" pref="185" max="-2" attributes="0"/>
-                  <EmptySpace min="-2" pref="85" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="jButtonGuardarCurso" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="jButtonCancelarCurs" alignment="3" min="-2" max="-2" attributes="0"/>
-                  </Group>
+                  <EmptySpace min="-2" pref="97" max="-2" attributes="0"/>
+                  <Component id="jButtonGuardarCurso" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
           </Group>
@@ -888,14 +841,6 @@
             </Component>
           </SubComponents>
         </Container>
-        <Component class="javax.swing.JButton" name="jButtonCancelarCurs">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Cancelar"/>
-          </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonCancelarCursActionPerformed"/>
-          </Events>
-        </Component>
       </SubComponents>
     </Container>
     <Container class="javax.swing.JPanel" name="JPanelConsultarCursos">
@@ -910,8 +855,6 @@
                           <Component id="jLabelConsultarCursos" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="32767" attributes="0"/>
                           <Component id="jButtonConsultarCursosRefresh" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace type="separate" max="-2" attributes="0"/>
-                          <Component id="jButtonCancelarConsCurs" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace max="-2" attributes="0"/>
@@ -929,7 +872,6 @@
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="jLabelConsultarCursos" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="jButtonConsultarCursosRefresh" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="jButtonCancelarConsCurs" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Component id="jScrollPaneTablaConsultaCursos" pref="525" max="32767" attributes="0"/>
@@ -977,14 +919,6 @@
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonConsultarCursosRefreshActionPerformed"/>
           </Events>
         </Component>
-        <Component class="javax.swing.JButton" name="jButtonCancelarConsCurs">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Cancelar"/>
-          </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonCancelarConsCursActionPerformed"/>
-          </Events>
-        </Component>
       </SubComponents>
     </Container>
     <Container class="javax.swing.JPanel" name="JPanelCrearPrograma">
@@ -1015,9 +949,6 @@
                       <Group type="102" alignment="1" attributes="0">
                           <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                           <Component id="jButtonGuardarPrograma" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace type="separate" max="-2" attributes="0"/>
-                          <Component id="jButtonCancelarAltProg" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace min="-2" pref="1" max="-2" attributes="0"/>
                       </Group>
                       <Group type="102" attributes="0">
                           <Group type="103" groupAlignment="0" attributes="0">
@@ -1068,10 +999,7 @@
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="jTableCrearProgramaCursos" pref="246" max="32767" attributes="0"/>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="jButtonGuardarPrograma" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="jButtonCancelarAltProg" alignment="3" min="-2" max="-2" attributes="0"/>
-                  </Group>
+                  <Component id="jButtonGuardarPrograma" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
           </Group>
@@ -1171,15 +1099,6 @@
             </Property>
           </Properties>
         </Component>
-        <Component class="javax.swing.JButton" name="jButtonCancelarAltProg">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Cancelar"/>
-            <Property name="alignmentY" type="float" value="0.0"/>
-          </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonCancelarAltProgActionPerformed"/>
-          </Events>
-        </Component>
       </SubComponents>
     </Container>
     <Container class="javax.swing.JPanel" name="JPanelConsultarProgramas">
@@ -1190,10 +1109,8 @@
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
                   <Component id="jLabelConsultarProgramas" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace pref="483" max="32767" attributes="0"/>
+                  <EmptySpace pref="563" max="32767" attributes="0"/>
                   <Component id="jButtonConsultarProgramasRefresh" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace type="separate" max="-2" attributes="0"/>
-                  <Component id="jButtonCancelarConsProg" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
               <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
@@ -1212,14 +1129,13 @@
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="jLabelConsultarProgramas" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="jButtonConsultarProgramasRefresh" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="jButtonCancelarConsProg" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace pref="585" max="32767" attributes="0"/>
+                  <EmptySpace pref="543" max="32767" attributes="0"/>
               </Group>
               <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="1" attributes="0">
-                      <EmptySpace pref="54" max="32767" attributes="0"/>
-                      <Component id="jScrollPaneTablaConsultaCursos1" min="-2" pref="562" max="-2" attributes="0"/>
+                      <EmptySpace pref="57" max="32767" attributes="0"/>
+                      <Component id="jScrollPaneTablaConsultaCursos1" min="-2" pref="517" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
               </Group>
@@ -1261,14 +1177,6 @@
             </Component>
           </SubComponents>
         </Container>
-        <Component class="javax.swing.JButton" name="jButtonCancelarConsProg">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Cancelar"/>
-          </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonCancelarConsProgActionPerformed"/>
-          </Events>
-        </Component>
       </SubComponents>
     </Container>
     <Container class="javax.swing.JDesktopPane" name="jDesktopPane1">
@@ -1296,22 +1204,22 @@
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Component id="jPanelSeccionCrearNuevoInstituto" alignment="0" max="32767" attributes="0"/>
-              <Group type="102" attributes="0">
+              <Group type="102" alignment="1" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" attributes="0">
                           <Component id="jLabelConsultarUsuarios1" min="-2" max="-2" attributes="0"/>
                           <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                       </Group>
+                      <Component id="jScrollPane2" pref="790" max="32767" attributes="0"/>
                       <Group type="102" alignment="1" attributes="0">
                           <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                           <Component id="jButtonConsultarInstitutosRefresh" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <Component id="jScrollPane2" alignment="0" pref="790" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
+              <Component id="jPanelSeccionCrearNuevoInstituto" alignment="0" max="32767" attributes="0"/>
           </Group>
         </DimensionLayout>
         <DimensionLayout dim="1">
@@ -1323,7 +1231,7 @@
                   <Component id="jPanelSeccionCrearNuevoInstituto" min="-2" max="-2" attributes="0"/>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Component id="jButtonConsultarInstitutosRefresh" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace pref="44" max="32767" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
                   <Component id="jScrollPane2" min="-2" pref="395" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
@@ -1364,17 +1272,15 @@
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" alignment="0" attributes="0">
                               <Component id="jTextCrearInstituto" min="-2" pref="250" max="-2" attributes="0"/>
-                              <EmptySpace pref="464" max="32767" attributes="0"/>
+                              <EmptySpace max="32767" attributes="0"/>
                               <Component id="jButtonGuardarInstituto" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <Group type="102" attributes="0">
-                              <Component id="jLabelCrearInstituto" min="-2" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="jLabelSeccionCrearInstituto" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jLabelCrearInstituto" alignment="0" min="-2" max="-2" attributes="0"/>
+                              </Group>
                               <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                          </Group>
-                          <Group type="102" alignment="0" attributes="0">
-                              <Component id="jLabelSeccionCrearInstituto" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="32767" attributes="0"/>
-                              <Component id="jButtonCancelarInst" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
@@ -1385,11 +1291,8 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="1" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="jLabelSeccionCrearInstituto" min="-2" max="-2" attributes="0"/>
-                          <Component id="jButtonCancelarInst" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="jLabelSeccionCrearInstituto" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="17" max="-2" attributes="0"/>
                       <Component id="jLabelCrearInstituto" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
@@ -1420,15 +1323,6 @@
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonGuardarInstitutoActionPerformed"/>
-              </Events>
-            </Component>
-            <Component class="javax.swing.JButton" name="jButtonCancelarInst">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Cancelar"/>
-                <Property name="alignmentY" type="float" value="0.0"/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonCancelarInstActionPerformed"/>
               </Events>
             </Component>
           </SubComponents>

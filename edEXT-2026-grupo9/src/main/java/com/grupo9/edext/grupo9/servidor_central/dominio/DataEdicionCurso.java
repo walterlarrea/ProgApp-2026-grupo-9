@@ -68,7 +68,7 @@ public class DataEdicionCurso {
         return docente;
     }
 
-    public void setDocente(DataDocente docente) {
+    public void setDocente(Set<DataDocente> docentes) {
         this.docente = docente;
     }
 
