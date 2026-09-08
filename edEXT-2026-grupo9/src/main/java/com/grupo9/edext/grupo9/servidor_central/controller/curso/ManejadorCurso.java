@@ -3,6 +3,7 @@ package com.grupo9.edext.grupo9.servidor_central.controller.curso;
 
 import com.grupo9.edext.grupo9.miscelanea.UtensiliosJPA;
 import com.grupo9.edext.grupo9.servidor_central.controller.DtoMapper;
+import com.grupo9.edext.grupo9.servidor_central.controller.programa_de_formacion.ProgramaDeFormacion;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataCurso;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
@@ -10,8 +11,11 @@ import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Join;
 import jakarta.persistence.criteria.Root;
+import jakarta.persistence.criteria.Subquery;
 import java.util.HashSet;
+import java.util.Set;
 
 
 public class ManejadorCurso {
@@ -56,11 +60,37 @@ public class ManejadorCurso {
             CriteriaQuery<Curso> todo = cQuery.select(rootEntry);
 
             TypedQuery<Curso> queryTodo = em.createQuery(todo);
+                        
+            HashSet<DataCurso> cursos = DtoMapper.toDataList(new HashSet<>(queryTodo.getResultList()), DataCurso.class);
             
-            HashSet<DataCurso> cursos = new HashSet();
-            for(Curso curso: queryTodo.getResultList()){
-                cursos.add(DtoMapper.toData(curso));
-            }
+            return cursos;
+        }catch(Exception e){
+            throw e;
+        }
+    }
+
+    public HashSet<DataCurso> traerCursosNoRelacionadosConUnProgDeFormacion(String idProgramaDeFormacion){
+        try {
+            CriteriaBuilder cBuilder = em.getCriteriaBuilder();
+            CriteriaQuery<Curso> cQuery = cBuilder.createQuery(Curso.class);
+
+            Root<Curso> rootEntry = cQuery.from(Curso.class);
+
+            Subquery<Curso> cursosRelacionados = cQuery.subquery(Curso.class);
+            Root<ProgramaDeFormacion> programa = cursosRelacionados.from(ProgramaDeFormacion.class);
+            Join<ProgramaDeFormacion, Curso> cursoRelacionado = programa.join("cursos");
+            cursosRelacionados
+                .select(cursoRelacionado)
+                .where(cBuilder.equal(programa.get("nombre"), idProgramaDeFormacion));
+
+            CriteriaQuery<Curso> todo = cQuery
+                .select(rootEntry)
+                .where(cBuilder.not(rootEntry.in(cursosRelacionados)));
+
+            TypedQuery<Curso> queryTodo = em.createQuery(todo);
+                        
+            HashSet<DataCurso> cursos = DtoMapper.toDataList(new HashSet<>(queryTodo.getResultList()), DataCurso.class);
+            
             return cursos;
         }catch(Exception e){
             throw e;

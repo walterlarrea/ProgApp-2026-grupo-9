@@ -18,8 +18,8 @@ public class Curso implements Serializable {
     private int cantCred;
     private LocalDate fechaReg;
     private String url;
-    @OneToMany(mappedBy = "cursoAsoc")
-    private Set<EdicionCurso> ediciones;
+//    @OneToMany(mappedBy = "cursoAsoc")
+//    private Set<EdicionCurso> ediciones;
     @ManyToOne
     @JoinColumn(name = "nombreI")
     private Instituto instituto;
@@ -28,8 +28,8 @@ public class Curso implements Serializable {
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
         name = "cursos_previas",
-        joinColumns = @JoinColumn(name = "nombreCurso"),
-        inverseJoinColumns = @JoinColumn(name = "previa_id")
+        joinColumns = @JoinColumn(name = "nombre_curso"),
+        inverseJoinColumns = @JoinColumn(name = "nombre_curso_previa")
     )
     private Set<Curso> previas = new HashSet<>();
     // Inverse side: Uses mappedBy to reference the owning side's field
