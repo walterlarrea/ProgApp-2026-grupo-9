@@ -1867,14 +1867,20 @@ public class MainJFrame extends javax.swing.JFrame {
         this.jLabelDetProgSelectFechaFin.setText("-");
         this.jLabelDetProgSelectDesc.setText("-");
         
-        DefaultListModel<DataCurso> model = (DefaultListModel<DataCurso>) this.jListDetProgSelectCursos.getModel();
-        model.clear();
+//        DefaultListModel<DataCurso> model = (DefaultListModel<DataCurso>) this.jListDetProgSelectCursos.getModel();
+        DefaultListModel<DataCurso> mutableModelCurso = new DefaultListModel<>();
+        mutableModelCurso.clear();
+        this.jListDetProgSelectCursos.setModel(mutableModelCurso);
+        
         this.jCheckBoxAgregarCursoPrograma.setSelected(false);
     }
     
     private void deshabilitarAgregarCursoDeProgDeForm(){
-        DefaultListModel<DataCurso> model = (DefaultListModel<DataCurso>) this.jListSeccionPdeFAgregarCursos.getModel();
-        model.clear();
+//        DefaultListModel<DataCurso> model = (DefaultListModel<DataCurso>) this.jListSeccionPdeFAgregarCursos.getModel();
+        DefaultListModel<DataCurso> mutableModelCurso = new DefaultListModel<>();
+        mutableModelCurso.clear();
+        this.jListSeccionPdeFAgregarCursos.setModel(mutableModelCurso);
+        
         this.jButtonConsultarProgAddCurso.setEnabled(false);
         this.jListSeccionPdeFAgregarCursos.setEnabled(false);
     }
