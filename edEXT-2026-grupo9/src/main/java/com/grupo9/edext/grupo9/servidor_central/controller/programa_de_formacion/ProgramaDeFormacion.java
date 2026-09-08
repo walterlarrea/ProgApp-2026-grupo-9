@@ -3,10 +3,13 @@ package com.grupo9.edext.grupo9.servidor_central.controller.programa_de_formacio
 import com.grupo9.edext.grupo9.servidor_central.controller.curso.Curso;
 import java.io.Serializable;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 //import jakarta.persistence.GeneratedValue;
 //import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import java.time.LocalDate;
 import java.util.Set;
 
@@ -15,7 +18,12 @@ public class ProgramaDeFormacion implements Serializable{
     @Id
     private String nombre;
     private String descripcion;
-    @OneToMany
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+        name = "programas_cursos",
+        joinColumns = @JoinColumn(name = "nombre_programa"),
+        inverseJoinColumns = @JoinColumn(name = "nombre_curso")
+    )
     private Set<Curso> cursos;
     private LocalDate fechaInicio;
     private LocalDate fechaFin;

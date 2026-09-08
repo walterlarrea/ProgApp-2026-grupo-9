@@ -2,6 +2,7 @@ package com.grupo9.edext.grupo9.servidor_central.controller.curso;
 
 import com.grupo9.edext.grupo9.servidor_central.controller.edicion_de_curso.EdicionCurso;
 import com.grupo9.edext.grupo9.servidor_central.controller.instituto.Instituto;
+import com.grupo9.edext.grupo9.servidor_central.controller.programa_de_formacion.ProgramaDeFormacion;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Set;
@@ -18,12 +19,11 @@ public class Curso implements Serializable {
     private int cantCred;
     private LocalDate fechaReg;
     private String url;
-//    @OneToMany(mappedBy = "cursoAsoc")
-//    private Set<EdicionCurso> ediciones;
+    @OneToMany(mappedBy = "cursoAsoc")
+    private Set<EdicionCurso> ediciones;
     @ManyToOne
     @JoinColumn(name = "nombreI")
     private Instituto instituto;
-       
     // Owning side: Defines the join table layout
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
@@ -35,6 +35,9 @@ public class Curso implements Serializable {
     // Inverse side: Uses mappedBy to reference the owning side's field
     @ManyToMany(mappedBy = "previas", fetch = FetchType.LAZY)
     private Set<Curso> dependientes = new HashSet<>();
+    @ManyToMany(mappedBy = "cursos", fetch = FetchType.LAZY)
+    private Set<ProgramaDeFormacion> programas;
+       
     
     public Curso(){}
 
