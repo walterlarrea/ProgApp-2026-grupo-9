@@ -1,8 +1,6 @@
 package com.grupo9.edext.grupo9.servidor_central.controller;
 
 import com.grupo9.edext.grupo9.interfaces.IServidorCentral;
-import com.grupo9.edext.grupo9.mensajes.ErrorNoExiste;
-
 import com.grupo9.edext.grupo9.servidor_central.controller.programa_de_formacion.IProgramaDeFormacion;
 import com.grupo9.edext.grupo9.servidor_central.controller.programa_de_formacion.ProgramaDeFormacionController;
 import com.grupo9.edext.grupo9.servidor_central.controller.edicion_de_curso.IEdicionCurso;
