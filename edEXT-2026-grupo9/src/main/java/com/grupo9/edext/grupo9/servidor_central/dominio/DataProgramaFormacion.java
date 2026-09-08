@@ -9,7 +9,8 @@ public record DataProgramaFormacion(
         String descripcion,
         Set<DataCurso> cursos,
         LocalDate fechaInicio,
-        LocalDate fechaFin
+        LocalDate fechaFin,
+        LocalDate fechaDeCreacion
     ) {
     
     @Override
@@ -20,6 +21,7 @@ public record DataProgramaFormacion(
                 "cursos=" + cursos + "," +
                 "fechaInicio=" + fechaInicio + "," +
                 "fechaFin=" + fechaFin +
+                "fechaDeCreacion=" + fechaDeCreacion +
                 '}';
     }
 }
