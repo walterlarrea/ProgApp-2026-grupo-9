@@ -35,4 +35,11 @@ public class CursoPres {
         
         return cursos;
     }
+    
+    public HashSet<DataCurso> cursosNoRelacionadosConUnProgDeFormacion(String idProgramaDeFormacion){
+        System.out.println("[CLIENTE] Consultar los Cursos no relacionados con el Programa de Formación: " + idProgramaDeFormacion);
+        HashSet<DataCurso> cursos = servidorCentral.cursosNoRelacionadosConUnProgDeFormacion(idProgramaDeFormacion);
+        
+        return cursos;
+    }
 }

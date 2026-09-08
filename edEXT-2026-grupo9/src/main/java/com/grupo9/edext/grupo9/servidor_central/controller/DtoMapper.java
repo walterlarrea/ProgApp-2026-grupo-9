@@ -82,7 +82,8 @@ public class DtoMapper {
                 dataPrograma.descripcion(),
                 cursos,
                 dataPrograma.fechaInicio(),
-                dataPrograma.fechaFin()
+                dataPrograma.fechaFin(),
+                dataPrograma.fechaDeCreacion()
         );
         
         return programa;
@@ -104,7 +105,8 @@ public class DtoMapper {
                 programa.getDescripcion(),
                 cursos,
                 programa.getFechaInicio(),
-                programa.getFechaFin()
+                programa.getFechaFin(),
+                programa.getFechaDeCreacion()
         );
         
         return dataPrograma;
@@ -225,7 +227,7 @@ public class DtoMapper {
             docente.getNombreInst());
     }
 
-    private static <Source, Target> Set<Target> convertList(
+    private static <Source, Target> HashSet<Target> convertList(
             Set<Source> sourceList, Class<Target> targetType) {
         if (sourceList == null) {
             throw new NullPointerException("The source list cannot be null");
@@ -234,19 +236,19 @@ public class DtoMapper {
             throw new NullPointerException("The target type cannot be null");
         }
 
-        Set<Target> targetList = new HashSet<>();
+        HashSet<Target> targetList = new HashSet<>();
         for (Source source : sourceList) {
             targetList.add(targetType.cast(convertItem(source, targetType)));
         }
         return targetList;
     }
 
-    public static <Source, Target> Set<Target> toEntityList(
+    public static <Source, Target> HashSet<Target> toEntityList(
             Set<Source> sourceList, Class<Target> targetType) {
         return convertList(sourceList, targetType);
     }
 
-    public static <Source, Target> Set<Target> toDataList(
+    public static <Source, Target> HashSet<Target> toDataList(
             Set<Source> sourceList, Class<Target> targetType) {
         return convertList(sourceList, targetType);
     }

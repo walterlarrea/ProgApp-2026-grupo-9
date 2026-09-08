@@ -6,4 +6,5 @@ import java.util.HashSet;
 public interface ICurso {
     public DataCurso guardarNuevoCurso(DataCurso nuevoCurso);
     public HashSet<DataCurso> todosLosCursos();
+    public HashSet<DataCurso> cursosNoRelacionadosConUnProgDeFormacion(String idProgramaDeFormacion);
 }
