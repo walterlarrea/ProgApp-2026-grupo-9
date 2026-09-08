@@ -29,6 +29,8 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="1" attributes="0">
                       <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                      <Component id="jLabelMensajeExito" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="jButtonGuardarEdicion" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" attributes="0">
@@ -39,11 +41,15 @@
                           <Component id="jSpinnerEdicionFInicio" min="-2" pref="150" max="-2" attributes="0"/>
                           <Component id="jLabelEdicionFInicio" min="-2" max="-2" attributes="0"/>
                           <Component id="jLabelAltaEdicion" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="jLabelEdicionNombre" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Component id="jLabelEdicionNombre" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                              <Component id="jLabelMensajeError" min="-2" max="-2" attributes="0"/>
+                          </Group>
                           <Component id="jLabelEdicionDocente" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="jTextEdicionCupo" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Component id="jTextEdicionNombre" alignment="0" pref="250" max="32767" attributes="0"/>
                           <Component id="jComboBoxDocenteEdicion" alignment="0" max="32767" attributes="0"/>
+                          <Component id="jTextEdicionCupo" alignment="0" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace min="0" pref="106" max="32767" attributes="0"/>
                   </Group>
@@ -58,7 +64,10 @@
               <EmptySpace max="-2" attributes="0"/>
               <Component id="jLabelAltaEdicion" min="-2" pref="28" max="-2" attributes="0"/>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
-              <Component id="jLabelEdicionNombre" min="-2" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="jLabelEdicionNombre" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jLabelMensajeError" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="jTextEdicionNombre" min="-2" max="-2" attributes="0"/>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
@@ -78,7 +87,10 @@
               <EmptySpace max="-2" attributes="0"/>
               <Component id="jTextEdicionCupo" min="-2" max="-2" attributes="0"/>
               <EmptySpace pref="13" max="32767" attributes="0"/>
-              <Component id="jButtonGuardarEdicion" min="-2" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="jButtonGuardarEdicion" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jLabelMensajeExito" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
@@ -106,9 +118,6 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="jTextEdicionNombre">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Programaci&#xf3;n_vespertino_2026"/>
-      </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabelEdicionDocente">
       <Properties>
@@ -136,7 +145,7 @@
     </Component>
     <Component class="javax.swing.JTextField" name="jTextEdicionCupo">
       <Properties>
-        <Property name="text" type="java.lang.String" value="30"/>
+        <Property name="columns" type="int" value="4"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JButton" name="jButtonGuardarEdicion">
@@ -161,6 +170,22 @@
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
       </AuxValues>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabelMensajeExito">
+      <Properties>
+        <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color blue="0" green="ff" red="0" type="rgb"/>
+        </Property>
+        <Property name="text" type="java.lang.String" value="Edici&#xf3;n creada con &#xe9;xito!"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabelMensajeError">
+      <Properties>
+        <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color blue="0" green="0" red="ff" type="rgb"/>
+        </Property>
+        <Property name="text" type="java.lang.String" value="* Edici&#xf3;n ya existente."/>
+      </Properties>
     </Component>
   </SubComponents>
 </Form>
