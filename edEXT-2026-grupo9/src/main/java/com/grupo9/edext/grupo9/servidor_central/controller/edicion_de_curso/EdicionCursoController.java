@@ -5,7 +5,9 @@ import com.grupo9.edext.grupo9.mensajes.ErrorRepetidos;
 import com.grupo9.edext.grupo9.servidor_central.controller.curso.Curso;
 import com.grupo9.edext.grupo9.servidor_central.controller.usuario.Docente;
 import com.grupo9.edext.grupo9.servidor_central.controller.usuario.ManejadorEstudiantes;
+import com.grupo9.edext.grupo9.servidor_central.controller.usuario.ManejadorDocente;
 import com.grupo9.edext.grupo9.servidor_central.controller.usuario.Estudiante;
+import com.grupo9.edext.grupo9.servidor_central.controller.instituto.Instituto;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataEdicionCurso;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataInscEdicion;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataDocente;
@@ -38,9 +40,13 @@ public class EdicionCursoController implements IEdicionCurso {
         }
     }
     
-    //Cuando se implemente el GUI, ahí se agrega el modificar o cancelar altaEdicionCurso
     @Override
-    public void altaEdicionCurso(String nEdi, Curso cur, LocalDate fInicio, LocalDate fFin, int c, Set<InscEdicion> insc, Docente d) throws ErrorRepetidos{
+    public Docente[] traerDocentes(Instituto instituto) {
+        return ManejadorDocente.getInstance().getDocentesPorInstituto(instituto);
+    }
+    
+    @Override
+    public void altaEdicionCurso(String nEdi, Curso cur, LocalDate fInicio, LocalDate fFin, Integer c, Set<InscEdicion> insc, Docente d) throws ErrorRepetidos{
         ManejadorEdiciones me = ManejadorEdiciones.getInstance();
         EdicionCurso ed = me.obtenerEdicion(nEdi);
         if(ed == null){
@@ -76,7 +82,12 @@ public class EdicionCursoController implements IEdicionCurso {
             throw new ErrorNoExiste("La Edición " + nEdi + " no está registrada.");
         }
     }
-
+    
+    @Override
+    public EdicionCurso[] traerEdiciones(Curso curso){
+        return ManejadorEdiciones.getInstance().getEdiciones(curso);
+    } 
+    
     @Override
     public void inscripcionEdicionCurso(LocalDate fInsc, String nickEstudiante, String nEdi) throws ErrorRepetidos, ErrorNoExiste{
         ManejadorEdiciones me = ManejadorEdiciones.getInstance();

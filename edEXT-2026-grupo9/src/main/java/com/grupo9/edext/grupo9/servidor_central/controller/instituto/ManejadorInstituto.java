@@ -45,6 +45,14 @@ public class ManejadorInstituto {
         }
     }
     
+    public Instituto obtenerInstituto(String nombreI) {
+        try {
+            return em.find(Instituto.class, nombreI);
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+    
     public HashSet<DataInstituto> traerTodos(){
         try {
             CriteriaBuilder cBuilder = em.getCriteriaBuilder();

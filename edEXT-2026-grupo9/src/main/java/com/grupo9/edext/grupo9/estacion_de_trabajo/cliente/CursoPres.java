@@ -11,9 +11,7 @@ import java.util.Set;
 public class CursoPres {
     IServidorCentral servidorCentral = ServidorCentralController.getInstance();
   
-    public CursoPres(){
-//        servidorCentral.logStatus();
-    }
+    public CursoPres(){}
 
     
     public DataCurso guardarNuevoCurso(DataInstituto instituto, String nombre, String descripcion, int duracion, int cantHoras, int cantCreditos, String url, Set<DataCurso> previas){

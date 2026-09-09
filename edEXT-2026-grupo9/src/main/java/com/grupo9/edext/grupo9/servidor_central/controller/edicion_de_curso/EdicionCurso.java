@@ -11,7 +11,6 @@ public class EdicionCurso {
     @Id
     private String nombreEdi;
     @ManyToOne
-    // @JoinColumn(name = "curso_nombreCurso") // W: No es suficiente esto? Por que querriamos una tabla extra?
     @JoinTable(
     name = "edicion_curso",
     joinColumns = @JoinColumn(name = "edicion_nombreEdi"),
