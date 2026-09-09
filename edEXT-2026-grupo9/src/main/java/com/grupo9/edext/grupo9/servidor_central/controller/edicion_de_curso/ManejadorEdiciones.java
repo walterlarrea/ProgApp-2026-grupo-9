@@ -14,7 +14,29 @@ public class ManejadorEdiciones {
     
     private ManejadorEdiciones(){
         edCurso = new HashMap<String, EdicionCurso>();
+        cargarEdicionesDesdeBD();
     }
+    
+    private void cargarEdicionesDesdeBD() {
+    EntityManager em = UtensiliosJPA.getEntityManagerFactory().createEntityManager();
+    try {
+        List<EdicionCurso> lista = em.createQuery("SELECT edc FROM EdicionCurso edc", EdicionCurso.class).getResultList();
+        for (EdicionCurso edC : lista) {
+            // Si necesitas asegurar que las inscripciones o el docente vengan cargados en memoria:
+            if (edC.getInscripciones() != null) {
+                edC.getInscripciones().size();
+            }
+            if (edC.getDocente() != null) {
+                edC.getDocente().getNickname(); // Fuerza la carga si es un proxy de Hibernate
+            }
+            edCurso.put(edC.getNombreEdi(), edC);
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
+    } finally {
+        em.close();
+    }
+}
     
     public static ManejadorEdiciones getInstance(){
         if(instance == null)
@@ -32,7 +54,8 @@ public class ManejadorEdiciones {
             em.persist(ed);
             et.commit();  
         }catch(Exception e){
-            et.rollback();    
+            if (et.isActive()) et.rollback();
+            e.printStackTrace();    
         }
         em.close();
     }
