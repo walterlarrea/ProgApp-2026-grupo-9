@@ -86,11 +86,11 @@ public class ManejadorDocente {
     }
 }
 
-    /*public Docente[] getDocente(){
+    public Docente[] getDocente(){
         System.out.println("Cantidad de docentes en el Map: " + Docente.size());
         Collection<Docente> doc = Docente.values();
         return doc.toArray(new Docente[0]);
-    }*/
+    }
     
     public Docente[] getDocentesPorInstituto(Instituto instituto) {
         EntityManager em = UtensiliosJPA.getEntityManagerFactory().createEntityManager();

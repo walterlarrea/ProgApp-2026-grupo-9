@@ -1,10 +1,6 @@
 package com.grupo9.edext.grupo9.estacion_de_trabajo.gui;
-import com.grupo9.edext.grupo9.estacion_de_trabajo.cliente.CursoPres;
-import com.grupo9.edext.grupo9.estacion_de_trabajo.cliente.InstitutoPres;
+
 import com.grupo9.edext.grupo9.estacion_de_trabajo.cliente.UsuarioPres;
-
-import java.util.ArrayList;
-
 import com.grupo9.edext.grupo9.estacion_de_trabajo.cliente.InstitutoPres;
 import com.grupo9.edext.grupo9.estacion_de_trabajo.cliente.CursoPres;
 import com.grupo9.edext.grupo9.estacion_de_trabajo.cliente.ProgramaDeFormacionPres;
@@ -23,7 +19,6 @@ import java.util.Optional;
 import java.awt.BorderLayout;
 import java.awt.event.ItemEvent;
 import java.util.Date;
-import java.util.Set;
 import javax.swing.table.DefaultTableModel;
 
 public class MainJFrame extends javax.swing.JFrame {
@@ -49,37 +44,22 @@ public class MainJFrame extends javax.swing.JFrame {
         //para que el panel azul ocupe hasta el borde
         getContentPane().setLayout(new BorderLayout());
         getContentPane().add(jDesktopPane1, BorderLayout.CENTER);
-    }
-    
-    //para que se visibilicen los internal frames
-    private void openInternalFrame(JInternalFrame frame) {
-        jDesktopPane1.add(frame);
-        allJInternalFrame.add(frame);
-        frame.setSize(350, 300);
-        frame.setLocation(
-            (jDesktopPane1.getWidth() - frame.getWidth()) / 2,
-            (jDesktopPane1.getHeight() - frame.getHeight()) / 2);
-        frame.setVisible(true);
-        try {
-            frame.setSelected(true);
-        } catch (PropertyVetoException e) {
-            e.printStackTrace();
-        }
-        jDesktopPane1.revalidate();
-        jDesktopPane1.repaint();
+        ocultarDatosCurso();
     }
     
     //al aparecer uno se cierra el otro
-    private void showInternalFrame(JInternalFrame frameToShow) {
+    private void mostrarInternalFrame(JInternalFrame frameToShow) {
+        //cerrar cualquier InternalFrame abierto
+        JInternalFrame[] frames = jDesktopPane1.getAllFrames();
+        for (JInternalFrame f : frames) {
+            f.setVisible(false);
+            f.dispose();
+        }
 
-        //ocultar los demás
-        for (JInternalFrame frame : jDesktopPane1.getAllFrames()) {
-            frame.setVisible(false);
-        }
-        //agregarlo si todavía no pertenece al DesktopPane
-        if (frameToShow.getDesktopPane() == null) {
-            jDesktopPane1.add(frameToShow);
-        }
+        //agregar el nuevo InternalFrame
+        jDesktopPane1.add(frameToShow);
+        allJInternalFrame.add(frameToShow);
+
             frameToShow.setVisible(true);
             jDesktopPane1.revalidate();
             jDesktopPane1.repaint();
@@ -92,19 +72,38 @@ public class MainJFrame extends javax.swing.JFrame {
         }
     }
     
+    private void ocultarDatosCurso(){
+        jLabelCrearCursoNombreError.setVisible(false);
+        jLabelCrearCursoUrlError.setVisible(false);
+        jLabelCrearCursoCantHorasError.setVisible(false);
+        jLabelCrearCursoDuracionError.setVisible(false);
+        jLabelCrearCursoCantCreditosError.setVisible(false);
+        jLabelCrearCursoDescripcionError.setVisible(false);
+        jLabelCursoMensajeExito.setVisible(false);
+    }
+    
+    private void cerrarInternalFrames() {
+        for (JInternalFrame frame : jDesktopPane1.getAllFrames()) {
+            frame.setVisible(false);
+            frame.dispose();
+        }
+        jDesktopPane1.revalidate();
+        jDesktopPane1.repaint();
+    }
+    
     private void abrirSeleccionCursoAlta(){
         SeleccionarCursoJInternalFrame seleccion = new SeleccionarCursoJInternalFrame(jDesktopPane1, OperacionCurso.ALTA_EDICION);
-        openInternalFrame(seleccion);
+        mostrarInternalFrame(seleccion);
     }
     
     private void abrirSeleccionCursoConsulta(){
         SeleccionarCursoJInternalFrame seleccion = new SeleccionarCursoJInternalFrame(jDesktopPane1, OperacionCurso.CONSULTA_EDICION);
-        openInternalFrame(seleccion);
+        mostrarInternalFrame(seleccion);
     }
     
     private void abrirSeleccionCursoInscripcion(){
         SeleccionarCursoJInternalFrame seleccion = new SeleccionarCursoJInternalFrame(jDesktopPane1, OperacionCurso.INSCRIPCION_EDICION);
-        openInternalFrame(seleccion);
+        mostrarInternalFrame(seleccion);
     }
     
     /**
@@ -163,12 +162,12 @@ public class MainJFrame extends javax.swing.JFrame {
         jLabelCrearCursoNombreError = new javax.swing.JLabel();
         jLabelCrearCursoDuracionError = new javax.swing.JLabel();
         jLabelCrearCursoUrlError = new javax.swing.JLabel();
-        jLabelCrearCursoPreviasError = new javax.swing.JLabel();
         jLabelCrearCursoCantHorasError = new javax.swing.JLabel();
         jLabelCrearCursoCantCreditosError = new javax.swing.JLabel();
         jLabelCrearCursoDescripcionError = new javax.swing.JLabel();
         jLabelCrearCursoInstituto = new javax.swing.JLabel();
         jComboBoxCrearCursoInstituto = new javax.swing.JComboBox<>();
+        jLabelCursoMensajeExito = new javax.swing.JLabel();
         JPanelConsultarCursos = new javax.swing.JPanel();
         jLabelConsultarCursos = new javax.swing.JLabel();
         jScrollPaneTablaConsultaCursos = new javax.swing.JScrollPane();
@@ -428,6 +427,7 @@ public class MainJFrame extends javax.swing.JFrame {
         );
 
         jLabelConsultarUsuarios.setText("Consultar Usuarios");
+        JPanelConsultarUsuarios.add(jLabelConsultarUsuarios);
 
         jTableConsultarUsuarios.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -450,40 +450,15 @@ public class MainJFrame extends javax.swing.JFrame {
         });
         jScrollPaneTablaConsultarUsuarios.setViewportView(jTableConsultarUsuarios);
 
+        JPanelConsultarUsuarios.add(jScrollPaneTablaConsultarUsuarios);
+
         jButtonConsUsRefresh.setText("Refrescar");
         jButtonConsUsRefresh.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonConsUsRefreshActionPerformed(evt);
             }
         });
-
-        javax.swing.GroupLayout JPanelConsultarUsuariosLayout = new javax.swing.GroupLayout(JPanelConsultarUsuarios);
-        JPanelConsultarUsuarios.setLayout(JPanelConsultarUsuariosLayout);
-        JPanelConsultarUsuariosLayout.setHorizontalGroup(
-            JPanelConsultarUsuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(JPanelConsultarUsuariosLayout.createSequentialGroup()
-                .addGroup(JPanelConsultarUsuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(JPanelConsultarUsuariosLayout.createSequentialGroup()
-                        .addGap(15, 15, 15)
-                        .addComponent(jLabelConsultarUsuarios)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButtonConsUsRefresh))
-                    .addGroup(JPanelConsultarUsuariosLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jScrollPaneTablaConsultarUsuarios, javax.swing.GroupLayout.DEFAULT_SIZE, 778, Short.MAX_VALUE)))
-                .addContainerGap())
-        );
-        JPanelConsultarUsuariosLayout.setVerticalGroup(
-            JPanelConsultarUsuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(JPanelConsultarUsuariosLayout.createSequentialGroup()
-                .addGap(10, 10, 10)
-                .addGroup(JPanelConsultarUsuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabelConsultarUsuarios)
-                    .addComponent(jButtonConsUsRefresh))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPaneTablaConsultarUsuarios, javax.swing.GroupLayout.DEFAULT_SIZE, 557, Short.MAX_VALUE)
-                .addContainerGap())
-        );
+        JPanelConsultarUsuarios.add(jButtonConsUsRefresh);
 
         jLabelCrearCurso.setText("Crear Curso");
 
@@ -506,7 +481,7 @@ public class MainJFrame extends javax.swing.JFrame {
 
         jTextCrearCursoCantHoras.setText("12");
 
-        jLabelCrearCursoCantCreditos.setText("Cantidad de Creditos");
+        jLabelCrearCursoCantCreditos.setText("Creditos");
 
         jTextCrearCursoCantCreditos.setText("12");
 
@@ -537,27 +512,34 @@ public class MainJFrame extends javax.swing.JFrame {
         });
 
         jLabelCrearCursoNombreError.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
-        jLabelCrearCursoNombreError.setText("Error nombre");
+        jLabelCrearCursoNombreError.setForeground(new java.awt.Color(255, 0, 0));
+        jLabelCrearCursoNombreError.setText("* Curso ya existente.");
 
         jLabelCrearCursoDuracionError.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
-        jLabelCrearCursoDuracionError.setText("Error duración");
+        jLabelCrearCursoDuracionError.setForeground(new java.awt.Color(255, 0, 0));
+        jLabelCrearCursoDuracionError.setText("* Campo vacío.");
 
         jLabelCrearCursoUrlError.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
-        jLabelCrearCursoUrlError.setText("Error url");
-
-        jLabelCrearCursoPreviasError.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
-        jLabelCrearCursoPreviasError.setText("Error previas");
+        jLabelCrearCursoUrlError.setForeground(new java.awt.Color(255, 0, 0));
+        jLabelCrearCursoUrlError.setText("* Campo vacío.");
 
         jLabelCrearCursoCantHorasError.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
-        jLabelCrearCursoCantHorasError.setText("Error cantidad de horas");
+        jLabelCrearCursoCantHorasError.setForeground(new java.awt.Color(255, 0, 0));
+        jLabelCrearCursoCantHorasError.setText("* Campo vacío.");
 
         jLabelCrearCursoCantCreditosError.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
-        jLabelCrearCursoCantCreditosError.setText("Error cantidad de Creditos");
+        jLabelCrearCursoCantCreditosError.setForeground(new java.awt.Color(255, 0, 0));
+        jLabelCrearCursoCantCreditosError.setText("* Campo vacío.");
 
         jLabelCrearCursoDescripcionError.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
-        jLabelCrearCursoDescripcionError.setText("Error descipción");
+        jLabelCrearCursoDescripcionError.setForeground(new java.awt.Color(255, 0, 0));
+        jLabelCrearCursoDescripcionError.setText("* Campo vacío.");
 
         jLabelCrearCursoInstituto.setText("Instituto");
+
+        jLabelCursoMensajeExito.setFont(new java.awt.Font("Segoe UI", 2, 14)); // NOI18N
+        jLabelCursoMensajeExito.setForeground(new java.awt.Color(0, 153, 0));
+        jLabelCursoMensajeExito.setText("Curso creado con éxito!");
 
         javax.swing.GroupLayout JPanelCrearCursoLayout = new javax.swing.GroupLayout(JPanelCrearCurso);
         JPanelCrearCurso.setLayout(JPanelCrearCursoLayout);
@@ -565,62 +547,71 @@ public class MainJFrame extends javax.swing.JFrame {
             JPanelCrearCursoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(JPanelCrearCursoLayout.createSequentialGroup()
                 .addGroup(JPanelCrearCursoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabelCrearCursoDescripcion)
-                    .addComponent(jLabelCrearCursoDescripcionError))
-                .addGap(709, 709, 709))
-            .addGroup(JPanelCrearCursoLayout.createSequentialGroup()
-                .addGroup(JPanelCrearCursoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(JPanelCrearCursoLayout.createSequentialGroup()
+                        .addComponent(jLabelCrearCursoDescripcion)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabelCrearCursoDescripcionError))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, JPanelCrearCursoLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jLabelCursoMensajeExito)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jButtonGuardarCurso))
                     .addComponent(jScrollPane1)
                     .addGroup(JPanelCrearCursoLayout.createSequentialGroup()
                         .addGroup(JPanelCrearCursoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(JPanelCrearCursoLayout.createSequentialGroup()
                                 .addContainerGap()
-                                .addGroup(JPanelCrearCursoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jLabelCrearCursoUrl, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jTextCrearCursoUrl)
-                                    .addComponent(jLabelCrearCursoUrlError, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addGroup(JPanelCrearCursoLayout.createSequentialGroup()
-                                        .addGroup(JPanelCrearCursoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                            .addComponent(jTextCrearCursoCantHoras)
-                                            .addComponent(jLabelCrearCursoCantHoras, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(jLabelCrearCursoCantHorasError, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE))
-                                        .addGap(18, 18, 18)
-                                        .addGroup(JPanelCrearCursoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                            .addComponent(jLabelCrearCursoCantCreditos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                            .addComponent(jLabelCrearCursoCantCreditosError, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
-                                            .addComponent(jTextCrearCursoCantCreditos)))))
-                            .addGroup(JPanelCrearCursoLayout.createSequentialGroup()
                                 .addGroup(JPanelCrearCursoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, JPanelCrearCursoLayout.createSequentialGroup()
-                                        .addContainerGap()
-                                        .addComponent(jLabelCrearCursoNombreError, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addGroup(JPanelCrearCursoLayout.createSequentialGroup()
-                                        .addGap(15, 15, 15)
-                                        .addComponent(jLabelCrearCurso))
-                                    .addGroup(JPanelCrearCursoLayout.createSequentialGroup()
-                                        .addContainerGap()
-                                        .addComponent(jLabelCrearCursoNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(JPanelCrearCursoLayout.createSequentialGroup()
-                                        .addContainerGap()
-                                        .addComponent(jTextCrearCursoNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addGap(18, 18, 18)
-                                .addGroup(JPanelCrearCursoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jTextCrearCursoDuracion)
-                                    .addComponent(jLabelCrearCursoDuracion, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabelCrearCursoDuracionError, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE))))
-                        .addGap(18, 18, 18)
+                                        .addGroup(JPanelCrearCursoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addComponent(jTextCrearCursoCantHoras, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addGroup(JPanelCrearCursoLayout.createSequentialGroup()
+                                                .addComponent(jLabelCrearCursoCantHoras, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                .addComponent(jLabelCrearCursoCantHorasError)))
+                                        .addGap(18, 18, 18)
+                                        .addGroup(JPanelCrearCursoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabelCrearCursoCantCreditos, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(jTextCrearCursoCantCreditos, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addGroup(JPanelCrearCursoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, JPanelCrearCursoLayout.createSequentialGroup()
+                                            .addComponent(jLabelCrearCursoUrl, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(jLabelCrearCursoUrlError))
+                                        .addComponent(jTextCrearCursoUrl, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 432, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addGroup(JPanelCrearCursoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(jLabelCrearCursoCantCreditosError)
+                                .addGroup(JPanelCrearCursoLayout.createSequentialGroup()
+                                    .addGroup(JPanelCrearCursoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addGroup(JPanelCrearCursoLayout.createSequentialGroup()
+                                            .addGap(15, 15, 15)
+                                            .addComponent(jLabelCrearCurso))
+                                        .addGroup(JPanelCrearCursoLayout.createSequentialGroup()
+                                            .addContainerGap()
+                                            .addComponent(jLabelCrearCursoNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(jLabelCrearCursoNombreError))
+                                        .addGroup(JPanelCrearCursoLayout.createSequentialGroup()
+                                            .addContainerGap()
+                                            .addComponent(jTextCrearCursoNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addGap(18, 18, 18)
+                                    .addGroup(JPanelCrearCursoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(jTextCrearCursoDuracion, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGroup(JPanelCrearCursoLayout.createSequentialGroup()
+                                            .addComponent(jLabelCrearCursoDuracion, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(jLabelCrearCursoDuracionError, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE))))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(JPanelCrearCursoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane3)
                             .addGroup(JPanelCrearCursoLayout.createSequentialGroup()
                                 .addGroup(JPanelCrearCursoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(jLabelCrearCursoInstituto, javax.swing.GroupLayout.DEFAULT_SIZE, 187, Short.MAX_VALUE)
-                                    .addComponent(jLabelCrearCursoPrevias, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jLabelCrearCursoPreviasError)
+                                    .addGroup(JPanelCrearCursoLayout.createSequentialGroup()
+                                        .addComponent(jLabelCrearCursoPrevias, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addGap(118, 118, 118))
                                     .addComponent(jComboBoxCrearCursoInstituto, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                .addGap(0, 0, Short.MAX_VALUE)))))
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 334, Short.MAX_VALUE))))
                 .addContainerGap())
         );
         JPanelCrearCursoLayout.setVerticalGroup(
@@ -632,50 +623,46 @@ public class MainJFrame extends javax.swing.JFrame {
                 .addGroup(JPanelCrearCursoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabelCrearCursoDuracion)
                     .addComponent(jLabelCrearCursoNombre)
-                    .addComponent(jLabelCrearCursoInstituto))
+                    .addComponent(jLabelCrearCursoInstituto)
+                    .addComponent(jLabelCrearCursoNombreError)
+                    .addComponent(jLabelCrearCursoDuracionError, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(JPanelCrearCursoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jTextCrearCursoDuracion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jTextCrearCursoNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jComboBoxCrearCursoInstituto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(JPanelCrearCursoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabelCrearCursoNombreError)
-                    .addComponent(jLabelCrearCursoDuracionError, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addGap(40, 40, 40)
                 .addGroup(JPanelCrearCursoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(JPanelCrearCursoLayout.createSequentialGroup()
                         .addGroup(JPanelCrearCursoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabelCrearCursoCantHoras)
-                            .addComponent(jLabelCrearCursoCantCreditos))
+                            .addComponent(jLabelCrearCursoCantCreditos)
+                            .addComponent(jLabelCrearCursoCantCreditosError)
+                            .addComponent(jLabelCrearCursoCantHorasError))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(JPanelCrearCursoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jTextCrearCursoCantCreditos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jTextCrearCursoCantHoras, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGap(60, 60, 60)
                         .addGroup(JPanelCrearCursoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabelCrearCursoCantHorasError)
-                            .addComponent(jLabelCrearCursoCantCreditosError))
-                        .addGap(38, 38, 38)
-                        .addComponent(jLabelCrearCursoUrl)
+                            .addComponent(jLabelCrearCursoUrl)
+                            .addComponent(jLabelCrearCursoUrlError))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextCrearCursoUrl, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabelCrearCursoUrlError))
+                        .addComponent(jTextCrearCursoUrl, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(JPanelCrearCursoLayout.createSequentialGroup()
                         .addComponent(jLabelCrearCursoPrevias)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabelCrearCursoPreviasError)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 35, Short.MAX_VALUE)
-                .addComponent(jLabelCrearCursoDescripcion)
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 57, Short.MAX_VALUE)
+                .addGroup(JPanelCrearCursoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabelCrearCursoDescripcion)
+                    .addComponent(jLabelCrearCursoDescripcionError))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabelCrearCursoDescripcionError)
-                .addGap(18, 18, 18)
-                .addComponent(jButtonGuardarCurso)
+                .addGap(40, 40, 40)
+                .addGroup(JPanelCrearCursoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButtonGuardarCurso)
+                    .addComponent(jLabelCursoMensajeExito))
                 .addContainerGap())
         );
 
@@ -874,7 +861,7 @@ public class MainJFrame extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jTableCrearProgramaCursos, javax.swing.GroupLayout.DEFAULT_SIZE, 246, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
-                    .addComponent(jButtonGuardarPrograma)
+                .addComponent(jButtonGuardarPrograma)
                 .addContainerGap())
         );
 
@@ -1396,7 +1383,7 @@ public class MainJFrame extends javax.swing.JFrame {
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                     .addContainerGap(104, Short.MAX_VALUE)
-                    .addComponent(jDesktopPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 439, Short.MAX_VALUE)
+                    .addComponent(jDesktopPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 442, Short.MAX_VALUE)
                     .addContainerGap(264, Short.MAX_VALUE)))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGap(0, 802, Short.MAX_VALUE))
@@ -1439,7 +1426,7 @@ public class MainJFrame extends javax.swing.JFrame {
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                     .addContainerGap(248, Short.MAX_VALUE)
-                    .addComponent(jDesktopPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 248, Short.MAX_VALUE)
+                    .addComponent(jDesktopPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
                     .addContainerGap(142, Short.MAX_VALUE)))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGap(0, 634, Short.MAX_VALUE))
@@ -1451,8 +1438,8 @@ public class MainJFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jMenuItemCrearUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemCrearUsuarioActionPerformed
+        cerrarInternalFrames();
         showOnePanelAndHideTheRest(this.JPanelAltaUsuario);
-        
         HashSet<DataInstituto> institutos = this.institutoPres.cargarInstitutos();
         jComboBoxInstituto.removeAllItems();
         jComboBoxInstituto.addItem("Seleccione un Instituto...");
@@ -1465,12 +1452,13 @@ public class MainJFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItemCrearUsuarioActionPerformed
 
     private void jMenuItemConsultarUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemConsultarUsuarioActionPerformed
+        cerrarInternalFrames();
         showOnePanelAndHideTheRest(this.JPanelConsultarUsuarios);
     }//GEN-LAST:event_jMenuItemConsultarUsuarioActionPerformed
 
     private void jMenuItemCrearCursoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemCrearCursoActionPerformed
+        cerrarInternalFrames();
         showOnePanelAndHideTheRest(this.JPanelCrearCurso);
-
         HashSet<DataInstituto> institutos = this.institutoPres.cargarInstitutos();
         HashSet<DataCurso> cursos = this.cursoPres.cargarCursos();
 
@@ -1492,6 +1480,7 @@ public class MainJFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItemCrearCursoActionPerformed
 
     private void jMenuItemConsultarCursoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemConsultarCursoActionPerformed
+        cerrarInternalFrames();
         showOnePanelAndHideTheRest(this.JPanelConsultarCursos);
     }//GEN-LAST:event_jMenuItemConsultarCursoActionPerformed
 
@@ -1555,10 +1544,12 @@ public class MainJFrame extends javax.swing.JFrame {
     }
 
     private void jMenuItemCrearProgDeFormacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemCrearProgDeFormacionActionPerformed
+        cerrarInternalFrames();
         showOnePanelAndHideTheRest(this.JPanelCrearPrograma);
     }//GEN-LAST:event_jMenuItemCrearProgDeFormacionActionPerformed
 
     private void jMenuItemConsultarProgDeFormacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemConsultarProgDeFormacionActionPerformed
+        cerrarInternalFrames();
         showOnePanelAndHideTheRest(this.JPanelConsultarProgramas);
         limpiarDetallesConsultaProgDeForm();
     }//GEN-LAST:event_jMenuItemConsultarProgDeFormacionActionPerformed
@@ -1661,6 +1652,7 @@ public class MainJFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonConsultarProgramasRefreshActionPerformed
 
     private void jMenuItemGestionarInstitutosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemGestionarInstitutosActionPerformed
+        cerrarInternalFrames();
         showOnePanelAndHideTheRest(this.jPanelGestionarInstitutos);
 
         // Cargar la nueva lista y actualizar tabla
@@ -1728,26 +1720,17 @@ public class MainJFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonConsultarInstitutosRefreshActionPerformed
     private void jMenuItemCrearEdicionCursoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemCrearEdicionCursoActionPerformed
         hideAllJPanels();
-        SwingUtilities.invokeLater(() -> {
-        SeleccionarCursoJInternalFrame frame = new SeleccionarCursoJInternalFrame(jDesktopPane1, OperacionCurso.ALTA_EDICION);
-        showInternalFrame(frame);}
-        );
+        abrirSeleccionCursoAlta();
     }//GEN-LAST:event_jMenuItemCrearEdicionCursoActionPerformed
 
     private void jMenuItemConsultarEdicionCursoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemConsultarEdicionCursoActionPerformed
         hideAllJPanels();
-        SwingUtilities.invokeLater(() -> {
-        SeleccionarCursoJInternalFrame frame = new SeleccionarCursoJInternalFrame(jDesktopPane1, OperacionCurso.CONSULTA_EDICION);
-        showInternalFrame(frame);}
-        );
+        abrirSeleccionCursoConsulta();
     }//GEN-LAST:event_jMenuItemConsultarEdicionCursoActionPerformed
 
     private void jMenuItemInscripcionEdicionCursoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemInscripcionEdicionCursoActionPerformed
         hideAllJPanels();
-        SwingUtilities.invokeLater(() -> {
-        SeleccionarCursoJInternalFrame frame = new SeleccionarCursoJInternalFrame(jDesktopPane1, OperacionCurso.INSCRIPCION_EDICION);
-        showInternalFrame(frame);}
-        );
+        abrirSeleccionCursoInscripcion();
     }//GEN-LAST:event_jMenuItemInscripcionEdicionCursoActionPerformed
 
     private void jButtonGuardarCursoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonGuardarCursoActionPerformed
@@ -1812,7 +1795,7 @@ public class MainJFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonAceptarActionPerformed
 
     private void jMenuItemModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemModificarActionPerformed
-        // TODO add your handling code here:
+        cerrarInternalFrames();
     }//GEN-LAST:event_jMenuItemModificarActionPerformed
 
     private void jButtonConsUsRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonConsUsRefreshActionPerformed
@@ -1995,9 +1978,6 @@ public class MainJFrame extends javax.swing.JFrame {
     }
 
     
-
-    
-    
     private void showOnePanelAndHideTheRest(JPanel panelToShow){
         for (JPanel panel : this.allJPanels) {
             if (panel == panelToShow ){
@@ -2088,7 +2068,6 @@ public class MainJFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabelCrearCursoNombre;
     private javax.swing.JLabel jLabelCrearCursoNombreError;
     private javax.swing.JLabel jLabelCrearCursoPrevias;
-    private javax.swing.JLabel jLabelCrearCursoPreviasError;
     private javax.swing.JLabel jLabelCrearCursoUrl;
     private javax.swing.JLabel jLabelCrearCursoUrlError;
     private javax.swing.JLabel jLabelCrearInstituto;
@@ -2097,6 +2076,7 @@ public class MainJFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabelCrearProgramaDesc;
     private javax.swing.JLabel jLabelCrearProgramaFechaFin;
     private javax.swing.JLabel jLabelCrearProgramaFechaInicio;
+    private javax.swing.JLabel jLabelCursoMensajeExito;
     private javax.swing.JLabel jLabelDetProgSelectDesc;
     private javax.swing.JLabel jLabelDetProgSelectFechaCreado;
     private javax.swing.JLabel jLabelDetProgSelectFechaFin;

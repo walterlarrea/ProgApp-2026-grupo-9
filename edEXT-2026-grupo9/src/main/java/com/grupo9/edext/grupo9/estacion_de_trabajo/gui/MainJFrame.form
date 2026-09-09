@@ -208,7 +208,7 @@
           <Group type="103" rootIndex="7" groupAlignment="0" attributes="0">
               <Group type="102" alignment="1" attributes="0">
                   <EmptySpace pref="104" max="32767" attributes="0"/>
-                  <Component id="jDesktopPane1" pref="439" max="32767" attributes="0"/>
+                  <Component id="jDesktopPane1" pref="442" max="32767" attributes="0"/>
                   <EmptySpace pref="264" max="32767" attributes="0"/>
               </Group>
           </Group>
@@ -268,7 +268,7 @@
           <Group type="103" rootIndex="7" groupAlignment="0" attributes="0">
               <Group type="102" alignment="1" attributes="0">
                   <EmptySpace pref="248" max="32767" attributes="0"/>
-                  <Component id="jDesktopPane1" pref="248" max="32767" attributes="0"/>
+                  <Component id="jDesktopPane1" pref="250" max="32767" attributes="0"/>
                   <EmptySpace pref="142" max="32767" attributes="0"/>
               </Group>
           </Group>
@@ -499,7 +499,7 @@
             </Property>
             <Property name="text" type="java.lang.String" value="Seleccionar Foto de Perfil"/>
             <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
-              <Color id="Default Cursor"/>
+              <Color id="Cursor Por defecto"/>
             </Property>
           </Properties>
           <Events>
@@ -525,45 +525,6 @@
       </SubComponents>
     </Container>
     <Container class="javax.swing.JPanel" name="JPanelConsultarUsuarios">
-
-      <Layout>
-        <DimensionLayout dim="0">
-          <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" attributes="0">
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" alignment="0" attributes="0">
-                          <EmptySpace min="15" pref="15" max="-2" attributes="0"/>
-                          <Component id="jLabelConsultarUsuarios" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace max="32767" attributes="0"/>
-                          <Component id="jButtonConsUsRefresh" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace type="separate" max="-2" attributes="0"/>
-                          <Component id="jButtonCancelarConsU" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <Group type="102" alignment="0" attributes="0">
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Component id="jScrollPaneTablaConsultarUsuarios" pref="778" max="32767" attributes="0"/>
-                      </Group>
-                  </Group>
-                  <EmptySpace max="-2" attributes="0"/>
-              </Group>
-          </Group>
-        </DimensionLayout>
-        <DimensionLayout dim="1">
-          <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" alignment="0" attributes="0">
-                  <EmptySpace min="10" pref="10" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="jLabelConsultarUsuarios" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="jButtonConsUsRefresh" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="jButtonCancelarConsU" alignment="3" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Component id="jScrollPaneTablaConsultarUsuarios" pref="573" max="32767" attributes="0"/>
-                  <EmptySpace max="-2" attributes="0"/>
-              </Group>
-          </Group>
-        </DimensionLayout>
-      </Layout>
       <SubComponents>
         <Component class="javax.swing.JLabel" name="jLabelConsultarUsuarios">
           <Properties>
@@ -650,15 +611,15 @@
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" attributes="0">
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="jLabelCrearCursoDescripcion" alignment="0" min="-2" max="-2" attributes="0"/>
-                      <Component id="jLabelCrearCursoDescripcionError" alignment="0" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <EmptySpace min="-2" pref="709" max="-2" attributes="0"/>
-              </Group>
-              <Group type="102" attributes="0">
-                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" attributes="0">
+                          <Component id="jLabelCrearCursoDescripcion" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="32767" attributes="0"/>
+                          <Component id="jLabelCrearCursoDescripcionError" min="-2" max="-2" attributes="0"/>
+                      </Group>
                       <Group type="102" alignment="1" attributes="0">
                           <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                          <Component id="jLabelCursoMensajeExito" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Component id="jButtonGuardarCurso" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <Component id="jScrollPane1" alignment="0" max="32767" attributes="0"/>
@@ -666,64 +627,77 @@
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Group type="102" alignment="0" attributes="0">
                                   <EmptySpace max="-2" attributes="0"/>
-                                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                      <Component id="jLabelCrearCursoUrl" alignment="0" min="-2" pref="26" max="-2" attributes="0"/>
-                                      <Component id="jTextCrearCursoUrl" alignment="0" max="32767" attributes="0"/>
-                                      <Component id="jLabelCrearCursoUrlError" alignment="0" max="32767" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" attributes="0">
                                       <Group type="102" alignment="0" attributes="0">
                                           <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                              <Component id="jTextCrearCursoCantHoras" max="32767" attributes="0"/>
-                                              <Component id="jLabelCrearCursoCantHoras" min="-2" pref="96" max="-2" attributes="0"/>
-                                              <Component id="jLabelCrearCursoCantHorasError" alignment="0" pref="250" max="32767" attributes="0"/>
+                                              <Component id="jTextCrearCursoCantHoras" min="-2" pref="250" max="-2" attributes="0"/>
+                                              <Group type="102" attributes="0">
+                                                  <Component id="jLabelCrearCursoCantHoras" min="-2" pref="96" max="-2" attributes="0"/>
+                                                  <EmptySpace max="32767" attributes="0"/>
+                                                  <Component id="jLabelCrearCursoCantHorasError" min="-2" max="-2" attributes="0"/>
+                                              </Group>
                                           </Group>
                                           <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
-                                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                              <Component id="jLabelCrearCursoCantCreditos" max="32767" attributes="0"/>
-                                              <Component id="jLabelCrearCursoCantCreditosError" pref="150" max="32767" attributes="0"/>
-                                              <Component id="jTextCrearCursoCantCreditos" alignment="0" max="32767" attributes="0"/>
+                                          <Group type="103" groupAlignment="0" attributes="0">
+                                              <Component id="jLabelCrearCursoCantCreditos" min="-2" pref="79" max="-2" attributes="0"/>
+                                              <Component id="jTextCrearCursoCantCreditos" min="-2" pref="150" max="-2" attributes="0"/>
                                           </Group>
+                                      </Group>
+                                      <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
+                                          <Group type="102" alignment="0" attributes="0">
+                                              <Component id="jLabelCrearCursoUrl" min="-2" pref="26" max="-2" attributes="0"/>
+                                              <EmptySpace max="32767" attributes="0"/>
+                                              <Component id="jLabelCrearCursoUrlError" min="-2" max="-2" attributes="0"/>
+                                          </Group>
+                                          <Component id="jTextCrearCursoUrl" alignment="0" min="-2" pref="432" max="-2" attributes="0"/>
                                       </Group>
                                   </Group>
                               </Group>
-                              <Group type="102" alignment="0" attributes="0">
-                                  <Group type="103" groupAlignment="0" attributes="0">
-                                      <Group type="102" alignment="1" attributes="0">
-                                          <EmptySpace max="-2" attributes="0"/>
-                                          <Component id="jLabelCrearCursoNombreError" min="-2" pref="250" max="-2" attributes="0"/>
+                              <Group type="103" alignment="0" groupAlignment="1" attributes="0">
+                                  <Component id="jLabelCrearCursoCantCreditosError" min="-2" max="-2" attributes="0"/>
+                                  <Group type="102" attributes="0">
+                                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                          <Group type="102" attributes="0">
+                                              <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
+                                              <Component id="jLabelCrearCurso" min="-2" max="-2" attributes="0"/>
+                                          </Group>
+                                          <Group type="102" attributes="0">
+                                              <EmptySpace max="-2" attributes="0"/>
+                                              <Component id="jLabelCrearCursoNombre" min="-2" pref="44" max="-2" attributes="0"/>
+                                              <EmptySpace max="32767" attributes="0"/>
+                                              <Component id="jLabelCrearCursoNombreError" min="-2" max="-2" attributes="0"/>
+                                          </Group>
+                                          <Group type="102" alignment="0" attributes="0">
+                                              <EmptySpace max="-2" attributes="0"/>
+                                              <Component id="jTextCrearCursoNombre" min="-2" pref="250" max="-2" attributes="0"/>
+                                          </Group>
                                       </Group>
-                                      <Group type="102" attributes="0">
-                                          <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
-                                          <Component id="jLabelCrearCurso" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
+                                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                          <Component id="jTextCrearCursoDuracion" min="-2" pref="150" max="-2" attributes="0"/>
+                                          <Group type="102" attributes="0">
+                                              <Component id="jLabelCrearCursoDuracion" min="-2" pref="48" max="-2" attributes="0"/>
+                                              <EmptySpace max="32767" attributes="0"/>
+                                              <Component id="jLabelCrearCursoDuracionError" min="-2" pref="79" max="-2" attributes="0"/>
+                                          </Group>
                                       </Group>
-                                      <Group type="102" attributes="0">
-                                          <EmptySpace max="-2" attributes="0"/>
-                                          <Component id="jLabelCrearCursoNombre" min="-2" pref="44" max="-2" attributes="0"/>
-                                      </Group>
-                                      <Group type="102" alignment="0" attributes="0">
-                                          <EmptySpace max="-2" attributes="0"/>
-                                          <Component id="jTextCrearCursoNombre" min="-2" pref="250" max="-2" attributes="0"/>
-                                      </Group>
-                                  </Group>
-                                  <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
-                                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                      <Component id="jTextCrearCursoDuracion" max="32767" attributes="0"/>
-                                      <Component id="jLabelCrearCursoDuracion" min="-2" pref="48" max="-2" attributes="0"/>
-                                      <Component id="jLabelCrearCursoDuracionError" alignment="0" pref="150" max="32767" attributes="0"/>
                                   </Group>
                               </Group>
                           </Group>
-                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="jScrollPane3" max="32767" attributes="0"/>
                               <Group type="102" attributes="0">
                                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
                                       <Component id="jLabelCrearCursoInstituto" pref="187" max="32767" attributes="0"/>
-                                      <Component id="jLabelCrearCursoPrevias" max="32767" attributes="0"/>
-                                      <Component id="jLabelCrearCursoPreviasError" min="-2" max="-2" attributes="0"/>
+                                      <Group type="102" attributes="0">
+                                          <Component id="jLabelCrearCursoPrevias" max="32767" attributes="0"/>
+                                          <EmptySpace min="-2" pref="118" max="-2" attributes="0"/>
+                                      </Group>
                                       <Component id="jComboBoxCrearCursoInstituto" alignment="0" max="32767" attributes="0"/>
                                   </Group>
                                   <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                               </Group>
+                              <Component id="jScrollPane3" alignment="0" pref="334" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                   </Group>
@@ -741,6 +715,8 @@
                       <Component id="jLabelCrearCursoDuracion" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="jLabelCrearCursoNombre" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="jLabelCrearCursoInstituto" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="jLabelCrearCursoNombreError" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="jLabelCrearCursoDuracionError" alignment="3" min="-2" pref="16" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
@@ -748,51 +724,46 @@
                       <Component id="jTextCrearCursoNombre" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="jComboBoxCrearCursoInstituto" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="1" attributes="0">
-                      <Component id="jLabelCrearCursoNombreError" min="-2" max="-2" attributes="0"/>
-                      <Component id="jLabelCrearCursoDuracionError" min="-2" pref="16" max="-2" attributes="0"/>
-                  </Group>
-                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="40" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" attributes="0">
                           <Group type="103" groupAlignment="3" attributes="0">
                               <Component id="jLabelCrearCursoCantHoras" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="jLabelCrearCursoCantCreditos" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="jLabelCrearCursoCantCreditosError" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="jLabelCrearCursoCantHorasError" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
                               <Component id="jTextCrearCursoCantCreditos" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="jTextCrearCursoCantHoras" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="60" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="jLabelCrearCursoCantHorasError" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="jLabelCrearCursoCantCreditosError" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="jLabelCrearCursoUrl" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="jLabelCrearCursoUrlError" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace min="-2" pref="38" max="-2" attributes="0"/>
-                          <Component id="jLabelCrearCursoUrl" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="jTextCrearCursoUrl" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Component id="jLabelCrearCursoUrlError" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <Group type="102" attributes="0">
                           <Component id="jLabelCrearCursoPrevias" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="jScrollPane3" min="-2" pref="168" max="-2" attributes="0"/>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Component id="jLabelCrearCursoPreviasError" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
-                  <EmptySpace pref="35" max="32767" attributes="0"/>
-                  <Component id="jLabelCrearCursoDescripcion" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace pref="57" max="32767" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="jLabelCrearCursoDescripcion" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="jLabelCrearCursoDescripcionError" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="jScrollPane1" min="-2" pref="143" max="-2" attributes="0"/>
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Component id="jLabelCrearCursoDescripcionError" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace type="separate" max="-2" attributes="0"/>
-                  <Component id="jButtonGuardarCurso" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="40" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="jButtonGuardarCurso" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="jLabelCursoMensajeExito" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
           </Group>
@@ -857,7 +828,7 @@
         </Component>
         <Component class="javax.swing.JLabel" name="jLabelCrearCursoCantCreditos">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Cantidad de Creditos"/>
+            <Property name="text" type="java.lang.String" value="Creditos"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="jTextCrearCursoCantCreditos">
@@ -913,7 +884,10 @@
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Segoe UI" size="12" style="2"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Error nombre"/>
+            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="0" green="0" red="ff" type="rgb"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="* Curso ya existente."/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabelCrearCursoDuracionError">
@@ -921,7 +895,10 @@
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Segoe UI" size="12" style="2"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Error duraci&#xf3;n"/>
+            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="0" green="0" red="ff" type="rgb"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="* Campo vac&#xed;o."/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabelCrearCursoUrlError">
@@ -929,15 +906,10 @@
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Segoe UI" size="12" style="2"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Error url"/>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JLabel" name="jLabelCrearCursoPreviasError">
-          <Properties>
-            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="Segoe UI" size="12" style="2"/>
+            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="0" green="0" red="ff" type="rgb"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Error previas"/>
+            <Property name="text" type="java.lang.String" value="* Campo vac&#xed;o."/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabelCrearCursoCantHorasError">
@@ -945,7 +917,10 @@
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Segoe UI" size="12" style="2"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Error cantidad de horas"/>
+            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="0" green="0" red="ff" type="rgb"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="* Campo vac&#xed;o."/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabelCrearCursoCantCreditosError">
@@ -953,7 +928,10 @@
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Segoe UI" size="12" style="2"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Error cantidad de Creditos"/>
+            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="0" green="0" red="ff" type="rgb"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="* Campo vac&#xed;o."/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabelCrearCursoDescripcionError">
@@ -961,7 +939,10 @@
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Segoe UI" size="12" style="2"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Error descipci&#xf3;n"/>
+            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="0" green="0" red="ff" type="rgb"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="* Campo vac&#xed;o."/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabelCrearCursoInstituto">
@@ -979,6 +960,17 @@
             <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="jComboBoxCrearCursoInstituto.setRenderer(new DefaultListCellRenderer() {&#xd;&#xa;    @Override&#xd;&#xa;    public Component getListCellRendererComponent(&#xd;&#xa;            JList&lt;?&gt; list,&#xd;&#xa;            Object value,&#xd;&#xa;            int index,&#xd;&#xa;            boolean isSelected,&#xd;&#xa;            boolean cellHasFocus) {&#xd;&#xa;&#xd;&#xa;        super.getListCellRendererComponent(&#xd;&#xa;                list, value, index, isSelected, cellHasFocus);&#xd;&#xa;&#xd;&#xa;        if (value instanceof DataInstituto di) {&#xd;&#xa;            setText(di.nombreI());&#xd;&#xa;        }&#xd;&#xa;&#xd;&#xa;        return this;&#xd;&#xa;    }&#xd;&#xa;});"/>
             <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;DataInstituto&gt;"/>
           </AuxValues>
+        </Component>
+        <Component class="javax.swing.JLabel" name="jLabelCursoMensajeExito">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Segoe UI" size="14" style="2"/>
+            </Property>
+            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="0" green="99" red="0" type="rgb"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="Curso creado con &#xe9;xito!"/>
+          </Properties>
         </Component>
       </SubComponents>
     </Container>
@@ -1691,7 +1683,7 @@
                   <Group type="102" alignment="1" attributes="0">
                       <Component id="jSeparator2" min="-2" pref="10" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                          <Component id="jLabelSeccionCrearInstituto" min="-2" max="-2" attributes="0"/>
+                      <Component id="jLabelSeccionCrearInstituto" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="17" max="-2" attributes="0"/>
                       <Component id="jLabelCrearInstituto" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>

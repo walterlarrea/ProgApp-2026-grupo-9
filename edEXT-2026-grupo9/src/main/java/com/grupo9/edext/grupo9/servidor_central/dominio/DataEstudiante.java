@@ -25,5 +25,4 @@ public class DataEstudiante extends DataUsuario {
     public String getTipo() {
         return "Estudiante";
     }
-    
 }

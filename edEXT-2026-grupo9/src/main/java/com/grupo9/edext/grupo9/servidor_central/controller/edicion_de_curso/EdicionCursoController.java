@@ -95,8 +95,8 @@ public class EdicionCursoController implements IEdicionCurso {
         Estudiante est = mest.obtenerEstudiante(nickEstudiante);
         EdicionCurso ed = me.obtenerEdicion(nEdi);
         
-        if(est == null){
-            throw new ErrorRepetidos("El estudiante " + nickEstudiante + " no existe.");
+        if (est == null) {
+            throw new ErrorNoExiste("El estudiante " + nickEstudiante + " no existe.");
         }
         if(ed != null){
             for(InscEdicion insc : est.getInscripciones()){//checkeo si ya está inscripto.
@@ -111,4 +111,14 @@ public class EdicionCursoController implements IEdicionCurso {
             throw new ErrorNoExiste("La Edición " + nEdi + " no existe.");
         }
     };
+    
+    @Override
+    public Estudiante[] traerEstudiantes(){
+        return ManejadorEstudiantes.getInstance().getEstudiante();
+    }
+    
+    @Override
+    public void inscribirNuevoEstudiante(LocalDate fechaInsc, String nickname, String nombreEdi) throws ErrorRepetidos, ErrorNoExiste {
+        inscripcionEdicionCurso(fechaInsc,nickname,nombreEdi);
+    }
 }

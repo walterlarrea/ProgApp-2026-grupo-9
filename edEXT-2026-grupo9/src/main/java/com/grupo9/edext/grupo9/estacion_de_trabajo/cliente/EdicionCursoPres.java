@@ -4,12 +4,14 @@ import com.grupo9.edext.grupo9.interfaces.IServidorCentral;
 import com.grupo9.edext.grupo9.servidor_central.controller.ServidorCentralController;
 import com.grupo9.edext.grupo9.servidor_central.controller.curso.Curso;
 import com.grupo9.edext.grupo9.servidor_central.controller.usuario.Docente;
+import com.grupo9.edext.grupo9.servidor_central.controller.usuario.Estudiante;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataDocente;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataEdicionCurso;
 import com.grupo9.edext.grupo9.servidor_central.controller.edicion_de_curso.EdicionCurso;
 import com.grupo9.edext.grupo9.servidor_central.controller.instituto.Instituto;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataCurso;
 import com.grupo9.edext.grupo9.mensajes.ErrorNoExiste;
+import com.grupo9.edext.grupo9.mensajes.ErrorRepetidos;
 import static com.grupo9.edext.grupo9.servidor_central.controller.DtoMapper.toData;
 import java.time.LocalDate;
 import java.util.HashSet;
@@ -44,5 +46,20 @@ public class EdicionCursoPres {
     
     public EdicionCurso[] traerEdiciones(Curso curso) {
         return servidorCentral.traerEdiciones(curso);
+    }
+    
+    public Estudiante[] traerEstudiantes(){
+        return servidorCentral.traerEstudiantes();
+    }
+    
+    public void inscribirNuevoEstudianteEdicion(String nickname, String nombreEdi, LocalDate fechaInsc) {
+        try {
+            servidorCentral.inscribirEstudiante(fechaInsc, nickname, nombreEdi);
+            System.out.println("[CLIENTE] Inscripción exitosa!");
+        } catch (ErrorRepetidos e) {
+            System.out.println("[CLIENTE] " + e.getMessage());
+        } catch (ErrorNoExiste e) {
+            System.out.println("[CLIENTE] " + e.getMessage());
+        }
     }
 }
