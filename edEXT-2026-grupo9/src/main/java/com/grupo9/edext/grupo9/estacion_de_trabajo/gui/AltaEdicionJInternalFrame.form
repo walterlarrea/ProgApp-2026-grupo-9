@@ -28,7 +28,7 @@
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="1" attributes="0">
-                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                      <EmptySpace min="0" pref="136" max="32767" attributes="0"/>
                       <Component id="jLabelMensajeExito" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="jButtonGuardarEdicion" min="-2" max="-2" attributes="0"/>
@@ -36,7 +36,6 @@
                   <Group type="102" attributes="0">
                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
                           <Component id="jLabelEdicionCupo" min="-2" max="-2" attributes="0"/>
-                          <Component id="jSpinnerEdicionFFin" min="-2" pref="150" max="-2" attributes="0"/>
                           <Component id="jLabelEdicionFFin" min="-2" max="-2" attributes="0"/>
                           <Component id="jSpinnerEdicionFInicio" min="-2" pref="150" max="-2" attributes="0"/>
                           <Component id="jLabelEdicionFInicio" min="-2" max="-2" attributes="0"/>
@@ -50,8 +49,13 @@
                           <Component id="jTextEdicionNombre" alignment="0" pref="250" max="32767" attributes="0"/>
                           <Component id="jComboBoxDocenteEdicion" alignment="0" max="32767" attributes="0"/>
                           <Component id="jTextEdicionCupo" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Component id="jSpinnerEdicionFFin" min="-2" pref="150" max="-2" attributes="0"/>
+                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                              <Component id="jLabelMensajeError1" max="32767" attributes="0"/>
+                          </Group>
                       </Group>
-                      <EmptySpace min="0" pref="106" max="32767" attributes="0"/>
+                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
@@ -81,7 +85,10 @@
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Component id="jLabelEdicionFFin" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="jSpinnerEdicionFFin" min="-2" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="jSpinnerEdicionFFin" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jLabelMensajeError1" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Component id="jLabelEdicionCupo" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
@@ -174,7 +181,7 @@
     <Component class="javax.swing.JLabel" name="jLabelMensajeExito">
       <Properties>
         <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-          <Color blue="0" green="ff" red="0" type="rgb"/>
+          <Color blue="0" green="cc" red="33" type="rgb"/>
         </Property>
         <Property name="text" type="java.lang.String" value="Edici&#xf3;n creada con &#xe9;xito!"/>
       </Properties>
@@ -185,6 +192,14 @@
           <Color blue="0" green="0" red="ff" type="rgb"/>
         </Property>
         <Property name="text" type="java.lang.String" value="* Edici&#xf3;n ya existente."/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabelMensajeError1">
+      <Properties>
+        <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color blue="0" green="0" red="ff" type="rgb"/>
+        </Property>
+        <Property name="text" type="java.lang.String" value="* Fecha err&#xf3;nea."/>
       </Properties>
     </Component>
   </SubComponents>

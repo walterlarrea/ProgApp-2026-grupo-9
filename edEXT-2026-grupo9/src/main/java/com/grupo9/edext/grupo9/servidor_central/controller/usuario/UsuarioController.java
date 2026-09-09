@@ -1,13 +1,10 @@
 
 package com.grupo9.edext.grupo9.servidor_central.controller.usuario;
-import com.grupo9.edext.grupo9.mensajes.ErrorRepetidos;
 
+import com.grupo9.edext.grupo9.mensajes.ErrorRepetidos;
+import com.grupo9.edext.grupo9.servidor_central.controller.instituto.Instituto;
+import com.grupo9.edext.grupo9.servidor_central.controller.instituto.ManejadorInstituto;
 import java.time.LocalDate;
-import java.util.Date;
-/**
- *
- * @author Usuario
- */
 
 public class UsuarioController implements IUsuario{
 
@@ -65,6 +62,14 @@ public class UsuarioController implements IUsuario{
         }
 
         Docente doc = new Docente(nickname, nombre, apellido, email, fechaNac, rutaImagen, nombreInst);
+        
+        Instituto instituto = ManejadorInstituto.getInstance().obtenerInstituto(nombreInst);
+
+        if (instituto != null) {
+            doc.getInstitutos().add(instituto);
+            instituto.getDocentes().add(doc);
+        }
+
         mDocente.addDocente(doc);
     }
 

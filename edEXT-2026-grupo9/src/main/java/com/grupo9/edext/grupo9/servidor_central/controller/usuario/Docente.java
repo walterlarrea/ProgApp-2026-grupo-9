@@ -51,5 +51,5 @@ public class Docente extends Usuario implements Serializable {
    @Override
     public String toString() {
         return getNombre() + " " + getApellido();
-}
+    }
 }
