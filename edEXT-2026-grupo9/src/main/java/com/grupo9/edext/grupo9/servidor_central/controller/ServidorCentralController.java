@@ -16,6 +16,7 @@ import com.grupo9.edext.grupo9.servidor_central.dominio.DataInstituto;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataProgramaFormacion;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataUsuario;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataEdicionCurso;
+import com.grupo9.edext.grupo9.servidor_central.controller.instituto.Instituto;
 import com.grupo9.edext.grupo9.servidor_central.controller.usuario.Docente;
 import com.grupo9.edext.grupo9.servidor_central.controller.edicion_de_curso.EdicionCurso;
 import com.grupo9.edext.grupo9.mensajes.ErrorNoExiste;
@@ -82,8 +83,8 @@ public class ServidorCentralController implements IServidorCentral {
     }
     
     @Override
-    public Docente[] traerDocentes() {
-        return this.edicionCursoCtrl.traerDocentes();
+    public Docente[] traerDocentes(Instituto instituto) {
+        return this.edicionCursoCtrl.traerDocentes(instituto);
     }
     
     
@@ -123,6 +124,7 @@ public class ServidorCentralController implements IServidorCentral {
         return this.institutoCtrl.todosLosInstitutos();
     }
     
+    // Usuarios
     @Override
     public String[] listarUsuarios() {
         return this.usuarioCtrl.listarUsuarios();

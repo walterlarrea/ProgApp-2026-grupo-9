@@ -100,16 +100,20 @@ public class SeleccionarCursoJInternalFrame extends javax.swing.JInternalFrame {
 
     private void jButtonSeleccionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSeleccionarActionPerformed
         int indice = jComboBoxCurso.getSelectedIndex();
-        
+        int indice1 = jComboBoxInstituto.getSelectedIndex();
         if (indice == -1) {
             return;
         }
+        if (indice1 == -1) {
+            return;
+        }
         Curso cursoSeleccionado = cursos.get(indice);
+        Instituto instituto = institutos.get(indice1);
         JInternalFrame frame = null;
 
         switch (operacion) {
             case ALTA_EDICION:
-                frame = new AltaEdicionJInternalFrame(cursoSeleccionado);
+                frame = new AltaEdicionJInternalFrame(cursoSeleccionado, instituto);
                 break;
             case CONSULTA_EDICION:
                 frame = new ConsultarEdicionJInternalFrame(cursoSeleccionado);

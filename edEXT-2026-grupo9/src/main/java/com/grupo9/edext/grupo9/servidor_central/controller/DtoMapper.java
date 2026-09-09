@@ -29,7 +29,7 @@ public class DtoMapper {
             return null;
         }
         
-        Set<Curso> previas = toEntityList(dataCurso.previas(), Curso.class);
+        Set<Curso> previas = dataCurso.previas() == null ? new HashSet<>() : toEntityList(dataCurso.previas(), Curso.class);
         Curso curso = new Curso(
                 toEntity(dataCurso.instituto()),
                 dataCurso.nombreCurso(),

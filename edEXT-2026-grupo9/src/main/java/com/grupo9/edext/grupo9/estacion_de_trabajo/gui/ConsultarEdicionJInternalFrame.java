@@ -75,7 +75,7 @@ public class ConsultarEdicionJInternalFrame extends javax.swing.JInternalFrame {
         ediciones = edicionCursoPres.traerEdiciones(cursoSeleccionado);
         jComboBoxEdiciones.removeAllItems();
         for (EdicionCurso ed : ediciones) {
-        jComboBoxEdiciones.addItem(ed.getNombreEdi());
+            jComboBoxEdiciones.addItem(ed.getNombreEdi());
         }
     }
     /**
@@ -155,7 +155,7 @@ public class ConsultarEdicionJInternalFrame extends javax.swing.JInternalFrame {
                                 .addComponent(jTextFieldCupo, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jTextFieldFechaInicio, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jTextFieldFechaFin, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 0, Short.MAX_VALUE))
+                        .addGap(0, 140, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(jLabelEdicionNombre, javax.swing.GroupLayout.Alignment.LEADING)
@@ -171,7 +171,7 @@ public class ConsultarEdicionJInternalFrame extends javax.swing.JInternalFrame {
                             .addComponent(jScrollPaneEstudiantes, javax.swing.GroupLayout.Alignment.LEADING))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jButtonBuscarEdicion)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addContainerGap(20, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -232,7 +232,6 @@ public class ConsultarEdicionJInternalFrame extends javax.swing.JInternalFrame {
             } else {
                 jTextFieldDocente.setText("Sin docente");
             }
-
             jTextFieldCupo.setText(String.valueOf(edicion.getCupo()));
             DefaultListModel<String> modelo = new DefaultListModel<>();
 

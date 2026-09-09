@@ -7,6 +7,7 @@ import com.grupo9.edext.grupo9.servidor_central.controller.usuario.Docente;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataDocente;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataEdicionCurso;
 import com.grupo9.edext.grupo9.servidor_central.controller.edicion_de_curso.EdicionCurso;
+import com.grupo9.edext.grupo9.servidor_central.controller.instituto.Instituto;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataCurso;
 import com.grupo9.edext.grupo9.mensajes.ErrorNoExiste;
 import static com.grupo9.edext.grupo9.servidor_central.controller.DtoMapper.toData;
@@ -31,9 +32,9 @@ public class EdicionCursoPres {
         }
     }
     
-    public Docente[] traerDocentes() {
+    public Docente[] traerDocentes(Instituto instituto) {
         System.out.println("[CLIENTE] Consultando docentes...");
-        return servidorCentral.traerDocentes();
+        return servidorCentral.traerDocentes(instituto);
     }
     
     public DataEdicionCurso muestroEdicionCurso(String nEdi) throws ErrorNoExiste{

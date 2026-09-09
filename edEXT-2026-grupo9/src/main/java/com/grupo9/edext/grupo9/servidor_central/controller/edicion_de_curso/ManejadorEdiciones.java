@@ -1,12 +1,12 @@
 package com.grupo9.edext.grupo9.servidor_central.controller.edicion_de_curso;
 
+import com.grupo9.edext.grupo9.miscelanea.UtensiliosJPA;
 import com.grupo9.edext.grupo9.servidor_central.controller.curso.Curso;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
-import com.grupo9.edext.grupo9.miscelanea.UtensiliosJPA;
 
 public class ManejadorEdiciones {
     private Map<String, EdicionCurso> edCurso;
@@ -41,9 +41,16 @@ public class ManejadorEdiciones {
         return ((EdicionCurso)edCurso.get(nombreEC));
     }
     
-    public EdicionCurso[] getEdiciones(){
+    public EdicionCurso[] getEdiciones(Curso curso){
         System.out.println("Cantidad de ediciones en el Map: " + edCurso.size());
-        Collection<EdicionCurso> ed = edCurso.values();
-        return ed.toArray(new EdicionCurso[0]);
+        Collection<EdicionCurso> todas = edCurso.values();
+        Collection<EdicionCurso> filtradas = new java.util.ArrayList<>();
+
+        for (EdicionCurso edicion : todas) {
+            if (edicion.getCursoAsoc() != null && edicion.getCursoAsoc().getNombreCurso().equals(curso.getNombreCurso())) {
+                filtradas.add(edicion);
+            }
+        }
+        return filtradas.toArray(new EdicionCurso[0]);
     }
 }

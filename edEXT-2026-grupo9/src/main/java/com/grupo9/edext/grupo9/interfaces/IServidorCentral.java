@@ -5,12 +5,12 @@ import com.grupo9.edext.grupo9.servidor_central.dominio.DataCurso;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataInstituto;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataProgramaFormacion;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataUsuario;
-import com.grupo9.edext.grupo9.mensajes.ErrorRepetidos;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataCurso;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataInstituto;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataProgramaFormacion;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataEdicionCurso;
 import com.grupo9.edext.grupo9.servidor_central.controller.usuario.Docente;
+import com.grupo9.edext.grupo9.servidor_central.controller.instituto.Instituto;
 import com.grupo9.edext.grupo9.servidor_central.controller.edicion_de_curso.EdicionCurso;
 import com.grupo9.edext.grupo9.mensajes.ErrorNoExiste;
 import com.grupo9.edext.grupo9.servidor_central.controller.curso.Curso;
@@ -27,7 +27,7 @@ public interface IServidorCentral {
     
     // Ediciones de cursos
     public DataEdicionCurso guardarEdicionCurso(DataEdicionCurso nuevaEdicion);
-    public Docente[] traerDocentes();
+    public Docente[] traerDocentes(Instituto instituto);
     public DataEdicionCurso consultarUnaEdicionCurso(String nEdi) throws ErrorNoExiste;
     public EdicionCurso[] traerEdiciones(Curso curso);
     

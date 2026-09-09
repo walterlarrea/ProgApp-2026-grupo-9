@@ -1,10 +1,14 @@
 package com.grupo9.edext.grupo9.servidor_central.controller.usuario;
 
+import com.grupo9.edext.grupo9.servidor_central.controller.instituto.Instituto;
+import com.grupo9.edext.grupo9.miscelanea.UtensiliosJPA;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.List;
+import java.util.ArrayList;
 import jakarta.persistence.*;
-import com.grupo9.edext.grupo9.miscelanea.UtensiliosJPA;
+
 
 public class ManejadorDocente {
     private Map<String, Docente> Docente;
@@ -49,19 +53,36 @@ public class ManejadorDocente {
             if(doc.getEdiciones() != null) {
                 doc.getEdiciones().size(); 
             }
+            if (doc.getInstitutos() != null) {
+                doc.getInstitutos().size();
+            }
             Docente.put(nickDoc, doc);
         }
         return doc;
     } catch (Exception e) {
+        e.printStackTrace();
         return null;
     } finally {
         em.close();
     }
 }
 
-    public Docente[] getDocente(){
+    /*public Docente[] getDocente(){
         System.out.println("Cantidad de docentes en el Map: " + Docente.size());
         Collection<Docente> doc = Docente.values();
         return doc.toArray(new Docente[0]);
+    }*/
+    
+    public Docente[] getDocentesPorInstituto(Instituto instituto) {
+        EntityManager em = UtensiliosJPA.getEntityManagerFactory().createEntityManager();
+
+        try {
+            List<Docente> docentes = em.createQuery("SELECT d FROM Docente d JOIN d.institutos i WHERE i.nombreI = :nombre", Docente.class)
+            .setParameter("nombre", instituto.getNombreI())
+            .getResultList();
+            return docentes.toArray(new Docente[0]);
+        } finally {
+            em.close();
+        }
     }
 }
