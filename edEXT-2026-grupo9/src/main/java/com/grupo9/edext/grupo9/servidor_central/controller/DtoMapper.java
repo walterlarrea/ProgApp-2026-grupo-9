@@ -230,7 +230,7 @@ public class DtoMapper {
     private static <Source, Target> HashSet<Target> convertList(
             Set<Source> sourceList, Class<Target> targetType) {
         if (sourceList == null) {
-            throw new NullPointerException("The source list cannot be null");
+            return new HashSet<>(); // Devuelve un conjunto vacío si es null
         }
         if (targetType == null) {
             throw new NullPointerException("The target type cannot be null");

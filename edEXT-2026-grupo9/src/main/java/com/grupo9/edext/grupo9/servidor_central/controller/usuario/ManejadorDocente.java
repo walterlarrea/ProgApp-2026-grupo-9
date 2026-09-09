@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 import jakarta.persistence.*;
 import com.grupo9.edext.grupo9.miscelanea.UtensiliosJPA;
+import java.util.List;
 
 public class ManejadorDocente {
     private Map<String, Docente> Docente;
@@ -12,6 +13,25 @@ public class ManejadorDocente {
 
     private ManejadorDocente(){
         Docente = new HashMap<>();
+        cargarDocentesDesdeBD();
+    }
+    
+    private void cargarDocentesDesdeBD() {
+        EntityManager em = UtensiliosJPA.getEntityManagerFactory().createEntityManager();
+        try {
+            List<Docente> lista = em.createQuery("SELECT d FROM Docente d", Docente.class).getResultList();
+            for (Docente doc : lista) {
+                // Opcional: inicializa colecciones si las vas a necesitar en memoria
+                if(doc.getEdiciones() != null) {
+                    doc.getEdiciones().size();
+                }
+                Docente.put(doc.getNickname(), doc);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            em.close();
+        }
     }
 
     public static ManejadorDocente getInstance(){
