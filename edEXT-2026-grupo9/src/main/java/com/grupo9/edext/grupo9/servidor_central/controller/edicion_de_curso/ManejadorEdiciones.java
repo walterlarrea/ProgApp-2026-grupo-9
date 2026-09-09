@@ -5,8 +5,9 @@ import com.grupo9.edext.grupo9.servidor_central.controller.curso.Curso;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityTransaction;
+import java.util.List;
+import jakarta.persistence.*;
+
 
 public class ManejadorEdiciones {
     private Map<String, EdicionCurso> edCurso;
@@ -22,12 +23,15 @@ public class ManejadorEdiciones {
     try {
         List<EdicionCurso> lista = em.createQuery("SELECT edc FROM EdicionCurso edc", EdicionCurso.class).getResultList();
         for (EdicionCurso edC : lista) {
-            // Si necesitas asegurar que las inscripciones o el docente vengan cargados en memoria:
+            // Si necesitas asegurar que las inscripciones, previas y el docente vengan cargados en memoria:
             if (edC.getInscripciones() != null) {
                 edC.getInscripciones().size();
             }
             if (edC.getDocente() != null) {
                 edC.getDocente().getNickname(); // Fuerza la carga si es un proxy de Hibernate
+            }
+            if (edC.getCursoAsoc() != null) {
+                edC.getCursoAsoc().getPrevias().size();
             }
             edCurso.put(edC.getNombreEdi(), edC);
         }

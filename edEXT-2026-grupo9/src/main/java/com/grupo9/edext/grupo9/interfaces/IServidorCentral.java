@@ -1,20 +1,20 @@
 package com.grupo9.edext.grupo9.interfaces;
 
-import com.grupo9.edext.grupo9.mensajes.ErrorNoExiste;
-import com.grupo9.edext.grupo9.servidor_central.dominio.DataCurso;
-import com.grupo9.edext.grupo9.servidor_central.dominio.DataInstituto;
-import com.grupo9.edext.grupo9.servidor_central.dominio.DataProgramaFormacion;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataUsuario;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataCurso;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataInstituto;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataProgramaFormacion;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataEdicionCurso;
+import com.grupo9.edext.grupo9.servidor_central.dominio.DataEstudiante;
 import com.grupo9.edext.grupo9.servidor_central.controller.usuario.Docente;
+import com.grupo9.edext.grupo9.servidor_central.controller.usuario.Estudiante;
 import com.grupo9.edext.grupo9.servidor_central.controller.instituto.Instituto;
 import com.grupo9.edext.grupo9.servidor_central.controller.edicion_de_curso.EdicionCurso;
 import com.grupo9.edext.grupo9.mensajes.ErrorNoExiste;
+import com.grupo9.edext.grupo9.mensajes.ErrorRepetidos;
 import com.grupo9.edext.grupo9.servidor_central.controller.curso.Curso;
 import java.util.HashSet;
+import java.time.LocalDate;
 
 public interface IServidorCentral {
     public void logStatus();
@@ -30,6 +30,8 @@ public interface IServidorCentral {
     public Docente[] traerDocentes(Instituto instituto);
     public DataEdicionCurso consultarUnaEdicionCurso(String nEdi) throws ErrorNoExiste;
     public EdicionCurso[] traerEdiciones(Curso curso);
+    public Estudiante[] traerEstudiantes();
+    public void inscribirEstudiante(LocalDate fechaInsc, String nickname, String nombreEdi)throws ErrorRepetidos, ErrorNoExiste ;
     
     // Cursos
     public DataCurso guardarCurso(DataCurso nuevoCurso);

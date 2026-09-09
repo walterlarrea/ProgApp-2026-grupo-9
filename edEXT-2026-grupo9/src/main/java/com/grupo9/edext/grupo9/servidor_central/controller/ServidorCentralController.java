@@ -20,7 +20,10 @@ import com.grupo9.edext.grupo9.servidor_central.controller.instituto.Instituto;
 import com.grupo9.edext.grupo9.servidor_central.controller.usuario.Docente;
 import com.grupo9.edext.grupo9.servidor_central.controller.edicion_de_curso.EdicionCurso;
 import com.grupo9.edext.grupo9.mensajes.ErrorNoExiste;
+import com.grupo9.edext.grupo9.mensajes.ErrorRepetidos;
 import com.grupo9.edext.grupo9.servidor_central.controller.curso.Curso;
+import com.grupo9.edext.grupo9.servidor_central.controller.usuario.Estudiante;
+import java.time.LocalDate;
 import java.util.HashSet;
 
 public class ServidorCentralController implements IServidorCentral {
@@ -87,6 +90,15 @@ public class ServidorCentralController implements IServidorCentral {
         return this.edicionCursoCtrl.traerDocentes(instituto);
     }
     
+    @Override
+    public Estudiante[] traerEstudiantes(){
+        return this.edicionCursoCtrl.traerEstudiantes();
+    }
+    
+    @Override
+    public void inscribirEstudiante(LocalDate fechaInsc, String nickname, String nombreEdi)throws ErrorRepetidos, ErrorNoExiste {
+        this.edicionCursoCtrl.inscribirNuevoEstudiante(fechaInsc, nickname, nombreEdi);
+    }
     
     @Override
     public DataEdicionCurso consultarUnaEdicionCurso(String nEdi) throws ErrorNoExiste{

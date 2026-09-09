@@ -4,7 +4,6 @@ import com.grupo9.edext.grupo9.estacion_de_trabajo.gui.AltaEdicionJInternalFrame
 import com.grupo9.edext.grupo9.estacion_de_trabajo.gui.ConsultarEdicionJInternalFrame;
 import com.grupo9.edext.grupo9.estacion_de_trabajo.gui.InscribirAEdicionJInternalFrame;
 import com.grupo9.edext.grupo9.servidor_central.controller.curso.Curso;
-import com.grupo9.edext.grupo9.servidor_central.controller.usuario.Docente;
 import com.grupo9.edext.grupo9.servidor_central.controller.curso.ManejadorCurso;
 import com.grupo9.edext.grupo9.servidor_central.controller.instituto.ManejadorInstituto;
 import com.grupo9.edext.grupo9.servidor_central.controller.instituto.Instituto;

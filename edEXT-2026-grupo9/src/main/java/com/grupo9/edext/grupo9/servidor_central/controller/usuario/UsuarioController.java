@@ -4,6 +4,7 @@ package com.grupo9.edext.grupo9.servidor_central.controller.usuario;
 import com.grupo9.edext.grupo9.mensajes.ErrorRepetidos;
 import com.grupo9.edext.grupo9.servidor_central.controller.instituto.Instituto;
 import com.grupo9.edext.grupo9.servidor_central.controller.instituto.ManejadorInstituto;
+import com.grupo9.edext.grupo9.servidor_central.controller.usuario.ManejadorDocente;
 import java.time.LocalDate;
 
 public class UsuarioController implements IUsuario{
