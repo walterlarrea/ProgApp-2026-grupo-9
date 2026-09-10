@@ -430,7 +430,6 @@ public class MainJFrame extends javax.swing.JFrame {
         );
 
         jLabelConsultarUsuarios.setText("Consultar Usuarios");
-        JPanelConsultarUsuarios.add(jLabelConsultarUsuarios);
 
         jTableConsultarUsuarios.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -453,15 +452,40 @@ public class MainJFrame extends javax.swing.JFrame {
         });
         jScrollPaneTablaConsultarUsuarios.setViewportView(jTableConsultarUsuarios);
 
-        JPanelConsultarUsuarios.add(jScrollPaneTablaConsultarUsuarios);
-
         jButtonConsUsRefresh.setText("Refrescar");
         jButtonConsUsRefresh.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonConsUsRefreshActionPerformed(evt);
             }
         });
-        JPanelConsultarUsuarios.add(jButtonConsUsRefresh);
+
+        javax.swing.GroupLayout JPanelConsultarUsuariosLayout = new javax.swing.GroupLayout(JPanelConsultarUsuarios);
+        JPanelConsultarUsuarios.setLayout(JPanelConsultarUsuariosLayout);
+        JPanelConsultarUsuariosLayout.setHorizontalGroup(
+            JPanelConsultarUsuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(JPanelConsultarUsuariosLayout.createSequentialGroup()
+                .addGroup(JPanelConsultarUsuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(JPanelConsultarUsuariosLayout.createSequentialGroup()
+                        .addGap(16, 16, 16)
+                        .addComponent(jLabelConsultarUsuarios)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButtonConsUsRefresh))
+                    .addGroup(JPanelConsultarUsuariosLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jScrollPaneTablaConsultarUsuarios, javax.swing.GroupLayout.DEFAULT_SIZE, 806, Short.MAX_VALUE)))
+                .addContainerGap())
+        );
+        JPanelConsultarUsuariosLayout.setVerticalGroup(
+            JPanelConsultarUsuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(JPanelConsultarUsuariosLayout.createSequentialGroup()
+                .addGap(16, 16, 16)
+                .addGroup(JPanelConsultarUsuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabelConsultarUsuarios)
+                    .addComponent(jButtonConsUsRefresh))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPaneTablaConsultarUsuarios, javax.swing.GroupLayout.DEFAULT_SIZE, 599, Short.MAX_VALUE)
+                .addContainerGap())
+        );
 
         jLabelCrearCurso.setText("Crear Curso");
 

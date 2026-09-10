@@ -25,7 +25,7 @@ public class Curso implements Serializable {
     @JoinColumn(name = "nombreI")
     private Instituto instituto;
     // Owning side: Defines the join table layout
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany
     @JoinTable(
         name = "cursos_previas",
         joinColumns = @JoinColumn(name = "nombre_curso"),
@@ -33,9 +33,9 @@ public class Curso implements Serializable {
     )
     private Set<Curso> previas = new HashSet<>();
     // Inverse side: Uses mappedBy to reference the owning side's field
-    @ManyToMany(mappedBy = "previas", fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = "previas")
     private Set<Curso> dependientes = new HashSet<>();
-    @ManyToMany(mappedBy = "cursos", fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = "cursos")
     private Set<ProgramaDeFormacion> programas;
        
     
