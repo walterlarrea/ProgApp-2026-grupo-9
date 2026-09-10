@@ -208,7 +208,7 @@
           <Group type="103" rootIndex="7" groupAlignment="0" attributes="0">
               <Group type="102" alignment="1" attributes="0">
                   <EmptySpace pref="104" max="32767" attributes="0"/>
-                  <Component id="jDesktopPane1" pref="442" max="32767" attributes="0"/>
+                  <Component id="jDesktopPane1" pref="451" max="32767" attributes="0"/>
                   <EmptySpace pref="264" max="32767" attributes="0"/>
               </Group>
           </Group>
@@ -268,7 +268,7 @@
           <Group type="103" rootIndex="7" groupAlignment="0" attributes="0">
               <Group type="102" alignment="1" attributes="0">
                   <EmptySpace pref="248" max="32767" attributes="0"/>
-                  <Component id="jDesktopPane1" pref="250" max="32767" attributes="0"/>
+                  <Component id="jDesktopPane1" pref="264" max="32767" attributes="0"/>
                   <EmptySpace pref="142" max="32767" attributes="0"/>
               </Group>
           </Group>
@@ -337,7 +337,7 @@
                           </Group>
                       </Group>
                   </Group>
-                  <EmptySpace pref="226" max="32767" attributes="0"/>
+                  <EmptySpace max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -499,7 +499,7 @@
             </Property>
             <Property name="text" type="java.lang.String" value="Seleccionar Foto de Perfil"/>
             <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
-              <Color id="Cursor Por defecto"/>
+              <Color id="Default Cursor"/>
             </Property>
           </Properties>
           <Events>
@@ -525,6 +525,8 @@
       </SubComponents>
     </Container>
     <Container class="javax.swing.JPanel" name="JPanelConsultarUsuarios">
+
+      <Layout class="org.netbeans.modules.form.compat2.layouts.DesignFlowLayout"/>
       <SubComponents>
         <Component class="javax.swing.JLabel" name="jLabelConsultarUsuarios">
           <Properties>
@@ -609,48 +611,34 @@
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" attributes="0">
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" attributes="0">
-                          <Component id="jLabelCrearCursoDescripcion" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace max="32767" attributes="0"/>
-                          <Component id="jLabelCrearCursoDescripcionError" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <Group type="102" alignment="1" attributes="0">
-                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                          <Component id="jLabelCursoMensajeExito" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                          <Component id="jButtonGuardarCurso" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <Component id="jScrollPane1" alignment="0" max="32767" attributes="0"/>
+              <Group type="102" alignment="1" attributes="0">
+                  <Group type="103" groupAlignment="1" attributes="0">
                       <Group type="102" alignment="0" attributes="0">
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Group type="102" alignment="0" attributes="0">
                                   <EmptySpace max="-2" attributes="0"/>
-                                  <Group type="103" groupAlignment="0" attributes="0">
+                                  <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                                      <Group type="102" alignment="0" attributes="0">
+                                          <Component id="jLabelCrearCursoUrl" min="-2" pref="26" max="-2" attributes="0"/>
+                                          <EmptySpace max="32767" attributes="0"/>
+                                          <Component id="jLabelCrearCursoUrlError" min="-2" max="-2" attributes="0"/>
+                                      </Group>
                                       <Group type="102" alignment="0" attributes="0">
                                           <Group type="103" groupAlignment="0" max="-2" attributes="0">
                                               <Component id="jTextCrearCursoCantHoras" min="-2" pref="250" max="-2" attributes="0"/>
-                                              <Group type="102" attributes="0">
-                                                  <Component id="jLabelCrearCursoCantHoras" min="-2" pref="96" max="-2" attributes="0"/>
+                                              <Group type="102" alignment="1" attributes="0">
+                                                  <Component id="jLabelCrearCursoCantHoras" min="-2" pref="108" max="-2" attributes="0"/>
                                                   <EmptySpace max="32767" attributes="0"/>
                                                   <Component id="jLabelCrearCursoCantHorasError" min="-2" max="-2" attributes="0"/>
                                               </Group>
                                           </Group>
                                           <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
                                           <Group type="103" groupAlignment="0" attributes="0">
-                                              <Component id="jLabelCrearCursoCantCreditos" min="-2" pref="79" max="-2" attributes="0"/>
                                               <Component id="jTextCrearCursoCantCreditos" min="-2" pref="150" max="-2" attributes="0"/>
+                                              <Component id="jLabelCrearCursoCantCreditos" min="-2" pref="64" max="-2" attributes="0"/>
                                           </Group>
                                       </Group>
-                                      <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
-                                          <Group type="102" alignment="0" attributes="0">
-                                              <Component id="jLabelCrearCursoUrl" min="-2" pref="26" max="-2" attributes="0"/>
-                                              <EmptySpace max="32767" attributes="0"/>
-                                              <Component id="jLabelCrearCursoUrlError" min="-2" max="-2" attributes="0"/>
-                                          </Group>
-                                          <Component id="jTextCrearCursoUrl" alignment="0" min="-2" pref="432" max="-2" attributes="0"/>
-                                      </Group>
+                                      <Component id="jTextCrearCursoUrl" max="32767" attributes="0"/>
                                   </Group>
                               </Group>
                               <Group type="103" alignment="0" groupAlignment="1" attributes="0">
@@ -661,9 +649,9 @@
                                               <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
                                               <Component id="jLabelCrearCurso" min="-2" max="-2" attributes="0"/>
                                           </Group>
-                                          <Group type="102" attributes="0">
+                                          <Group type="102" alignment="1" attributes="0">
                                               <EmptySpace max="-2" attributes="0"/>
-                                              <Component id="jLabelCrearCursoNombre" min="-2" pref="44" max="-2" attributes="0"/>
+                                              <Component id="jLabelCrearCursoNombre" min="-2" pref="54" max="-2" attributes="0"/>
                                               <EmptySpace max="32767" attributes="0"/>
                                               <Component id="jLabelCrearCursoNombreError" min="-2" max="-2" attributes="0"/>
                                           </Group>
@@ -675,16 +663,16 @@
                                       <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
                                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
                                           <Component id="jTextCrearCursoDuracion" min="-2" pref="150" max="-2" attributes="0"/>
-                                          <Group type="102" attributes="0">
-                                              <Component id="jLabelCrearCursoDuracion" min="-2" pref="48" max="-2" attributes="0"/>
-                                              <EmptySpace max="32767" attributes="0"/>
+                                          <Group type="102" alignment="1" attributes="0">
+                                              <Component id="jLabelCrearCursoDuracion" max="32767" attributes="0"/>
+                                              <EmptySpace max="-2" attributes="0"/>
                                               <Component id="jLabelCrearCursoDuracionError" min="-2" pref="79" max="-2" attributes="0"/>
                                           </Group>
                                       </Group>
                                   </Group>
                               </Group>
                           </Group>
-                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Group type="102" attributes="0">
                                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
@@ -697,7 +685,24 @@
                                   </Group>
                                   <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                               </Group>
-                              <Component id="jScrollPane3" alignment="0" pref="334" max="32767" attributes="0"/>
+                              <Component id="jScrollPane3" alignment="0" pref="362" max="32767" attributes="0"/>
+                          </Group>
+                      </Group>
+                      <Group type="102" attributes="0">
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="1" attributes="0">
+                              <Component id="jScrollPane1" max="32767" attributes="0"/>
+                              <Group type="102" attributes="0">
+                                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                                  <Component id="jLabelCursoMensajeExito" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                  <Component id="jButtonGuardarCurso" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <Group type="102" alignment="1" attributes="0">
+                                  <Component id="jLabelCrearCursoDescripcion" min="-2" pref="77" max="-2" attributes="0"/>
+                                  <EmptySpace max="32767" attributes="0"/>
+                                  <Component id="jLabelCrearCursoDescripcionError" min="-2" max="-2" attributes="0"/>
+                              </Group>
                           </Group>
                       </Group>
                   </Group>
@@ -1005,7 +1010,7 @@
                       <Component id="jButtonConsultarCursosRefresh" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                  <Component id="jScrollPaneTablaConsultaCursos" pref="525" max="32767" attributes="0"/>
+                  <Component id="jScrollPaneTablaConsultaCursos" pref="26" max="32767" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
           </Group>
@@ -1060,13 +1065,12 @@
               <Group type="102" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="jTableCrearProgramaCursos" alignment="1" max="32767" attributes="0"/>
                       <Group type="102" alignment="0" attributes="0">
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Component id="jLabelCearProgramaNombre" min="-2" max="-2" attributes="0"/>
                               <Component id="jTextCrearProgramaNombre" alignment="0" min="-2" pref="148" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace pref="376" max="32767" attributes="0"/>
+                          <EmptySpace pref="380" max="32767" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Component id="jFormattedTextFieldCrearProgramaFechaInicio" min="-2" pref="110" max="-2" attributes="0"/>
                               <Component id="jLabelCrearProgramaFechaInicio" min="-2" max="-2" attributes="0"/>
@@ -1083,12 +1087,10 @@
                       </Group>
                       <Group type="102" attributes="0">
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="jLabelCrearProgramaCursos" min="-2" max="-2" attributes="0"/>
-                              <Component id="choiceCrearProgramaCursos" min="-2" pref="248" max="-2" attributes="0"/>
                               <Component id="jLabelCrearPrograma" alignment="0" min="-2" max="-2" attributes="0"/>
                               <Component id="jLabelCrearProgramaDesc" alignment="0" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                          <EmptySpace min="0" pref="677" max="32767" attributes="0"/>
                       </Group>
                       <Component id="jTextAreaCrearProgramaDesc" alignment="0" max="32767" attributes="0"/>
                   </Group>
@@ -1122,14 +1124,8 @@
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Component id="jLabelCrearProgramaDesc" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="jTextAreaCrearProgramaDesc" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                  <Component id="jLabelCrearProgramaCursos" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Component id="choiceCrearProgramaCursos" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Component id="jTableCrearProgramaCursos" pref="246" max="32767" attributes="0"/>
-                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                  <Component id="jTextAreaCrearProgramaDesc" min="-2" pref="127" max="-2" attributes="0"/>
+                  <EmptySpace pref="123" max="32767" attributes="0"/>
                   <Component id="jButtonGuardarPrograma" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
@@ -1211,25 +1207,6 @@
             </Property>
           </Properties>
         </Component>
-        <Component class="javax.swing.JLabel" name="jLabelCrearProgramaCursos">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Cursos"/>
-          </Properties>
-        </Component>
-        <Component class="java.awt.Choice" name="choiceCrearProgramaCursos">
-        </Component>
-        <Component class="javax.swing.JTable" name="jTableCrearProgramaCursos">
-          <Properties>
-            <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-              <Table columnCount="4" rowCount="4">
-                <Column editable="true" title="Title 1" type="java.lang.Object"/>
-                <Column editable="true" title="Title 2" type="java.lang.Object"/>
-                <Column editable="true" title="Title 3" type="java.lang.Object"/>
-                <Column editable="true" title="Title 4" type="java.lang.Object"/>
-              </Table>
-            </Property>
-          </Properties>
-        </Component>
       </SubComponents>
     </Container>
     <Container class="javax.swing.JPanel" name="JPanelConsultarProgramas">
@@ -1249,34 +1226,32 @@
                       <Group type="102" attributes="0">
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Group type="103" alignment="0" groupAlignment="1" attributes="0">
+                              <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
                                   <Group type="102" alignment="1" attributes="0">
                                       <Component id="jLabelSeccionDetProgSelectCursos" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace max="-2" attributes="0"/>
-                                      <Component id="jScrollPane4" min="-2" pref="319" max="-2" attributes="0"/>
+                                      <EmptySpace min="-2" pref="325" max="-2" attributes="0"/>
                                   </Group>
-                                  <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                                      <Group type="102" alignment="0" attributes="0">
-                                          <Component id="jLabelSeccionDetProgSelectFechaFin" min="-2" max="-2" attributes="0"/>
-                                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                          <Component id="jLabelDetProgSelectFechaFin" max="32767" attributes="0"/>
-                                      </Group>
-                                      <Group type="102" alignment="0" attributes="0">
-                                          <Component id="jLabelSeccionDetProgSelectFechaIni" min="-2" max="-2" attributes="0"/>
-                                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                          <Component id="jLabelDetProgSelectFechaIni" max="32767" attributes="0"/>
-                                      </Group>
-                                      <Group type="102" alignment="0" attributes="0">
-                                          <Component id="jLabelSeccionDetProgSelectFechaCreado" min="-2" max="-2" attributes="0"/>
-                                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                          <Component id="jLabelDetProgSelectFechaCreado" max="32767" attributes="0"/>
-                                      </Group>
-                                      <Group type="102" alignment="0" attributes="0">
-                                          <Component id="jLabelSeccionDetProgSelectNombre" min="-2" max="-2" attributes="0"/>
-                                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                          <Component id="jLabelDetProgSelectNombre" min="-2" pref="305" max="-2" attributes="0"/>
-                                      </Group>
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <Component id="jLabelSeccionDetProgSelectFechaFin" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                      <Component id="jLabelDetProgSelectFechaFin" max="32767" attributes="0"/>
                                   </Group>
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <Component id="jLabelSeccionDetProgSelectFechaIni" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                      <Component id="jLabelDetProgSelectFechaIni" max="32767" attributes="0"/>
+                                  </Group>
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <Component id="jLabelSeccionDetProgSelectFechaCreado" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                      <Component id="jLabelDetProgSelectFechaCreado" max="32767" attributes="0"/>
+                                  </Group>
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <Component id="jLabelSeccionDetProgSelectNombre" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                      <Component id="jLabelDetProgSelectNombre" min="-2" pref="305" max="-2" attributes="0"/>
+                                  </Group>
+                                  <Component id="jScrollPane4" alignment="1" max="32767" attributes="0"/>
                               </Group>
                               <Component id="jLabelSeccionDetallesDeProgSeleccionado" alignment="0" min="-2" max="-2" attributes="0"/>
                           </Group>
@@ -1287,7 +1262,8 @@
                                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                                   <Component id="jLabelDetProgSelectDesc" max="32767" attributes="0"/>
                               </Group>
-                              <Group type="102" alignment="1" attributes="0">
+                              <Component id="jScrollPane5" pref="415" max="32767" attributes="0"/>
+                              <Group type="102" attributes="0">
                                   <Component id="jLabelSeccionPdeFAgregarCursos" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace max="32767" attributes="0"/>
                                   <Component id="jCheckBoxAgregarCursoPrograma" min="-2" max="-2" attributes="0"/>
@@ -1296,7 +1272,6 @@
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Component id="jButtonConsultarProgAddCurso" min="-2" max="-2" attributes="0"/>
                               </Group>
-                              <Component id="jScrollPane5" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                   </Group>
@@ -1344,30 +1319,25 @@
                   </Group>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" attributes="0">
+                      <Group type="102" alignment="0" attributes="0">
                           <Group type="103" groupAlignment="3" attributes="0">
                               <Component id="jLabelSeccionDetProgSelectFechaFin" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="jLabelDetProgSelectFechaFin" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Group type="102" attributes="0">
-                                  <Component id="jLabelSeccionDetProgSelectCursos" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                              </Group>
-                              <Component id="jScrollPane4" pref="133" max="32767" attributes="0"/>
-                          </Group>
-                      </Group>
-                      <Group type="102" attributes="0">
                           <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="jCheckBoxAgregarCursoPrograma" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="jLabelSeccionDetProgSelectCursos" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="jLabelSeccionPdeFAgregarCursos" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="jButtonConsultarProgAddCurso" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="jSeparator3" min="-2" pref="27" max="-2" attributes="0"/>
+                              <Component id="jCheckBoxAgregarCursoPrograma" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace min="-2" pref="3" max="-2" attributes="0"/>
-                          <Component id="jScrollPane5" pref="0" max="32767" attributes="0"/>
                       </Group>
+                      <Component id="jButtonConsultarProgAddCurso" alignment="1" min="-2" max="-2" attributes="0"/>
+                      <Component id="jSeparator3" alignment="1" min="-2" pref="27" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Component id="jScrollPane5" pref="249" max="32767" attributes="0"/>
+                      <Component id="jScrollPane4" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
@@ -1395,7 +1365,7 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="jScrollPaneTablaConsultaProgramas" min="-2" pref="794" max="-2" attributes="0"/>
+                      <Component id="jScrollPaneTablaConsultaProgramas" max="32767" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
               </Group>
@@ -1508,6 +1478,7 @@
                 <Property name="model" type="javax.swing.ListModel" editor="org.netbeans.modules.form.editors2.ListModelEditor">
                   <StringArray count="0"/>
                 </Property>
+                <Property name="selectionMode" type="int" value="0"/>
               </Properties>
               <AuxValues>
                 <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="jListDetProgSelectCursos.setCellRenderer(new DefaultListCellRenderer() {&#xa;        @Override&#xa;        public Component getListCellRendererComponent(JList&lt;?&gt; list, Object value, int index, &#xa;                                                      boolean isSelected, boolean cellHasFocus) {&#xa;            super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);&#xa;            if (value instanceof DataCurso dc) {&#xa;                setText(dc.nombreCurso());&#xa;            }&#xa;            return this;&#xa;        }&#xa;    });"/>
@@ -1540,7 +1511,7 @@
         </Container>
         <Component class="javax.swing.JLabel" name="jLabelSeccionPdeFAgregarCursos">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Cursos disponibles:"/>
+            <Property name="text" type="java.lang.String" value="Agregar cursos:"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JCheckBox" name="jCheckBoxAgregarCursoPrograma">
@@ -1577,12 +1548,12 @@
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
-              <EmptySpace min="0" pref="434" max="32767" attributes="0"/>
+              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
           </Group>
         </DimensionLayout>
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
-              <EmptySpace min="0" pref="244" max="32767" attributes="0"/>
+              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
           </Group>
         </DimensionLayout>
       </Layout>
@@ -1599,7 +1570,7 @@
                           <Component id="jLabelConsultarUsuarios1" min="-2" max="-2" attributes="0"/>
                           <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                       </Group>
-                      <Component id="jScrollPane2" pref="790" max="32767" attributes="0"/>
+                      <Component id="jScrollPane2" pref="0" max="32767" attributes="0"/>
                       <Group type="102" alignment="1" attributes="0">
                           <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                           <Component id="jButtonConsultarInstitutosRefresh" min="-2" max="-2" attributes="0"/>
@@ -1660,18 +1631,24 @@
                   <Group type="102" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" alignment="0" attributes="0">
-                              <Component id="jTextCrearInstituto" min="-2" pref="250" max="-2" attributes="0"/>
-                              <EmptySpace pref="464" max="32767" attributes="0"/>
-                              <Component id="jButtonGuardarInstituto" min="-2" max="-2" attributes="0"/>
-                          </Group>
                           <Group type="102" attributes="0">
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Component id="jLabelSeccionCrearInstituto" alignment="0" min="-2" max="-2" attributes="0"/>
-                                  <Component id="jLabelCrearInstituto" alignment="0" min="-2" max="-2" attributes="0"/>
                                   <Component id="jLabelSeccionListarInstituto" alignment="0" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                                  <Group type="102" attributes="0">
+                                      <Component id="jLabelCrearInstituto" min="-2" pref="60" max="-2" attributes="0"/>
+                                      <EmptySpace max="32767" attributes="0"/>
+                                      <Component id="jLabelCrearInstitutoNombreError" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <Component id="jTextCrearInstituto" min="-2" pref="250" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace max="32767" attributes="0"/>
+                              <Component id="jButtonGuardarInstituto" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
@@ -1685,7 +1662,10 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="jLabelSeccionCrearInstituto" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="17" max="-2" attributes="0"/>
-                      <Component id="jLabelCrearInstituto" min="-2" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="jLabelCrearInstituto" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="jLabelCrearInstitutoNombreError" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="jTextCrearInstituto" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -1728,6 +1708,17 @@
             <Component class="javax.swing.JLabel" name="jLabelSeccionListarInstituto">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Lista de Institutos"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="jLabelCrearInstitutoNombreError">
+              <Properties>
+                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                  <Font name="Segoe UI" size="12" style="2"/>
+                </Property>
+                <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color blue="0" green="0" red="ff" type="rgb"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="* Instituto ya existente."/>
               </Properties>
             </Component>
           </SubComponents>

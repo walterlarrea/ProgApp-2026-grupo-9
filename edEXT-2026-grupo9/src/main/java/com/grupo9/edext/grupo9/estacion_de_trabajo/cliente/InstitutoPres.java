@@ -14,15 +14,17 @@ public class InstitutoPres {
     }
     
     
-    public void guardarNuevoInstituto(String nombre){
+    public boolean guardarNuevoInstituto(String nombre){
         System.out.println("[CLIENTE] Crear nuevo Instituto: " + nombre);
         DataInstituto nuevoInstituto = new DataInstituto(nombre);
         
         DataInstituto institutoCreado = servidorCentral.guardarInstituto(nuevoInstituto);
         if(institutoCreado != null){
             System.out.println("[CLIENTE] Instituto creado con exito!");
+            return true;
         } else {
             System.out.println("[CLIENTE] Algo salio mal creando el nuevo Instituto");
+            return false;
         }
     }
     
