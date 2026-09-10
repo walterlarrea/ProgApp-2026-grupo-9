@@ -80,4 +80,20 @@ public class ManejadorEdiciones {
         }
         return filtradas.toArray(new EdicionCurso[0]);
     }
+    
+    public void addInscripcion(InscEdicion ie){
+//        String nombreEC = ed.getNombreEdi();
+//        edCurso.put(nombreEC, ed);
+        EntityManager em = UtensiliosJPA.getEntityManagerFactory().createEntityManager();
+        EntityTransaction et = em.getTransaction();
+        try{
+            et.begin();
+            em.persist(ie);
+            et.commit();  
+        }catch(Exception e){
+            if (et.isActive()) et.rollback();
+            e.printStackTrace();    
+        }
+        em.close();
+    }
 }
