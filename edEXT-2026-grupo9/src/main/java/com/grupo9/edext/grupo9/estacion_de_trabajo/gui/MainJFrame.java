@@ -188,6 +188,7 @@ public class MainJFrame extends javax.swing.JFrame {
         jFormattedTextFieldCrearProgramaFechaInicio = new javax.swing.JFormattedTextField();
         jLabelCrearProgramaFechaFin = new javax.swing.JLabel();
         jFormattedTextFieldCrearProgramaFechaFin = new javax.swing.JFormattedTextField();
+        jLabelCrearProgramaFechaInicio1 = new javax.swing.JLabel();
         JPanelConsultarProgramas = new javax.swing.JPanel();
         jLabelConsultarProgramas = new javax.swing.JLabel();
         jButtonConsultarProgramasRefresh = new javax.swing.JButton();
@@ -464,32 +465,23 @@ public class MainJFrame extends javax.swing.JFrame {
 
         jLabelCrearCurso.setText("Crear Curso");
 
-        jTextCrearCursoNombre.setText("Programación");
-
         jTextAreaCrearCursoDescripcion.setColumns(20);
         jTextAreaCrearCursoDescripcion.setRows(5);
-        jTextAreaCrearCursoDescripcion.setText("Un curso espiritual sobre programacion puesta en práctica, sin guía");
         jScrollPane1.setViewportView(jTextAreaCrearCursoDescripcion);
 
         jLabelCrearCursoNombre.setText("Nombre");
 
         jLabelCrearCursoDescripcion.setText("Descipción");
 
-        jTextCrearCursoDuracion.setText("5");
-
         jLabelCrearCursoDuracion.setText("Duración");
 
         jLabelCrearCursoCantHoras.setText("Cantidad de horas");
 
-        jTextCrearCursoCantHoras.setText("12");
-
         jLabelCrearCursoCantCreditos.setText("Creditos");
-
-        jTextCrearCursoCantCreditos.setText("12");
 
         jLabelCrearCursoUrl.setText("Url");
 
-        jTextCrearCursoUrl.setText("https://utec.edu.uy/cursos/programacion");
+        jTextCrearCursoUrl.setText("https://");
 
         jButtonGuardarCurso.setText("Guardar");
         jButtonGuardarCurso.addActionListener(new java.awt.event.ActionListener() {
@@ -517,14 +509,13 @@ public class MainJFrame extends javax.swing.JFrame {
                 return checkBox;
             }
         });
-        jListCrearCursoPrevias.addMouseListener(new MouseAdapter() {
+        jListCrearCursoPrevias.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
-            public void mouseClicked(MouseEvent evt) {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
                 int index = jListCrearCursoPrevias.locationToIndex(evt.getPoint());
                 if (index < 0 || !jListCrearCursoPrevias.getCellBounds(index, index).contains(evt.getPoint())) {
                     return;
                 }
-
                 DataCurso curso = jListCrearCursoPrevias.getModel().getElementAt(index);
                 if (!cursosPreviosSeleccionados.add(curso)) {
                     cursosPreviosSeleccionados.remove(curso);
@@ -787,18 +778,14 @@ public class MainJFrame extends javax.swing.JFrame {
 
         jLabelCearProgramaNombre.setText("Nombre *");
 
-        jTextCrearProgramaNombre.setText("Prog1");
-
         jLabelCrearProgramaDesc.setText("Descripción *");
 
         jTextAreaCrearProgramaDesc.setColumns(20);
         jTextAreaCrearProgramaDesc.setRows(5);
-        jTextAreaCrearProgramaDesc.setText("Descripcion de prueba");
 
         jLabelCrearProgramaFechaInicio.setText("Fecha de inicio");
 
         jFormattedTextFieldCrearProgramaFechaInicio.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(java.text.DateFormat.getDateInstance(java.text.DateFormat.SHORT))));
-        jFormattedTextFieldCrearProgramaFechaInicio.setText("23/8/26");
         jFormattedTextFieldCrearProgramaFechaInicio.setMinimumSize(new java.awt.Dimension(110, 26));
         jFormattedTextFieldCrearProgramaFechaInicio.setName(""); // NOI18N
         jFormattedTextFieldCrearProgramaFechaInicio.setPreferredSize(new java.awt.Dimension(110, 26));
@@ -806,9 +793,11 @@ public class MainJFrame extends javax.swing.JFrame {
         jLabelCrearProgramaFechaFin.setText("Fecha de finalización");
 
         jFormattedTextFieldCrearProgramaFechaFin.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(java.text.DateFormat.getDateInstance(java.text.DateFormat.SHORT))));
-        jFormattedTextFieldCrearProgramaFechaFin.setText("28/8/26");
         jFormattedTextFieldCrearProgramaFechaFin.setMinimumSize(new java.awt.Dimension(110, 26));
         jFormattedTextFieldCrearProgramaFechaFin.setPreferredSize(new java.awt.Dimension(110, 26));
+
+        jLabelCrearProgramaFechaInicio1.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
+        jLabelCrearProgramaFechaInicio1.setText("ej: 24/8/26");
 
         javax.swing.GroupLayout JPanelCrearProgramaLayout = new javax.swing.GroupLayout(JPanelCrearPrograma);
         JPanelCrearPrograma.setLayout(JPanelCrearProgramaLayout);
@@ -820,15 +809,18 @@ public class MainJFrame extends javax.swing.JFrame {
                     .addGroup(JPanelCrearProgramaLayout.createSequentialGroup()
                         .addGroup(JPanelCrearProgramaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabelCearProgramaNombre)
-                            .addComponent(jTextCrearProgramaNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 380, Short.MAX_VALUE)
+                            .addGroup(JPanelCrearProgramaLayout.createSequentialGroup()
+                                .addComponent(jTextCrearProgramaNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 365, Short.MAX_VALUE)
+                                .addComponent(jLabelCrearProgramaFechaInicio1)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(JPanelCrearProgramaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jFormattedTextFieldCrearProgramaFechaInicio, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabelCrearProgramaFechaInicio))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(JPanelCrearProgramaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabelCrearProgramaFechaFin)
-                            .addComponent(jFormattedTextFieldCrearProgramaFechaFin, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(JPanelCrearProgramaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jLabelCrearProgramaFechaFin, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jFormattedTextFieldCrearProgramaFechaFin, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, JPanelCrearProgramaLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(jButtonGuardarPrograma))
@@ -852,17 +844,18 @@ public class MainJFrame extends javax.swing.JFrame {
                         .addGroup(JPanelCrearProgramaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jFormattedTextFieldCrearProgramaFechaFin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jFormattedTextFieldCrearProgramaFechaInicio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextCrearProgramaNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jLabelCrearProgramaFechaInicio1))
                         .addGroup(JPanelCrearProgramaLayout.createSequentialGroup()
                             .addGroup(JPanelCrearProgramaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                 .addComponent(jLabelCearProgramaNombre)
                                 .addComponent(jLabelCrearProgramaFechaFin))
-                            .addGap(32, 32, 32))))
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(jTextCrearProgramaNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabelCrearProgramaDesc)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextAreaCrearProgramaDesc, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 123, Short.MAX_VALUE)
+                .addComponent(jTextAreaCrearProgramaDesc, javax.swing.GroupLayout.PREFERRED_SIZE, 249, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 253, Short.MAX_VALUE)
                 .addComponent(jButtonGuardarPrograma)
                 .addContainerGap())
         );
@@ -1391,9 +1384,9 @@ public class MainJFrame extends javax.swing.JFrame {
                     .addContainerGap()))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                    .addContainerGap(104, Short.MAX_VALUE)
-                    .addComponent(jDesktopPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 451, Short.MAX_VALUE)
-                    .addContainerGap(264, Short.MAX_VALUE)))
+                    .addContainerGap(108, Short.MAX_VALUE)
+                    .addComponent(jDesktopPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 456, Short.MAX_VALUE)
+                    .addContainerGap(266, Short.MAX_VALUE)))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGap(0, 802, Short.MAX_VALUE))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1434,9 +1427,9 @@ public class MainJFrame extends javax.swing.JFrame {
                     .addContainerGap()))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                    .addContainerGap(248, Short.MAX_VALUE)
-                    .addComponent(jDesktopPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 264, Short.MAX_VALUE)
-                    .addContainerGap(142, Short.MAX_VALUE)))
+                    .addContainerGap(253, Short.MAX_VALUE)
+                    .addComponent(jDesktopPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 277, Short.MAX_VALUE)
+                    .addContainerGap(148, Short.MAX_VALUE)))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGap(0, 634, Short.MAX_VALUE))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1784,6 +1777,10 @@ public class MainJFrame extends javax.swing.JFrame {
         DataCurso nuevoCurso = cursoPres.guardarNuevoCurso(instituto, nombre, descripcion, duracion, cantHoras, cantCreditos, url, previas);
         if (nuevoCurso != null){
             limpiarFormularioCurso();
+            jLabelCursoMensajeExito.setVisible(true);
+            Timer temporizadorMensajeExito = new Timer(3000, e -> jLabelCursoMensajeExito.setVisible(false));
+            temporizadorMensajeExito.setRepeats(false);
+            temporizadorMensajeExito.start();
         } else {
             jLabelCrearCursoNombreError.setVisible(true);
         }
@@ -2123,6 +2120,7 @@ public class MainJFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabelCrearProgramaDesc;
     private javax.swing.JLabel jLabelCrearProgramaFechaFin;
     private javax.swing.JLabel jLabelCrearProgramaFechaInicio;
+    private javax.swing.JLabel jLabelCrearProgramaFechaInicio1;
     private javax.swing.JLabel jLabelCursoMensajeExito;
     private javax.swing.JLabel jLabelDetProgSelectDesc;
     private javax.swing.JLabel jLabelDetProgSelectFechaCreado;
