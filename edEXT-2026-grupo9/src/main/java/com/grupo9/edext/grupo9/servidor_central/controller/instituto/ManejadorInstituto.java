@@ -38,7 +38,10 @@ public class ManejadorInstituto {
                 em.persist(instituto);
                 et.commit();
             }catch(Exception e){
-                et.rollback();
+                if (et.isActive()) {
+                    et.rollback();
+                }
+                throw e;
             }
         }catch(Exception e){
             throw e;

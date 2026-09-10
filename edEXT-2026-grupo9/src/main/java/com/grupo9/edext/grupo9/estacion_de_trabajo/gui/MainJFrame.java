@@ -18,6 +18,8 @@ import java.util.HashSet;
 import java.util.Optional;
 import java.awt.BorderLayout;
 import java.awt.event.ItemEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.Date;
 import javax.swing.table.DefaultTableModel;
 
@@ -31,11 +33,13 @@ public class MainJFrame extends javax.swing.JFrame {
     private final ArrayList<JPanel> allJPanels = new ArrayList<JPanel>();
     private Component jScrollPaneTablaConsultaUsuarios;
     private final ArrayList<JInternalFrame> allJInternalFrame = new ArrayList<JInternalFrame>();
+    private final HashSet<DataCurso> cursosPreviosSeleccionados = new HashSet<>();
     
     public MainJFrame() {
         initComponents();
         setTitle("edEXT");
         setResizable(true);
+        jLabelCrearInstitutoNombreError.setVisible(false);
         //alta usuario
         jSpinnerFechaNac.setModel(new javax.swing.SpinnerDateModel(new java.util.Date(), null, null, java.util.Calendar.DAY_OF_MONTH));
         javax.swing.JSpinner.DateEditor editor = new javax.swing.JSpinner.DateEditor(jSpinnerFechaNac, "dd/MM/yyyy");
@@ -184,9 +188,7 @@ public class MainJFrame extends javax.swing.JFrame {
         jFormattedTextFieldCrearProgramaFechaInicio = new javax.swing.JFormattedTextField();
         jLabelCrearProgramaFechaFin = new javax.swing.JLabel();
         jFormattedTextFieldCrearProgramaFechaFin = new javax.swing.JFormattedTextField();
-        jLabelCrearProgramaCursos = new javax.swing.JLabel();
-        choiceCrearProgramaCursos = new java.awt.Choice();
-        jTableCrearProgramaCursos = new javax.swing.JTable();
+        jLabelCrearProgramaFechaInicio1 = new javax.swing.JLabel();
         JPanelConsultarProgramas = new javax.swing.JPanel();
         jLabelConsultarProgramas = new javax.swing.JLabel();
         jButtonConsultarProgramasRefresh = new javax.swing.JButton();
@@ -226,6 +228,7 @@ public class MainJFrame extends javax.swing.JFrame {
         jSeparator1 = new javax.swing.JSeparator();
         jSeparator2 = new javax.swing.JSeparator();
         jLabelSeccionListarInstituto = new javax.swing.JLabel();
+        jLabelCrearInstitutoNombreError = new javax.swing.JLabel();
         jButtonConsultarInstitutosRefresh = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenuUsuarios = new javax.swing.JMenu();
@@ -379,7 +382,7 @@ public class MainJFrame extends javax.swing.JFrame {
                                 .addComponent(jLabelFechaNac)
                                 .addGap(36, 36, 36)
                                 .addComponent(jSpinnerFechaNac, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addContainerGap(226, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         JPanelAltaUsuarioLayout.setVerticalGroup(
             JPanelAltaUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -462,32 +465,23 @@ public class MainJFrame extends javax.swing.JFrame {
 
         jLabelCrearCurso.setText("Crear Curso");
 
-        jTextCrearCursoNombre.setText("Programación");
-
         jTextAreaCrearCursoDescripcion.setColumns(20);
         jTextAreaCrearCursoDescripcion.setRows(5);
-        jTextAreaCrearCursoDescripcion.setText("Un curso espiritual sobre programacion puesta en práctica, sin guía");
         jScrollPane1.setViewportView(jTextAreaCrearCursoDescripcion);
 
         jLabelCrearCursoNombre.setText("Nombre");
 
         jLabelCrearCursoDescripcion.setText("Descipción");
 
-        jTextCrearCursoDuracion.setText("5");
-
         jLabelCrearCursoDuracion.setText("Duración");
 
         jLabelCrearCursoCantHoras.setText("Cantidad de horas");
 
-        jTextCrearCursoCantHoras.setText("12");
-
         jLabelCrearCursoCantCreditos.setText("Creditos");
-
-        jTextCrearCursoCantCreditos.setText("12");
 
         jLabelCrearCursoUrl.setText("Url");
 
-        jTextCrearCursoUrl.setText("https://utec.edu.uy/cursos/programacion");
+        jTextCrearCursoUrl.setText("https://");
 
         jButtonGuardarCurso.setText("Guardar");
         jButtonGuardarCurso.addActionListener(new java.awt.event.ActionListener() {
@@ -499,15 +493,35 @@ public class MainJFrame extends javax.swing.JFrame {
         jLabelCrearCursoPrevias.setText("Previas");
 
         jScrollPane3.setViewportView(jListCrearCursoPrevias);
+        jListCrearCursoPrevias.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         jListCrearCursoPrevias.setCellRenderer(new DefaultListCellRenderer() {
             @Override
             public Component getListCellRendererComponent(JList<?> list, Object value, int index,
                 boolean isSelected, boolean cellHasFocus) {
-                super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+                JCheckBox checkBox = new JCheckBox();
+                checkBox.setOpaque(true);
                 if (value instanceof DataCurso dc) {
-                    setText(dc.nombreCurso());
+                    checkBox.setText(dc.nombreCurso());
+                    checkBox.setSelected(cursosPreviosSeleccionados.contains(dc));
                 }
-                return this;
+                checkBox.setBackground(list.getBackground());
+                checkBox.setForeground(list.getForeground());
+                return checkBox;
+            }
+        });
+        jListCrearCursoPrevias.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                int index = jListCrearCursoPrevias.locationToIndex(evt.getPoint());
+                if (index < 0 || !jListCrearCursoPrevias.getCellBounds(index, index).contains(evt.getPoint())) {
+                    return;
+                }
+                DataCurso curso = jListCrearCursoPrevias.getModel().getElementAt(index);
+                if (!cursosPreviosSeleccionados.add(curso)) {
+                    cursosPreviosSeleccionados.remove(curso);
+                }
+                jListCrearCursoPrevias.clearSelection();
+                jListCrearCursoPrevias.repaint();
             }
         });
 
@@ -545,40 +559,29 @@ public class MainJFrame extends javax.swing.JFrame {
         JPanelCrearCurso.setLayout(JPanelCrearCursoLayout);
         JPanelCrearCursoLayout.setHorizontalGroup(
             JPanelCrearCursoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(JPanelCrearCursoLayout.createSequentialGroup()
-                .addGroup(JPanelCrearCursoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(JPanelCrearCursoLayout.createSequentialGroup()
-                        .addComponent(jLabelCrearCursoDescripcion)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabelCrearCursoDescripcionError))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, JPanelCrearCursoLayout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jLabelCursoMensajeExito)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButtonGuardarCurso))
-                    .addComponent(jScrollPane1)
-                    .addGroup(JPanelCrearCursoLayout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, JPanelCrearCursoLayout.createSequentialGroup()
+                .addGroup(JPanelCrearCursoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, JPanelCrearCursoLayout.createSequentialGroup()
                         .addGroup(JPanelCrearCursoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(JPanelCrearCursoLayout.createSequentialGroup()
                                 .addContainerGap()
-                                .addGroup(JPanelCrearCursoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(JPanelCrearCursoLayout.createSequentialGroup()
+                                .addGroup(JPanelCrearCursoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, JPanelCrearCursoLayout.createSequentialGroup()
+                                        .addComponent(jLabelCrearCursoUrl, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(jLabelCrearCursoUrlError))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, JPanelCrearCursoLayout.createSequentialGroup()
                                         .addGroup(JPanelCrearCursoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                             .addComponent(jTextCrearCursoCantHoras, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addGroup(JPanelCrearCursoLayout.createSequentialGroup()
-                                                .addComponent(jLabelCrearCursoCantHoras, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, JPanelCrearCursoLayout.createSequentialGroup()
+                                                .addComponent(jLabelCrearCursoCantHoras, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                                 .addComponent(jLabelCrearCursoCantHorasError)))
                                         .addGap(18, 18, 18)
                                         .addGroup(JPanelCrearCursoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jLabelCrearCursoCantCreditos, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(jTextCrearCursoCantCreditos, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                    .addGroup(JPanelCrearCursoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, JPanelCrearCursoLayout.createSequentialGroup()
-                                            .addComponent(jLabelCrearCursoUrl, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                            .addComponent(jLabelCrearCursoUrlError))
-                                        .addComponent(jTextCrearCursoUrl, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 432, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                            .addComponent(jTextCrearCursoCantCreditos, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(jLabelCrearCursoCantCreditos, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addComponent(jTextCrearCursoUrl)))
                             .addGroup(JPanelCrearCursoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                 .addComponent(jLabelCrearCursoCantCreditosError)
                                 .addGroup(JPanelCrearCursoLayout.createSequentialGroup()
@@ -586,9 +589,9 @@ public class MainJFrame extends javax.swing.JFrame {
                                         .addGroup(JPanelCrearCursoLayout.createSequentialGroup()
                                             .addGap(15, 15, 15)
                                             .addComponent(jLabelCrearCurso))
-                                        .addGroup(JPanelCrearCursoLayout.createSequentialGroup()
+                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, JPanelCrearCursoLayout.createSequentialGroup()
                                             .addContainerGap()
-                                            .addComponent(jLabelCrearCursoNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(jLabelCrearCursoNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
                                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                             .addComponent(jLabelCrearCursoNombreError))
                                         .addGroup(JPanelCrearCursoLayout.createSequentialGroup()
@@ -597,11 +600,11 @@ public class MainJFrame extends javax.swing.JFrame {
                                     .addGap(18, 18, 18)
                                     .addGroup(JPanelCrearCursoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                         .addComponent(jTextCrearCursoDuracion, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGroup(JPanelCrearCursoLayout.createSequentialGroup()
-                                            .addComponent(jLabelCrearCursoDuracion, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, JPanelCrearCursoLayout.createSequentialGroup()
+                                            .addComponent(jLabelCrearCursoDuracion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                             .addComponent(jLabelCrearCursoDuracionError, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE))))))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGap(26, 26, 26)
                         .addGroup(JPanelCrearCursoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(JPanelCrearCursoLayout.createSequentialGroup()
                                 .addGroup(JPanelCrearCursoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -611,7 +614,20 @@ public class MainJFrame extends javax.swing.JFrame {
                                         .addGap(118, 118, 118))
                                     .addComponent(jComboBoxCrearCursoInstituto, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                 .addGap(0, 0, Short.MAX_VALUE))
-                            .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 334, Short.MAX_VALUE))))
+                            .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 362, Short.MAX_VALUE)))
+                    .addGroup(JPanelCrearCursoLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(JPanelCrearCursoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jScrollPane1)
+                            .addGroup(JPanelCrearCursoLayout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(jLabelCursoMensajeExito)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jButtonGuardarCurso))
+                            .addGroup(JPanelCrearCursoLayout.createSequentialGroup()
+                                .addComponent(jLabelCrearCursoDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabelCrearCursoDescripcionError)))))
                 .addContainerGap())
         );
         JPanelCrearCursoLayout.setVerticalGroup(
@@ -747,7 +763,7 @@ public class MainJFrame extends javax.swing.JFrame {
                     .addComponent(jLabelConsultarCursos)
                     .addComponent(jButtonConsultarCursosRefresh))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPaneTablaConsultaCursos, javax.swing.GroupLayout.DEFAULT_SIZE, 525, Short.MAX_VALUE)
+                .addComponent(jScrollPaneTablaConsultaCursos, javax.swing.GroupLayout.DEFAULT_SIZE, 26, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -762,18 +778,14 @@ public class MainJFrame extends javax.swing.JFrame {
 
         jLabelCearProgramaNombre.setText("Nombre *");
 
-        jTextCrearProgramaNombre.setText("Prog1");
-
         jLabelCrearProgramaDesc.setText("Descripción *");
 
         jTextAreaCrearProgramaDesc.setColumns(20);
         jTextAreaCrearProgramaDesc.setRows(5);
-        jTextAreaCrearProgramaDesc.setText("Descripcion de prueba");
 
         jLabelCrearProgramaFechaInicio.setText("Fecha de inicio");
 
         jFormattedTextFieldCrearProgramaFechaInicio.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(java.text.DateFormat.getDateInstance(java.text.DateFormat.SHORT))));
-        jFormattedTextFieldCrearProgramaFechaInicio.setText("23/8/26");
         jFormattedTextFieldCrearProgramaFechaInicio.setMinimumSize(new java.awt.Dimension(110, 26));
         jFormattedTextFieldCrearProgramaFechaInicio.setName(""); // NOI18N
         jFormattedTextFieldCrearProgramaFechaInicio.setPreferredSize(new java.awt.Dimension(110, 26));
@@ -781,23 +793,11 @@ public class MainJFrame extends javax.swing.JFrame {
         jLabelCrearProgramaFechaFin.setText("Fecha de finalización");
 
         jFormattedTextFieldCrearProgramaFechaFin.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(java.text.DateFormat.getDateInstance(java.text.DateFormat.SHORT))));
-        jFormattedTextFieldCrearProgramaFechaFin.setText("28/8/26");
         jFormattedTextFieldCrearProgramaFechaFin.setMinimumSize(new java.awt.Dimension(110, 26));
         jFormattedTextFieldCrearProgramaFechaFin.setPreferredSize(new java.awt.Dimension(110, 26));
 
-        jLabelCrearProgramaCursos.setText("Cursos");
-
-        jTableCrearProgramaCursos.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
-            }
-        ));
+        jLabelCrearProgramaFechaInicio1.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
+        jLabelCrearProgramaFechaInicio1.setText("ej: 24/8/26");
 
         javax.swing.GroupLayout JPanelCrearProgramaLayout = new javax.swing.GroupLayout(JPanelCrearPrograma);
         JPanelCrearPrograma.setLayout(JPanelCrearProgramaLayout);
@@ -806,29 +806,29 @@ public class MainJFrame extends javax.swing.JFrame {
             .addGroup(JPanelCrearProgramaLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(JPanelCrearProgramaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jTableCrearProgramaCursos, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(JPanelCrearProgramaLayout.createSequentialGroup()
                         .addGroup(JPanelCrearProgramaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabelCearProgramaNombre)
-                            .addComponent(jTextCrearProgramaNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 376, Short.MAX_VALUE)
+                            .addGroup(JPanelCrearProgramaLayout.createSequentialGroup()
+                                .addComponent(jTextCrearProgramaNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 365, Short.MAX_VALUE)
+                                .addComponent(jLabelCrearProgramaFechaInicio1)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(JPanelCrearProgramaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jFormattedTextFieldCrearProgramaFechaInicio, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabelCrearProgramaFechaInicio))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(JPanelCrearProgramaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabelCrearProgramaFechaFin)
-                            .addComponent(jFormattedTextFieldCrearProgramaFechaFin, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(JPanelCrearProgramaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jLabelCrearProgramaFechaFin, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jFormattedTextFieldCrearProgramaFechaFin, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, JPanelCrearProgramaLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(jButtonGuardarPrograma))
                     .addGroup(JPanelCrearProgramaLayout.createSequentialGroup()
                         .addGroup(JPanelCrearProgramaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabelCrearProgramaCursos)
-                            .addComponent(choiceCrearProgramaCursos, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabelCrearPrograma)
                             .addComponent(jLabelCrearProgramaDesc))
-                        .addGap(0, 0, Short.MAX_VALUE))
+                        .addGap(0, 677, Short.MAX_VALUE))
                     .addComponent(jTextAreaCrearProgramaDesc))
                 .addContainerGap())
         );
@@ -844,23 +844,18 @@ public class MainJFrame extends javax.swing.JFrame {
                         .addGroup(JPanelCrearProgramaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jFormattedTextFieldCrearProgramaFechaFin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jFormattedTextFieldCrearProgramaFechaInicio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextCrearProgramaNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jLabelCrearProgramaFechaInicio1))
                         .addGroup(JPanelCrearProgramaLayout.createSequentialGroup()
                             .addGroup(JPanelCrearProgramaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                 .addComponent(jLabelCearProgramaNombre)
                                 .addComponent(jLabelCrearProgramaFechaFin))
-                            .addGap(32, 32, 32))))
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(jTextCrearProgramaNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabelCrearProgramaDesc)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextAreaCrearProgramaDesc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabelCrearProgramaCursos)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(choiceCrearProgramaCursos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTableCrearProgramaCursos, javax.swing.GroupLayout.DEFAULT_SIZE, 246, Short.MAX_VALUE)
-                .addGap(18, 18, 18)
+                .addComponent(jTextAreaCrearProgramaDesc, javax.swing.GroupLayout.PREFERRED_SIZE, 249, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 253, Short.MAX_VALUE)
                 .addComponent(jButtonGuardarPrograma)
                 .addContainerGap())
         );
@@ -913,7 +908,7 @@ public class MainJFrame extends javax.swing.JFrame {
             jSubPanelTablaProgramasDeFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jSubPanelTablaProgramasDeFormLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPaneTablaConsultaProgramas, javax.swing.GroupLayout.PREFERRED_SIZE, 794, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPaneTablaConsultaProgramas)
                 .addContainerGap())
         );
         jSubPanelTablaProgramasDeFormLayout.setVerticalGroup(
@@ -950,6 +945,7 @@ public class MainJFrame extends javax.swing.JFrame {
 
         jLabelSeccionDetProgSelectCursos.setText("Cursos:");
 
+        jListDetProgSelectCursos.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jScrollPane4.setViewportView(jListDetProgSelectCursos);
         jListDetProgSelectCursos.setCellRenderer(new DefaultListCellRenderer() {
             @Override
@@ -978,7 +974,7 @@ public class MainJFrame extends javax.swing.JFrame {
             }
         });
 
-        jLabelSeccionPdeFAgregarCursos.setText("Cursos disponibles:");
+        jLabelSeccionPdeFAgregarCursos.setText("Agregar cursos:");
 
         jCheckBoxAgregarCursoPrograma.setText("Habilitar edición");
         jCheckBoxAgregarCursoPrograma.addItemListener(new java.awt.event.ItemListener() {
@@ -1012,28 +1008,27 @@ public class MainJFrame extends javax.swing.JFrame {
                     .addGroup(JPanelConsultarProgramasLayout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(JPanelConsultarProgramasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(JPanelConsultarProgramasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(JPanelConsultarProgramasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                 .addGroup(JPanelConsultarProgramasLayout.createSequentialGroup()
                                     .addComponent(jLabelSeccionDetProgSelectCursos)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 319, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGroup(JPanelConsultarProgramasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, JPanelConsultarProgramasLayout.createSequentialGroup()
-                                        .addComponent(jLabelSeccionDetProgSelectFechaFin)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(jLabelDetProgSelectFechaFin, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, JPanelConsultarProgramasLayout.createSequentialGroup()
-                                        .addComponent(jLabelSeccionDetProgSelectFechaIni)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(jLabelDetProgSelectFechaIni, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, JPanelConsultarProgramasLayout.createSequentialGroup()
-                                        .addComponent(jLabelSeccionDetProgSelectFechaCreado)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(jLabelDetProgSelectFechaCreado, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, JPanelConsultarProgramasLayout.createSequentialGroup()
-                                        .addComponent(jLabelSeccionDetProgSelectNombre)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(jLabelDetProgSelectNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 305, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                    .addGap(325, 325, 325))
+                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, JPanelConsultarProgramasLayout.createSequentialGroup()
+                                    .addComponent(jLabelSeccionDetProgSelectFechaFin)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                    .addComponent(jLabelDetProgSelectFechaFin, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, JPanelConsultarProgramasLayout.createSequentialGroup()
+                                    .addComponent(jLabelSeccionDetProgSelectFechaIni)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                    .addComponent(jLabelDetProgSelectFechaIni, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, JPanelConsultarProgramasLayout.createSequentialGroup()
+                                    .addComponent(jLabelSeccionDetProgSelectFechaCreado)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                    .addComponent(jLabelDetProgSelectFechaCreado, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, JPanelConsultarProgramasLayout.createSequentialGroup()
+                                    .addComponent(jLabelSeccionDetProgSelectNombre)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                    .addComponent(jLabelDetProgSelectNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 305, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(jScrollPane4))
                             .addComponent(jLabelSeccionDetallesDeProgSeleccionado))
                         .addGap(18, 18, 18)
                         .addGroup(JPanelConsultarProgramasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1041,15 +1036,15 @@ public class MainJFrame extends javax.swing.JFrame {
                                 .addComponent(jLabelSeccionDetProgSelectDesc)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(jLabelDetProgSelectDesc, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, JPanelConsultarProgramasLayout.createSequentialGroup()
+                            .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 415, Short.MAX_VALUE)
+                            .addGroup(JPanelConsultarProgramasLayout.createSequentialGroup()
                                 .addComponent(jLabelSeccionPdeFAgregarCursos)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(jCheckBoxAgregarCursoPrograma)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButtonConsultarProgAddCurso))
-                            .addComponent(jScrollPane5))))
+                                .addComponent(jButtonConsultarProgAddCurso)))))
                 .addContainerGap())
         );
         JPanelConsultarProgramasLayout.setVerticalGroup(
@@ -1089,19 +1084,16 @@ public class MainJFrame extends javax.swing.JFrame {
                             .addComponent(jLabelSeccionDetProgSelectFechaFin)
                             .addComponent(jLabelDetProgSelectFechaFin))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(JPanelConsultarProgramasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(JPanelConsultarProgramasLayout.createSequentialGroup()
-                                .addComponent(jLabelSeccionDetProgSelectCursos)
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 133, Short.MAX_VALUE)))
-                    .addGroup(JPanelConsultarProgramasLayout.createSequentialGroup()
                         .addGroup(JPanelConsultarProgramasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jCheckBoxAgregarCursoPrograma)
+                            .addComponent(jLabelSeccionDetProgSelectCursos)
                             .addComponent(jLabelSeccionPdeFAgregarCursos)
-                            .addComponent(jButtonConsultarProgAddCurso)
-                            .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(3, 3, 3)
-                        .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))
+                            .addComponent(jCheckBoxAgregarCursoPrograma)))
+                    .addComponent(jButtonConsultarProgAddCurso, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jSeparator3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(JPanelConsultarProgramasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 249, Short.MAX_VALUE)
+                    .addComponent(jScrollPane4))
                 .addContainerGap())
         );
 
@@ -1111,11 +1103,11 @@ public class MainJFrame extends javax.swing.JFrame {
         jDesktopPane1.setLayout(jDesktopPane1Layout);
         jDesktopPane1Layout.setHorizontalGroup(
             jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 434, Short.MAX_VALUE)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
         jDesktopPane1Layout.setVerticalGroup(
             jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 244, Short.MAX_VALUE)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
 
         jLabelConsultarUsuarios1.setText("Gestión de Institutos");
@@ -1154,6 +1146,10 @@ public class MainJFrame extends javax.swing.JFrame {
 
         jLabelSeccionListarInstituto.setText("Lista de Institutos");
 
+        jLabelCrearInstitutoNombreError.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
+        jLabelCrearInstitutoNombreError.setForeground(new java.awt.Color(255, 0, 0));
+        jLabelCrearInstitutoNombreError.setText("* Instituto ya existente.");
+
         javax.swing.GroupLayout jPanelSeccionCrearNuevoInstitutoLayout = new javax.swing.GroupLayout(jPanelSeccionCrearNuevoInstituto);
         jPanelSeccionCrearNuevoInstituto.setLayout(jPanelSeccionCrearNuevoInstitutoLayout);
         jPanelSeccionCrearNuevoInstitutoLayout.setHorizontalGroup(
@@ -1164,15 +1160,19 @@ public class MainJFrame extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanelSeccionCrearNuevoInstitutoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanelSeccionCrearNuevoInstitutoLayout.createSequentialGroup()
-                        .addComponent(jTextCrearInstituto, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 464, Short.MAX_VALUE)
-                        .addComponent(jButtonGuardarInstituto))
-                    .addGroup(jPanelSeccionCrearNuevoInstitutoLayout.createSequentialGroup()
                         .addGroup(jPanelSeccionCrearNuevoInstitutoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabelSeccionCrearInstituto)
-                            .addComponent(jLabelCrearInstituto)
                             .addComponent(jLabelSeccionListarInstituto))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(jPanelSeccionCrearNuevoInstitutoLayout.createSequentialGroup()
+                        .addGroup(jPanelSeccionCrearNuevoInstitutoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addGroup(jPanelSeccionCrearNuevoInstitutoLayout.createSequentialGroup()
+                                .addComponent(jLabelCrearInstituto, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabelCrearInstitutoNombreError))
+                            .addComponent(jTextCrearInstituto, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButtonGuardarInstituto)))
                 .addContainerGap())
         );
         jPanelSeccionCrearNuevoInstitutoLayout.setVerticalGroup(
@@ -1182,7 +1182,9 @@ public class MainJFrame extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabelSeccionCrearInstituto)
                 .addGap(17, 17, 17)
-                .addComponent(jLabelCrearInstituto)
+                .addGroup(jPanelSeccionCrearNuevoInstitutoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabelCrearInstituto)
+                    .addComponent(jLabelCrearInstitutoNombreError))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanelSeccionCrearNuevoInstitutoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jTextCrearInstituto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1211,7 +1213,7 @@ public class MainJFrame extends javax.swing.JFrame {
                     .addGroup(jPanelGestionarInstitutosLayout.createSequentialGroup()
                         .addComponent(jLabelConsultarUsuarios1)
                         .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 790, Short.MAX_VALUE)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelGestionarInstitutosLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(jButtonConsultarInstitutosRefresh)))
@@ -1382,9 +1384,9 @@ public class MainJFrame extends javax.swing.JFrame {
                     .addContainerGap()))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                    .addContainerGap(104, Short.MAX_VALUE)
-                    .addComponent(jDesktopPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 442, Short.MAX_VALUE)
-                    .addContainerGap(264, Short.MAX_VALUE)))
+                    .addContainerGap(108, Short.MAX_VALUE)
+                    .addComponent(jDesktopPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 456, Short.MAX_VALUE)
+                    .addContainerGap(266, Short.MAX_VALUE)))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGap(0, 802, Short.MAX_VALUE))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1425,9 +1427,9 @@ public class MainJFrame extends javax.swing.JFrame {
                     .addContainerGap()))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                    .addContainerGap(248, Short.MAX_VALUE)
-                    .addComponent(jDesktopPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
-                    .addContainerGap(142, Short.MAX_VALUE)))
+                    .addContainerGap(253, Short.MAX_VALUE)
+                    .addComponent(jDesktopPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 277, Short.MAX_VALUE)
+                    .addContainerGap(148, Short.MAX_VALUE)))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGap(0, 634, Short.MAX_VALUE))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1459,29 +1461,24 @@ public class MainJFrame extends javax.swing.JFrame {
     private void jMenuItemCrearCursoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemCrearCursoActionPerformed
         cerrarInternalFrames();
         showOnePanelAndHideTheRest(this.JPanelCrearCurso);
+        jLabelCrearCursoNombreError.setVisible(false);
         HashSet<DataInstituto> institutos = this.institutoPres.cargarInstitutos();
-        HashSet<DataCurso> cursos = this.cursoPres.cargarCursos();
 
         DefaultComboBoxModel<DataInstituto> mutableModelInsti = new DefaultComboBoxModel<>();
         this.jComboBoxCrearCursoInstituto.setModel(mutableModelInsti);
         DefaultComboBoxModel<DataInstituto> modelInsti = (DefaultComboBoxModel<DataInstituto>) this.jComboBoxCrearCursoInstituto.getModel();
-        
-        DefaultListModel<DataCurso> mutableModelCurso = new DefaultListModel<>();
-        this.jListCrearCursoPrevias.setModel(mutableModelCurso);
-        DefaultListModel<DataCurso> modelCurso = (DefaultListModel<DataCurso>) this.jListCrearCursoPrevias.getModel();
 
         for(DataInstituto instituto: institutos){
             modelInsti.addElement(instituto);
         }
-        
-        for(DataCurso curso: cursos){
-            modelCurso.addElement(curso);
-        }
+
+        recargarCursosPrevias();
     }//GEN-LAST:event_jMenuItemCrearCursoActionPerformed
 
     private void jMenuItemConsultarCursoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemConsultarCursoActionPerformed
         cerrarInternalFrames();
         showOnePanelAndHideTheRest(this.JPanelConsultarCursos);
+        jButtonConsultarCursosRefreshActionPerformed(null);
     }//GEN-LAST:event_jMenuItemConsultarCursoActionPerformed
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
@@ -1552,6 +1549,7 @@ public class MainJFrame extends javax.swing.JFrame {
         cerrarInternalFrames();
         showOnePanelAndHideTheRest(this.JPanelConsultarProgramas);
         limpiarDetallesConsultaProgDeForm();
+        jButtonConsultarProgramasRefreshActionPerformed(null);
     }//GEN-LAST:event_jMenuItemConsultarProgDeFormacionActionPerformed
 
     private void jTextCrearProgramaNombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextCrearProgramaNombreActionPerformed
@@ -1654,6 +1652,7 @@ public class MainJFrame extends javax.swing.JFrame {
     private void jMenuItemGestionarInstitutosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemGestionarInstitutosActionPerformed
         cerrarInternalFrames();
         showOnePanelAndHideTheRest(this.jPanelGestionarInstitutos);
+        jLabelCrearInstitutoNombreError.setVisible(false);
 
         // Cargar la nueva lista y actualizar tabla
         HashSet<DataInstituto> institutos = this.institutoPres.cargarInstitutos();
@@ -1694,17 +1693,43 @@ public class MainJFrame extends javax.swing.JFrame {
 
         jTextCrearCursoUrl.setText("");
 
-        // No lo limpia por ahora
-//        DefaultListModel<DataCurso> model = (DefaultListModel<DataCurso>) this.jListCrearCursoPrevias.getModel();
-//        model.clear();
+        recargarCursosPrevias();
+    }
+
+    private void recargarCursosPrevias() {
+        HashSet<DataCurso> cursos = cursoPres.cargarCursos();
+        DefaultListModel<DataCurso> model = new DefaultListModel<>();
+
+        if (cursos != null) {
+            for (DataCurso curso : cursos) {
+                model.addElement(curso);
+            }
+        }
+
+        cursosPreviosSeleccionados.clear();
+        jListCrearCursoPrevias.clearSelection();
+        jListCrearCursoPrevias.setModel(model);
     }
 
     private void jButtonGuardarInstitutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonGuardarInstitutoActionPerformed
-        final String nombre = jTextCrearInstituto.getText();
+        final String nombre = jTextCrearInstituto.getText().trim();
+
+        jLabelCrearInstitutoNombreError.setVisible(false);
+
+        if (nombre.isEmpty()) {
+            return;
+        }
 
         System.out.println("[GUI] Crear nuevo Instituto: " + nombre);
 
-        institutoPres.guardarNuevoInstituto(nombre);
+        boolean institutoGuardado = institutoPres.guardarNuevoInstituto(nombre);
+
+        if (!institutoGuardado) {
+            jLabelCrearInstitutoNombreError.setVisible(true);
+            return;
+        }
+
+        jTextCrearInstituto.setText("");
 
         // Cargar la nueva lista y actualizar tabla
         HashSet<DataInstituto> institutos = this.institutoPres.cargarInstitutos();
@@ -1734,8 +1759,10 @@ public class MainJFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItemInscripcionEdicionCursoActionPerformed
 
     private void jButtonGuardarCursoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonGuardarCursoActionPerformed
-        final String nombre = jTextCrearCursoNombre.getText();
+        final String nombre = jTextCrearCursoNombre.getText().trim();
         final String descripcion = jTextAreaCrearCursoDescripcion.getText();
+
+        jLabelCrearCursoNombreError.setVisible(false);
 
         final int duracion = Integer.parseInt(jTextCrearCursoDuracion.getText());
         final int cantHoras = Integer.parseInt(jTextCrearCursoCantHoras.getText());
@@ -1744,12 +1771,18 @@ public class MainJFrame extends javax.swing.JFrame {
         final String url = jTextCrearCursoUrl.getText();
 
         final DataInstituto instituto = (DataInstituto) jComboBoxCrearCursoInstituto.getSelectedItem();
-        final HashSet<DataCurso> previas = new HashSet<>(jListCrearCursoPrevias.getSelectedValuesList());
+        final HashSet<DataCurso> previas = new HashSet<>(cursosPreviosSeleccionados);
 
         System.out.println("[GUI] Crear nuevo Curso: " + nombre);
         DataCurso nuevoCurso = cursoPres.guardarNuevoCurso(instituto, nombre, descripcion, duracion, cantHoras, cantCreditos, url, previas);
         if (nuevoCurso != null){
             limpiarFormularioCurso();
+            jLabelCursoMensajeExito.setVisible(true);
+            Timer temporizadorMensajeExito = new Timer(3000, e -> jLabelCursoMensajeExito.setVisible(false));
+            temporizadorMensajeExito.setRepeats(false);
+            temporizadorMensajeExito.start();
+        } else {
+            jLabelCrearCursoNombreError.setVisible(true);
         }
     }//GEN-LAST:event_jButtonGuardarCursoActionPerformed
     private void jButtonAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAceptarActionPerformed
@@ -1877,33 +1910,42 @@ public class MainJFrame extends javax.swing.JFrame {
 //        JOptionPane.showMessageDialog(null, seleccion + "");
         if(seleccion != null){
             limpiarDetallesConsultaProgDeForm();
-            
-            DataProgramaFormacion programaSeleccionado = this.programaDeFormacionPres.buscarPorNombreId(seleccion);
-            
-            // Datos básicos del programa de formación
-            jLabelDetProgSelectNombre.setText(programaSeleccionado.nombre());
-            jLabelDetProgSelectFechaCreado.setText(programaSeleccionado.fechaDeCreacion().toString());
-            jLabelDetProgSelectFechaIni.setText(programaSeleccionado.fechaInicio().toString());
-            jLabelDetProgSelectFechaFin.setText(programaSeleccionado.fechaFin().toString());
-            jLabelDetProgSelectDesc.setText(programaSeleccionado.descripcion());
-            
-            // Lista de cursos asociados programa de formación
-            HashSet<DataCurso> cursosDelPrograma = new HashSet<>(programaSeleccionado.cursos());
-            
-            DefaultListModel<DataCurso> mutableModelCurso = new DefaultListModel<>();
-            this.jListDetProgSelectCursos.setModel(mutableModelCurso);
-            DefaultListModel<DataCurso> modelCurso = (DefaultListModel<DataCurso>) this.jListDetProgSelectCursos.getModel();
-            
-            for(DataCurso curso: cursosDelPrograma){
-                modelCurso.addElement(curso);
-            }
-            
+            actualizarListasCursosPrograma(seleccion);
             this.jCheckBoxAgregarCursoPrograma.setSelected(false);
             // Lista de todos los cursos disponibles para asociar al programa de formación
         } else {
             limpiarDetallesConsultaProgDeForm();
         }
     }//GEN-LAST:event_jTableConsultaProgramasMouseClicked
+
+    private void actualizarListasCursosPrograma(String nombrePrograma) {
+        DataProgramaFormacion programaSeleccionado = this.programaDeFormacionPres.buscarPorNombreId(nombrePrograma);
+        if (programaSeleccionado == null) {
+            limpiarDetallesConsultaProgDeForm();
+            return;
+        }
+
+        jLabelDetProgSelectNombre.setText(programaSeleccionado.nombre());
+        jLabelDetProgSelectFechaCreado.setText(programaSeleccionado.fechaDeCreacion().toString());
+        jLabelDetProgSelectFechaIni.setText(programaSeleccionado.fechaInicio().toString());
+        jLabelDetProgSelectFechaFin.setText(programaSeleccionado.fechaFin().toString());
+        jLabelDetProgSelectDesc.setText(programaSeleccionado.descripcion());
+
+        DefaultListModel<DataCurso> cursosProgramaModel = new DefaultListModel<>();
+        for (DataCurso curso : programaSeleccionado.cursos()) {
+            cursosProgramaModel.addElement(curso);
+        }
+        jListDetProgSelectCursos.setModel(cursosProgramaModel);
+
+        DefaultListModel<DataCurso> cursosDisponiblesModel = new DefaultListModel<>();
+        HashSet<DataCurso> cursosDisponibles = this.cursoPres.cursosNoRelacionadosConUnProgDeFormacion(nombrePrograma);
+        if (cursosDisponibles != null) {
+            for (DataCurso curso : cursosDisponibles) {
+                cursosDisponiblesModel.addElement(curso);
+            }
+        }
+        jListSeccionPdeFAgregarCursos.setModel(cursosDisponiblesModel);
+    }
 
     private String obtenerProgDeFormSeleccionadoEnLaTablaDeConsulta(){
         int row = this.jTableConsultaProgramas.getSelectedRow();
@@ -1920,7 +1962,10 @@ public class MainJFrame extends javax.swing.JFrame {
         final DataCurso cursoSeleccionado = this.jListSeccionPdeFAgregarCursos.getSelectedValue();
         final String programaSeleccionado = this.obtenerProgDeFormSeleccionadoEnLaTablaDeConsulta();
         if(cursoSeleccionado != null && programaSeleccionado != null){
-            this.programaDeFormacionPres.agregarCursoAProgramaDeFormacion(programaSeleccionado, cursoSeleccionado.nombreCurso());
+            Boolean guardado = this.programaDeFormacionPres.agregarCursoAProgramaDeFormacion(programaSeleccionado, cursoSeleccionado.nombreCurso());
+            if (Boolean.TRUE.equals(guardado)) {
+                actualizarListasCursosPrograma(programaSeleccionado);
+            }
         }
     }//GEN-LAST:event_jButtonConsultarProgAddCursoActionPerformed
 
@@ -2031,7 +2076,6 @@ public class MainJFrame extends javax.swing.JFrame {
     private javax.swing.JPanel JPanelCrearCurso;
     private javax.swing.JPanel JPanelCrearPrograma;
     private javax.swing.ButtonGroup buttonGroupEstYDoc;
-    private java.awt.Choice choiceCrearProgramaCursos;
     private javax.swing.JButton jButtonAceptar;
     private javax.swing.JButton jButtonCancelar;
     private javax.swing.JButton jButtonConsUsRefresh;
@@ -2071,11 +2115,12 @@ public class MainJFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabelCrearCursoUrl;
     private javax.swing.JLabel jLabelCrearCursoUrlError;
     private javax.swing.JLabel jLabelCrearInstituto;
+    private javax.swing.JLabel jLabelCrearInstitutoNombreError;
     private javax.swing.JLabel jLabelCrearPrograma;
-    private javax.swing.JLabel jLabelCrearProgramaCursos;
     private javax.swing.JLabel jLabelCrearProgramaDesc;
     private javax.swing.JLabel jLabelCrearProgramaFechaFin;
     private javax.swing.JLabel jLabelCrearProgramaFechaInicio;
+    private javax.swing.JLabel jLabelCrearProgramaFechaInicio1;
     private javax.swing.JLabel jLabelCursoMensajeExito;
     private javax.swing.JLabel jLabelDetProgSelectDesc;
     private javax.swing.JLabel jLabelDetProgSelectFechaCreado;
@@ -2138,7 +2183,6 @@ public class MainJFrame extends javax.swing.JFrame {
     private javax.swing.JTable jTableConsultaCursos;
     private javax.swing.JTable jTableConsultaProgramas;
     private javax.swing.JTable jTableConsultarUsuarios;
-    private javax.swing.JTable jTableCrearProgramaCursos;
     private javax.swing.JTable jTableInstitutos;
     private javax.swing.JTextArea jTextAreaCrearCursoDescripcion;
     private javax.swing.JTextArea jTextAreaCrearProgramaDesc;
