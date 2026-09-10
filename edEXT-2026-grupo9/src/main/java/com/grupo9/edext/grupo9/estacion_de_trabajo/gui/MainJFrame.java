@@ -18,6 +18,8 @@ import java.util.HashSet;
 import java.util.Optional;
 import java.awt.BorderLayout;
 import java.awt.event.ItemEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.Date;
 import javax.swing.table.DefaultTableModel;
 
@@ -31,6 +33,7 @@ public class MainJFrame extends javax.swing.JFrame {
     private final ArrayList<JPanel> allJPanels = new ArrayList<JPanel>();
     private Component jScrollPaneTablaConsultaUsuarios;
     private final ArrayList<JInternalFrame> allJInternalFrame = new ArrayList<JInternalFrame>();
+    private final HashSet<DataCurso> cursosPreviosSeleccionados = new HashSet<>();
     
     public MainJFrame() {
         initComponents();
@@ -498,15 +501,36 @@ public class MainJFrame extends javax.swing.JFrame {
         jLabelCrearCursoPrevias.setText("Previas");
 
         jScrollPane3.setViewportView(jListCrearCursoPrevias);
+        jListCrearCursoPrevias.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         jListCrearCursoPrevias.setCellRenderer(new DefaultListCellRenderer() {
             @Override
             public Component getListCellRendererComponent(JList<?> list, Object value, int index,
                 boolean isSelected, boolean cellHasFocus) {
-                super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+                JCheckBox checkBox = new JCheckBox();
+                checkBox.setOpaque(true);
                 if (value instanceof DataCurso dc) {
-                    setText(dc.nombreCurso());
+                    checkBox.setText(dc.nombreCurso());
+                    checkBox.setSelected(cursosPreviosSeleccionados.contains(dc));
                 }
-                return this;
+                checkBox.setBackground(list.getBackground());
+                checkBox.setForeground(list.getForeground());
+                return checkBox;
+            }
+        });
+        jListCrearCursoPrevias.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent evt) {
+                int index = jListCrearCursoPrevias.locationToIndex(evt.getPoint());
+                if (index < 0 || !jListCrearCursoPrevias.getCellBounds(index, index).contains(evt.getPoint())) {
+                    return;
+                }
+
+                DataCurso curso = jListCrearCursoPrevias.getModel().getElementAt(index);
+                if (!cursosPreviosSeleccionados.add(curso)) {
+                    cursosPreviosSeleccionados.remove(curso);
+                }
+                jListCrearCursoPrevias.clearSelection();
+                jListCrearCursoPrevias.repaint();
             }
         });
 
@@ -1446,23 +1470,16 @@ public class MainJFrame extends javax.swing.JFrame {
         showOnePanelAndHideTheRest(this.JPanelCrearCurso);
         jLabelCrearCursoNombreError.setVisible(false);
         HashSet<DataInstituto> institutos = this.institutoPres.cargarInstitutos();
-        HashSet<DataCurso> cursos = this.cursoPres.cargarCursos();
 
         DefaultComboBoxModel<DataInstituto> mutableModelInsti = new DefaultComboBoxModel<>();
         this.jComboBoxCrearCursoInstituto.setModel(mutableModelInsti);
         DefaultComboBoxModel<DataInstituto> modelInsti = (DefaultComboBoxModel<DataInstituto>) this.jComboBoxCrearCursoInstituto.getModel();
-        
-        DefaultListModel<DataCurso> mutableModelCurso = new DefaultListModel<>();
-        this.jListCrearCursoPrevias.setModel(mutableModelCurso);
-        DefaultListModel<DataCurso> modelCurso = (DefaultListModel<DataCurso>) this.jListCrearCursoPrevias.getModel();
 
         for(DataInstituto instituto: institutos){
             modelInsti.addElement(instituto);
         }
-        
-        for(DataCurso curso: cursos){
-            modelCurso.addElement(curso);
-        }
+
+        recargarCursosPrevias();
     }//GEN-LAST:event_jMenuItemCrearCursoActionPerformed
 
     private void jMenuItemConsultarCursoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemConsultarCursoActionPerformed
@@ -1683,9 +1700,22 @@ public class MainJFrame extends javax.swing.JFrame {
 
         jTextCrearCursoUrl.setText("");
 
-        // No lo limpia por ahora
-//        DefaultListModel<DataCurso> model = (DefaultListModel<DataCurso>) this.jListCrearCursoPrevias.getModel();
-//        model.clear();
+        recargarCursosPrevias();
+    }
+
+    private void recargarCursosPrevias() {
+        HashSet<DataCurso> cursos = cursoPres.cargarCursos();
+        DefaultListModel<DataCurso> model = new DefaultListModel<>();
+
+        if (cursos != null) {
+            for (DataCurso curso : cursos) {
+                model.addElement(curso);
+            }
+        }
+
+        cursosPreviosSeleccionados.clear();
+        jListCrearCursoPrevias.clearSelection();
+        jListCrearCursoPrevias.setModel(model);
     }
 
     private void jButtonGuardarInstitutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonGuardarInstitutoActionPerformed
@@ -1748,7 +1778,7 @@ public class MainJFrame extends javax.swing.JFrame {
         final String url = jTextCrearCursoUrl.getText();
 
         final DataInstituto instituto = (DataInstituto) jComboBoxCrearCursoInstituto.getSelectedItem();
-        final HashSet<DataCurso> previas = new HashSet<>(jListCrearCursoPrevias.getSelectedValuesList());
+        final HashSet<DataCurso> previas = new HashSet<>(cursosPreviosSeleccionados);
 
         System.out.println("[GUI] Crear nuevo Curso: " + nombre);
         DataCurso nuevoCurso = cursoPres.guardarNuevoCurso(instituto, nombre, descripcion, duracion, cantHoras, cantCreditos, url, previas);
