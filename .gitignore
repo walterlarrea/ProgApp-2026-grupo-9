@@ -53,3 +53,8 @@ Desktop.ini
 .DS_Store
 .AppleDouble
 .LSOverride
+
+# Local database configuration
+.env
+.env.*
+!.env.example
