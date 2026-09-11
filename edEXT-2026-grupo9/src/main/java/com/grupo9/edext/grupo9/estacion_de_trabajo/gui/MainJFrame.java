@@ -4,6 +4,11 @@ import com.grupo9.edext.grupo9.estacion_de_trabajo.cliente.UsuarioPres;
 import com.grupo9.edext.grupo9.estacion_de_trabajo.cliente.InstitutoPres;
 import com.grupo9.edext.grupo9.estacion_de_trabajo.cliente.CursoPres;
 import com.grupo9.edext.grupo9.estacion_de_trabajo.cliente.ProgramaDeFormacionPres;
+import com.grupo9.edext.grupo9.estacion_de_trabajo.gui.curso.ConsultarCursosJInternalFrame;
+import com.grupo9.edext.grupo9.estacion_de_trabajo.gui.curso.CrearCursosJInternalFrame;
+import com.grupo9.edext.grupo9.estacion_de_trabajo.gui.instituto.GestionarInstitutosJInternalFrame;
+import com.grupo9.edext.grupo9.estacion_de_trabajo.gui.programa_de_formacion.ConsultarProgramasJInternalFrame;
+import com.grupo9.edext.grupo9.estacion_de_trabajo.gui.programa_de_formacion.CrearProgramasJInternalFrame;
 import com.grupo9.edext.grupo9.mensajes.ErrorNoExiste;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataCurso;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataInstituto;
@@ -1515,26 +1520,11 @@ public class MainJFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItemConsultarUsuarioActionPerformed
 
     private void jMenuItemCrearCursoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemCrearCursoActionPerformed
-        cerrarInternalFrames();
-        showOnePanelAndHideTheRest(this.JPanelCrearCurso);
-        jLabelCrearCursoNombreError.setVisible(false);
-        HashSet<DataInstituto> institutos = this.institutoPres.cargarInstitutos();
-
-        DefaultComboBoxModel<DataInstituto> mutableModelInsti = new DefaultComboBoxModel<>();
-        this.jComboBoxCrearCursoInstituto.setModel(mutableModelInsti);
-        DefaultComboBoxModel<DataInstituto> modelInsti = (DefaultComboBoxModel<DataInstituto>) this.jComboBoxCrearCursoInstituto.getModel();
-
-        for(DataInstituto instituto: institutos){
-            modelInsti.addElement(instituto);
-        }
-
-        recargarCursosPrevias();
+        mostrarInternalFrame(new CrearCursosJInternalFrame());
     }//GEN-LAST:event_jMenuItemCrearCursoActionPerformed
 
     private void jMenuItemConsultarCursoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemConsultarCursoActionPerformed
-        cerrarInternalFrames();
-        showOnePanelAndHideTheRest(this.JPanelConsultarCursos);
-        jButtonConsultarCursosRefreshActionPerformed(null);
+        mostrarInternalFrame(new ConsultarCursosJInternalFrame());
     }//GEN-LAST:event_jMenuItemConsultarCursoActionPerformed
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
@@ -1605,15 +1595,11 @@ public class MainJFrame extends javax.swing.JFrame {
     }
 
     private void jMenuItemCrearProgDeFormacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemCrearProgDeFormacionActionPerformed
-        cerrarInternalFrames();
-        showOnePanelAndHideTheRest(this.JPanelCrearPrograma);
+        mostrarInternalFrame(new CrearProgramasJInternalFrame());
     }//GEN-LAST:event_jMenuItemCrearProgDeFormacionActionPerformed
 
     private void jMenuItemConsultarProgDeFormacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemConsultarProgDeFormacionActionPerformed
-        cerrarInternalFrames();
-        showOnePanelAndHideTheRest(this.JPanelConsultarProgramas);
-        limpiarDetallesConsultaProgDeForm();
-        jButtonConsultarProgramasRefreshActionPerformed(null);
+        mostrarInternalFrame(new ConsultarProgramasJInternalFrame());
     }//GEN-LAST:event_jMenuItemConsultarProgDeFormacionActionPerformed
 
     private void jTextCrearProgramaNombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextCrearProgramaNombreActionPerformed
@@ -1714,14 +1700,7 @@ public class MainJFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonConsultarProgramasRefreshActionPerformed
 
     private void jMenuItemGestionarInstitutosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemGestionarInstitutosActionPerformed
-        cerrarInternalFrames();
-        showOnePanelAndHideTheRest(this.jPanelGestionarInstitutos);
-        jLabelCrearInstitutoNombreError.setVisible(false);
-
-        // Cargar la nueva lista y actualizar tabla
-        HashSet<DataInstituto> institutos = this.institutoPres.cargarInstitutos();
-
-        this.actualizarTablaDeInstitutos(institutos);
+        mostrarInternalFrame(new GestionarInstitutosJInternalFrame());
     }//GEN-LAST:event_jMenuItemGestionarInstitutosActionPerformed
 
     private void actualizarTablaDeInstitutos(HashSet<DataInstituto> institutos){
