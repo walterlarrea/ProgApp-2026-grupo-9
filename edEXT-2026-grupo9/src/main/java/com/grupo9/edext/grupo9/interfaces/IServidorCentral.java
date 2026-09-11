@@ -22,6 +22,7 @@ public interface IServidorCentral {
     // Programas de formación
     public DataProgramaFormacion guardarProgramaDeFormacion(DataProgramaFormacion nuevoPrograma);
     public HashSet<DataProgramaFormacion> consultarTodosLosProgramas();
+    public Boolean existeProgramaDeFormacion(String nombre);
     public DataProgramaFormacion traerPorNombreId(String nombreId);
     public Boolean agregarCursoAProgramaDeFormacion(String nombreIdPrograma, String nombreIdCurso);
     
@@ -36,11 +37,13 @@ public interface IServidorCentral {
     // Cursos
     public DataCurso guardarCurso(DataCurso nuevoCurso);
     public HashSet<DataCurso> consultarTodosLosCursos();
+    public Boolean existeCurso(String nombre);
     public HashSet<DataCurso> cursosNoRelacionadosConUnProgDeFormacion(String idProgramaDeFormacion);
     
     // Institutos
     public DataInstituto guardarInstituto(DataInstituto nuevoInstituto);
     public HashSet<DataInstituto> consultarTodosLosInstitutos();
+    public Boolean existeInstituto(String nombre);
     
     public String[] listarUsuarios();
     public DataUsuario consultarUsuario(String nickname) throws ErrorNoExiste;

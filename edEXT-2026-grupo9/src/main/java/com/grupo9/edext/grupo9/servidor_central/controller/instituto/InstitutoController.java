@@ -42,4 +42,16 @@ public class InstitutoController implements IInstituto{
         }
         return null;
     }
+
+    @Override
+    public Boolean existeInstituto(String nombre){
+        System.out.println("[SERVIDOR] Consulta si existe el Instituto " + nombre + " en persistencia");
+        try {
+            return this.manejadorInstituto.existeInstituto(nombre);
+        } catch (Exception e) {
+            System.out.println("[SERVIDOR] Persistencia FALLÓ al consultar el Instituto: " + nombre);
+            System.out.println(e);
+        }
+        return false;
+    }
 }

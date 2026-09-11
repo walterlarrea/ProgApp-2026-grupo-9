@@ -72,6 +72,23 @@ public class ManejadorCurso {
         }
     }
 
+    public Boolean existeCurso(String nombre){
+        try {
+            CriteriaBuilder cBuilder = em.getCriteriaBuilder();
+            CriteriaQuery<Curso> cQuery = cBuilder.createQuery(Curso.class);
+            Root<Curso> rootEntry = cQuery.from(Curso.class);
+
+            cQuery.select(rootEntry)
+                .where(cBuilder.equal(rootEntry.get("nombreCurso"), nombre));
+
+            TypedQuery<Curso> query = em.createQuery(cQuery);
+            query.setMaxResults(1);
+            return !query.getResultList().isEmpty();
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+
     public HashSet<DataCurso> traerCursosNoRelacionadosConUnProgDeFormacion(String idProgramaDeFormacion){
         try {
             CriteriaBuilder cBuilder = em.getCriteriaBuilder();

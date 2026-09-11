@@ -52,6 +52,18 @@ public class CursoController implements ICurso{
         }
         return null;
     }
+
+    @Override
+    public Boolean existeCurso(String nombre){
+        System.out.println("[SERVIDOR] Consulta si existe el Curso " + nombre + " en persistencia");
+        try {
+            return this.manejadorCurso.existeCurso(nombre);
+        } catch (Exception e) {
+            System.out.println("[SERVIDOR] Persistencia FALLÓ al consultar el Curso: " + nombre);
+            System.out.println(e);
+        }
+        return false;
+    }
     
     @Override
     public HashSet<DataCurso> cursosNoRelacionadosConUnProgDeFormacion(String idProgramaDeFormacion){
