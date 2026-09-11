@@ -92,12 +92,13 @@ public class ManejadorProgDeFormacion {
 
             Root<ProgramaDeFormacion> rootEntry = cQuery.from(ProgramaDeFormacion.class);
 
-            CriteriaQuery<ProgramaDeFormacion> todo = cQuery.select(rootEntry);
+            CriteriaQuery<ProgramaDeFormacion> todo = cQuery
+                .select(rootEntry)
+                .where(cBuilder.equal(rootEntry.get("nombre"), nombreId));
 
             TypedQuery<ProgramaDeFormacion> queryTodo = em.createQuery(todo);
-            
-            ProgramaDeFormacion programa = queryTodo.getResultList().getFirst();
-            return programa != null;
+            queryTodo.setMaxResults(1);
+            return !queryTodo.getResultList().isEmpty();
         }catch(Exception e){
             throw e;
         }

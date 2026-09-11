@@ -6,6 +6,7 @@ import java.util.HashSet;
 public interface IProgramaDeFormacion {
     public DataProgramaFormacion guardarNuevoProgramaDeFormacion(DataProgramaFormacion nuevoPrograma);
     public HashSet<DataProgramaFormacion> todosLosProgramas();
+    public Boolean existeProgramaDeFormacion(String nombre);
     public DataProgramaFormacion traerPorNombreId(String nombreId);
     public Boolean agregarCursoAProgramaDeFormacion(String nombreIdPrograma, String nombreIdCurso);
 }

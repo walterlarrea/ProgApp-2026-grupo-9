@@ -6,4 +6,5 @@ import java.util.HashSet;
 public interface IInstituto {
     public DataInstituto guardarNuevoInstituto(DataInstituto nuevoInstituto);
     public HashSet<DataInstituto> todosLosInstitutos();
+    public Boolean existeInstituto(String nombre);
 }

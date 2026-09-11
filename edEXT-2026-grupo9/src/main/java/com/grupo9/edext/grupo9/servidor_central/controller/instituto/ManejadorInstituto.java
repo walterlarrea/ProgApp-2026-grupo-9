@@ -76,4 +76,21 @@ public class ManejadorInstituto {
             throw e;
         }
     }
+
+    public Boolean existeInstituto(String nombre){
+        try {
+            CriteriaBuilder cBuilder = em.getCriteriaBuilder();
+            CriteriaQuery<Instituto> cQuery = cBuilder.createQuery(Instituto.class);
+            Root<Instituto> rootEntry = cQuery.from(Instituto.class);
+
+            cQuery.select(rootEntry)
+                .where(cBuilder.equal(rootEntry.get("nombreI"), nombre));
+
+            TypedQuery<Instituto> query = em.createQuery(cQuery);
+            query.setMaxResults(1);
+            return !query.getResultList().isEmpty();
+        } catch (Exception e) {
+            throw e;
+        }
+    }
 }

@@ -34,4 +34,9 @@ public class InstitutoPres {
         
         return institutos;
     }
+
+    public Boolean existeInstituto(String nombre){
+        System.out.println("[CLIENTE] Consultar si existe el Instituto: " + nombre);
+        return servidorCentral.existeInstituto(nombre);
+    }
 }

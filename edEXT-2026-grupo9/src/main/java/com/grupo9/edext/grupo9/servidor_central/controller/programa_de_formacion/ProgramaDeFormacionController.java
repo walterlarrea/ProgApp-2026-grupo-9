@@ -45,6 +45,18 @@ public class ProgramaDeFormacionController implements IProgramaDeFormacion {
         }
         return null;
     }
+
+    @Override
+    public Boolean existeProgramaDeFormacion(String nombre){
+        System.out.println("[SERVIDOR] Consulta si existe el Programa " + nombre + " en persistencia");
+        try {
+            return this.manejadorProgDeFormacion.existeProgramaDeFormacion(nombre);
+        } catch (Exception e) {
+            System.out.println("[SERVIDOR] Persistencia FALLÓ al consultar el Programa: " + nombre);
+            System.out.println(e);
+        }
+        return false;
+    }
     
     @Override
     public DataProgramaFormacion traerPorNombreId(String nombreId){

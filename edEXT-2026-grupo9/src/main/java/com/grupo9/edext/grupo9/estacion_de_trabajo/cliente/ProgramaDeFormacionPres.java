@@ -34,6 +34,11 @@ public class ProgramaDeFormacionPres {
         
         return programas;
     }
+
+    public Boolean existeProgramaDeFormacion(String nombre){
+        System.out.println("[CLIENTE] Consultar si existe el Programa: " + nombre);
+        return servidorCentral.existeProgramaDeFormacion(nombre);
+    }
     
     public DataProgramaFormacion buscarPorNombreId(String nombreId){
         System.out.println("[CLIENTE] Consultar todos los Programas");

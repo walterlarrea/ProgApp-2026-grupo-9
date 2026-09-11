@@ -68,6 +68,11 @@ public class ServidorCentralController implements IServidorCentral {
     public HashSet<DataProgramaFormacion> consultarTodosLosProgramas(){
         return this.progDeFormacionCtrl.todosLosProgramas();
     }
+
+    @Override
+    public Boolean existeProgramaDeFormacion(String nombre){
+        return this.progDeFormacionCtrl.existeProgramaDeFormacion(nombre);
+    }
     
     @Override
     public DataProgramaFormacion traerPorNombreId(String nombreId){
@@ -119,6 +124,11 @@ public class ServidorCentralController implements IServidorCentral {
     public HashSet<DataCurso> consultarTodosLosCursos(){
         return this.cursoCtrl.todosLosCursos();
     }
+
+    @Override
+    public Boolean existeCurso(String nombre){
+        return this.cursoCtrl.existeCurso(nombre);
+    }
     
     @Override
     public HashSet<DataCurso> cursosNoRelacionadosConUnProgDeFormacion(String idProgramaDeFormacion){
@@ -134,6 +144,11 @@ public class ServidorCentralController implements IServidorCentral {
     @Override
     public HashSet<DataInstituto> consultarTodosLosInstitutos(){
         return this.institutoCtrl.todosLosInstitutos();
+    }
+
+    @Override
+    public Boolean existeInstituto(String nombre){
+        return this.institutoCtrl.existeInstituto(nombre);
     }
     
     // Usuarios

@@ -645,8 +645,8 @@
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" alignment="1" attributes="0">
-                  <Group type="103" groupAlignment="1" attributes="0">
+              <Group type="102" attributes="0">
+                  <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="0" attributes="0">
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Group type="102" alignment="0" attributes="0">
@@ -717,18 +717,19 @@
                                       </Group>
                                       <Component id="jComboBoxCrearCursoInstituto" alignment="0" max="32767" attributes="0"/>
                                   </Group>
-                                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                                  <EmptySpace min="0" pref="175" max="32767" attributes="0"/>
                               </Group>
-                              <Component id="jScrollPane3" alignment="0" pref="362" max="32767" attributes="0"/>
+                              <Component id="jScrollPane3" max="32767" attributes="0"/>
                           </Group>
                       </Group>
-                      <Group type="102" attributes="0">
+                      <Group type="102" alignment="1" attributes="0">
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="1" attributes="0">
-                              <Component id="jScrollPane1" max="32767" attributes="0"/>
                               <Group type="102" attributes="0">
                                   <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                                   <Component id="jLabelCursoMensajeExito" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace min="-2" pref="24" max="-2" attributes="0"/>
+                                  <Component id="jButtonCancelarCurso" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                                   <Component id="jButtonGuardarCurso" min="-2" max="-2" attributes="0"/>
                               </Group>
@@ -739,6 +740,7 @@
                               </Group>
                           </Group>
                       </Group>
+                      <Component id="jScrollPane1" alignment="1" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
@@ -791,7 +793,7 @@
                           <Component id="jScrollPane3" min="-2" pref="168" max="-2" attributes="0"/>
                       </Group>
                   </Group>
-                  <EmptySpace pref="57" max="32767" attributes="0"/>
+                  <EmptySpace pref="101" max="32767" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="jLabelCrearCursoDescripcion" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="jLabelCrearCursoDescripcionError" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -802,6 +804,7 @@
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="jButtonGuardarCurso" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="jLabelCursoMensajeExito" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="jButtonCancelarCurso" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
@@ -868,13 +871,10 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="jTextCrearCursoUrl">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="https://"/>
-          </Properties>
         </Component>
         <Component class="javax.swing.JButton" name="jButtonGuardarCurso">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Guardar"/>
+            <Property name="text" type="java.lang.String" value="Aceptar"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonGuardarCursoActionPerformed"/>
@@ -998,6 +998,14 @@
             <Property name="text" type="java.lang.String" value="Curso creado con &#xe9;xito!"/>
           </Properties>
         </Component>
+        <Component class="javax.swing.JButton" name="jButtonCancelarCurso">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Cancelar"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonCancelarCursoActionPerformed"/>
+          </Events>
+        </Component>
       </SubComponents>
     </Container>
     <Container class="javax.swing.JPanel" name="JPanelConsultarCursos">
@@ -1031,7 +1039,7 @@
                       <Component id="jButtonConsultarCursosRefresh" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                  <Component id="jScrollPaneTablaConsultaCursos" pref="26" max="32767" attributes="0"/>
+                  <Component id="jScrollPaneTablaConsultaCursos" pref="453" max="32767" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
           </Group>
@@ -1108,6 +1116,8 @@
                       </Group>
                       <Group type="102" alignment="1" attributes="0">
                           <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                          <Component id="jButtonCancelarPrograma" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Component id="jButtonGuardarPrograma" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <Group type="102" attributes="0">
@@ -1152,7 +1162,10 @@
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="jTextAreaCrearProgramaDesc" min="-2" pref="249" max="-2" attributes="0"/>
                   <EmptySpace pref="253" max="32767" attributes="0"/>
-                  <Component id="jButtonGuardarPrograma" min="-2" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="jButtonGuardarPrograma" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="jButtonCancelarPrograma" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
           </Group>
@@ -1166,7 +1179,7 @@
         </Component>
         <Component class="javax.swing.JButton" name="jButtonGuardarPrograma">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Guardar"/>
+            <Property name="text" type="java.lang.String" value="Aceptar"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonGuardarProgramaActionPerformed"/>
@@ -1234,6 +1247,14 @@
             </Property>
             <Property name="text" type="java.lang.String" value="ej: 24/8/26"/>
           </Properties>
+        </Component>
+        <Component class="javax.swing.JButton" name="jButtonCancelarPrograma">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Cancelar"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonCancelarProgramaActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>
@@ -1598,7 +1619,7 @@
                           <Component id="jLabelConsultarUsuarios1" min="-2" max="-2" attributes="0"/>
                           <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                       </Group>
-                      <Component id="jScrollPane2" pref="0" max="32767" attributes="0"/>
+                      <Component id="jScrollPane2" pref="649" max="32767" attributes="0"/>
                       <Group type="102" alignment="1" attributes="0">
                           <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                           <Component id="jButtonConsultarInstitutosRefresh" min="-2" max="-2" attributes="0"/>
@@ -1676,6 +1697,8 @@
                                   <Component id="jTextCrearInstituto" min="-2" pref="250" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace max="32767" attributes="0"/>
+                              <Component id="jButtonCancelarInstituto" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
                               <Component id="jButtonGuardarInstituto" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
@@ -1698,6 +1721,7 @@
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="jTextCrearInstituto" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="jButtonGuardarInstituto" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="jButtonCancelarInstituto" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="jSeparator1" min="-2" pref="10" max="-2" attributes="0"/>
@@ -1723,7 +1747,7 @@
             </Component>
             <Component class="javax.swing.JButton" name="jButtonGuardarInstituto">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Guardar"/>
+                <Property name="text" type="java.lang.String" value="Aceptar"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonGuardarInstitutoActionPerformed"/>
@@ -1748,6 +1772,14 @@
                 </Property>
                 <Property name="text" type="java.lang.String" value="* Instituto ya existente."/>
               </Properties>
+            </Component>
+            <Component class="javax.swing.JButton" name="jButtonCancelarInstituto">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Cancelar"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonCancelarInstitutoActionPerformed"/>
+              </Events>
             </Component>
           </SubComponents>
         </Container>

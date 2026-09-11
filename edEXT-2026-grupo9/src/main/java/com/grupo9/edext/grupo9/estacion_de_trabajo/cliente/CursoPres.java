@@ -33,6 +33,11 @@ public class CursoPres {
         
         return cursos;
     }
+
+    public Boolean existeCurso(String nombre){
+        System.out.println("[CLIENTE] Consultar si existe el Curso: " + nombre);
+        return servidorCentral.existeCurso(nombre);
+    }
     
     public HashSet<DataCurso> cursosNoRelacionadosConUnProgDeFormacion(String idProgramaDeFormacion){
         System.out.println("[CLIENTE] Consultar los Cursos no relacionados con el Programa de Formación: " + idProgramaDeFormacion);

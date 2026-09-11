@@ -172,6 +172,7 @@ public class MainJFrame extends javax.swing.JFrame {
         jLabelCrearCursoInstituto = new javax.swing.JLabel();
         jComboBoxCrearCursoInstituto = new javax.swing.JComboBox<>();
         jLabelCursoMensajeExito = new javax.swing.JLabel();
+        jButtonCancelarCurso = new javax.swing.JButton();
         JPanelConsultarCursos = new javax.swing.JPanel();
         jLabelConsultarCursos = new javax.swing.JLabel();
         jScrollPaneTablaConsultaCursos = new javax.swing.JScrollPane();
@@ -189,6 +190,7 @@ public class MainJFrame extends javax.swing.JFrame {
         jLabelCrearProgramaFechaFin = new javax.swing.JLabel();
         jFormattedTextFieldCrearProgramaFechaFin = new javax.swing.JFormattedTextField();
         jLabelCrearProgramaFechaInicio1 = new javax.swing.JLabel();
+        jButtonCancelarPrograma = new javax.swing.JButton();
         JPanelConsultarProgramas = new javax.swing.JPanel();
         jLabelConsultarProgramas = new javax.swing.JLabel();
         jButtonConsultarProgramasRefresh = new javax.swing.JButton();
@@ -229,6 +231,7 @@ public class MainJFrame extends javax.swing.JFrame {
         jSeparator2 = new javax.swing.JSeparator();
         jLabelSeccionListarInstituto = new javax.swing.JLabel();
         jLabelCrearInstitutoNombreError = new javax.swing.JLabel();
+        jButtonCancelarInstituto = new javax.swing.JButton();
         jButtonConsultarInstitutosRefresh = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenuUsuarios = new javax.swing.JMenu();
@@ -505,9 +508,7 @@ public class MainJFrame extends javax.swing.JFrame {
 
         jLabelCrearCursoUrl.setText("Url");
 
-        jTextCrearCursoUrl.setText("https://");
-
-        jButtonGuardarCurso.setText("Guardar");
+        jButtonGuardarCurso.setText("Aceptar");
         jButtonGuardarCurso.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonGuardarCursoActionPerformed(evt);
@@ -579,13 +580,20 @@ public class MainJFrame extends javax.swing.JFrame {
         jLabelCursoMensajeExito.setForeground(new java.awt.Color(0, 153, 0));
         jLabelCursoMensajeExito.setText("Curso creado con éxito!");
 
+        jButtonCancelarCurso.setText("Cancelar");
+        jButtonCancelarCurso.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonCancelarCursoActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout JPanelCrearCursoLayout = new javax.swing.GroupLayout(JPanelCrearCurso);
         JPanelCrearCurso.setLayout(JPanelCrearCursoLayout);
         JPanelCrearCursoLayout.setHorizontalGroup(
             JPanelCrearCursoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, JPanelCrearCursoLayout.createSequentialGroup()
-                .addGroup(JPanelCrearCursoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, JPanelCrearCursoLayout.createSequentialGroup()
+            .addGroup(JPanelCrearCursoLayout.createSequentialGroup()
+                .addGroup(JPanelCrearCursoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(JPanelCrearCursoLayout.createSequentialGroup()
                         .addGroup(JPanelCrearCursoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(JPanelCrearCursoLayout.createSequentialGroup()
                                 .addContainerGap()
@@ -637,21 +645,23 @@ public class MainJFrame extends javax.swing.JFrame {
                                         .addComponent(jLabelCrearCursoPrevias, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                         .addGap(118, 118, 118))
                                     .addComponent(jComboBoxCrearCursoInstituto, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 362, Short.MAX_VALUE)))
-                    .addGroup(JPanelCrearCursoLayout.createSequentialGroup()
+                                .addGap(0, 175, Short.MAX_VALUE))
+                            .addComponent(jScrollPane3)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, JPanelCrearCursoLayout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(JPanelCrearCursoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jScrollPane1)
                             .addGroup(JPanelCrearCursoLayout.createSequentialGroup()
                                 .addGap(0, 0, Short.MAX_VALUE)
                                 .addComponent(jLabelCursoMensajeExito)
+                                .addGap(24, 24, 24)
+                                .addComponent(jButtonCancelarCurso)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(jButtonGuardarCurso))
                             .addGroup(JPanelCrearCursoLayout.createSequentialGroup()
                                 .addComponent(jLabelCrearCursoDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jLabelCrearCursoDescripcionError)))))
+                                .addComponent(jLabelCrearCursoDescripcionError))))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addContainerGap())
         );
         JPanelCrearCursoLayout.setVerticalGroup(
@@ -693,7 +703,7 @@ public class MainJFrame extends javax.swing.JFrame {
                         .addComponent(jLabelCrearCursoPrevias)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 57, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 101, Short.MAX_VALUE)
                 .addGroup(JPanelCrearCursoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabelCrearCursoDescripcion)
                     .addComponent(jLabelCrearCursoDescripcionError))
@@ -702,7 +712,8 @@ public class MainJFrame extends javax.swing.JFrame {
                 .addGap(40, 40, 40)
                 .addGroup(JPanelCrearCursoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButtonGuardarCurso)
-                    .addComponent(jLabelCursoMensajeExito))
+                    .addComponent(jLabelCursoMensajeExito)
+                    .addComponent(jButtonCancelarCurso))
                 .addContainerGap())
         );
 
@@ -787,13 +798,13 @@ public class MainJFrame extends javax.swing.JFrame {
                     .addComponent(jLabelConsultarCursos)
                     .addComponent(jButtonConsultarCursosRefresh))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPaneTablaConsultaCursos, javax.swing.GroupLayout.DEFAULT_SIZE, 26, Short.MAX_VALUE)
+                .addComponent(jScrollPaneTablaConsultaCursos, javax.swing.GroupLayout.DEFAULT_SIZE, 453, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
         jLabelCrearPrograma.setText("Crear Programa");
 
-        jButtonGuardarPrograma.setText("Guardar");
+        jButtonGuardarPrograma.setText("Aceptar");
         jButtonGuardarPrograma.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonGuardarProgramaActionPerformed(evt);
@@ -823,6 +834,13 @@ public class MainJFrame extends javax.swing.JFrame {
         jLabelCrearProgramaFechaInicio1.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
         jLabelCrearProgramaFechaInicio1.setText("ej: 24/8/26");
 
+        jButtonCancelarPrograma.setText("Cancelar");
+        jButtonCancelarPrograma.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonCancelarProgramaActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout JPanelCrearProgramaLayout = new javax.swing.GroupLayout(JPanelCrearPrograma);
         JPanelCrearPrograma.setLayout(JPanelCrearProgramaLayout);
         JPanelCrearProgramaLayout.setHorizontalGroup(
@@ -847,6 +865,8 @@ public class MainJFrame extends javax.swing.JFrame {
                             .addComponent(jFormattedTextFieldCrearProgramaFechaFin, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, JPanelCrearProgramaLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jButtonCancelarPrograma)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jButtonGuardarPrograma))
                     .addGroup(JPanelCrearProgramaLayout.createSequentialGroup()
                         .addGroup(JPanelCrearProgramaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -880,7 +900,9 @@ public class MainJFrame extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jTextAreaCrearProgramaDesc, javax.swing.GroupLayout.PREFERRED_SIZE, 249, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 253, Short.MAX_VALUE)
-                .addComponent(jButtonGuardarPrograma)
+                .addGroup(JPanelCrearProgramaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButtonGuardarPrograma)
+                    .addComponent(jButtonCancelarPrograma))
                 .addContainerGap())
         );
 
@@ -1161,7 +1183,7 @@ public class MainJFrame extends javax.swing.JFrame {
 
         jLabelSeccionCrearInstituto.setText("Ingresar nuevo Instituto");
 
-        jButtonGuardarInstituto.setText("Guardar");
+        jButtonGuardarInstituto.setText("Aceptar");
         jButtonGuardarInstituto.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonGuardarInstitutoActionPerformed(evt);
@@ -1173,6 +1195,13 @@ public class MainJFrame extends javax.swing.JFrame {
         jLabelCrearInstitutoNombreError.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
         jLabelCrearInstitutoNombreError.setForeground(new java.awt.Color(255, 0, 0));
         jLabelCrearInstitutoNombreError.setText("* Instituto ya existente.");
+
+        jButtonCancelarInstituto.setText("Cancelar");
+        jButtonCancelarInstituto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonCancelarInstitutoActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanelSeccionCrearNuevoInstitutoLayout = new javax.swing.GroupLayout(jPanelSeccionCrearNuevoInstituto);
         jPanelSeccionCrearNuevoInstituto.setLayout(jPanelSeccionCrearNuevoInstitutoLayout);
@@ -1196,6 +1225,8 @@ public class MainJFrame extends javax.swing.JFrame {
                                 .addComponent(jLabelCrearInstitutoNombreError))
                             .addComponent(jTextCrearInstituto, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButtonCancelarInstituto)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jButtonGuardarInstituto)))
                 .addContainerGap())
         );
@@ -1212,7 +1243,8 @@ public class MainJFrame extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanelSeccionCrearNuevoInstitutoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jTextCrearInstituto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButtonGuardarInstituto))
+                    .addComponent(jButtonGuardarInstituto)
+                    .addComponent(jButtonCancelarInstituto))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -1237,7 +1269,7 @@ public class MainJFrame extends javax.swing.JFrame {
                     .addGroup(jPanelGestionarInstitutosLayout.createSequentialGroup()
                         .addComponent(jLabelConsultarUsuarios1)
                         .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 649, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelGestionarInstitutosLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(jButtonConsultarInstitutosRefresh)))
@@ -1529,7 +1561,7 @@ public class MainJFrame extends javax.swing.JFrame {
             fechaInicio = obtenerFechaComoLocalDate(jFormattedTextFieldCrearProgramaFechaInicio);
             fechaFin = obtenerFechaComoLocalDate(jFormattedTextFieldCrearProgramaFechaFin);
         } catch (java.text.ParseException | IllegalArgumentException ex) {
-            JOptionPane.showMessageDialog(this, "Ingrese fechas válidas con formato dd/MM/yyyy.", "Fecha inválida", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Por favor ingrese fechas válidas con formato dd/MM/yyyy.", "Fecha inválida", JOptionPane.WARNING_MESSAGE);
             return;
         }
 
@@ -1543,10 +1575,18 @@ public class MainJFrame extends javax.swing.JFrame {
             return;
         }
 
+        if (Boolean.TRUE.equals(programaDeFormacionPres.existeProgramaDeFormacion(nombre))) {
+            JOptionPane.showMessageDialog(this, "Ya existe un programa de formación con ese nombre. Prueba con otro nombre.", "Programa duplicado", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
         System.out.println("[GUI] Crear nuevo Programa: " + nombre + fechaInicio + fechaFin);
         DataProgramaFormacion nuevoPrograma = programaDeFormacionPres.guardarNuevoProgramaDeFormacion(nombre, descripcion, fechaInicio, fechaFin);
         if(nuevoPrograma != null){
             limpiarFormularioProgDeFormacion();
+            JOptionPane.showMessageDialog(this, "Programa de formación registrado y guardado con éxito", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(this, "No se pudo crear el programa de formación. Verifique los datos ingresados.", "Error al crear programa", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jButtonGuardarProgramaActionPerformed
 
@@ -1720,6 +1760,10 @@ public class MainJFrame extends javax.swing.JFrame {
         recargarCursosPrevias();
     }
 
+    private void limpiarFormularioInstituto() {
+        jTextCrearInstituto.setText("");
+    }
+
     private void recargarCursosPrevias() {
         HashSet<DataCurso> cursos = cursoPres.cargarCursos();
         DefaultListModel<DataCurso> model = new DefaultListModel<>();
@@ -1741,6 +1785,12 @@ public class MainJFrame extends javax.swing.JFrame {
         jLabelCrearInstitutoNombreError.setVisible(false);
 
         if (nombre.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Debe ingresar el nombre del instituto.", "Dato requerido", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        if (Boolean.TRUE.equals(institutoPres.existeInstituto(nombre))) {
+            JOptionPane.showMessageDialog(this, "Ya existe un instituto con ese nombre. Prueba con otro nombre.", "Instituto duplicado", JOptionPane.WARNING_MESSAGE);
             return;
         }
 
@@ -1749,11 +1799,14 @@ public class MainJFrame extends javax.swing.JFrame {
         boolean institutoGuardado = institutoPres.guardarNuevoInstituto(nombre);
 
         if (!institutoGuardado) {
-            jLabelCrearInstitutoNombreError.setVisible(true);
+//            jLabelCrearInstitutoNombreError.setVisible(true);
+            javax.swing.JOptionPane.showMessageDialog(this, "Ya existe un Instituto con ese nombre, prueba uno diferente", "Error", javax.swing.JOptionPane.WARNING_MESSAGE);
             return;
         }
 
-        jTextCrearInstituto.setText("");
+        limpiarFormularioInstituto();
+        
+        javax.swing.JOptionPane.showMessageDialog(this, "Instituto registrado y guardado con éxito", "Éxito", javax.swing.JOptionPane.INFORMATION_MESSAGE);
 
         // Cargar la nueva lista y actualizar tabla
         HashSet<DataInstituto> institutos = this.institutoPres.cargarInstitutos();
@@ -1784,31 +1837,61 @@ public class MainJFrame extends javax.swing.JFrame {
 
     private void jButtonGuardarCursoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonGuardarCursoActionPerformed
         final String nombre = jTextCrearCursoNombre.getText().trim();
-        final String descripcion = jTextAreaCrearCursoDescripcion.getText();
+        final String descripcion = jTextAreaCrearCursoDescripcion.getText().trim();
 
         jLabelCrearCursoNombreError.setVisible(false);
 
-        final int duracion = Integer.parseInt(jTextCrearCursoDuracion.getText());
-        final int cantHoras = Integer.parseInt(jTextCrearCursoCantHoras.getText());
-        final int cantCreditos = Integer.parseInt(jTextCrearCursoCantCreditos.getText());
+        if (nombre.isEmpty() || descripcion.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Debe ingresar el nombre y la descripción del curso.", "Datos requeridos", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
 
-        final String url = jTextCrearCursoUrl.getText();
+        final int duracion;
+        final int cantHoras;
+        final int cantCreditos;
+        try {
+            duracion = Integer.parseInt(jTextCrearCursoDuracion.getText().trim());
+            cantHoras = Integer.parseInt(jTextCrearCursoCantHoras.getText().trim());
+            cantCreditos = Integer.parseInt(jTextCrearCursoCantCreditos.getText().trim());
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(this, "La duración, la cantidad de horas y los créditos deben ser números enteros.", "Datos inválidos", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        if (duracion <= 0 || cantHoras <= 0 || cantCreditos <= 0) {
+            JOptionPane.showMessageDialog(this, "La duración, la cantidad de horas y los créditos deben ser mayores que cero.", "Datos inválidos", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        final String url = jTextCrearCursoUrl.getText().trim();
+        if (url.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Debe ingresar la URL del curso.", "Dato requerido", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
 
         final DataInstituto instituto = (DataInstituto) jComboBoxCrearCursoInstituto.getSelectedItem();
+        if (instituto == null) {
+            JOptionPane.showMessageDialog(this, "Debe seleccionar un instituto.", "Dato requerido", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        if (Boolean.TRUE.equals(cursoPres.existeCurso(nombre))) {
+            JOptionPane.showMessageDialog(this, "Ya existe un curso con ese nombre. Prueba con otro nombre.", "Curso duplicado", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
         final HashSet<DataCurso> previas = new HashSet<>(cursosPreviosSeleccionados);
 
         System.out.println("[GUI] Crear nuevo Curso: " + nombre);
         DataCurso nuevoCurso = cursoPres.guardarNuevoCurso(instituto, nombre, descripcion, duracion, cantHoras, cantCreditos, url, previas);
         if (nuevoCurso != null){
             limpiarFormularioCurso();
-            jLabelCursoMensajeExito.setVisible(true);
-            Timer temporizadorMensajeExito = new Timer(3000, e -> jLabelCursoMensajeExito.setVisible(false));
-            temporizadorMensajeExito.setRepeats(false);
-            temporizadorMensajeExito.start();
+            javax.swing.JOptionPane.showMessageDialog(this, "Curso registrado y guardado con éxito", "Éxito", javax.swing.JOptionPane.INFORMATION_MESSAGE);
         } else {
-            jLabelCrearCursoNombreError.setVisible(true);
+            JOptionPane.showMessageDialog(this, "No se pudo crear el curso. Verifique los datos ingresados.", "Error al crear curso", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jButtonGuardarCursoActionPerformed
+    
     private void jButtonAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAceptarActionPerformed
         String nick = jTextFieldNickname.getText().trim();
         String nombre = jTextFieldNombre.getText().trim();
@@ -2018,6 +2101,18 @@ public class MainJFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jCheckBoxAgregarCursoProgramaItemStateChanged
 
+    private void jButtonCancelarCursoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCancelarCursoActionPerformed
+        limpiarFormularioCurso();
+    }//GEN-LAST:event_jButtonCancelarCursoActionPerformed
+
+    private void jButtonCancelarInstitutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCancelarInstitutoActionPerformed
+        limpiarFormularioInstituto();
+    }//GEN-LAST:event_jButtonCancelarInstitutoActionPerformed
+
+    private void jButtonCancelarProgramaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCancelarProgramaActionPerformed
+        limpiarFormularioProgDeFormacion();
+    }//GEN-LAST:event_jButtonCancelarProgramaActionPerformed
+
     private void jButtonCancelarActionPerformed(java.awt.event.ActionEvent evt) {
        limpiarFormularioAltaUsuario();
        hideAllJPanels();
@@ -2102,6 +2197,9 @@ public class MainJFrame extends javax.swing.JFrame {
     private javax.swing.ButtonGroup buttonGroupEstYDoc;
     private javax.swing.JButton jButtonAceptar;
     private javax.swing.JButton jButtonCancelar;
+    private javax.swing.JButton jButtonCancelarCurso;
+    private javax.swing.JButton jButtonCancelarInstituto;
+    private javax.swing.JButton jButtonCancelarPrograma;
     private javax.swing.JButton jButtonConsUsRefresh;
     private javax.swing.JButton jButtonConsultarCursosRefresh;
     private javax.swing.JButton jButtonConsultarInstitutosRefresh;
