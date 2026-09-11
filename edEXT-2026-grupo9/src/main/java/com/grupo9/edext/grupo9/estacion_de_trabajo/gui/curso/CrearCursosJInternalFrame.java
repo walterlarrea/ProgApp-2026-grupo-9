@@ -270,7 +270,7 @@ public class CrearCursosJInternalFrame extends javax.swing.JInternalFrame {
         final String nombre = jTextCrearCursoNombre.getText().trim();
         final String descripcion = jTextAreaCrearCursoDescripcion.getText().trim();
 
-        if (nombre.isEmpty() || descripcion.isEmpty()) {
+        if (nombre.isEmpty() || nombre.equals("") || descripcion.isEmpty() || descripcion.equals("")) {
             JOptionPane.showMessageDialog(this, "Debe ingresar el nombre y la descripción del curso.", "Datos requeridos", JOptionPane.WARNING_MESSAGE);
             return;
         }

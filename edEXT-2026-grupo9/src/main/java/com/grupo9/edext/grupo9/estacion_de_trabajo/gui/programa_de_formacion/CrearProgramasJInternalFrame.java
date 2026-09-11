@@ -159,7 +159,12 @@ public class CrearProgramasJInternalFrame extends javax.swing.JInternalFrame {
         final String descripcion = jTextAreaCrearProgramaDesc.getText();
         final LocalDate fechaInicio;
         final LocalDate fechaFin;
-
+        
+        if (nombre.isEmpty() || nombre.equals("")) {
+            JOptionPane.showMessageDialog(this, "Debe ingresar el nombre del curso.", "Dato requerido", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        
         try {
             fechaInicio = this.obtenerFechaComoLocalDate(jFormattedTextFieldCrearProgramaFechaInicio);
             fechaFin = this.obtenerFechaComoLocalDate(jFormattedTextFieldCrearProgramaFechaFin);

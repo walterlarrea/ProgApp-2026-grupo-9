@@ -178,7 +178,7 @@ public class GestionarInstitutosJInternalFrame extends javax.swing.JInternalFram
     private void jButtonGuardarInstitutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonGuardarInstitutoActionPerformed
         final String nombre = jTextCrearInstituto.getText().trim();
 
-        if (nombre.isEmpty()) {
+        if (nombre.isEmpty() || nombre.equals("")) {
             JOptionPane.showMessageDialog(this, "Debe ingresar el nombre del instituto.", "Dato requerido", JOptionPane.WARNING_MESSAGE);
             return;
         }
