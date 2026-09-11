@@ -11,6 +11,7 @@ import jakarta.persistence.*;
 
 
 @Entity
+@Table(name = "docentes")
 public class Docente extends Usuario implements Serializable {
     private String nombreInst;
     @ManyToMany

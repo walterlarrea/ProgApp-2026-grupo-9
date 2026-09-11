@@ -10,6 +10,7 @@ import jakarta.persistence.*;
 import java.util.HashSet;
 
 @Entity
+@Table(name = "cursos")
 public class Curso implements Serializable {
     @Id
     private String nombreCurso;

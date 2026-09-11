@@ -7,6 +7,7 @@ import java.util.Set;
 import jakarta.persistence.*;
 
 @Entity
+@Table(name = "institutos")
 public class Instituto implements Serializable{
     @Id
     private String nombreI;

@@ -10,10 +10,12 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.Table;
 import java.time.LocalDate;
 import java.util.Set;
 
 @Entity
+@Table(name = "programas_de_formacion")
 public class ProgramaDeFormacion implements Serializable{
     @Id
     private String nombre;
