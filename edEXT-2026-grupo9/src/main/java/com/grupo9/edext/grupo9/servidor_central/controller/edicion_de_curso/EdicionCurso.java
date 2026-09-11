@@ -7,6 +7,7 @@ import java.util.Set;
 import jakarta.persistence.*;
 
 @Entity
+@Table(name = "ediciones_de_cursos")
 public class EdicionCurso {
     @Id
     private String nombreEdi;

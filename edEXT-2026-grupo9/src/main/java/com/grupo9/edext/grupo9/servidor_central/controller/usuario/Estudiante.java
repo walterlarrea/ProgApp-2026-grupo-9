@@ -8,8 +8,10 @@ import java.util.Set;
 import java.util.HashSet;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 
 @Entity
+@Table(name = "estudiantes")
 public class Estudiante extends Usuario implements Serializable{
     @OneToMany(mappedBy = "estudiante")
     private Set<InscEdicion> inscripciones = new HashSet<>();

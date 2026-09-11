@@ -13,6 +13,7 @@ import java.io.Serializable;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
+@Table(name = "usuarios")
 public class Usuario implements Serializable{
     @Id
     private String nickname;
