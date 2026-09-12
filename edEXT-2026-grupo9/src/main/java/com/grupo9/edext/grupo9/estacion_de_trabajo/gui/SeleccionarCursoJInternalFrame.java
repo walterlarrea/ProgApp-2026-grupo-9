@@ -25,6 +25,8 @@ public class SeleccionarCursoJInternalFrame extends javax.swing.JInternalFrame {
         setTitle("Selección de Curso");
         setClosable(true);
         setResizable(true);
+        setMaximizable(true);
+        setIconifiable(true);
         cargarInstitutos();
         jComboBoxCurso.removeAllItems();
     }
@@ -52,7 +54,6 @@ public class SeleccionarCursoJInternalFrame extends javax.swing.JInternalFrame {
         jButtonSeleccionar.addActionListener(this::jButtonSeleccionarActionPerformed);
 
         jComboBoxCurso.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jComboBoxCurso.addActionListener(this::jComboBoxCursoActionPerformed);
 
         jComboBoxInstituto.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         jComboBoxInstituto.addActionListener(this::jComboBoxInstitutoActionPerformed);
@@ -131,16 +132,13 @@ public class SeleccionarCursoJInternalFrame extends javax.swing.JInternalFrame {
 
     private void jComboBoxInstitutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxInstitutoActionPerformed
         int indice = jComboBoxInstituto.getSelectedIndex();
-        if (indice == -1) {
+        if (indice <= 0) {
+            jComboBoxCurso.removeAllItems();
             return;
         }
-        Instituto institutoSeleccionado = institutos.get(indice);
+        Instituto institutoSeleccionado = institutos.get(indice - 1);
         obtenerCursosDelInstituto(institutoSeleccionado);
     }//GEN-LAST:event_jComboBoxInstitutoActionPerformed
-
-    private void jComboBoxCursoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxCursoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBoxCursoActionPerformed
 
     private void cargarInstitutos() {
         institutos = new ArrayList<>();
@@ -149,6 +147,7 @@ public class SeleccionarCursoJInternalFrame extends javax.swing.JInternalFrame {
             institutos.add(DtoMapper.toEntity(data));
         }
         jComboBoxInstituto.removeAllItems();
+        jComboBoxInstituto.addItem("Ninguno");
         for (Instituto instituto : institutos) {
             jComboBoxInstituto.addItem(instituto.getNombreI());
         }
