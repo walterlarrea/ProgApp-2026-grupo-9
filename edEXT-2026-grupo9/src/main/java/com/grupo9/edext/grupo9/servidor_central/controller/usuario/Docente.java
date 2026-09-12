@@ -15,14 +15,12 @@ import jakarta.persistence.*;
 public class Docente extends Usuario implements Serializable {
     private String nombreInst;
     @ManyToMany
-    @JoinTable(
-        name = "docente_instituto",
+    @JoinTable(name = "docente_instituto",
         joinColumns = @JoinColumn(name = "docente_nickname"),
-        inverseJoinColumns = @JoinColumn(name = "instituto_nombreI")
-    )
+        inverseJoinColumns = @JoinColumn(name = "instituto_nombreI"))
     private Set<Instituto> institutos = new HashSet<>();
 
-    @OneToMany(mappedBy = "docente")
+    @ManyToMany(mappedBy = "docentes")
     private Set<EdicionCurso> ediciones = new HashSet<>();
 
     public Docente() {

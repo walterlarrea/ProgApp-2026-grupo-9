@@ -23,24 +23,24 @@ public class ManejadorEdiciones {
     try {
         List<EdicionCurso> lista = em.createQuery("SELECT edc FROM EdicionCurso edc", EdicionCurso.class).getResultList();
         for (EdicionCurso edC : lista) {
-            // Si necesitas asegurar que las inscripciones, previas y el docente vengan cargados en memoria:
+            //si necesitas asegurar que las inscripciones, previas y el docente vengan cargados en memoria:
             if (edC.getInscripciones() != null) {
                 edC.getInscripciones().size();
             }
-            if (edC.getDocente() != null) {
-                edC.getDocente().getNickname(); // Fuerza la carga si es un proxy de Hibernate
+            if (edC.getDocentes() != null) {
+                edC.getDocentes().size(); //fuerza la carga si es un proxy de Hibernate
             }
             if (edC.getCursoAsoc() != null) {
                 edC.getCursoAsoc().getPrevias().size();
             }
             edCurso.put(edC.getNombreEdi(), edC);
         }
-    } catch (Exception e) {
-        e.printStackTrace();
-    } finally {
-        em.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            em.close();
+        }
     }
-}
     
     public static ManejadorEdiciones getInstance(){
         if(instance == null)
