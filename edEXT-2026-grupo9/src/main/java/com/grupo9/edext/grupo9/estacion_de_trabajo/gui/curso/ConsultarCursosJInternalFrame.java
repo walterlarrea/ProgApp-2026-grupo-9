@@ -513,7 +513,7 @@ public class ConsultarCursosJInternalFrame extends javax.swing.JInternalFrame {
                 
                 // Edicion usa un Curso para después cargar las ediciones
                 DataCurso curso = (DataCurso) this.jComboBoxConsultarCursoSel.getSelectedItem();
-                this.abrirEdicionRelacionada(curso);
+                this.abrirEdicionRelacionada(curso, edicionSeleccionada);
             }
         }
     }//GEN-LAST:event_jListDetCursoSelectEdicionesMouseClicked
@@ -546,8 +546,6 @@ public class ConsultarCursosJInternalFrame extends javax.swing.JInternalFrame {
             for (DataCurso curso : cursos) {
                 model.addElement(curso);
             }
-        } else {
-            
         }
     }
     
@@ -560,8 +558,8 @@ public class ConsultarCursosJInternalFrame extends javax.swing.JInternalFrame {
 //        this.dispose();
     }
     
-    private void abrirEdicionRelacionada(DataCurso cursoSeleccionada){
-        JInternalFrame frame = new ConsultarEdicionJInternalFrame(DtoMapper.toEntity(cursoSeleccionada));
+    private void abrirEdicionRelacionada(DataCurso cursoSeleccionada, DataEdicionCurso edicionSeleccionada){
+        JInternalFrame frame = new ConsultarEdicionJInternalFrame(DtoMapper.toEntity(cursoSeleccionada), edicionSeleccionada);
 
         this.jDesktopPane.add(frame);
         frame.setVisible(true);

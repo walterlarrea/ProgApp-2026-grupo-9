@@ -29,6 +29,31 @@ public class ConsultarEdicionJInternalFrame extends javax.swing.JInternalFrame {
         ocultarDatos();
     }
     
+    public ConsultarEdicionJInternalFrame(Curso cursoSeleccionado, DataEdicionCurso edicionPreSeleccionada) {
+        initComponents();
+        this.cursoSeleccionado = cursoSeleccionado;
+        setTitle("Consultar");
+        setClosable(true);
+        setResizable(true);
+        cargarEdiciones();
+        //para que el texto sea solo lectura
+        noEditable();
+        //para que no muestre los datos antes de buscar
+        ocultarDatos();
+        if (edicionPreSeleccionada != null) {
+            String nombreEdicionPreSeleccionada = edicionPreSeleccionada.getNombreEdi();
+            for (int i = 0; i < jComboBoxEdiciones.getItemCount(); i++) {
+                if (nombreEdicionPreSeleccionada.equals(jComboBoxEdiciones.getItemAt(i))) {
+                    jComboBoxEdiciones.setSelectedIndex(i);
+                    this.jButtonBuscarEdicionActionPerformed(null);
+                    break;
+                }
+            }
+        }
+        
+        
+    }
+    
     private void noEditable(){
         jTextFieldNombre.setEditable(false);
         jTextFieldCurso.setEditable(false);
