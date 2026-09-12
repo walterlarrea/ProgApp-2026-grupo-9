@@ -8,5 +8,6 @@ public interface IProgramaDeFormacion {
     public HashSet<DataProgramaFormacion> todosLosProgramas();
     public Boolean existeProgramaDeFormacion(String nombre);
     public DataProgramaFormacion traerPorNombreId(String nombreId);
+    public HashSet<DataProgramaFormacion> programasPorCurso(String nombreCurso);
     public Boolean agregarCursoAProgramaDeFormacion(String nombreIdPrograma, String nombreIdCurso);
 }

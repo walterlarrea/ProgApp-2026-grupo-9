@@ -12,5 +12,6 @@ public record DataCurso (
     int cantCred,
     LocalDate fechaReg,
     String url,
-    Set<DataCurso> previas
+    Set<DataCurso> previas,
+    Set<DataProgramaFormacion> programas
 ){}

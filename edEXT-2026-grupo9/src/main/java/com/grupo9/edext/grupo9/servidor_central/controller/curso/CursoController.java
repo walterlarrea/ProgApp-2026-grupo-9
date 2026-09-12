@@ -54,6 +54,18 @@ public class CursoController implements ICurso{
     }
 
     @Override
+    public HashSet<DataCurso> cursosPorInstituto(String nombreInstituto){
+        System.out.println("[SERVIDOR] Consulta los Cursos del Instituto " + nombreInstituto + " a persistencia");
+        try {
+            return this.manejadorCurso.traerCursosPorInstituto(nombreInstituto);
+        } catch (Exception e) {
+            System.out.println("[SERVIDOR] Persistencia FALLÓ al intentar traer los Cursos del Instituto: " + nombreInstituto);
+            System.out.println(e);
+        }
+        return null;
+    }
+
+    @Override
     public Boolean existeCurso(String nombre){
         System.out.println("[SERVIDOR] Consulta si existe el Curso " + nombre + " en persistencia");
         try {

@@ -24,11 +24,18 @@ import javax.swing.table.DefaultTableModel;
 public class ConsultarProgramasJInternalFrame extends javax.swing.JInternalFrame {
     private final ProgramaDeFormacionPres programaDeFormacionPres = new ProgramaDeFormacionPres();
     private final CursoPres cursoPres = new CursoPres();
+    
+    private DataProgramaFormacion programaPreSeleccionado;
 
     /**
      * Creates new form ConsultarProgramasJInternalFrame
      */
     public ConsultarProgramasJInternalFrame() {
+        initComponents();
+    }
+    
+    public ConsultarProgramasJInternalFrame(DataProgramaFormacion programaPreSeleccionado) {
+        this.programaPreSeleccionado = programaPreSeleccionado;
         initComponents();
     }
 
@@ -58,14 +65,16 @@ public class ConsultarProgramasJInternalFrame extends javax.swing.JInternalFrame
         jLabelDetProgSelectFechaFin = new javax.swing.JLabel();
         jLabelDetProgSelectDesc = new javax.swing.JLabel();
         jLabelSeccionDetProgSelectCursos = new javax.swing.JLabel();
-        jScrollPane4 = new javax.swing.JScrollPane();
-        jListDetProgSelectCursos = new javax.swing.JList<>();
-        jScrollPane5 = new javax.swing.JScrollPane();
-        jListSeccionPdeFAgregarCursos = new javax.swing.JList<>();
         jLabelSeccionPdeFAgregarCursos = new javax.swing.JLabel();
         jCheckBoxAgregarCursoPrograma = new javax.swing.JCheckBox();
         jButtonConsultarProgAddCurso = new javax.swing.JButton();
         jSeparator3 = new javax.swing.JSeparator();
+        jSplitPane1 = new javax.swing.JSplitPane();
+        jSplitPane1.setDividerLocation(0.5);
+        jScrollPane5 = new javax.swing.JScrollPane();
+        jListSeccionPdeFAgregarCursos = new javax.swing.JList<>();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        jListDetProgSelectCursos = new javax.swing.JList<>();
 
         setClosable(true);
         setIconifiable(true);
@@ -174,35 +183,6 @@ public class ConsultarProgramasJInternalFrame extends javax.swing.JInternalFrame
 
         jLabelSeccionDetProgSelectCursos.setText("Cursos:");
 
-        jListDetProgSelectCursos.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        jScrollPane4.setViewportView(jListDetProgSelectCursos);
-        jListDetProgSelectCursos.setCellRenderer(new DefaultListCellRenderer() {
-            @Override
-            public Component getListCellRendererComponent(JList<?> list, Object value, int index,
-                boolean isSelected, boolean cellHasFocus) {
-                super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-                if (value instanceof DataCurso dc) {
-                    setText(dc.nombreCurso());
-                }
-                return this;
-            }
-        });
-
-        jListSeccionPdeFAgregarCursos.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        jListSeccionPdeFAgregarCursos.setEnabled(false);
-        jScrollPane5.setViewportView(jListSeccionPdeFAgregarCursos);
-        jListSeccionPdeFAgregarCursos.setCellRenderer(new DefaultListCellRenderer() {
-            @Override
-            public Component getListCellRendererComponent(JList<?> list, Object value, int index,
-                boolean isSelected, boolean cellHasFocus) {
-                super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-                if (value instanceof DataCurso dc) {
-                    setText(dc.nombreCurso());
-                }
-                return this;
-            }
-        });
-
         jLabelSeccionPdeFAgregarCursos.setText("Agregar cursos:");
 
         jCheckBoxAgregarCursoPrograma.setText("Habilitar edición");
@@ -222,6 +202,43 @@ public class ConsultarProgramasJInternalFrame extends javax.swing.JInternalFrame
 
         jSeparator3.setOrientation(javax.swing.SwingConstants.VERTICAL);
 
+        jSplitPane1.setDividerLocation(400);
+        jSplitPane1.setDividerSize(3);
+        jSplitPane1.setResizeWeight(0.5);
+
+        jListSeccionPdeFAgregarCursos.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jListSeccionPdeFAgregarCursos.setEnabled(false);
+        jScrollPane5.setViewportView(jListSeccionPdeFAgregarCursos);
+        jListSeccionPdeFAgregarCursos.setCellRenderer(new DefaultListCellRenderer() {
+            @Override
+            public Component getListCellRendererComponent(JList<?> list, Object value, int index,
+                boolean isSelected, boolean cellHasFocus) {
+                super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+                if (value instanceof DataCurso dc) {
+                    setText(dc.nombreCurso());
+                }
+                return this;
+            }
+        });
+
+        jSplitPane1.setRightComponent(jScrollPane5);
+
+        jListDetProgSelectCursos.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jScrollPane4.setViewportView(jListDetProgSelectCursos);
+        jListDetProgSelectCursos.setCellRenderer(new DefaultListCellRenderer() {
+            @Override
+            public Component getListCellRendererComponent(JList<?> list, Object value, int index,
+                boolean isSelected, boolean cellHasFocus) {
+                super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+                if (value instanceof DataCurso dc) {
+                    setText(dc.nombreCurso());
+                }
+                return this;
+            }
+        });
+
+        jSplitPane1.setLeftComponent(jScrollPane4);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -237,6 +254,7 @@ public class ConsultarProgramasJInternalFrame extends javax.swing.JInternalFrame
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabelSeccionDetallesDeProgSeleccionado)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                 .addGroup(layout.createSequentialGroup()
                                     .addComponent(jLabelSeccionDetProgSelectCursos)
@@ -256,24 +274,24 @@ public class ConsultarProgramasJInternalFrame extends javax.swing.JInternalFrame
                                 .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                                     .addComponent(jLabelSeccionDetProgSelectNombre)
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                    .addComponent(jLabelDetProgSelectNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 305, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addComponent(jScrollPane4))
-                            .addComponent(jLabelSeccionDetallesDeProgSeleccionado))
-                        .addGap(18, 18, 18)
+                                    .addComponent(jLabelDetProgSelectNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 305, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 109, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabelSeccionDetProgSelectDesc)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(jLabelDetProgSelectDesc, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addComponent(jScrollPane5)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabelSeccionPdeFAgregarCursos)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 72, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(jCheckBoxAgregarCursoPrograma)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButtonConsultarProgAddCurso)))))
+                                .addComponent(jButtonConsultarProgAddCurso))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jSplitPane1)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -319,10 +337,8 @@ public class ConsultarProgramasJInternalFrame extends javax.swing.JInternalFrame
                             .addComponent(jCheckBoxAgregarCursoPrograma)))
                     .addComponent(jButtonConsultarProgAddCurso, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jSeparator3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 237, Short.MAX_VALUE)
-                    .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 237, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(jSplitPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 186, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -347,12 +363,12 @@ public class ConsultarProgramasJInternalFrame extends javax.swing.JInternalFrame
     }//GEN-LAST:event_jButtonConsultarProgramasRefreshActionPerformed
 
     private void jTableConsultaProgramasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableConsultaProgramasMouseClicked
-        JTable source = (JTable)evt.getSource();
-        int row = source.rowAtPoint( evt.getPoint() );
-        int column = source.columnAtPoint( evt.getPoint() );
-        String seleccion = (String) source.getModel().getValueAt(row, column);
+        this.triggerTableSelectionChange();
+    }//GEN-LAST:event_jTableConsultaProgramasMouseClicked
 
-        //        JOptionPane.showMessageDialog(null, seleccion + "");
+    private void triggerTableSelectionChange(){
+        String seleccion = this.obtenerProgDeFormSeleccionadoEnLaTablaDeConsulta();
+        
         if(seleccion != null){
             this.limpiarDetallesConsultaProgDeForm();
             this.actualizarListasCursosPrograma(seleccion);
@@ -361,8 +377,8 @@ public class ConsultarProgramasJInternalFrame extends javax.swing.JInternalFrame
         } else {
             this.limpiarDetallesConsultaProgDeForm();
         }
-    }//GEN-LAST:event_jTableConsultaProgramasMouseClicked
-
+    }
+    
     private void jCheckBoxAgregarCursoProgramaItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jCheckBoxAgregarCursoProgramaItemStateChanged
         String seleccion = this.obtenerProgDeFormSeleccionadoEnLaTablaDeConsulta();
 
@@ -402,6 +418,26 @@ public class ConsultarProgramasJInternalFrame extends javax.swing.JInternalFrame
     private void formInternalFrameOpened(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameOpened
         this.limpiarDetallesConsultaProgDeForm();
         this.jButtonConsultarProgramasRefreshActionPerformed(null);
+        
+        if(this.programaPreSeleccionado == null){
+            return;
+        }
+        
+        int rowCount = this.jTableConsultaProgramas.getRowCount();
+        
+        for (int row = 0; row < rowCount; row++){
+            Object celdaNombre = this.jTableConsultaProgramas.getValueAt(row, 0);
+            
+            if(celdaNombre != null && celdaNombre.equals(this.programaPreSeleccionado.nombre())){
+//                this.jTableConsultaProgramas.setRowSelectionInterval(row, row);
+//                this.jTableConsultaProgramas.setColumnSelectionInterval(0, 0);
+                this.jTableConsultaProgramas.changeSelection(row, 0, false, false);
+                
+                this.jTableConsultaProgramas.scrollRectToVisible(this.jTableConsultaProgramas.getCellRect(row, 0, true));
+                
+                this.triggerTableSelectionChange();
+            }
+        }
     }//GEN-LAST:event_formInternalFrameOpened
     
     private String obtenerProgDeFormSeleccionadoEnLaTablaDeConsulta(){
@@ -493,6 +529,7 @@ public class ConsultarProgramasJInternalFrame extends javax.swing.JInternalFrame
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JScrollPane jScrollPaneTablaConsultaProgramas;
     private javax.swing.JSeparator jSeparator3;
+    private javax.swing.JSplitPane jSplitPane1;
     private javax.swing.JPanel jSubPanelTablaProgramasDeForm;
     private javax.swing.JTable jTableConsultaProgramas;
     // End of variables declaration//GEN-END:variables

@@ -12,6 +12,7 @@ import com.grupo9.edext.grupo9.servidor_central.controller.instituto.Instituto;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataCurso;
 import com.grupo9.edext.grupo9.mensajes.ErrorNoExiste;
 import com.grupo9.edext.grupo9.mensajes.ErrorRepetidos;
+import com.grupo9.edext.grupo9.servidor_central.controller.DtoMapper;
 import static com.grupo9.edext.grupo9.servidor_central.controller.DtoMapper.toData;
 import java.time.LocalDate;
 import java.util.HashSet;
@@ -25,7 +26,7 @@ public class EdicionCursoPres {
     public void guardarNuevaEdicion(String nombreEdi, Curso curso, LocalDate fechaInicio, LocalDate fechaFin, Integer cupo, Set<Docente> docentes){
         System.out.println("[CLIENTE] Llamada al servidor central: " + nombreEdi);
         Set<DataDocente> dataDocente = toData(docentes);
-        DataCurso dataCurso = new DataCurso(toData(curso.getInstituto()),  curso.getNombreCurso(),  curso.getDescCurso(), curso.getDuracion(), curso.getCantHoras(), curso.getCantCred(), curso.getFechaReg(), curso.getUrl(), null);
+        DataCurso dataCurso = new DataCurso(toData(curso.getInstituto()),  curso.getNombreCurso(),  curso.getDescCurso(), curso.getDuracion(), curso.getCantHoras(), curso.getCantCred(), curso.getFechaReg(), curso.getUrl(), null, null);
         DataEdicionCurso nuevaEdicion = new DataEdicionCurso(nombreEdi, dataCurso, fechaInicio, fechaFin, cupo, dataDocente, new HashSet<>(), LocalDate.now());
         DataEdicionCurso edicionCreada = servidorCentral.guardarEdicionCurso(nuevaEdicion);
         if (edicionCreada != null) {
@@ -47,6 +48,10 @@ public class EdicionCursoPres {
     
     public EdicionCurso[] traerEdiciones(Curso curso) {
         return servidorCentral.traerEdiciones(curso);
+    }
+
+    public HashSet<DataEdicionCurso> traerEdiciones(DataCurso dataCurso) {
+        return this.servidorCentral.traerEdiciones(dataCurso);
     }
     
     public Estudiante[] traerEstudiantes(){

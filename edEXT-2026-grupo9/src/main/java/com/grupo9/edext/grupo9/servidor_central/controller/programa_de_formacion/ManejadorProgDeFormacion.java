@@ -10,6 +10,7 @@ import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Join;
 import jakarta.persistence.criteria.Root;
 import java.util.HashSet;
 
@@ -81,6 +82,24 @@ public class ManejadorProgDeFormacion {
             ProgramaDeFormacion programa = queryTodo.getResultList().getFirst();
             return DtoMapper.toData(programa);
         }catch(Exception e){
+            throw e;
+        }
+    }
+
+    public HashSet<DataProgramaFormacion> traerProgramasPorCurso(String nombreCurso){
+        try {
+            CriteriaBuilder cBuilder = em.getCriteriaBuilder();
+            CriteriaQuery<ProgramaDeFormacion> cQuery = cBuilder.createQuery(ProgramaDeFormacion.class);
+            Root<ProgramaDeFormacion> programa = cQuery.from(ProgramaDeFormacion.class);
+            Join<ProgramaDeFormacion, Curso> curso = programa.join("cursos");
+
+            cQuery.select(programa)
+                    .where(cBuilder.equal(curso.get("nombreCurso"), nombreCurso))
+                    .distinct(true);
+
+            TypedQuery<ProgramaDeFormacion> query = em.createQuery(cQuery);
+            return DtoMapper.toDataList(new HashSet<>(query.getResultList()), DataProgramaFormacion.class);
+        } catch (Exception e) {
             throw e;
         }
     }

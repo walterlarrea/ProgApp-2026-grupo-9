@@ -37,9 +37,9 @@
                               <Group type="103" groupAlignment="1" max="-2" attributes="0">
                                   <Component id="jLabelCrearCursoUrl" alignment="0" min="-2" pref="26" max="-2" attributes="0"/>
                                   <Group type="102" alignment="0" attributes="0">
-                                      <Group type="103" groupAlignment="0" attributes="0">
-                                          <Component id="jTextCrearCursoCantHoras" alignment="0" min="-2" pref="250" max="-2" attributes="0"/>
-                                          <Component id="jLabelCrearCursoCantHoras" alignment="0" min="-2" pref="108" max="-2" attributes="0"/>
+                                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                          <Component id="jTextCrearCursoCantHoras" pref="250" max="32767" attributes="0"/>
+                                          <Component id="jLabelCrearCursoCantHoras" max="32767" attributes="0"/>
                                       </Group>
                                       <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
                                       <Group type="103" groupAlignment="0" attributes="0">
@@ -67,11 +67,8 @@
                               </Group>
                               <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                  <Component id="jTextCrearCursoDuracion" alignment="0" min="-2" pref="150" max="-2" attributes="0"/>
-                                  <Group type="102" alignment="1" attributes="0">
-                                      <Component id="jLabelCrearCursoDuracion" max="32767" attributes="0"/>
-                                      <EmptySpace min="-2" pref="85" max="-2" attributes="0"/>
-                                  </Group>
+                                  <Component id="jTextCrearCursoDuracion" pref="150" max="32767" attributes="0"/>
+                                  <Component id="jLabelCrearCursoDuracion" max="32767" attributes="0"/>
                               </Group>
                           </Group>
                       </Group>
@@ -206,12 +203,12 @@
     </Component>
     <Component class="javax.swing.JLabel" name="jLabelCrearCursoDuracion">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Duraci&#xf3;n"/>
+        <Property name="text" type="java.lang.String" value="Duraci&#xf3;n (semanas)"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabelCrearCursoCantHoras">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Cantidad de horas"/>
+        <Property name="text" type="java.lang.String" value="Cantidad de horas (total semestre)"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="jTextCrearCursoCantHoras">

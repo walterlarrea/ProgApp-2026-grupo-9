@@ -80,6 +80,11 @@ public class ServidorCentralController implements IServidorCentral {
     }
 
     @Override
+    public HashSet<DataProgramaFormacion> programasPorCurso(String nombreCurso){
+        return this.progDeFormacionCtrl.programasPorCurso(nombreCurso);
+    }
+
+    @Override
     public Boolean agregarCursoAProgramaDeFormacion(String nombreIdPrograma, String nombreIdCurso){
         return this.progDeFormacionCtrl.agregarCursoAProgramaDeFormacion(nombreIdPrograma, nombreIdCurso);
     }
@@ -115,6 +120,11 @@ public class ServidorCentralController implements IServidorCentral {
         return this.edicionCursoCtrl.traerEdiciones(curso);
     }
     
+    @Override
+    public HashSet<DataEdicionCurso> traerEdiciones(DataCurso dataCurso){
+        return this.edicionCursoCtrl.traerEdiciones(dataCurso);
+    }
+    
     // Cursos
     @Override
     public DataCurso guardarCurso(DataCurso nuevoCurso){
@@ -124,6 +134,11 @@ public class ServidorCentralController implements IServidorCentral {
     @Override
     public HashSet<DataCurso> consultarTodosLosCursos(){
         return this.cursoCtrl.todosLosCursos();
+    }
+
+    @Override
+    public HashSet<DataCurso> cursosPorInstituto(String nombreInstituto){
+        return this.cursoCtrl.cursosPorInstituto(nombreInstituto);
     }
 
     @Override

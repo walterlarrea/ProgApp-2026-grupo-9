@@ -73,6 +73,18 @@ public class ProgramaDeFormacionController implements IProgramaDeFormacion {
     }
 
     @Override
+    public HashSet<DataProgramaFormacion> programasPorCurso(String nombreCurso){
+        System.out.println("[SERVIDOR] Consulta los Programas del Curso " + nombreCurso + " a persistencia");
+        try {
+            return this.manejadorProgDeFormacion.traerProgramasPorCurso(nombreCurso);
+        } catch (Exception e) {
+            System.out.println("[SERVIDOR] Persistencia FALLÓ al traer los Programas del Curso: " + nombreCurso);
+            System.out.println(e);
+        }
+        return null;
+    }
+
+    @Override
     public Boolean agregarCursoAProgramaDeFormacion(String nombreIdPrograma, String nombreIdCurso){
         System.out.println("[SERVIDOR] Agregar Curso " + nombreIdCurso + " a Programa de Formación " + nombreIdPrograma + " en persistencia");
         try {

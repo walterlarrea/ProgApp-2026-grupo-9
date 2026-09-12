@@ -6,7 +6,9 @@ import com.grupo9.edext.grupo9.servidor_central.controller.curso.Curso;
 import com.grupo9.edext.grupo9.servidor_central.controller.instituto.Instituto;
 import com.grupo9.edext.grupo9.mensajes.ErrorNoExiste;
 import com.grupo9.edext.grupo9.mensajes.ErrorRepetidos;
+import com.grupo9.edext.grupo9.servidor_central.dominio.DataCurso;
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.Set;
 
 public interface IEdicionCurso {
@@ -15,6 +17,7 @@ public interface IEdicionCurso {
     public abstract void altaEdicionCurso(String nEdi, Curso cur, LocalDate fInicio, LocalDate fFin, Integer c, Set<InscEdicion> insc, Set<Docente> d) throws ErrorRepetidos;
     public abstract DataEdicionCurso consultarEdicionCurso(String nInst) throws ErrorNoExiste;
     public EdicionCurso[] traerEdiciones(Curso curso);
+    public HashSet<DataEdicionCurso> traerEdiciones(DataCurso dataCurso);
     public abstract void inscripcionEdicionCurso(LocalDate fInsc, String nickEstudiante, String nEdi) throws ErrorRepetidos, ErrorNoExiste;
     public Estudiante[] traerEstudiantes();
     public void inscribirNuevoEstudiante(LocalDate fechaInsc, String nickname, String nombreEdi) throws ErrorRepetidos, ErrorNoExiste;

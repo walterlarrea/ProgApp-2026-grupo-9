@@ -16,7 +16,7 @@ public class CursoPres {
     
     public DataCurso guardarNuevoCurso(DataInstituto instituto, String nombre, String descripcion, int duracion, int cantHoras, int cantCreditos, String url, Set<DataCurso> previas){
         System.out.println("[CLIENTE] Crear nuevo Curso: " + nombre);
-        DataCurso nuevoCurso = new DataCurso(instituto, nombre, descripcion, duracion, cantHoras, cantCreditos, null, url, previas);
+        DataCurso nuevoCurso = new DataCurso(instituto, nombre, descripcion, duracion, cantHoras, cantCreditos, null, url, previas, null);
         
         DataCurso cursoCreado = servidorCentral.guardarCurso(nuevoCurso);
         if(cursoCreado != null){
@@ -32,6 +32,15 @@ public class CursoPres {
         HashSet<DataCurso> cursos = servidorCentral.consultarTodosLosCursos();
         
         return cursos;
+    }
+
+    public HashSet<DataCurso> cargarCursosPorInstituto(DataInstituto instituto){
+        if (instituto == null) {
+            return new HashSet<>();
+        }
+
+        System.out.println("[CLIENTE] Consultar los Cursos del Instituto: " + instituto.nombreI());
+        return servidorCentral.cursosPorInstituto(instituto.nombreI());
     }
 
     public Boolean existeCurso(String nombre){

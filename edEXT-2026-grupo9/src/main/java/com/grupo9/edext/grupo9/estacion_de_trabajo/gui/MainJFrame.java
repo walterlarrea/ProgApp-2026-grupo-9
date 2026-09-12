@@ -583,7 +583,7 @@ public class MainJFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItemCrearCursoActionPerformed
 
     private void jMenuItemConsultarCursoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemConsultarCursoActionPerformed
-        mostrarInternalFrame(new ConsultarCursosJInternalFrame());
+        mostrarInternalFrame(new ConsultarCursosJInternalFrame(this.jDesktopPane1));
     }//GEN-LAST:event_jMenuItemConsultarCursoActionPerformed
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened

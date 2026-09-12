@@ -23,6 +23,7 @@ public interface IServidorCentral {
     public HashSet<DataProgramaFormacion> consultarTodosLosProgramas();
     public Boolean existeProgramaDeFormacion(String nombre);
     public DataProgramaFormacion traerPorNombreId(String nombreId);
+    public HashSet<DataProgramaFormacion> programasPorCurso(String nombreCurso);
     public Boolean agregarCursoAProgramaDeFormacion(String nombreIdPrograma, String nombreIdCurso);
     
     // Ediciones de cursos
@@ -30,12 +31,14 @@ public interface IServidorCentral {
     public Docente[] traerDocentes(Instituto instituto);
     public DataEdicionCurso consultarUnaEdicionCurso(String nEdi) throws ErrorNoExiste;
     public EdicionCurso[] traerEdiciones(Curso curso);
+    public HashSet<DataEdicionCurso> traerEdiciones(DataCurso curso);
     public Estudiante[] traerEstudiantes();
     public void inscribirEstudiante(LocalDate fechaInsc, String nickname, String nombreEdi)throws ErrorRepetidos, ErrorNoExiste ;
     
     // Cursos
     public DataCurso guardarCurso(DataCurso nuevoCurso);
     public HashSet<DataCurso> consultarTodosLosCursos();
+    public HashSet<DataCurso> cursosPorInstituto(String nombreInstituto);
     public Boolean existeCurso(String nombre);
     public HashSet<DataCurso> cursosNoRelacionadosConUnProgDeFormacion(String idProgramaDeFormacion);
     
