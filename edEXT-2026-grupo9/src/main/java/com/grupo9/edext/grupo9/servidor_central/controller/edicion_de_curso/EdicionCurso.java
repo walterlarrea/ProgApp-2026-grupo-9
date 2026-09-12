@@ -12,30 +12,29 @@ public class EdicionCurso {
     @Id
     private String nombreEdi;
     @ManyToOne
-    @JoinTable(
-    name = "edicion_curso",
-    joinColumns = @JoinColumn(name = "edicion_nombreEdi"),
-    inverseJoinColumns = @JoinColumn(name = "curso_nombreCurso"))
+    @JoinColumn(name = "curso_nombreCurso")
     private Curso cursoAsoc;
     private LocalDate fechaInicio;
     private LocalDate fechaFin;
     private Integer cupo;
-    @ManyToOne
-    @JoinColumn(name = "docente_nickname")
-    private Docente docente;
+    @ManyToMany
+    @JoinTable(name = "edicion_docente",
+        joinColumns = @JoinColumn(name = "edicion_nombreEdi"),
+        inverseJoinColumns = @JoinColumn(name = "docente_nickname"))
+    private Set<Docente> docentes;
     @OneToMany(mappedBy = "edicion")
     private Set<InscEdicion> inscripciones;
     private LocalDate fechaPub;
     
     public EdicionCurso(){}
     
-    public EdicionCurso(String nombreEdi, Curso cursoAsoc, LocalDate fechaInicio, LocalDate fechaFin, Integer cupo, Docente docente, Set<InscEdicion> inscripciones, LocalDate fechaPub) {
+    public EdicionCurso(String nombreEdi, Curso cursoAsoc, LocalDate fechaInicio, LocalDate fechaFin, Integer cupo, Set<Docente> docentes, Set<InscEdicion> inscripciones, LocalDate fechaPub) {
         this.nombreEdi = nombreEdi;
        this.cursoAsoc = cursoAsoc;
         this.fechaInicio = fechaInicio;
         this.fechaFin = fechaFin;
         this.cupo = cupo;
-       this.docente = docente;
+       this.docentes = docentes;
         this.inscripciones = inscripciones;
         this.fechaPub = fechaPub;
     }
@@ -80,12 +79,12 @@ public class EdicionCurso {
         this.cupo = cupo;
     }
 
-   public Docente getDocente() {
-       return docente;
+   public Set<Docente> getDocentes() {
+       return docentes;
    }
 
-   public void setDocente(Docente docente) {
-       this.docente = docente;
+   public void setDocentes(Set<Docente> docentes) {
+       this.docentes = docentes;
    }
 
     public LocalDate getFechaPub() {
@@ -98,5 +97,15 @@ public class EdicionCurso {
     
     public Set<InscEdicion> getInscripciones(){
        return inscripciones;
+    }
+    
+    public void agregarDocente(Docente docente) {
+        if (docente != null) {
+            docentes.add(docente);
+        }
+    }
+    
+    public void quitarDocente(Docente docente) {
+        docentes.remove(docente);
     }
 }

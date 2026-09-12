@@ -114,6 +114,7 @@ public class ServidorCentralController implements IServidorCentral {
     public EdicionCurso[] traerEdiciones(Curso curso){
         return this.edicionCursoCtrl.traerEdiciones(curso);
     }
+    
     // Cursos
     @Override
     public DataCurso guardarCurso(DataCurso nuevoCurso){

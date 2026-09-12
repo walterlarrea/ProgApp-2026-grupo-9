@@ -32,7 +32,7 @@ public class EdicionCursoController implements IEdicionCurso {
                 nuevaEdicion.getFechaFin(),
                 nuevaEdicion.getCupo(),
                 inscripciones,
-                DtoMapper.toEntity(nuevaEdicion.getDocente()));
+                DtoMapper.toEntity(nuevaEdicion.getDocentes()));
             return nuevaEdicion;
         }catch(ErrorRepetidos e) {
             System.out.println("[SERVIDOR] " + e.getMessage());
@@ -46,7 +46,7 @@ public class EdicionCursoController implements IEdicionCurso {
     }
     
     @Override
-    public void altaEdicionCurso(String nEdi, Curso cur, LocalDate fInicio, LocalDate fFin, Integer c, Set<InscEdicion> insc, Docente d) throws ErrorRepetidos{
+    public void altaEdicionCurso(String nEdi, Curso cur, LocalDate fInicio, LocalDate fFin, Integer c, Set<InscEdicion> insc, Set<Docente> d) throws ErrorRepetidos{
         ManejadorEdiciones me = ManejadorEdiciones.getInstance();
         EdicionCurso ed = me.obtenerEdicion(nEdi);
         if(ed == null){
@@ -71,13 +71,10 @@ public class EdicionCursoController implements IEdicionCurso {
                 DataInscEdicion datosInsc = new DataInscEdicion(inscriptos.getFechaInscE(), datosEst, inscriptos.getEdicion().getNombreEdi());
                 datosInscriptos.add(datosInsc);
             }
-            // Obtener el docente
-            DataDocente datosDoc = null;
-            if (ed.getDocente() != null) {
-                Docente docente = ed.getDocente();
-                datosDoc = new DataDocente(docente.getNickname(), docente.getNombre(), docente.getApellido(), docente.getEmail(), docente.getFechaNac(), docente.getNombreInst());
-            }
-            return new DataEdicionCurso(ed.getNombreEdi(), DtoMapper.toData(ed.getCursoAsoc()), ed.getFechaInicio(), ed.getFechaFin(), ed.getCupo(), datosDoc, datosInscriptos, ed.getFechaPub()); 
+            
+            //docentes
+            Set<DataDocente> datosDocentes = DtoMapper.toData(ed.getDocentes());
+            return new DataEdicionCurso(ed.getNombreEdi(), DtoMapper.toData(ed.getCursoAsoc()), ed.getFechaInicio(), ed.getFechaFin(), ed.getCupo(), datosDocentes, datosInscriptos, ed.getFechaPub()); 
         }else{
             throw new ErrorNoExiste("La Edición " + nEdi + " no está registrada.");
         }

@@ -6,6 +6,7 @@ import com.grupo9.edext.grupo9.servidor_central.controller.edicion_de_curso.Edic
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataEstudiante;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataEdicionCurso;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataInscEdicion;
+import com.grupo9.edext.grupo9.servidor_central.dominio.DataDocente;
 import com.grupo9.edext.grupo9.mensajes.ErrorNoExiste;
 import javax.swing.*;
 
@@ -119,7 +120,7 @@ public class ConsultarEdicionJInternalFrame extends javax.swing.JInternalFrame {
 
         jLabelFechaInicio.setText("Fecha de inicio");
 
-        jLabelDocente.setText("Docente");
+        jLabelDocente.setText("Docente(s)");
 
         jLabelEstudiantes.setText("Estudiantes inscriptos:");
 
@@ -227,8 +228,15 @@ public class ConsultarEdicionJInternalFrame extends javax.swing.JInternalFrame {
             jTextFieldCurso.setText(edicion.getCursoAsoc().nombreCurso());
             jTextFieldFechaInicio.setText(edicion.getFechaInicio().toString());
             jTextFieldFechaFin.setText(edicion.getFechaFin().toString());
-            if (edicion.getDocente() != null) {
-                jTextFieldDocente.setText(edicion.getDocente().getNombre() + " " + edicion.getDocente().getApellido());
+            if (edicion.getDocentes() != null && !edicion.getDocentes().isEmpty()) {
+                StringBuilder nombresDocentes = new StringBuilder();
+                for (DataDocente docente : edicion.getDocentes()) {
+                    if (nombresDocentes.length() > 0) {
+                        nombresDocentes.append(", ");
+                    }
+                nombresDocentes.append(docente.getNombre()).append(" ").append(docente.getApellido());
+                }
+                jTextFieldDocente.setText(nombresDocentes.toString());
             } else {
                 jTextFieldDocente.setText("Sin docente");
             }
