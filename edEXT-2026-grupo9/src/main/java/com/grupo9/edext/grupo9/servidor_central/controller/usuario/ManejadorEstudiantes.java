@@ -83,4 +83,16 @@ public class ManejadorEstudiantes {
             return est.toArray(new Estudiante[0]);
         }
     }
+
+    public void removerEstudiante(String nickEst) {
+        if (nickEst != null) {
+            estudiante.remove(nickEst);
+        }
+    }
+
+    public void addEstudianteDirect(Estudiante est) {
+        if (est != null) {
+            estudiante.put(est.getNickname(), est);
+        }
+    }
 }

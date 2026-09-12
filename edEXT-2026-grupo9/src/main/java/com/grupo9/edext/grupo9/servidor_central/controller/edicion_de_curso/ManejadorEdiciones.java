@@ -99,4 +99,26 @@ public class ManejadorEdiciones {
         }
         em.close();
     }
+
+    public void removerInscripcionesDeEstudiante(String nickname) {
+        if (nickname == null || edCurso == null) return;
+        for (EdicionCurso ed : edCurso.values()) {
+            if (ed.getInscripciones() != null) {
+                ed.getInscripciones().removeIf(insc -> 
+                    insc.getEstudiante() != null && nickname.equalsIgnoreCase(insc.getEstudiante().getNickname())
+                );
+            }
+        }
+    }
+
+    public void removerDocenteDeEdiciones(String nickname) {
+        if (nickname == null || edCurso == null) return;
+        for (EdicionCurso ed : edCurso.values()) {
+            if (ed.getDocentes() != null) {
+                ed.getDocentes().removeIf(doc -> 
+                    doc != null && nickname.equalsIgnoreCase(doc.getNickname())
+                );
+            }
+        }
+    }
 }

@@ -27,7 +27,7 @@ public class Curso implements Serializable {
     @JoinColumn(name = "nombreI")
     private Instituto instituto;
     // Owning side: Defines the join table layout
-    @ManyToMany
+    @ManyToMany (fetch = FetchType.EAGER)
     @JoinTable(
         name = "cursos_previas",
         joinColumns = @JoinColumn(name = "nombre_curso"),

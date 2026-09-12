@@ -19,6 +19,9 @@ import java.util.Date;
 public interface IUsuario {
 
     public void modificarUsuario(String nick, String nom, String ape, LocalDate fechaNac, String rutaImg);
+    public void modificarUsuario(String nick, String nom, String ape, LocalDate fechaNac, String rutaImg, String nombreInst);
+    public void modificarUsuario(String nick, String nom, String ape, LocalDate fechaNac, String rutaImg, String nombreInst, boolean esDocente);
+    public void eliminarUsuario(String nick) throws ErrorNoExiste;
 
     public void registrarEstudiante(String nickname, String nombre, String apellido, String email, LocalDate fechaNac, String rutaImagen) throws ErrorRepetidos;
     public void registrarDocente(String nickname, String nombre, String apellido, String email, LocalDate fechaNac, String rutaImagen, String nombreInst) throws ErrorRepetidos;

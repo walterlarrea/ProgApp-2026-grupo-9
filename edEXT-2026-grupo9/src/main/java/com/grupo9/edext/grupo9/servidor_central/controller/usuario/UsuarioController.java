@@ -11,7 +11,107 @@ public class UsuarioController implements IUsuario{
 
     @Override
     public void modificarUsuario(String nick, String nom, String ape, LocalDate fechaNac, String rutaImg) {
-        // Tu lógica de actualización
+        ManejadorDocente md = ManejadorDocente.getInstance();
+        Docente docMem = md.obtenerDocente(nick);
+        
+        ManejadorEstudiantes me = ManejadorEstudiantes.getInstance();
+        Estudiante estMem = me.obtenerEstudiante(nick);
+
+        jakarta.persistence.EntityManager em = com.grupo9.edext.grupo9.miscelanea.UtensiliosJPA.getEntityManagerFactory().createEntityManager();
+        jakarta.persistence.EntityTransaction et = em.getTransaction();
+        try {
+            et.begin();
+
+            // Actualizar datos básicos en tabla usuarios
+            em.createNativeQuery("UPDATE usuarios SET nombre = :nom, apellido = :ape, fechaNac = :fecha, imagen = :img WHERE nickname = :nick")
+              .setParameter("nom", nom)
+              .setParameter("ape", ape)
+              .setParameter("fecha", fechaNac)
+              .setParameter("img", rutaImg)
+              .setParameter("nick", nick)
+              .executeUpdate();
+
+            et.commit();
+        } catch (Exception e) {
+            if (et.isActive()) et.rollback();
+            e.printStackTrace();
+        } finally {
+            em.close();
+        }
+
+        // Actualizar en memoria el objeto existente (Docente o Estudiante)
+        if (docMem != null) {
+            docMem.setNombre(nom);
+            docMem.setApellido(ape);
+            docMem.setFechaNac(fechaNac);
+            docMem.setImagen(rutaImg);
+        }
+        if (estMem != null) {
+            estMem.setNombre(nom);
+            estMem.setApellido(ape);
+            estMem.setFechaNac(fechaNac);
+            estMem.setImagen(rutaImg);
+        }
+    }
+
+    @Override
+    public void modificarUsuario(String nick, String nom, String ape, LocalDate fechaNac, String rutaImg, String nombreInst) {
+        modificarUsuario(nick, nom, ape, fechaNac, rutaImg);
+    }
+
+    @Override
+    public void modificarUsuario(String nick, String nom, String ape, LocalDate fechaNac, String rutaImg, String nombreInst, boolean esDocente) {
+        modificarUsuario(nick, nom, ape, fechaNac, rutaImg);
+    }
+
+    @Override
+    public void eliminarUsuario(String nick) throws com.grupo9.edext.grupo9.mensajes.ErrorNoExiste {
+        ManejadorDocente md = ManejadorDocente.getInstance();
+        Docente doc = md.obtenerDocente(nick);
+        
+        ManejadorEstudiantes me = ManejadorEstudiantes.getInstance();
+        Estudiante est = me.obtenerEstudiante(nick);
+
+        if (doc == null && est == null) {
+            jakarta.persistence.EntityManager emTest = com.grupo9.edext.grupo9.miscelanea.UtensiliosJPA.getEntityManagerFactory().createEntityManager();
+            try {
+                Usuario u = emTest.find(Usuario.class, nick);
+                if (u == null) {
+                    throw new com.grupo9.edext.grupo9.mensajes.ErrorNoExiste("No existe el usuario con nickname: " + nick);
+                }
+            } finally {
+                emTest.close();
+            }
+        }
+
+        jakarta.persistence.EntityManager em = com.grupo9.edext.grupo9.miscelanea.UtensiliosJPA.getEntityManagerFactory().createEntityManager();
+        jakarta.persistence.EntityTransaction et = em.getTransaction();
+        try {
+            et.begin();
+            em.createNativeQuery("DELETE FROM inscripciones_a_ediciones WHERE estudiane_nickname = :nick").setParameter("nick", nick).executeUpdate();
+            em.createNativeQuery("DELETE FROM edicion_docente WHERE docente_nickname = :nick").setParameter("nick", nick).executeUpdate();
+            em.createNativeQuery("DELETE FROM docente_instituto WHERE docente_nickname = :nick").setParameter("nick", nick).executeUpdate();
+            em.createNativeQuery("DELETE FROM docentes WHERE nickname = :nick").setParameter("nick", nick).executeUpdate();
+            em.createNativeQuery("DELETE FROM estudiantes WHERE nickname = :nick").setParameter("nick", nick).executeUpdate();
+            em.createNativeQuery("DELETE FROM usuarios WHERE nickname = :nick").setParameter("nick", nick).executeUpdate();
+            et.commit();
+        } catch (Exception e) {
+            if (et.isActive()) et.rollback();
+            e.printStackTrace();
+            throw e;
+        } finally {
+            em.close();
+        }
+
+        if (doc != null || md.obtenerDocente(nick) != null) {
+            md.removerDocente(nick);
+        }
+        if (est != null || me.obtenerEstudiante(nick) != null) {
+            me.removerEstudiante(nick);
+        }
+
+        com.grupo9.edext.grupo9.servidor_central.controller.edicion_de_curso.ManejadorEdiciones.getInstance().removerInscripcionesDeEstudiante(nick);
+        com.grupo9.edext.grupo9.servidor_central.controller.edicion_de_curso.ManejadorEdiciones.getInstance().removerDocenteDeEdiciones(nick);
     }
 
     private boolean existeEmail(String email) {
