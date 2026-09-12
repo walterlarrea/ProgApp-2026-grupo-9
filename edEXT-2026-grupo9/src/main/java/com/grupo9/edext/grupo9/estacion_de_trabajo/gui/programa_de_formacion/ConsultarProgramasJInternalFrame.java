@@ -67,6 +67,28 @@ public class ConsultarProgramasJInternalFrame extends javax.swing.JInternalFrame
         jButtonConsultarProgAddCurso = new javax.swing.JButton();
         jSeparator3 = new javax.swing.JSeparator();
 
+        setClosable(true);
+        setIconifiable(true);
+        setMaximizable(true);
+        setResizable(true);
+        addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
+            public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameClosed(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameClosing(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameDeactivated(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameDeiconified(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameIconified(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameOpened(javax.swing.event.InternalFrameEvent evt) {
+                formInternalFrameOpened(evt);
+            }
+        });
+
         jLabelConsultarProgramas.setText("Consultar Programa");
 
         jButtonConsultarProgramasRefresh.setText("Refrescar");
@@ -376,6 +398,11 @@ public class ConsultarProgramasJInternalFrame extends javax.swing.JInternalFrame
             }
         }
     }//GEN-LAST:event_jButtonConsultarProgAddCursoActionPerformed
+
+    private void formInternalFrameOpened(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameOpened
+        this.limpiarDetallesConsultaProgDeForm();
+        this.jButtonConsultarProgramasRefreshActionPerformed(null);
+    }//GEN-LAST:event_formInternalFrameOpened
     
     private String obtenerProgDeFormSeleccionadoEnLaTablaDeConsulta(){
         int row = this.jTableConsultaProgramas.getSelectedRow();

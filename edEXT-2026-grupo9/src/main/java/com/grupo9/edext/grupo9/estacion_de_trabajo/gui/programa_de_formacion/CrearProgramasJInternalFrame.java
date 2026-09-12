@@ -47,6 +47,11 @@ public class CrearProgramasJInternalFrame extends javax.swing.JInternalFrame {
         jLabelCrearProgramaFechaInicio1 = new javax.swing.JLabel();
         jButtonCancelarPrograma = new javax.swing.JButton();
 
+        setClosable(true);
+        setIconifiable(true);
+        setMaximizable(true);
+        setResizable(true);
+
         jLabelCrearPrograma.setText("Crear Programa");
 
         jButtonGuardarPrograma.setText("Aceptar");

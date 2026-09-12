@@ -44,6 +44,8 @@ public class MainJFrame extends javax.swing.JFrame {
     
     //al aparecer uno se cierra el otro
     private void mostrarInternalFrame(JInternalFrame frameToShow) {
+        // cerrar todos los JPanel abiertos
+        this.hideAllJPanels();
         //cerrar cualquier InternalFrame abierto
         JInternalFrame[] frames = jDesktopPane1.getAllFrames();
         for (JInternalFrame f : frames) {
