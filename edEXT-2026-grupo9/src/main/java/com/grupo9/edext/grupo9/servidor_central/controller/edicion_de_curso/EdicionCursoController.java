@@ -13,6 +13,7 @@ import com.grupo9.edext.grupo9.servidor_central.dominio.DataInscEdicion;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataDocente;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataEstudiante;
 import com.grupo9.edext.grupo9.servidor_central.controller.DtoMapper;
+import com.grupo9.edext.grupo9.servidor_central.dominio.DataCurso;
 import java.time.LocalDate;
 import java.util.Set;
 import java.util.HashSet;
@@ -83,6 +84,18 @@ public class EdicionCursoController implements IEdicionCurso {
     @Override
     public EdicionCurso[] traerEdiciones(Curso curso){
         return ManejadorEdiciones.getInstance().getEdiciones(curso);
+    } 
+    
+    @Override
+    public HashSet<DataEdicionCurso> traerEdiciones(DataCurso dataCurso){
+        HashSet<DataEdicionCurso> ediciones = new HashSet<>();
+        EdicionCurso[] edicionesList = ManejadorEdiciones.getInstance().getEdiciones(DtoMapper.toEntity(dataCurso));
+        
+        for (EdicionCurso edicion: edicionesList){
+            ediciones.add(DtoMapper.toData(edicion));
+        }
+        
+        return ediciones;
     } 
     
     @Override

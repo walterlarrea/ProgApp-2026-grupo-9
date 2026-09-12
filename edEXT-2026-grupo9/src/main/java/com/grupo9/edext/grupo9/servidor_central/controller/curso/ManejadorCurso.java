@@ -3,6 +3,7 @@ package com.grupo9.edext.grupo9.servidor_central.controller.curso;
 
 import com.grupo9.edext.grupo9.miscelanea.UtensiliosJPA;
 import com.grupo9.edext.grupo9.servidor_central.controller.DtoMapper;
+import com.grupo9.edext.grupo9.servidor_central.controller.instituto.Instituto;
 import com.grupo9.edext.grupo9.servidor_central.controller.programa_de_formacion.ProgramaDeFormacion;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataCurso;
 import jakarta.persistence.EntityManager;
@@ -84,6 +85,23 @@ public class ManejadorCurso {
             TypedQuery<Curso> query = em.createQuery(cQuery);
             query.setMaxResults(1);
             return !query.getResultList().isEmpty();
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+
+    public HashSet<DataCurso> traerCursosPorInstituto(String nombreInstituto){
+        try {
+            CriteriaBuilder cBuilder = em.getCriteriaBuilder();
+            CriteriaQuery<Curso> cQuery = cBuilder.createQuery(Curso.class);
+            Root<Curso> rootEntry = cQuery.from(Curso.class);
+            Join<Curso, Instituto> instituto = rootEntry.join("instituto");
+
+            cQuery.select(rootEntry)
+                    .where(cBuilder.equal(instituto.get("nombreI"), nombreInstituto));
+
+            TypedQuery<Curso> query = em.createQuery(cQuery);
+            return DtoMapper.toDataList(new HashSet<>(query.getResultList()), DataCurso.class);
         } catch (Exception e) {
             throw e;
         }

@@ -19,7 +19,7 @@ public class CrearProgramasJInternalFrame extends javax.swing.JInternalFrame {
     private final ProgramaDeFormacionPres programaDeFormacionPres = new ProgramaDeFormacionPres();
 
     /**
-     * Creates new form GestionarProgramasJInternalFrame
+     * Creates new form CrearProgramasJInternalFrame
      */
     public CrearProgramasJInternalFrame() {
         initComponents();

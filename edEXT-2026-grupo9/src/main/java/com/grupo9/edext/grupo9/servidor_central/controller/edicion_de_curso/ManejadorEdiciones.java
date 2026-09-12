@@ -2,11 +2,14 @@ package com.grupo9.edext.grupo9.servidor_central.controller.edicion_de_curso;
 
 import com.grupo9.edext.grupo9.miscelanea.UtensiliosJPA;
 import com.grupo9.edext.grupo9.servidor_central.controller.curso.Curso;
+import com.grupo9.edext.grupo9.servidor_central.dominio.DataCurso;
+import com.grupo9.edext.grupo9.servidor_central.dominio.DataEdicionCurso;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.List;
 import jakarta.persistence.*;
+import java.util.HashSet;
 
 
 public class ManejadorEdiciones {

@@ -28,6 +28,7 @@ public class DtoMapper {
         }
         
         Set<Curso> previas = dataCurso.previas() == null ? new HashSet<>() : toEntityList(dataCurso.previas(), Curso.class);
+        // Set<ProgramaDeFormacion> programas = dataCurso.programas() == null ? new HashSet<>() : toEntityList(dataCurso.programas(), ProgramaDeFormacion.class);
         Curso curso = new Curso(
                 toEntity(dataCurso.instituto()),
                 dataCurso.nombreCurso(),
@@ -37,7 +38,8 @@ public class DtoMapper {
                 dataCurso.cantCred(),
                 dataCurso.fechaReg(),
                 dataCurso.url(),
-                previas
+                previas,
+                new HashSet<>() // programas
         );
         
         return curso;
@@ -48,7 +50,8 @@ public class DtoMapper {
             return null;
         }
         
-        Set<DataCurso> dataPrevias = toDataList(curso.getPrevias(), DataCurso.class);
+        Set<DataCurso> dataPrevias = curso.getPrevias() == null ? new HashSet<>() : toDataList(curso.getPrevias(), DataCurso.class);
+        // Set<DataProgramaFormacion> programas = curso.getProgramas() == null ? new HashSet<>() : toDataList(curso.getProgramas(), DataProgramaFormacion.class);
         DataCurso dataCurso = new DataCurso(
                 toData(curso.getInstituto()),
                 curso.getNombreCurso(),
@@ -58,7 +61,8 @@ public class DtoMapper {
                 curso.getCantCred(),
                 curso.getFechaReg(),
                 curso.getUrl(),
-                dataPrevias
+                dataPrevias,
+                new HashSet<>() // programas
         );
         
         return dataCurso;

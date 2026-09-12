@@ -55,6 +55,19 @@ public class Curso implements Serializable {
         this.previas = previas;
     }
 
+    public Curso(Instituto instituto, String nombreCurso, String descCurso, int duracion, int cantHoras, int cantCred, LocalDate fechaReg, String url, Set<Curso> previas, Set<ProgramaDeFormacion> programas) {
+        this.instituto = instituto;
+        this.nombreCurso = nombreCurso;
+        this.descCurso = descCurso;
+        this.duracion = duracion;
+        this.cantHoras = cantHoras;
+        this.cantCred = cantCred;
+        this.fechaReg = fechaReg;
+        this.url = url;
+        this.previas = previas;
+        this.programas = programas;
+    }
+
     public Instituto getInstituto() {
         return this.instituto;
     }
@@ -133,5 +146,9 @@ public class Curso implements Serializable {
 
     public void setDependientes(Set<Curso> dependientes) {
         this.dependientes = dependientes;
+    }
+    
+    public Set<ProgramaDeFormacion> getProgramas(){
+        return this.programas;
     }
 }

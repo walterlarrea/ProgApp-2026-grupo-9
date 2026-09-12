@@ -3,6 +3,7 @@ package com.grupo9.edext.grupo9.estacion_de_trabajo.cliente;
 import com.grupo9.edext.grupo9.interfaces.IServidorCentral;
 import com.grupo9.edext.grupo9.servidor_central.controller.ServidorCentralController;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataProgramaFormacion;
+import com.grupo9.edext.grupo9.servidor_central.dominio.DataCurso;
 import java.time.LocalDate;
 import java.util.HashSet;
 
@@ -45,6 +46,15 @@ public class ProgramaDeFormacionPres {
         DataProgramaFormacion programa = servidorCentral.traerPorNombreId(nombreId);
         
         return programa;
+    }
+
+    public HashSet<DataProgramaFormacion> cargarProgramasPorCurso(DataCurso curso){
+        if (curso == null) {
+            return new HashSet<>();
+        }
+
+        System.out.println("[CLIENTE] Consultar los Programas del Curso: " + curso.nombreCurso());
+        return servidorCentral.programasPorCurso(curso.nombreCurso());
     }
 
     public Boolean agregarCursoAProgramaDeFormacion(String nombreIdPrograma, String nombreIdCurso){

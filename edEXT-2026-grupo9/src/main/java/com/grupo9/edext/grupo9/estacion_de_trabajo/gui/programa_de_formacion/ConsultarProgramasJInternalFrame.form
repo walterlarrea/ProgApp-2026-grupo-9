@@ -29,7 +29,7 @@
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
           <Component id="jSubPanelTablaProgramasDeForm" alignment="1" max="32767" attributes="0"/>
-          <Group type="102" alignment="0" attributes="0">
+          <Group type="102" attributes="0">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
@@ -40,6 +40,7 @@
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="jLabelSeccionDetallesDeProgSeleccionado" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
                               <Group type="102" alignment="1" attributes="0">
                                   <Component id="jLabelSeccionDetProgSelectCursos" min="-2" max="-2" attributes="0"/>
@@ -65,21 +66,18 @@
                                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                                   <Component id="jLabelDetProgSelectNombre" min="-2" pref="305" max="-2" attributes="0"/>
                               </Group>
-                              <Component id="jScrollPane4" alignment="1" max="32767" attributes="0"/>
                           </Group>
-                          <Component id="jLabelSeccionDetallesDeProgSeleccionado" alignment="0" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <EmptySpace pref="109" max="32767" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" alignment="0" attributes="0">
                               <Component id="jLabelSeccionDetProgSelectDesc" min="-2" max="-2" attributes="0"/>
                               <EmptySpace type="unrelated" max="-2" attributes="0"/>
                               <Component id="jLabelDetProgSelectDesc" max="32767" attributes="0"/>
                           </Group>
-                          <Component id="jScrollPane5" alignment="0" max="32767" attributes="0"/>
                           <Group type="102" alignment="0" attributes="0">
                               <Component id="jLabelSeccionPdeFAgregarCursos" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace pref="72" max="32767" attributes="0"/>
+                              <EmptySpace max="32767" attributes="0"/>
                               <Component id="jCheckBoxAgregarCursoPrograma" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="jSeparator3" min="-2" max="-2" attributes="0"/>
@@ -87,6 +85,10 @@
                               <Component id="jButtonConsultarProgAddCurso" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
+                  </Group>
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="jSplitPane1" max="32767" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
@@ -148,11 +150,8 @@
                   <Component id="jButtonConsultarProgAddCurso" alignment="1" min="-2" max="-2" attributes="0"/>
                   <Component id="jSeparator3" alignment="1" min="-2" pref="27" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="jScrollPane5" alignment="0" pref="237" max="32767" attributes="0"/>
-                  <Component id="jScrollPane4" alignment="0" pref="237" max="32767" attributes="0"/>
-              </Group>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <Component id="jSplitPane1" pref="186" max="32767" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
@@ -280,49 +279,6 @@
         <Property name="text" type="java.lang.String" value="Cursos:"/>
       </Properties>
     </Component>
-    <Container class="javax.swing.JScrollPane" name="jScrollPane4">
-      <AuxValues>
-        <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
-      </AuxValues>
-
-      <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
-      <SubComponents>
-        <Component class="javax.swing.JList" name="jListDetProgSelectCursos">
-          <Properties>
-            <Property name="model" type="javax.swing.ListModel" editor="org.netbeans.modules.form.editors2.ListModelEditor">
-              <StringArray count="0"/>
-            </Property>
-            <Property name="selectionMode" type="int" value="0"/>
-          </Properties>
-          <AuxValues>
-            <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="jListDetProgSelectCursos.setCellRenderer(new DefaultListCellRenderer() {&#xa;        @Override&#xa;        public Component getListCellRendererComponent(JList&lt;?&gt; list, Object value, int index, &#xa;                                                      boolean isSelected, boolean cellHasFocus) {&#xa;            super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);&#xa;            if (value instanceof DataCurso dc) {&#xa;                setText(dc.nombreCurso());&#xa;            }&#xa;            return this;&#xa;        }&#xa;    });"/>
-            <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;DataCurso&gt;"/>
-          </AuxValues>
-        </Component>
-      </SubComponents>
-    </Container>
-    <Container class="javax.swing.JScrollPane" name="jScrollPane5">
-      <AuxValues>
-        <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
-      </AuxValues>
-
-      <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
-      <SubComponents>
-        <Component class="javax.swing.JList" name="jListSeccionPdeFAgregarCursos">
-          <Properties>
-            <Property name="model" type="javax.swing.ListModel" editor="org.netbeans.modules.form.editors2.ListModelEditor">
-              <StringArray count="0"/>
-            </Property>
-            <Property name="selectionMode" type="int" value="0"/>
-            <Property name="enabled" type="boolean" value="false"/>
-          </Properties>
-          <AuxValues>
-            <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="jListSeccionPdeFAgregarCursos.setCellRenderer(new DefaultListCellRenderer() {&#xa;        @Override&#xa;        public Component getListCellRendererComponent(JList&lt;?&gt; list, Object value, int index, &#xa;                                                      boolean isSelected, boolean cellHasFocus) {&#xa;            super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);&#xa;            if (value instanceof DataCurso dc) {&#xa;                setText(dc.nombreCurso());&#xa;            }&#xa;            return this;&#xa;        }&#xa;    });"/>
-            <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;DataCurso&gt;"/>
-          </AuxValues>
-        </Component>
-      </SubComponents>
-    </Container>
     <Component class="javax.swing.JLabel" name="jLabelSeccionPdeFAgregarCursos">
       <Properties>
         <Property name="text" type="java.lang.String" value="Agregar cursos:"/>
@@ -350,5 +306,73 @@
         <Property name="orientation" type="int" value="1"/>
       </Properties>
     </Component>
+    <Container class="javax.swing.JSplitPane" name="jSplitPane1">
+      <Properties>
+        <Property name="dividerLocation" type="int" value="400"/>
+        <Property name="dividerSize" type="int" value="3"/>
+        <Property name="resizeWeight" type="double" value="0.5"/>
+      </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_CreateCodePost" type="java.lang.String" value="jSplitPane1.setDividerLocation(0.5);"/>
+        <AuxValue name="JavaCodeGenerator_SerializeTo" type="java.lang.String" value="ConsultarProgramasJInternalFrame_jSplitPane1"/>
+      </AuxValues>
+
+      <Layout class="org.netbeans.modules.form.compat2.layouts.support.JSplitPaneSupportLayout"/>
+      <SubComponents>
+        <Container class="javax.swing.JScrollPane" name="jScrollPane5">
+          <AuxValues>
+            <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
+          </AuxValues>
+          <Constraints>
+            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JSplitPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JSplitPaneSupportLayout$JSplitPaneConstraintsDescription">
+              <JSplitPaneConstraints position="right"/>
+            </Constraint>
+          </Constraints>
+
+          <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+          <SubComponents>
+            <Component class="javax.swing.JList" name="jListSeccionPdeFAgregarCursos">
+              <Properties>
+                <Property name="model" type="javax.swing.ListModel" editor="org.netbeans.modules.form.editors2.ListModelEditor">
+                  <StringArray count="0"/>
+                </Property>
+                <Property name="selectionMode" type="int" value="0"/>
+                <Property name="enabled" type="boolean" value="false"/>
+              </Properties>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="jListSeccionPdeFAgregarCursos.setCellRenderer(new DefaultListCellRenderer() {&#xa;        @Override&#xa;        public Component getListCellRendererComponent(JList&lt;?&gt; list, Object value, int index, &#xa;                                                      boolean isSelected, boolean cellHasFocus) {&#xa;            super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);&#xa;            if (value instanceof DataCurso dc) {&#xa;                setText(dc.nombreCurso());&#xa;            }&#xa;            return this;&#xa;        }&#xa;    });"/>
+                <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;DataCurso&gt;"/>
+              </AuxValues>
+            </Component>
+          </SubComponents>
+        </Container>
+        <Container class="javax.swing.JScrollPane" name="jScrollPane4">
+          <AuxValues>
+            <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
+          </AuxValues>
+          <Constraints>
+            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JSplitPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JSplitPaneSupportLayout$JSplitPaneConstraintsDescription">
+              <JSplitPaneConstraints position="left"/>
+            </Constraint>
+          </Constraints>
+
+          <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+          <SubComponents>
+            <Component class="javax.swing.JList" name="jListDetProgSelectCursos">
+              <Properties>
+                <Property name="model" type="javax.swing.ListModel" editor="org.netbeans.modules.form.editors2.ListModelEditor">
+                  <StringArray count="0"/>
+                </Property>
+                <Property name="selectionMode" type="int" value="0"/>
+              </Properties>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="jListDetProgSelectCursos.setCellRenderer(new DefaultListCellRenderer() {&#xa;        @Override&#xa;        public Component getListCellRendererComponent(JList&lt;?&gt; list, Object value, int index, &#xa;                                                      boolean isSelected, boolean cellHasFocus) {&#xa;            super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);&#xa;            if (value instanceof DataCurso dc) {&#xa;                setText(dc.nombreCurso());&#xa;            }&#xa;            return this;&#xa;        }&#xa;    });"/>
+                <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;DataCurso&gt;"/>
+              </AuxValues>
+            </Component>
+          </SubComponents>
+        </Container>
+      </SubComponents>
+    </Container>
   </SubComponents>
 </Form>
