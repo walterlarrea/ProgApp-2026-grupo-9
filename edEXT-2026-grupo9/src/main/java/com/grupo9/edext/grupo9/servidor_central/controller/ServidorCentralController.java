@@ -178,4 +178,13 @@ public class ServidorCentralController implements IServidorCentral {
         return this.usuarioCtrl.consultarUsuario(nickname);
     }
     
+    @Override
+    public void modificarUsuario(String nick, String nom, String ape, java.time.LocalDate fechaNac, String rutaImg) {
+        this.usuarioCtrl.modificarUsuario(nick, nom, ape, fechaNac, rutaImg);
+    }
+
+    @Override
+    public void eliminarUsuario(String nick) throws ErrorNoExiste {
+        this.usuarioCtrl.eliminarUsuario(nick);
+    }
 }

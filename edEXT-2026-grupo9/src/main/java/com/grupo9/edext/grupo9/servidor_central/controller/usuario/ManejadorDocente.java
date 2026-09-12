@@ -104,4 +104,16 @@ public class ManejadorDocente {
             em.close();
         }
     }
+
+    public void removerDocente(String nickDoc) {
+        if (nickDoc != null) {
+            Docente.remove(nickDoc);
+        }
+    }
+
+    public void addDocenteDirect(Docente doc) {
+        if (doc != null) {
+            Docente.put(doc.getNickname(), doc);
+        }
+    }
 }

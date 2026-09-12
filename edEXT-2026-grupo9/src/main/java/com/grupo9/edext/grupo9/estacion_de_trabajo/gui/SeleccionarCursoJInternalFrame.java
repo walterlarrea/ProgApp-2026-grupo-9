@@ -99,18 +99,21 @@ public class SeleccionarCursoJInternalFrame extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonSeleccionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSeleccionarActionPerformed
-        int indice = jComboBoxCurso.getSelectedIndex();
-        int indice1 = jComboBoxInstituto.getSelectedIndex();
-        if (indice == -1) {
+        int indiceCursoCombo = jComboBoxCurso.getSelectedIndex();
+        int indiceInstitutoCombo = jComboBoxInstituto.getSelectedIndex();
+
+        // 1. Mantenemos esta validación por si el usuario no selecciona nada
+        if (indiceInstitutoCombo <= 0 || indiceCursoCombo == -1) { 
+            JOptionPane.showMessageDialog(this, "Por favor, seleccione un instituto y un curso válidos.", "Atención", JOptionPane.WARNING_MESSAGE);
             return;
         }
-        if (indice1 == -1) {
-            return;
-        }
-        Curso cursoSeleccionado = cursos.get(indice);
-        Instituto instituto = institutos.get(indice1);
+
+        // 2. Mapeo directo y seguro de los objetos
+        Curso cursoSeleccionado = cursos.get(indiceCursoCombo);
+        Instituto instituto = institutos.get(indiceInstitutoCombo - 1); // Restamos 1 por el elemento "Ninguno"
         JInternalFrame frame = null;
 
+        // 3. Apertura de la ventana según la operación
         switch (operacion) {
             case ALTA_EDICION:
                 frame = new AltaEdicionJInternalFrame(cursoSeleccionado, instituto);

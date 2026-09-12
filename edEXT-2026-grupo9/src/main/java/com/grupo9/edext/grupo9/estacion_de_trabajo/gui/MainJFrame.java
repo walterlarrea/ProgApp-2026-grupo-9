@@ -40,6 +40,29 @@ public class MainJFrame extends javax.swing.JFrame {
         //para que el panel azul ocupe hasta el borde
         getContentPane().setLayout(new BorderLayout());
         getContentPane().add(jDesktopPane1, BorderLayout.CENTER);
+
+        jTableConsultarUsuarios.getSelectionModel().addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                if (!evt.getValueIsAdjusting()) {
+                    boolean haySeleccion = jTableConsultarUsuarios.getSelectedRow() != -1;
+                    jButton1.setEnabled(haySeleccion);
+                }
+            }
+        });
+
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonModificarDatosActionPerformed(evt);
+            }
+        });
+
+        jTableConsultarUsuarios.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                if (evt.getClickCount() == 2 && jTableConsultarUsuarios.getSelectedRow() != -1) {
+                    jButtonModificarDatosActionPerformed(null);
+                }
+            }
+        });
     }
     
     //al aparecer uno se cierra el otro
@@ -127,6 +150,7 @@ public class MainJFrame extends javax.swing.JFrame {
         jScrollPaneTablaConsultarUsuarios = new javax.swing.JScrollPane();
         jTableConsultarUsuarios = new javax.swing.JTable();
         jButtonConsUsRefresh = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
         jDesktopPane1 = new javax.swing.JDesktopPane();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenuUsuarios = new javax.swing.JMenu();
@@ -357,6 +381,9 @@ public class MainJFrame extends javax.swing.JFrame {
             }
         });
 
+        jButton1.setText("Modificar Datos");
+        jButton1.setEnabled(false);
+
         javax.swing.GroupLayout JPanelConsultarUsuariosLayout = new javax.swing.GroupLayout(JPanelConsultarUsuarios);
         JPanelConsultarUsuarios.setLayout(JPanelConsultarUsuariosLayout);
         JPanelConsultarUsuariosLayout.setHorizontalGroup(
@@ -367,6 +394,8 @@ public class MainJFrame extends javax.swing.JFrame {
                         .addGap(16, 16, 16)
                         .addComponent(jLabelConsultarUsuarios)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton1)
+                        .addGap(18, 18, 18)
                         .addComponent(jButtonConsUsRefresh))
                     .addGroup(JPanelConsultarUsuariosLayout.createSequentialGroup()
                         .addContainerGap()
@@ -379,7 +408,8 @@ public class MainJFrame extends javax.swing.JFrame {
                 .addGap(16, 16, 16)
                 .addGroup(JPanelConsultarUsuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabelConsultarUsuarios)
-                    .addComponent(jButtonConsUsRefresh))
+                    .addComponent(jButtonConsUsRefresh)
+                    .addComponent(jButton1))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPaneTablaConsultarUsuarios, javax.swing.GroupLayout.DEFAULT_SIZE, 599, Short.MAX_VALUE)
                 .addContainerGap())
@@ -576,6 +606,7 @@ public class MainJFrame extends javax.swing.JFrame {
     private void jMenuItemConsultarUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemConsultarUsuarioActionPerformed
         cerrarInternalFrames();
         showOnePanelAndHideTheRest(this.JPanelConsultarUsuarios);
+        refreshTablaUsuarios();
     }//GEN-LAST:event_jMenuItemConsultarUsuarioActionPerformed
 
     private void jMenuItemCrearCursoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemCrearCursoActionPerformed
@@ -717,20 +748,37 @@ public class MainJFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButtonAceptarActionPerformed
 
-    private void jMenuItemModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemModificarActionPerformed
-        cerrarInternalFrames();
-    }//GEN-LAST:event_jMenuItemModificarActionPerformed
+    public void refreshTablaUsuarios() {
+        jButtonConsUsRefreshActionPerformed(null);
+    }
+
+    private void jButtonModificarDatosActionPerformed(java.awt.event.ActionEvent evt) {
+        int selectedRow = jTableConsultarUsuarios.getSelectedRow();
+        if (selectedRow != -1) {
+            String nick = (String) jTableConsultarUsuarios.getValueAt(selectedRow, 1);
+            try {
+                com.grupo9.edext.grupo9.servidor_central.dominio.DataUsuario du = usuarioPres.consultarUsuario(nick);
+                com.grupo9.edext.grupo9.estacion_de_trabajo.gui.usuario.ModificarUsuarioFrame frameMod = 
+                    new com.grupo9.edext.grupo9.estacion_de_trabajo.gui.usuario.ModificarUsuarioFrame(du, this);
+                frameMod.setLocationRelativeTo(this);
+                frameMod.setVisible(true);
+            } catch (ErrorNoExiste ex) {
+                javax.swing.JOptionPane.showMessageDialog(this, "Error al consultar usuario: " + ex.getMessage(), "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }
 
     private void jButtonConsUsRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonConsUsRefreshActionPerformed
         System.out.println("[GUI] Consultar todos los Usuarios");
         String[] nicknames = usuarioPres.listarUsuarios();
 
+        DefaultTableModel model = (DefaultTableModel) jTableConsultarUsuarios.getModel();
+        model.setRowCount(0);
+        jButton1.setEnabled(false);
+
         if (nicknames == null) {
             return;
         }
-
-        DefaultTableModel model = (DefaultTableModel) jTableConsultarUsuarios.getModel();
-        model.setRowCount(0);
 
         // 2. Recorres los nicknames y consultas los datos completos de cada uno
         for (String nick : nicknames) {
@@ -765,6 +813,18 @@ public class MainJFrame extends javax.swing.JFrame {
     private void jRadioButtonDocenteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButtonDocenteActionPerformed
         jComboBoxInstituto.setEnabled(true);
     }//GEN-LAST:event_jRadioButtonDocenteActionPerformed
+
+    private void jMenuItemModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemModificarActionPerformed
+        cerrarInternalFrames();
+        showOnePanelAndHideTheRest(this.JPanelConsultarUsuarios);
+        refreshTablaUsuarios();
+        int selectedRow = jTableConsultarUsuarios.getSelectedRow();
+        if (selectedRow != -1) {
+            jButtonModificarDatosActionPerformed(evt);
+        } else {
+            javax.swing.JOptionPane.showMessageDialog(this, "Seleccione un usuario de la lista y presione 'Modificar Datos'.", "Modificar Usuario", javax.swing.JOptionPane.INFORMATION_MESSAGE);
+        }
+    }//GEN-LAST:event_jMenuItemModificarActionPerformed
     
     private void jButtonCancelarActionPerformed(java.awt.event.ActionEvent evt) {
        limpiarFormularioAltaUsuario();
@@ -844,6 +904,7 @@ public class MainJFrame extends javax.swing.JFrame {
     private javax.swing.JPanel JPanelAltaUsuario;
     private javax.swing.JPanel JPanelConsultarUsuarios;
     private javax.swing.ButtonGroup buttonGroupEstYDoc;
+    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButtonAceptar;
     private javax.swing.JButton jButtonCancelar;
     private javax.swing.JButton jButtonConsUsRefresh;
