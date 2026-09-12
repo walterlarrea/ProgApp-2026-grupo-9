@@ -5,10 +5,12 @@
 package com.grupo9.edext.grupo9.estacion_de_trabajo.gui.curso;
 
 import com.grupo9.edext.grupo9.estacion_de_trabajo.cliente.CursoPres;
+import com.grupo9.edext.grupo9.estacion_de_trabajo.cliente.InstitutoPres;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataCurso;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataInstituto;
 import java.awt.Component;
 import java.util.HashSet;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
 import javax.swing.JCheckBox;
@@ -22,6 +24,7 @@ import javax.swing.ListSelectionModel;
  */
 public class CrearCursosJInternalFrame extends javax.swing.JInternalFrame {
     private final CursoPres cursoPres = new CursoPres();
+    private final InstitutoPres institutoPres = new InstitutoPres();
     
     private final HashSet<DataCurso> cursosPreviosSeleccionados = new HashSet<>();
     
@@ -63,6 +66,28 @@ public class CrearCursosJInternalFrame extends javax.swing.JInternalFrame {
         jComboBoxCrearCursoInstituto = new javax.swing.JComboBox<>();
         jButtonCancelarCurso = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JSeparator();
+
+        setClosable(true);
+        setIconifiable(true);
+        setMaximizable(true);
+        setResizable(true);
+        addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
+            public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameClosed(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameClosing(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameDeactivated(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameDeiconified(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameIconified(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameOpened(javax.swing.event.InternalFrameEvent evt) {
+                formInternalFrameOpened(evt);
+            }
+        });
 
         jLabelCrearCurso.setText("Crear Curso");
 
@@ -325,6 +350,11 @@ public class CrearCursosJInternalFrame extends javax.swing.JInternalFrame {
         this.limpiarFormularioCurso();
     }//GEN-LAST:event_jButtonCancelarCursoActionPerformed
 
+    private void formInternalFrameOpened(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameOpened
+        this.cargarInstitutos();
+        this.recargarCursosPrevias();
+    }//GEN-LAST:event_formInternalFrameOpened
+
     private void limpiarFormularioCurso() {
         jTextCrearCursoNombre.setText("");
         jTextAreaCrearCursoDescripcion.setText("");
@@ -351,6 +381,18 @@ public class CrearCursosJInternalFrame extends javax.swing.JInternalFrame {
         this.cursosPreviosSeleccionados.clear();
         jListCrearCursoPrevias.clearSelection();
         jListCrearCursoPrevias.setModel(model);
+    }
+    
+    private void cargarInstitutos(){
+        HashSet<DataInstituto> institutos = this.institutoPres.cargarInstitutos();
+
+        DefaultComboBoxModel<DataInstituto> mutableModelInsti = new DefaultComboBoxModel<>();
+        this.jComboBoxCrearCursoInstituto.setModel(mutableModelInsti);
+        DefaultComboBoxModel<DataInstituto> modelInsti = (DefaultComboBoxModel<DataInstituto>) this.jComboBoxCrearCursoInstituto.getModel();
+
+        for(DataInstituto instituto: institutos){
+            modelInsti.addElement(instituto);
+        }
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables

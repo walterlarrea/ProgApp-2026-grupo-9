@@ -2,26 +2,21 @@ package com.grupo9.edext.grupo9.estacion_de_trabajo.gui;
 
 import com.grupo9.edext.grupo9.estacion_de_trabajo.cliente.UsuarioPres;
 import com.grupo9.edext.grupo9.estacion_de_trabajo.cliente.InstitutoPres;
-import com.grupo9.edext.grupo9.estacion_de_trabajo.cliente.CursoPres;
-import com.grupo9.edext.grupo9.estacion_de_trabajo.cliente.ProgramaDeFormacionPres;
+
 import com.grupo9.edext.grupo9.estacion_de_trabajo.gui.curso.ConsultarCursosJInternalFrame;
 import com.grupo9.edext.grupo9.estacion_de_trabajo.gui.curso.CrearCursosJInternalFrame;
 import com.grupo9.edext.grupo9.estacion_de_trabajo.gui.instituto.GestionarInstitutosJInternalFrame;
 import com.grupo9.edext.grupo9.estacion_de_trabajo.gui.programa_de_formacion.ConsultarProgramasJInternalFrame;
 import com.grupo9.edext.grupo9.estacion_de_trabajo.gui.programa_de_formacion.CrearProgramasJInternalFrame;
 import com.grupo9.edext.grupo9.mensajes.ErrorNoExiste;
-import com.grupo9.edext.grupo9.servidor_central.dominio.DataCurso;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataInstituto;
 import java.awt.Component;
-import com.grupo9.edext.grupo9.estacion_de_trabajo.gui.SeleccionarCursoJInternalFrame;
 import java.beans.PropertyVetoException;
 import javax.swing.*;
 import java.util.ArrayList;
 import java.time.LocalDate;
 import java.util.HashSet;
-import java.util.Optional;
 import java.awt.BorderLayout;
-import java.util.Date;
 import javax.swing.table.DefaultTableModel;
 
 public class MainJFrame extends javax.swing.JFrame {
@@ -49,6 +44,8 @@ public class MainJFrame extends javax.swing.JFrame {
     
     //al aparecer uno se cierra el otro
     private void mostrarInternalFrame(JInternalFrame frameToShow) {
+        // cerrar todos los JPanel abiertos
+        this.hideAllJPanels();
         //cerrar cualquier InternalFrame abierto
         JInternalFrame[] frames = jDesktopPane1.getAllFrames();
         for (JInternalFrame f : frames) {

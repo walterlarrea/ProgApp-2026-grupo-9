@@ -2,7 +2,6 @@ package com.grupo9.edext.grupo9.servidor_central.controller;
 
 import java.util.HashSet;
 import java.util.Set;
-
 import com.grupo9.edext.grupo9.servidor_central.controller.curso.Curso;
 import com.grupo9.edext.grupo9.servidor_central.controller.instituto.Instituto;
 import com.grupo9.edext.grupo9.servidor_central.controller.programa_de_formacion.ProgramaDeFormacion;
@@ -11,7 +10,6 @@ import com.grupo9.edext.grupo9.servidor_central.dominio.DataCurso;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataInstituto;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataProgramaFormacion;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataUsuario;
-
 import com.grupo9.edext.grupo9.servidor_central.controller.edicion_de_curso.EdicionCurso;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataEdicionCurso;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataInscEdicion;
@@ -174,7 +172,7 @@ public class DtoMapper {
             dataEdicion.getFechaInicio(),
             dataEdicion.getFechaFin(),
             dataEdicion.getCupo(),
-            toEntity(dataEdicion.getDocente()),
+            toEntity(dataEdicion.getDocentes()),
             inscripciones,
             dataEdicion.getFechaPub());
     }
@@ -201,9 +199,30 @@ public class DtoMapper {
             edicion.getFechaInicio(),
             edicion.getFechaFin(),
             edicion.getCupo(),
-            toData(edicion.getDocente()),
+            toData(edicion.getDocentes()),
             inscripciones,
             edicion.getFechaPub());
+    }
+    
+    public static Set<Docente> toEntity(Set<DataDocente> datos) {
+        Set<Docente> docentes = new HashSet<>();
+        if (datos != null) {
+            for (DataDocente data : datos) {
+                docentes.add(toEntity(data));
+            }
+        }
+        return docentes;
+    }
+    
+    public static Set<DataDocente> toData(Set<Docente> docentes) {
+        Set<DataDocente> datos = new HashSet<>();
+        if (docentes != null) {
+            for (Docente docente : docentes) {
+                datos.add(toData(docente));
+            }
+        }
+
+        return datos;
     }
     
     public static Docente toEntity(DataDocente dataDocente) {

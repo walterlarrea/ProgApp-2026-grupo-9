@@ -39,6 +39,28 @@ public class ConsultarCursosJInternalFrame extends javax.swing.JInternalFrame {
         jTableConsultaCursos = new javax.swing.JTable();
         jButtonConsultarCursosRefresh = new javax.swing.JButton();
 
+        setClosable(true);
+        setIconifiable(true);
+        setMaximizable(true);
+        setResizable(true);
+        addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
+            public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameClosed(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameClosing(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameDeactivated(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameDeiconified(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameIconified(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameOpened(javax.swing.event.InternalFrameEvent evt) {
+                formInternalFrameOpened(evt);
+            }
+        });
+
         jLabelConsultarCursos.setText("Consultar Cursos");
 
         jTableConsultaCursos.setModel(new javax.swing.table.DefaultTableModel(
@@ -133,6 +155,10 @@ public class ConsultarCursosJInternalFrame extends javax.swing.JInternalFrame {
             model.addRow(cursoObj);
         }
     }//GEN-LAST:event_jButtonConsultarCursosRefreshActionPerformed
+
+    private void formInternalFrameOpened(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameOpened
+        this.jButtonConsultarCursosRefreshActionPerformed(null);
+    }//GEN-LAST:event_formInternalFrameOpened
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

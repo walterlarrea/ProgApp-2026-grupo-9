@@ -151,7 +151,7 @@
     </Component>
     <Component class="javax.swing.JLabel" name="jLabelDocente">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Docente"/>
+        <Property name="text" type="java.lang.String" value="Docente(s)"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabelEstudiantes">
