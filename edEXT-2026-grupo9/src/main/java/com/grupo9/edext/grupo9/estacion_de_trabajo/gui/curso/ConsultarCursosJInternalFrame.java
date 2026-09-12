@@ -4,11 +4,14 @@ import com.grupo9.edext.grupo9.estacion_de_trabajo.cliente.CursoPres;
 import com.grupo9.edext.grupo9.estacion_de_trabajo.cliente.EdicionCursoPres;
 import com.grupo9.edext.grupo9.estacion_de_trabajo.cliente.InstitutoPres;
 import com.grupo9.edext.grupo9.estacion_de_trabajo.cliente.ProgramaDeFormacionPres;
+import com.grupo9.edext.grupo9.estacion_de_trabajo.gui.ConsultarEdicionJInternalFrame;
 import com.grupo9.edext.grupo9.estacion_de_trabajo.gui.programa_de_formacion.ConsultarProgramasJInternalFrame;
+import com.grupo9.edext.grupo9.servidor_central.controller.DtoMapper;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataCurso;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataInstituto;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataProgramaFormacion;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataEdicionCurso;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Point;
 import java.util.HashSet;
@@ -52,7 +55,6 @@ public class ConsultarCursosJInternalFrame extends javax.swing.JInternalFrame {
         jComboBoxConsultarCursoSel = new javax.swing.JComboBox<>();
         jLabelConsultarCursoSel = new javax.swing.JLabel();
         jSplitPane3 = new javax.swing.JSplitPane();
-        jSplitPane3.setDividerLocation(0.5);
         jPanel3 = new javax.swing.JPanel();
         jLabelSeccionDetCursoSelectNombre = new javax.swing.JLabel();
         jLabelDetCursoSelectNombre = new javax.swing.JLabel();
@@ -73,10 +75,9 @@ public class ConsultarCursosJInternalFrame extends javax.swing.JInternalFrame {
         jLabelSeccionDetCursoSelectCreditos = new javax.swing.JLabel();
         jLabelDetCursoSelectCreditos = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
-        jListConsultarCursoPrevias = new javax.swing.JList<>();
-        jLabelCrearCursoPrevias = new javax.swing.JLabel();
+        jListDetCursoSelectPrevias = new javax.swing.JList<>();
+        jLabelSeccionCrearCursoPreviasSelect = new javax.swing.JLabel();
         jSplitPane1 = new javax.swing.JSplitPane();
-        jSplitPane1.setDividerLocation(0.5);
         jPanel1 = new javax.swing.JPanel();
         jScrollPane5 = new javax.swing.JScrollPane();
         jListDetCursoSelectEdiciones = new javax.swing.JList<>();
@@ -111,6 +112,7 @@ public class ConsultarCursosJInternalFrame extends javax.swing.JInternalFrame {
         jLabelConsultarCursoSel.setText("Curso");
 
         jSplitPane3.setDividerLocation(450);
+        jSplitPane3.setDividerSize(3);
         jSplitPane3.setResizeWeight(0.5);
 
         jPanel3.setMinimumSize(new java.awt.Dimension(100, 100));
@@ -136,9 +138,9 @@ public class ConsultarCursosJInternalFrame extends javax.swing.JInternalFrame {
         jTextAreaDetCursoSelectDesc.setLineWrap(true);
         jTextAreaDetCursoSelectDesc.setRows(5);
         jTextAreaDetCursoSelectDesc.setWrapStyleWord(true);
-        jTextAreaDetCursoSelectDesc.setBorder(null);
         jTextAreaDetCursoSelectDesc.setFocusable(false);
         jTextAreaDetCursoSelectDesc.setOpaque(false);
+        jTextAreaDetCursoSelectDesc.setBackground(new Color(0, 0, 0, 0));
         jScrollPane1.setViewportView(jTextAreaDetCursoSelectDesc);
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
@@ -146,21 +148,21 @@ public class ConsultarCursosJInternalFrame extends javax.swing.JInternalFrame {
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
+                .addComponent(jLabelSeccionDetCursoSelectDesc)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 430, Short.MAX_VALUE))
+            .addGroup(jPanel3Layout.createSequentialGroup()
                 .addComponent(jLabelSeccionDetCursoSelectNombre)
                 .addGap(12, 12, 12)
-                .addComponent(jLabelDetCursoSelectNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 305, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jLabelDetCursoSelectNombre, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addComponent(jLabelSeccionDetCursoSelectFechaCreado)
                 .addGap(12, 12, 12)
-                .addComponent(jLabelDetCursoSelectFechaCreado, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addComponent(jLabelSeccionDetCursoSelectDesc)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 383, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jLabelDetCursoSelectFechaCreado, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addComponent(jLabelSeccionDetCursoSelectDuracion)
                 .addGap(12, 12, 12)
-                .addComponent(jLabelDetCursoSelectDuracion, javax.swing.GroupLayout.PREFERRED_SIZE, 305, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jLabelDetCursoSelectDuracion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -201,9 +203,9 @@ public class ConsultarCursosJInternalFrame extends javax.swing.JInternalFrame {
 
         jLabelDetCursoSelectCreditos.setText("-");
 
-        jListConsultarCursoPrevias.setFocusable(false);
-        jScrollPane3.setViewportView(jListConsultarCursoPrevias);
-        jListConsultarCursoPrevias.setCellRenderer(new DefaultListCellRenderer() {
+        jListDetCursoSelectPrevias.setFocusable(false);
+        jScrollPane3.setViewportView(jListDetCursoSelectPrevias);
+        jListDetCursoSelectPrevias.setCellRenderer(new DefaultListCellRenderer() {
             @Override
             public Component getListCellRendererComponent(JList<?> list, Object value, int index,
                 boolean isSelected, boolean cellHasFocus) {
@@ -215,36 +217,33 @@ public class ConsultarCursosJInternalFrame extends javax.swing.JInternalFrame {
             }
         });
 
-        jLabelCrearCursoPrevias.setText("Previas");
+        jLabelSeccionCrearCursoPreviasSelect.setText("Previas");
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane3)
+            .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 475, Short.MAX_VALUE)
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabelCrearCursoPrevias, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabelSeccionCrearCursoPreviasSelect, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel4Layout.createSequentialGroup()
-                                .addComponent(jLabelSeccionDetCursoSelectUrl)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jLabelDetCursoSelectUrl, javax.swing.GroupLayout.PREFERRED_SIZE, 305, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel4Layout.createSequentialGroup()
-                                .addComponent(jLabelSeccionDetCursoSelectInstituto)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jLabelDetCursoSelectInstituto, javax.swing.GroupLayout.PREFERRED_SIZE, 305, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel4Layout.createSequentialGroup()
-                                .addComponent(jLabelSeccionDetCursoSelectHoras)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jLabelDetCursoSelectHoras, javax.swing.GroupLayout.PREFERRED_SIZE, 305, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel4Layout.createSequentialGroup()
-                                .addComponent(jLabelSeccionDetCursoSelectCreditos)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jLabelDetCursoSelectCreditos, javax.swing.GroupLayout.PREFERRED_SIZE, 305, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 45, Short.MAX_VALUE)))
+                        .addComponent(jLabelSeccionDetCursoSelectCreditos)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabelDetCursoSelectCreditos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addComponent(jLabelSeccionDetCursoSelectUrl)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabelDetCursoSelectUrl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addComponent(jLabelSeccionDetCursoSelectInstituto)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabelDetCursoSelectInstituto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addComponent(jLabelSeccionDetCursoSelectHoras)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabelDetCursoSelectHoras, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel4Layout.setVerticalGroup(
@@ -266,7 +265,7 @@ public class ConsultarCursosJInternalFrame extends javax.swing.JInternalFrame {
                     .addComponent(jLabelSeccionDetCursoSelectUrl)
                     .addComponent(jLabelDetCursoSelectUrl))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabelCrearCursoPrevias)
+                .addComponent(jLabelSeccionCrearCursoPreviasSelect)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 190, Short.MAX_VALUE))
         );
@@ -280,6 +279,11 @@ public class ConsultarCursosJInternalFrame extends javax.swing.JInternalFrame {
         jSplitPane1.setPreferredSize(new java.awt.Dimension(200, 180));
 
         jListDetCursoSelectEdiciones.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jListDetCursoSelectEdiciones.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jListDetCursoSelectEdicionesMouseClicked(evt);
+            }
+        });
         jScrollPane5.setViewportView(jListDetCursoSelectEdiciones);
         jListDetCursoSelectEdiciones.setCellRenderer(new DefaultListCellRenderer() {
             @Override
@@ -302,7 +306,7 @@ public class ConsultarCursosJInternalFrame extends javax.swing.JInternalFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(jLabelSeccionDetProgSelectNombre3)
                 .addGap(0, 0, Short.MAX_VALUE))
-            .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 493, Short.MAX_VALUE)
+            .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 508, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -342,7 +346,7 @@ public class ConsultarCursosJInternalFrame extends javax.swing.JInternalFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addComponent(jLabelSeccionDetProgSelectNombre2)
                 .addGap(0, 0, Short.MAX_VALUE))
-            .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 454, Short.MAX_VALUE)
+            .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 468, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -362,7 +366,7 @@ public class ConsultarCursosJInternalFrame extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jSplitPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jSplitPane3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 950, Short.MAX_VALUE)
+                    .addComponent(jSplitPane3, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
@@ -395,7 +399,7 @@ public class ConsultarCursosJInternalFrame extends javax.swing.JInternalFrame {
                 .addGap(18, 18, 18)
                 .addComponent(jSplitPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 324, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jSplitPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jSplitPane1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -437,6 +441,8 @@ public class ConsultarCursosJInternalFrame extends javax.swing.JInternalFrame {
                 return this;
             }
         });
+        jSplitPane3.setDividerLocation(0.5);
+        jSplitPane1.setDividerLocation(0.5);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -470,7 +476,7 @@ public class ConsultarCursosJInternalFrame extends javax.swing.JInternalFrame {
         for (DataCurso previa : curso.previas()) {
             cursosPreviasModel.addElement(previa);
         }
-        this.jListConsultarCursoPrevias.setModel(cursosPreviasModel);
+        this.jListDetCursoSelectPrevias.setModel(cursosPreviasModel);
         
         this.cargarListaProgramasRelacionados(curso);
         this.cargarListaEdicionesRelacionadas(curso);
@@ -493,6 +499,25 @@ public class ConsultarCursosJInternalFrame extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_jListDetCursoSelectProgramasMouseClicked
 
+    private void jListDetCursoSelectEdicionesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jListDetCursoSelectEdicionesMouseClicked
+        if (evt.getClickCount() == 2) {
+            JList<?> list = (JList<?>) evt.getSource();
+            Point point = evt.getPoint();
+            
+            // Get the specific index that was double-clicked
+            int index = list.locationToIndex(point);
+            
+            // Check if the user actually clicked on an item, not empty space
+            if (index >= 0 && list.getCellBounds(index, index).contains(point)) {
+                DataEdicionCurso edicionSeleccionada = (DataEdicionCurso) list.getModel().getElementAt(index);
+                
+                // Edicion usa un Curso para después cargar las ediciones
+                DataCurso curso = (DataCurso) this.jComboBoxConsultarCursoSel.getSelectedItem();
+                this.abrirEdicionRelacionada(curso);
+            }
+        }
+    }//GEN-LAST:event_jListDetCursoSelectEdicionesMouseClicked
+
     private void cargarInstitutos(){
         HashSet<DataInstituto> institutos = this.institutoPres.cargarInstitutos();
 
@@ -500,9 +525,11 @@ public class ConsultarCursosJInternalFrame extends javax.swing.JInternalFrame {
         this.jComboBoxConsultarCursoInstituto.setModel(mutableModelInsti);
         DefaultComboBoxModel<DataInstituto> modelInsti = (DefaultComboBoxModel<DataInstituto>) this.jComboBoxConsultarCursoInstituto.getModel();
 
-        modelInsti.addElement(null);
-        for(DataInstituto instituto: institutos){
-            modelInsti.addElement(instituto);
+        if(!institutos.isEmpty()){
+            modelInsti.addElement(null);
+            for(DataInstituto instituto: institutos){
+                modelInsti.addElement(instituto);
+            }
         }
     }
     
@@ -514,13 +541,13 @@ public class ConsultarCursosJInternalFrame extends javax.swing.JInternalFrame {
         this.jComboBoxConsultarCursoSel.setModel(model);
 
         HashSet<DataCurso> cursos = this.cursoPres.cargarCursosPorInstituto(instituto);
-        if (cursos == null) {
-            return;
-        }
-
-        model.addElement(null);
-        for (DataCurso curso : cursos) {
-            model.addElement(curso);
+        if (!cursos.isEmpty()) {
+            model.addElement(null);
+            for (DataCurso curso : cursos) {
+                model.addElement(curso);
+            }
+        } else {
+            
         }
     }
     
@@ -531,6 +558,13 @@ public class ConsultarCursosJInternalFrame extends javax.swing.JInternalFrame {
         frame.setVisible(true);
         
 //        this.dispose();
+    }
+    
+    private void abrirEdicionRelacionada(DataCurso cursoSeleccionada){
+        JInternalFrame frame = new ConsultarEdicionJInternalFrame(DtoMapper.toEntity(cursoSeleccionada));
+
+        this.jDesktopPane.add(frame);
+        frame.setVisible(true);
     }
     
     private void limpiarDetallesConsultaCurso(){
@@ -546,7 +580,7 @@ public class ConsultarCursosJInternalFrame extends javax.swing.JInternalFrame {
 //        DefaultListModel<DataCurso> model = (DefaultListModel<DataCurso>) this.jListDetProgSelectCursos.getModel();
         DefaultListModel<DataCurso> mutableModelCurso = new DefaultListModel<>();
         mutableModelCurso.clear();
-        this.jListConsultarCursoPrevias.setModel(mutableModelCurso);
+        this.jListDetCursoSelectPrevias.setModel(mutableModelCurso);
        
         DefaultListModel<DataProgramaFormacion> modelProgramas = new DefaultListModel<>();
         this.jListDetCursoSelectProgramas.setModel(modelProgramas);
@@ -582,7 +616,6 @@ public class ConsultarCursosJInternalFrame extends javax.swing.JInternalFrame {
     private javax.swing.JComboBox<DataCurso> jComboBoxConsultarCursoSel;
     private javax.swing.JLabel jLabelConsultarCursoInstituto;
     private javax.swing.JLabel jLabelConsultarCursoSel;
-    private javax.swing.JLabel jLabelCrearCursoPrevias;
     private javax.swing.JLabel jLabelDetCursoSelectCreditos;
     private javax.swing.JLabel jLabelDetCursoSelectDuracion;
     private javax.swing.JLabel jLabelDetCursoSelectFechaCreado;
@@ -590,6 +623,7 @@ public class ConsultarCursosJInternalFrame extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabelDetCursoSelectInstituto;
     private javax.swing.JLabel jLabelDetCursoSelectNombre;
     private javax.swing.JLabel jLabelDetCursoSelectUrl;
+    private javax.swing.JLabel jLabelSeccionCrearCursoPreviasSelect;
     private javax.swing.JLabel jLabelSeccionDetCursoSelectCreditos;
     private javax.swing.JLabel jLabelSeccionDetCursoSelectDesc;
     private javax.swing.JLabel jLabelSeccionDetCursoSelectDuracion;
@@ -601,8 +635,8 @@ public class ConsultarCursosJInternalFrame extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabelSeccionDetProgSelectNombre2;
     private javax.swing.JLabel jLabelSeccionDetProgSelectNombre3;
     private javax.swing.JLabel jLabelSeccionDetallesDeProgSeleccionado;
-    private javax.swing.JList<DataCurso> jListConsultarCursoPrevias;
     private javax.swing.JList<DataEdicionCurso> jListDetCursoSelectEdiciones;
+    private javax.swing.JList<DataCurso> jListDetCursoSelectPrevias;
     private javax.swing.JList<DataProgramaFormacion> jListDetCursoSelectProgramas;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;

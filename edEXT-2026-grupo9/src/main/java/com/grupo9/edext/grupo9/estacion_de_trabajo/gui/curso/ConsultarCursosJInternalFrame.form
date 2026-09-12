@@ -30,7 +30,7 @@
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="jSplitPane1" alignment="1" max="32767" attributes="0"/>
-                  <Component id="jSplitPane3" alignment="1" pref="950" max="32767" attributes="0"/>
+                  <Component id="jSplitPane3" alignment="1" max="32767" attributes="0"/>
                   <Group type="102" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" alignment="0" attributes="0">
@@ -75,7 +75,7 @@
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Component id="jSplitPane3" min="-2" pref="324" max="-2" attributes="0"/>
               <EmptySpace type="separate" max="-2" attributes="0"/>
-              <Component id="jSplitPane1" min="-2" pref="180" max="-2" attributes="0"/>
+              <Component id="jSplitPane1" max="32767" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
@@ -129,10 +129,11 @@
     <Container class="javax.swing.JSplitPane" name="jSplitPane3">
       <Properties>
         <Property name="dividerLocation" type="int" value="450"/>
+        <Property name="dividerSize" type="int" value="3"/>
         <Property name="resizeWeight" type="double" value="0.5"/>
       </Properties>
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_CreateCodePost" type="java.lang.String" value="jSplitPane3.setDividerLocation(0.5);"/>
+        <AuxValue name="JavaCodeGenerator_allCodePost" type="java.lang.String" value="jSplitPane3.setDividerLocation(0.5);"/>
       </AuxValues>
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JSplitPaneSupportLayout"/>
@@ -153,24 +154,24 @@
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
+                      <Component id="jLabelSeccionDetCursoSelectDesc" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="jScrollPane1" pref="430" max="32767" attributes="0"/>
+                  </Group>
+                  <Group type="102" attributes="0">
                       <Component id="jLabelSeccionDetCursoSelectNombre" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="12" pref="12" max="-2" attributes="0"/>
-                      <Component id="jLabelDetCursoSelectNombre" min="-2" pref="305" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
+                      <Component id="jLabelDetCursoSelectNombre" max="32767" attributes="0"/>
                   </Group>
                   <Group type="102" attributes="0">
                       <Component id="jLabelSeccionDetCursoSelectFechaCreado" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="12" pref="12" max="-2" attributes="0"/>
-                      <Component id="jLabelDetCursoSelectFechaCreado" min="-2" pref="400" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
+                      <Component id="jLabelDetCursoSelectFechaCreado" max="32767" attributes="0"/>
                   </Group>
-                  <Group type="102" alignment="0" attributes="0">
-                      <Component id="jLabelSeccionDetCursoSelectDesc" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="jScrollPane1" min="-2" pref="383" max="-2" attributes="0"/>
-                  </Group>
-                  <Group type="102" alignment="0" attributes="0">
+                  <Group type="102" attributes="0">
                       <Component id="jLabelSeccionDetCursoSelectDuracion" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="12" pref="12" max="-2" attributes="0"/>
-                      <Component id="jLabelDetCursoSelectDuracion" min="-2" pref="305" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
+                      <Component id="jLabelDetCursoSelectDuracion" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -256,12 +257,12 @@
                     <Property name="lineWrap" type="boolean" value="true"/>
                     <Property name="rows" type="int" value="5"/>
                     <Property name="wrapStyleWord" type="boolean" value="true"/>
-                    <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-                      <Border info="null"/>
-                    </Property>
                     <Property name="focusable" type="boolean" value="false"/>
                     <Property name="opaque" type="boolean" value="false"/>
                   </Properties>
+                  <AuxValues>
+                    <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="jTextAreaDetCursoSelectDesc.setBackground(new Color(0, 0, 0, 0));"/>
+                  </AuxValues>
                 </Component>
               </SubComponents>
             </Container>
@@ -277,35 +278,30 @@
           <Layout>
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="jScrollPane3" alignment="0" max="32767" attributes="0"/>
-                  <Group type="102" attributes="0">
+                  <Component id="jScrollPane3" alignment="0" pref="475" max="32767" attributes="0"/>
+                  <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="jLabelCrearCursoPrevias" alignment="0" max="32767" attributes="0"/>
+                          <Component id="jLabelSeccionCrearCursoPreviasSelect" max="32767" attributes="0"/>
                           <Group type="102" attributes="0">
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Group type="102" alignment="0" attributes="0">
-                                      <Component id="jLabelSeccionDetCursoSelectUrl" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                      <Component id="jLabelDetCursoSelectUrl" min="-2" pref="305" max="-2" attributes="0"/>
-                                  </Group>
-                                  <Group type="102" alignment="0" attributes="0">
-                                      <Component id="jLabelSeccionDetCursoSelectInstituto" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                      <Component id="jLabelDetCursoSelectInstituto" min="-2" pref="305" max="-2" attributes="0"/>
-                                  </Group>
-                                  <Group type="102" alignment="0" attributes="0">
-                                      <Component id="jLabelSeccionDetCursoSelectHoras" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                      <Component id="jLabelDetCursoSelectHoras" min="-2" pref="305" max="-2" attributes="0"/>
-                                  </Group>
-                                  <Group type="102" alignment="0" attributes="0">
-                                      <Component id="jLabelSeccionDetCursoSelectCreditos" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                      <Component id="jLabelDetCursoSelectCreditos" min="-2" pref="305" max="-2" attributes="0"/>
-                                  </Group>
-                              </Group>
-                              <EmptySpace min="0" pref="45" max="32767" attributes="0"/>
+                              <Component id="jLabelSeccionDetCursoSelectCreditos" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                              <Component id="jLabelDetCursoSelectCreditos" max="32767" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Component id="jLabelSeccionDetCursoSelectUrl" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                              <Component id="jLabelDetCursoSelectUrl" max="32767" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Component id="jLabelSeccionDetCursoSelectInstituto" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                              <Component id="jLabelDetCursoSelectInstituto" max="32767" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Component id="jLabelSeccionDetCursoSelectHoras" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                              <Component id="jLabelDetCursoSelectHoras" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
@@ -335,7 +331,7 @@
                           <Component id="jLabelDetCursoSelectUrl" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="jLabelCrearCursoPrevias" min="-2" max="-2" attributes="0"/>
+                      <Component id="jLabelSeccionCrearCursoPreviasSelect" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="jScrollPane3" pref="190" max="32767" attributes="0"/>
                   </Group>
@@ -394,7 +390,7 @@
 
               <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
               <SubComponents>
-                <Component class="javax.swing.JList" name="jListConsultarCursoPrevias">
+                <Component class="javax.swing.JList" name="jListDetCursoSelectPrevias">
                   <Properties>
                     <Property name="model" type="javax.swing.ListModel" editor="org.netbeans.modules.form.editors2.ListModelEditor">
                       <StringArray count="0"/>
@@ -402,13 +398,13 @@
                     <Property name="focusable" type="boolean" value="false"/>
                   </Properties>
                   <AuxValues>
-                    <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="jListConsultarCursoPrevias.setCellRenderer(new DefaultListCellRenderer() {&#xa;        @Override&#xa;        public Component getListCellRendererComponent(JList&lt;?&gt; list, Object value, int index, &#xa;                                                      boolean isSelected, boolean cellHasFocus) {&#xa;            super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);&#xa;            if (value instanceof DataCurso dc) {&#xa;                setText(dc.nombreCurso());&#xa;            }&#xa;            return this;&#xa;        }&#xa;    });"/>
+                    <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="jListDetCursoSelectPrevias.setCellRenderer(new DefaultListCellRenderer() {&#xa;        @Override&#xa;        public Component getListCellRendererComponent(JList&lt;?&gt; list, Object value, int index, &#xa;                                                      boolean isSelected, boolean cellHasFocus) {&#xa;            super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);&#xa;            if (value instanceof DataCurso dc) {&#xa;                setText(dc.nombreCurso());&#xa;            }&#xa;            return this;&#xa;        }&#xa;    });"/>
                     <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;DataCurso&gt;"/>
                   </AuxValues>
                 </Component>
               </SubComponents>
             </Container>
-            <Component class="javax.swing.JLabel" name="jLabelCrearCursoPrevias">
+            <Component class="javax.swing.JLabel" name="jLabelSeccionCrearCursoPreviasSelect">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Previas"/>
               </Properties>
@@ -430,7 +426,7 @@
         </Property>
       </Properties>
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_CreateCodePost" type="java.lang.String" value="jSplitPane1.setDividerLocation(0.5);"/>
+        <AuxValue name="JavaCodeGenerator_allCodePost" type="java.lang.String" value="jSplitPane1.setDividerLocation(0.5);"/>
       </AuxValues>
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JSplitPaneSupportLayout"/>
@@ -449,7 +445,7 @@
                       <Component id="jLabelSeccionDetProgSelectNombre3" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                   </Group>
-                  <Component id="jScrollPane5" alignment="0" pref="493" max="32767" attributes="0"/>
+                  <Component id="jScrollPane5" alignment="0" pref="508" max="32767" attributes="0"/>
               </Group>
             </DimensionLayout>
             <DimensionLayout dim="1">
@@ -477,6 +473,9 @@
                     </Property>
                     <Property name="selectionMode" type="int" value="0"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jListDetCursoSelectEdicionesMouseClicked"/>
+                  </Events>
                   <AuxValues>
                     <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="jListDetCursoSelectEdiciones.setCellRenderer(new DefaultListCellRenderer() {&#xa;        @Override&#xa;        public Component getListCellRendererComponent(JList&lt;?&gt; list, Object value, int index, &#xa;                                                      boolean isSelected, boolean cellHasFocus) {&#xa;            super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);&#xa;            if (value instanceof DataEdicionCurso dec) {&#xa;                setText(dec.getNombreEdi());&#xa;            }&#xa;            return this;&#xa;        }&#xa;    });"/>
                     <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;DataEdicionCurso&gt;"/>
@@ -505,7 +504,7 @@
                       <Component id="jLabelSeccionDetProgSelectNombre2" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                   </Group>
-                  <Component id="jScrollPane4" pref="454" max="32767" attributes="0"/>
+                  <Component id="jScrollPane4" pref="468" max="32767" attributes="0"/>
               </Group>
             </DimensionLayout>
             <DimensionLayout dim="1">
