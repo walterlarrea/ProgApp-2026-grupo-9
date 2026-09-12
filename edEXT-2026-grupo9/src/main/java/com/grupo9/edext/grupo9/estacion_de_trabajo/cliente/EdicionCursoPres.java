@@ -58,7 +58,7 @@ public class EdicionCursoPres {
         return servidorCentral.traerEstudiantes();
     }
     
-    public void inscribirNuevoEstudianteEdicion(String nickname, String nombreEdi, LocalDate fechaInsc) {
+    public void inscribirNuevoEstudianteEdicion(String nickname, String nombreEdi, LocalDate fechaInsc) throws ErrorRepetidos{
         try {
             servidorCentral.inscribirEstudiante(fechaInsc, nickname, nombreEdi);
             System.out.println("[CLIENTE] Inscripción exitosa!");

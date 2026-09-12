@@ -11,6 +11,7 @@ import java.time.ZoneId;
 import java.util.Date;
 import java.util.Set;
 import java.util.HashSet;
+import javax.swing.JOptionPane;
 
 public class AltaEdicionJInternalFrame extends javax.swing.JInternalFrame {
     private Curso cursoSeleccionado;
@@ -27,19 +28,14 @@ public class AltaEdicionJInternalFrame extends javax.swing.JInternalFrame {
         setTitle("Alta de Edición");
         setClosable(true);
         setResizable(true);
+        setMaximizable(true);
+        setIconifiable(true);
         jSpinnerEdicionFInicio.setModel(new javax.swing.SpinnerDateModel(new java.util.Date(), null, null, java.util.Calendar.DAY_OF_MONTH));
         javax.swing.JSpinner.DateEditor editor1 = new javax.swing.JSpinner.DateEditor(jSpinnerEdicionFInicio, "dd/MM/yyyy");
         jSpinnerEdicionFInicio.setEditor(editor1);
         jSpinnerEdicionFFin.setModel(new javax.swing.SpinnerDateModel(new java.util.Date(), null, null, java.util.Calendar.DAY_OF_MONTH));
         javax.swing.JSpinner.DateEditor editor2 = new javax.swing.JSpinner.DateEditor(jSpinnerEdicionFFin, "dd/MM/yyyy");
         jSpinnerEdicionFFin.setEditor(editor2);
-        jLabelMensajeExito.setVisible(false);
-        jLabelMensajeError.setVisible(false);
-        jLabelMensajeError1.setVisible(false);
-        jLabelMensajeError2.setVisible(false);
-        jLabelErrorDocente1.setVisible(false);
-        jLabelErrorDocente.setVisible(false);
-        jLabelErrorCupo.setVisible(false);
         cargarDocentes();
         pack();
     }
@@ -65,15 +61,8 @@ public class AltaEdicionJInternalFrame extends javax.swing.JInternalFrame {
         jTextEdicionCupo = new javax.swing.JTextField();
         jButtonGuardarEdicion = new javax.swing.JButton();
         jComboBoxDocenteEdicion = new javax.swing.JComboBox<>();
-        jLabelMensajeExito = new javax.swing.JLabel();
-        jLabelMensajeError = new javax.swing.JLabel();
-        jLabelMensajeError1 = new javax.swing.JLabel();
-        jLabelMensajeError2 = new javax.swing.JLabel();
         jLabelDocenteOpEdicion = new javax.swing.JLabel();
         jComboBoxDocenteOpEdicion = new javax.swing.JComboBox<>();
-        jLabelErrorDocente = new javax.swing.JLabel();
-        jLabelErrorCupo = new javax.swing.JLabel();
-        jLabelErrorDocente1 = new javax.swing.JLabel();
 
         setPreferredSize(new java.awt.Dimension(380, 500));
 
@@ -100,38 +89,9 @@ public class AltaEdicionJInternalFrame extends javax.swing.JInternalFrame {
 
         jComboBoxDocenteEdicion.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
-        jLabelMensajeExito.setBackground(new java.awt.Color(0, 0, 0));
-        jLabelMensajeExito.setFont(new java.awt.Font("Segoe UI", 2, 14)); // NOI18N
-        jLabelMensajeExito.setForeground(new java.awt.Color(0, 153, 0));
-        jLabelMensajeExito.setText("Edición creada con éxito!");
-
-        jLabelMensajeError.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
-        jLabelMensajeError.setForeground(new java.awt.Color(255, 0, 0));
-        jLabelMensajeError.setText("* ");
-
-        jLabelMensajeError1.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
-        jLabelMensajeError1.setForeground(new java.awt.Color(255, 0, 0));
-        jLabelMensajeError1.setText("* Fecha errónea.");
-
-        jLabelMensajeError2.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
-        jLabelMensajeError2.setForeground(new java.awt.Color(255, 0, 0));
-        jLabelMensajeError2.setText("* Fecha errónea.");
-
         jLabelDocenteOpEdicion.setText("Docente 2 (Adicional)");
 
         jComboBoxDocenteOpEdicion.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
-        jLabelErrorDocente.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
-        jLabelErrorDocente.setForeground(new java.awt.Color(255, 0, 0));
-        jLabelErrorDocente.setText("* Ya seleccionado.");
-
-        jLabelErrorCupo.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
-        jLabelErrorCupo.setForeground(new java.awt.Color(255, 0, 0));
-        jLabelErrorCupo.setText("* ");
-
-        jLabelErrorDocente1.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
-        jLabelErrorDocente1.setForeground(new java.awt.Color(255, 0, 0));
-        jLabelErrorDocente1.setText("* Sin seleccionar.");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -142,44 +102,25 @@ public class AltaEdicionJInternalFrame extends javax.swing.JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jLabelMensajeExito)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jButtonGuardarEdicion))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabelEdicionFFin)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jLabelMensajeError2))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabelEdicionNombre)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jLabelMensajeError, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabelEdicionDocente)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jLabelErrorDocente1))
                             .addComponent(jTextEdicionNombre)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabelDocenteOpEdicion)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jLabelErrorDocente))
                             .addComponent(jComboBoxDocenteOpEdicion, 0, 249, Short.MAX_VALUE)
                             .addComponent(jComboBoxDocenteEdicion, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jSpinnerEdicionFInicio)
                             .addComponent(jSpinnerEdicionFFin)
                             .addComponent(jTextEdicionCupo)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabelEdicionCupo)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jLabelErrorCupo, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabelAltaEdicion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabelEdicionFInicio)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jLabelMensajeError1)))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabelEdicionCupo)
+                                    .addComponent(jLabelEdicionFFin)
+                                    .addComponent(jLabelEdicionFInicio)
+                                    .addComponent(jLabelDocenteOpEdicion)
+                                    .addComponent(jLabelEdicionDocente)
+                                    .addComponent(jLabelEdicionNombre)
+                                    .addComponent(jLabelAltaEdicion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(0, 0, Short.MAX_VALUE)))
                         .addGap(107, 107, 107)))
                 .addContainerGap())
         );
@@ -189,45 +130,31 @@ public class AltaEdicionJInternalFrame extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addComponent(jLabelAltaEdicion, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabelEdicionNombre)
-                    .addComponent(jLabelMensajeError))
+                .addComponent(jLabelEdicionNombre)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jTextEdicionNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabelEdicionDocente)
-                    .addComponent(jLabelErrorDocente1))
+                .addComponent(jLabelEdicionDocente)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jComboBoxDocenteEdicion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabelDocenteOpEdicion)
-                    .addComponent(jLabelErrorDocente))
+                .addComponent(jLabelDocenteOpEdicion)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jComboBoxDocenteOpEdicion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabelEdicionFInicio)
-                    .addComponent(jLabelMensajeError1))
+                .addComponent(jLabelEdicionFInicio)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSpinnerEdicionFInicio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabelEdicionFFin)
-                    .addComponent(jLabelMensajeError2))
+                .addComponent(jLabelEdicionFFin)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSpinnerEdicionFFin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 11, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabelEdicionCupo)
-                    .addComponent(jLabelErrorCupo))
+                .addComponent(jLabelEdicionCupo)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jTextEdicionCupo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(32, 32, 32)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButtonGuardarEdicion)
-                    .addComponent(jLabelMensajeExito))
+                .addComponent(jButtonGuardarEdicion)
                 .addContainerGap())
         );
 
@@ -256,9 +183,7 @@ public class AltaEdicionJInternalFrame extends javax.swing.JInternalFrame {
         Integer cupo = null;
         //sobre el nombre
         if(nombreEdi.isBlank()){
-            jLabelMensajeError.setText("* Ingrese un nombre.");
-            jLabelMensajeError.setVisible(true);
-            jLabelMensajeExito.setVisible(false);
+            JOptionPane.showMessageDialog(this, "Debe ingresar un nombre.", "Datos requeridos", JOptionPane.WARNING_MESSAGE);
             return;
         }
         
@@ -267,15 +192,11 @@ public class AltaEdicionJInternalFrame extends javax.swing.JInternalFrame {
             try {
                 cupo = Integer.parseInt(textoCupo);
                 if (cupo < 0) {
-                    jLabelErrorCupo.setText("* Cupo negativo.");
-                    jLabelErrorCupo.setVisible(true);
-                    jLabelMensajeExito.setVisible(false);
+                    JOptionPane.showMessageDialog(this, "Cupo negativo.", "Datos inválidos", JOptionPane.WARNING_MESSAGE);
                     return;
                 }
             } catch (NumberFormatException e) {
-                jLabelErrorCupo.setText("* Debe ser número.");
-                jLabelErrorCupo.setVisible(true);
-                jLabelMensajeExito.setVisible(false);
+                JOptionPane.showMessageDialog(this, "Cupo debe ser un número.", "Datos inválidos", JOptionPane.WARNING_MESSAGE);
                 return;
             }
         }
@@ -284,8 +205,7 @@ public class AltaEdicionJInternalFrame extends javax.swing.JInternalFrame {
         int indiceDocente1 = jComboBoxDocenteEdicion.getSelectedIndex();
         int indiceDocente2 = jComboBoxDocenteOpEdicion.getSelectedIndex();
         if (indiceDocente1 == -1) {
-            jLabelErrorDocente1.setVisible(true);
-            jLabelMensajeExito.setVisible(false);
+            JOptionPane.showMessageDialog(this, "Debe seleccionar al menos un docente.", "Datos requeridos", JOptionPane.WARNING_MESSAGE);
             return;
         }
         Docente docente1 = docentes[indiceDocente1];
@@ -294,8 +214,7 @@ public class AltaEdicionJInternalFrame extends javax.swing.JInternalFrame {
         if(indiceDocente2 > 0) {
             docente2 = docentes[indiceDocente2 - 1];
             if (docente1.equals(docente2)) {
-                jLabelErrorDocente.setVisible(true);
-                jLabelMensajeExito.setVisible(false);
+                JOptionPane.showMessageDialog(this, "El docente ya fue seleccionado.", "Datos inválidos", JOptionPane.WARNING_MESSAGE);
                 return;
             }
         }
@@ -312,22 +231,18 @@ public class AltaEdicionJInternalFrame extends javax.swing.JInternalFrame {
         Date fecha1 = (Date) jSpinnerEdicionFFin.getValue();
         LocalDate fechaFin = fecha1.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         if (fechaInicio.isBefore(LocalDate.now())) {
-            jLabelMensajeExito.setVisible(false);
-            jLabelMensajeError1.setVisible(true);
+            JOptionPane.showMessageDialog(this, "La fecha no debe ser anterior a la actual.", "Datos inválidos", JOptionPane.WARNING_MESSAGE);
             return;
         }
         if (fechaFin.isBefore(fechaInicio)) {
-            jLabelMensajeExito.setVisible(false);
-            jLabelMensajeError2.setVisible(true);
+            JOptionPane.showMessageDialog(this, "La fecha de finalización debe ser actual o posterior a la inicial.", "Datos inválidos", JOptionPane.WARNING_MESSAGE);
             return;
         }
         
         //sobre el ingreso
         try {
             servidorCentral.consultarUnaEdicionCurso(nombreEdi);
-            jLabelMensajeError.setText("* Edición ya existente.");
-            jLabelMensajeExito.setVisible(false);
-            jLabelMensajeError.setVisible(true);
+            JOptionPane.showMessageDialog(this, "Ya existe una edición con ese nombre.", "Edición duplicada", JOptionPane.WARNING_MESSAGE);
         } catch (ErrorNoExiste e) {
             System.out.println("[GUI] Crear nueva Edición: " + nombreEdi);
             System.out.println("[GUI] De curso: " + cursoSeleccionado);
@@ -336,14 +251,9 @@ public class AltaEdicionJInternalFrame extends javax.swing.JInternalFrame {
             System.out.println("[GUI] Docente(s): " + docentesSeleccionados);
 
             edicionCursoPres.guardarNuevaEdicion(nombreEdi, cursoSeleccionado, fechaInicio, fechaFin, cupo, docentesSeleccionados);
-            jLabelMensajeExito.setVisible(true);
+            JOptionPane.showMessageDialog(this, "Edición registrada y guardada con éxito!", "Éxito", JOptionPane.INFORMATION_MESSAGE);
             jTextEdicionNombre.setText("");
             jTextEdicionCupo.setText("");
-            jLabelMensajeError.setVisible(false);
-            jLabelMensajeError1.setVisible(false);
-            jLabelMensajeError2.setVisible(false);
-            jLabelErrorDocente.setVisible(false);
-            jLabelErrorCupo.setVisible(false);
             jComboBoxDocenteEdicion.setSelectedIndex(-1);
             jComboBoxDocenteOpEdicion.setSelectedIndex(0);
         }
@@ -361,13 +271,6 @@ public class AltaEdicionJInternalFrame extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabelEdicionFFin;
     private javax.swing.JLabel jLabelEdicionFInicio;
     private javax.swing.JLabel jLabelEdicionNombre;
-    private javax.swing.JLabel jLabelErrorCupo;
-    private javax.swing.JLabel jLabelErrorDocente;
-    private javax.swing.JLabel jLabelErrorDocente1;
-    private javax.swing.JLabel jLabelMensajeError;
-    private javax.swing.JLabel jLabelMensajeError1;
-    private javax.swing.JLabel jLabelMensajeError2;
-    private javax.swing.JLabel jLabelMensajeExito;
     private javax.swing.JSpinner jSpinnerEdicionFFin;
     private javax.swing.JSpinner jSpinnerEdicionFInicio;
     private javax.swing.JTextField jTextEdicionCupo;
