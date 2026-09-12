@@ -29,51 +29,27 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="1" attributes="0">
                       <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                      <Component id="jLabelMensajeExito" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="jButtonGuardarEdicion" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" attributes="0">
-                              <Component id="jLabelEdicionFFin" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="32767" attributes="0"/>
-                              <Component id="jLabelMensajeError2" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <Group type="102" alignment="0" attributes="0">
-                              <Component id="jLabelEdicionNombre" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="32767" attributes="0"/>
-                              <Component id="jLabelMensajeError" min="-2" pref="137" max="-2" attributes="0"/>
-                          </Group>
-                          <Group type="102" alignment="0" attributes="0">
-                              <Component id="jLabelEdicionDocente" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="32767" attributes="0"/>
-                              <Component id="jLabelErrorDocente1" min="-2" max="-2" attributes="0"/>
-                          </Group>
                           <Component id="jTextEdicionNombre" alignment="0" max="32767" attributes="0"/>
-                          <Group type="102" alignment="0" attributes="0">
-                              <Component id="jLabelDocenteOpEdicion" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="32767" attributes="0"/>
-                              <Component id="jLabelErrorDocente" min="-2" max="-2" attributes="0"/>
-                          </Group>
                           <Component id="jComboBoxDocenteOpEdicion" alignment="0" pref="249" max="32767" attributes="0"/>
                           <Component id="jComboBoxDocenteEdicion" alignment="0" max="32767" attributes="0"/>
                           <Component id="jSpinnerEdicionFInicio" alignment="0" max="32767" attributes="0"/>
                           <Component id="jSpinnerEdicionFFin" alignment="0" max="32767" attributes="0"/>
                           <Component id="jTextEdicionCupo" alignment="0" max="32767" attributes="0"/>
-                          <Group type="102" alignment="0" attributes="0">
-                              <Component id="jLabelEdicionCupo" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="32767" attributes="0"/>
-                              <Component id="jLabelErrorCupo" min="-2" pref="140" max="-2" attributes="0"/>
-                          </Group>
                           <Group type="102" attributes="0">
-                              <Component id="jLabelAltaEdicion" min="-2" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="jLabelEdicionCupo" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jLabelEdicionFFin" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jLabelEdicionFInicio" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jLabelDocenteOpEdicion" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jLabelEdicionDocente" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jLabelEdicionNombre" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jLabelAltaEdicion" min="-2" max="-2" attributes="0"/>
+                              </Group>
                               <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                          </Group>
-                          <Group type="102" attributes="0">
-                              <Component id="jLabelEdicionFInicio" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="32767" attributes="0"/>
-                              <Component id="jLabelMensajeError1" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                       <EmptySpace min="-2" pref="107" max="-2" attributes="0"/>
@@ -89,52 +65,31 @@
               <EmptySpace max="-2" attributes="0"/>
               <Component id="jLabelAltaEdicion" min="-2" pref="28" max="-2" attributes="0"/>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="jLabelEdicionNombre" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="jLabelMensajeError" alignment="3" min="-2" max="-2" attributes="0"/>
-              </Group>
+              <Component id="jLabelEdicionNombre" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="jTextEdicionNombre" min="-2" max="-2" attributes="0"/>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="jLabelEdicionDocente" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="jLabelErrorDocente1" alignment="3" min="-2" max="-2" attributes="0"/>
-              </Group>
+              <Component id="jLabelEdicionDocente" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="jComboBoxDocenteEdicion" min="-2" max="-2" attributes="0"/>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="jLabelDocenteOpEdicion" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="jLabelErrorDocente" alignment="3" min="-2" max="-2" attributes="0"/>
-              </Group>
+              <Component id="jLabelDocenteOpEdicion" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="jComboBoxDocenteOpEdicion" min="-2" max="-2" attributes="0"/>
               <EmptySpace type="separate" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="jLabelEdicionFInicio" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="jLabelMensajeError1" alignment="3" min="-2" max="-2" attributes="0"/>
-              </Group>
+              <Component id="jLabelEdicionFInicio" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="jSpinnerEdicionFInicio" min="-2" max="-2" attributes="0"/>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="jLabelEdicionFFin" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="jLabelMensajeError2" alignment="3" min="-2" max="-2" attributes="0"/>
-              </Group>
+              <Component id="jLabelEdicionFFin" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="jSpinnerEdicionFFin" min="-2" max="-2" attributes="0"/>
               <EmptySpace pref="11" max="32767" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="jLabelEdicionCupo" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="jLabelErrorCupo" alignment="3" min="-2" max="-2" attributes="0"/>
-              </Group>
+              <Component id="jLabelEdicionCupo" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="jTextEdicionCupo" min="-2" max="-2" attributes="0"/>
               <EmptySpace min="-2" pref="32" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="jButtonGuardarEdicion" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="jLabelMensajeExito" alignment="3" min="-2" max="-2" attributes="0"/>
-              </Group>
+              <Component id="jButtonGuardarEdicion" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
@@ -215,53 +170,6 @@
         <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
       </AuxValues>
     </Component>
-    <Component class="javax.swing.JLabel" name="jLabelMensajeExito">
-      <Properties>
-        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-          <Color blue="0" green="0" red="0" type="rgb"/>
-        </Property>
-        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-          <Font name="Segoe UI" size="14" style="2"/>
-        </Property>
-        <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-          <Color blue="0" green="99" red="0" type="rgb"/>
-        </Property>
-        <Property name="text" type="java.lang.String" value="Edici&#xf3;n creada con &#xe9;xito!"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JLabel" name="jLabelMensajeError">
-      <Properties>
-        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-          <Font name="Segoe UI" size="12" style="2"/>
-        </Property>
-        <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-          <Color blue="0" green="0" red="ff" type="rgb"/>
-        </Property>
-        <Property name="text" type="java.lang.String" value="* "/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JLabel" name="jLabelMensajeError1">
-      <Properties>
-        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-          <Font name="Segoe UI" size="12" style="2"/>
-        </Property>
-        <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-          <Color blue="0" green="0" red="ff" type="rgb"/>
-        </Property>
-        <Property name="text" type="java.lang.String" value="* Fecha err&#xf3;nea."/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JLabel" name="jLabelMensajeError2">
-      <Properties>
-        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-          <Font name="Segoe UI" size="12" style="2"/>
-        </Property>
-        <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-          <Color blue="0" green="0" red="ff" type="rgb"/>
-        </Property>
-        <Property name="text" type="java.lang.String" value="* Fecha err&#xf3;nea."/>
-      </Properties>
-    </Component>
     <Component class="javax.swing.JLabel" name="jLabelDocenteOpEdicion">
       <Properties>
         <Property name="text" type="java.lang.String" value="Docente 2 (Adicional)"/>
@@ -281,39 +189,6 @@
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
       </AuxValues>
-    </Component>
-    <Component class="javax.swing.JLabel" name="jLabelErrorDocente">
-      <Properties>
-        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-          <Font name="Segoe UI" size="12" style="2"/>
-        </Property>
-        <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-          <Color blue="0" green="0" red="ff" type="rgb"/>
-        </Property>
-        <Property name="text" type="java.lang.String" value="* Ya seleccionado."/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JLabel" name="jLabelErrorCupo">
-      <Properties>
-        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-          <Font name="Segoe UI" size="12" style="2"/>
-        </Property>
-        <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-          <Color blue="0" green="0" red="ff" type="rgb"/>
-        </Property>
-        <Property name="text" type="java.lang.String" value="* "/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JLabel" name="jLabelErrorDocente1">
-      <Properties>
-        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-          <Font name="Segoe UI" size="12" style="2"/>
-        </Property>
-        <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-          <Color blue="0" green="0" red="ff" type="rgb"/>
-        </Property>
-        <Property name="text" type="java.lang.String" value="* Sin seleccionar."/>
-      </Properties>
     </Component>
   </SubComponents>
 </Form>

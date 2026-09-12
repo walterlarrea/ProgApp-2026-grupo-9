@@ -5,10 +5,10 @@ import com.grupo9.edext.grupo9.servidor_central.controller.curso.Curso;
 import com.grupo9.edext.grupo9.servidor_central.controller.edicion_de_curso.EdicionCurso;
 import com.grupo9.edext.grupo9.servidor_central.controller.usuario.Estudiante;
 import com.grupo9.edext.grupo9.mensajes.ErrorRepetidos;
-import com.grupo9.edext.grupo9.mensajes.ErrorNoExiste;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
+import javax.swing.JOptionPane;
 
 public class InscribirAEdicionJInternalFrame extends javax.swing.JInternalFrame {
     private Curso cursoSeleccionado;
@@ -25,8 +25,8 @@ public class InscribirAEdicionJInternalFrame extends javax.swing.JInternalFrame 
         setTitle("Inscripción");
         setClosable(true);
         setResizable(true);
-        jLabelMensajeExito.setVisible(false);
-        jLabelMensajeError.setVisible(false);
+        setMaximizable(true);
+        setIconifiable(true);
         cargarEdiciones();
         cargarEstudiantes();
     }
@@ -47,8 +47,6 @@ public class InscribirAEdicionJInternalFrame extends javax.swing.JInternalFrame 
         jLabel1 = new javax.swing.JLabel();
         jSpinnerFechaInsc = new javax.swing.JSpinner();
         jButtonGuardarInscripcion = new javax.swing.JButton();
-        jLabelMensajeError = new javax.swing.JLabel();
-        jLabelMensajeExito = new javax.swing.JLabel();
 
         jLabelNombreEdi.setText("Edición");
 
@@ -63,14 +61,6 @@ public class InscribirAEdicionJInternalFrame extends javax.swing.JInternalFrame 
         jButtonGuardarInscripcion.setText("Inscribir");
         jButtonGuardarInscripcion.addActionListener(this::jButtonGuardarInscripcionActionPerformed);
 
-        jLabelMensajeError.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
-        jLabelMensajeError.setForeground(new java.awt.Color(255, 0, 0));
-        jLabelMensajeError.setText("* Fecha errónea.");
-
-        jLabelMensajeExito.setFont(new java.awt.Font("Segoe UI", 2, 14)); // NOI18N
-        jLabelMensajeExito.setForeground(new java.awt.Color(0, 153, 0));
-        jLabelMensajeExito.setText("Inscripción realizada con éxito!");
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -80,8 +70,6 @@ public class InscribirAEdicionJInternalFrame extends javax.swing.JInternalFrame 
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jLabelMensajeExito)
-                        .addGap(18, 18, 18)
                         .addComponent(jButtonGuardarInscripcion))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -96,10 +84,8 @@ public class InscribirAEdicionJInternalFrame extends javax.swing.JInternalFrame 
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel1)
                                 .addGap(18, 18, 18)
-                                .addComponent(jSpinnerFechaInsc, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jLabelMensajeError)))
-                        .addGap(0, 40, Short.MAX_VALUE)))
+                                .addComponent(jSpinnerFechaInsc, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 93, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -116,12 +102,9 @@ public class InscribirAEdicionJInternalFrame extends javax.swing.JInternalFrame 
                 .addGap(32, 32, 32)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(jSpinnerFechaInsc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabelMensajeError))
+                    .addComponent(jSpinnerFechaInsc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButtonGuardarInscripcion)
-                    .addComponent(jLabelMensajeExito))
+                .addComponent(jButtonGuardarInscripcion)
                 .addContainerGap())
         );
 
@@ -131,6 +114,7 @@ public class InscribirAEdicionJInternalFrame extends javax.swing.JInternalFrame 
     private void cargarEdiciones(){
         ediciones = edicionCursoPres.traerEdiciones(cursoSeleccionado);
         jComboBoxNombreEdi.removeAllItems();
+        jComboBoxNombreEdi.addItem("Ninguno");
         for(EdicionCurso edicion : ediciones) {
             jComboBoxNombreEdi.addItem(edicion.getNombreEdi());
         }
@@ -139,6 +123,7 @@ public class InscribirAEdicionJInternalFrame extends javax.swing.JInternalFrame 
     private void cargarEstudiantes(){
         estudiantes = edicionCursoPres.traerEstudiantes();
         jComboBoxEdicionEstudiante.removeAllItems();
+        jComboBoxEdicionEstudiante.addItem("Ninguno");
         for(Estudiante estudiante : estudiantes) {
             jComboBoxEdicionEstudiante.addItem(estudiante.getNombre() + " " + estudiante.getApellido());
         }
@@ -148,28 +133,24 @@ public class InscribirAEdicionJInternalFrame extends javax.swing.JInternalFrame 
         Date fecha0 = (Date) jSpinnerFechaInsc.getValue();
         LocalDate fechaInsc = fecha0.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         if (fechaInsc.isBefore(LocalDate.now())) {
-            jLabelMensajeExito.setVisible(false);
-            jLabelMensajeError.setVisible(true);
+            JOptionPane.showMessageDialog(this, "La fecha de inscripción debe ser actual o posterior al día de hoy.", "Datos inválidos", JOptionPane.WARNING_MESSAGE);
             return;
         }
         int indice = jComboBoxEdicionEstudiante.getSelectedIndex();
         int indice1 = jComboBoxNombreEdi.getSelectedIndex();
-        if(indice == -1) {
+        if (indice <= 0 || indice1 <= 0) {
+            JOptionPane.showMessageDialog(this, "Debe seleccionar una edición y un estudiante.", "Datos requeridos", JOptionPane.WARNING_MESSAGE);
             return;
         }
-        if(indice1 == -1) {
-            return;
-        }
-        Estudiante estudiante = estudiantes[indice];
-        EdicionCurso edicion = ediciones[indice1];
+        Estudiante estudiante = estudiantes[indice- 1];
+        EdicionCurso edicion = ediciones[indice1 - 1];
         try {
             edicionCursoPres.inscribirNuevoEstudianteEdicion(estudiante.getNickname(), edicion.getNombreEdi(), fechaInsc);
-            jLabelMensajeError.setVisible(false);
-            jLabelMensajeExito.setVisible(true);
-
+            JOptionPane.showMessageDialog(this, "Inscripción realizada con éxito!", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+        } catch (ErrorRepetidos e) {
+            JOptionPane.showMessageDialog(this, "El estudiante fue inscripto previamente.", "Inscripción duplicada", JOptionPane.WARNING_MESSAGE);        
         } catch (Exception e) {
-            jLabelMensajeExito.setVisible(false);
-            jLabelMensajeError.setVisible(true);
+            JOptionPane.showMessageDialog(this, "No se pudo realizar la inscripción.", "Error", JOptionPane.WARNING_MESSAGE);
         }
     }//GEN-LAST:event_jButtonGuardarInscripcionActionPerformed
 
@@ -180,8 +161,6 @@ public class InscribirAEdicionJInternalFrame extends javax.swing.JInternalFrame 
     private javax.swing.JComboBox<String> jComboBoxNombreEdi;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabelEstudiante;
-    private javax.swing.JLabel jLabelMensajeError;
-    private javax.swing.JLabel jLabelMensajeExito;
     private javax.swing.JLabel jLabelNombreEdi;
     private javax.swing.JSpinner jSpinnerFechaInsc;
     // End of variables declaration//GEN-END:variables
