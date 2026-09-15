@@ -11,9 +11,11 @@ public class DataDocente extends DataUsuario {
 
     public DataDocente(String nickname, String nombreUs, String apellidoUs, String email, LocalDate fechaNac, String imagen) {
         super(nickname, nombreUs, apellidoUs, email, fechaNac, imagen);
+    }
+
+    public DataDocente(String nickname, String nombreUs, String apellidoUs, String email, LocalDate fechaNac, String imagen, String nombreInst) {
+        super(nickname, nombreUs, apellidoUs, email, fechaNac, imagen);
         this.nombreInst = nombreInst;
-        if (ediciones != null) this.ediciones = ediciones;
-        if (cursos != null) this.cursos = cursos;
     }
 
     public String getNombreInst() {

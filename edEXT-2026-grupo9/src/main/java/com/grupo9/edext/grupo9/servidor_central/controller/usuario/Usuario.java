@@ -1,15 +1,8 @@
 package com.grupo9.edext.grupo9.servidor_central.controller.usuario;
 
-
 import java.time.LocalDate;
-
-/**
- *
- * @author Usuario
- */
 import jakarta.persistence.*;
 import java.io.Serializable;
-
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -37,7 +30,7 @@ public class Usuario implements Serializable{
     }
 
     public Usuario(String nickname) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        this.nickname = nickname;
     }
 
     public String getNickname() {
@@ -83,10 +76,13 @@ public class Usuario implements Serializable{
     public String getImagen() {
         return imagen;
     }
+    
+    public String getRutaImagen() {
+        return imagen;
+    }
 
     public void setImagen(String imagen) {
         this.imagen = imagen;
     }
-    
     
 }
