@@ -59,14 +59,14 @@ public class MainJFrame extends javax.swing.JFrame {
         jTableConsultarUsuarios.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 if (evt.getClickCount() == 2 && jTableConsultarUsuarios.getSelectedRow() != -1) {
-                    jButtonModificarDatosActionPerformed(null);
+                    abrirInfoUsuario();
                 }
             }
         });
     }
     
     //al aparecer uno se cierra el otro
-    private void mostrarInternalFrame(JInternalFrame frameToShow) {
+    public void mostrarInternalFrame(JInternalFrame frameToShow) {
         // cerrar todos los JPanel abiertos
         this.hideAllJPanels();
         //cerrar cualquier InternalFrame abierto
@@ -370,6 +370,11 @@ public class MainJFrame extends javax.swing.JFrame {
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
+            }
+
+            @Override
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return false;
             }
         });
         jScrollPaneTablaConsultarUsuarios.setViewportView(jTableConsultarUsuarios);
@@ -762,6 +767,22 @@ public class MainJFrame extends javax.swing.JFrame {
                     new com.grupo9.edext.grupo9.estacion_de_trabajo.gui.usuario.ModificarUsuarioFrame(du, this);
                 frameMod.setLocationRelativeTo(this);
                 frameMod.setVisible(true);
+            } catch (ErrorNoExiste ex) {
+                javax.swing.JOptionPane.showMessageDialog(this, "Error al consultar usuario: " + ex.getMessage(), "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }
+
+    private void abrirInfoUsuario() {
+        int selectedRow = jTableConsultarUsuarios.getSelectedRow();
+        if (selectedRow != -1) {
+            String nick = (String) jTableConsultarUsuarios.getValueAt(selectedRow, 1);
+            try {
+                com.grupo9.edext.grupo9.servidor_central.dominio.DataUsuario du = usuarioPres.consultarUsuario(nick);
+                com.grupo9.edext.grupo9.estacion_de_trabajo.gui.usuario.InfoUsuario frameInfo = 
+                    new com.grupo9.edext.grupo9.estacion_de_trabajo.gui.usuario.InfoUsuario(du, this);
+                frameInfo.setLocationRelativeTo(this);
+                frameInfo.setVisible(true);
             } catch (ErrorNoExiste ex) {
                 javax.swing.JOptionPane.showMessageDialog(this, "Error al consultar usuario: " + ex.getMessage(), "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
             }

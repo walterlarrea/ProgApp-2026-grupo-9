@@ -210,13 +210,17 @@ public class UsuarioController implements IUsuario{
                 }
             }
             java.util.Set<String> cursos = new java.util.HashSet<>();
-            return new com.grupo9.edext.grupo9.servidor_central.dominio.DataDocente(
+            com.grupo9.edext.grupo9.servidor_central.dominio.DataDocente dd = new com.grupo9.edext.grupo9.servidor_central.dominio.DataDocente(
                 doc.getNickname(),
                 doc.getNombre(),
                 doc.getApellido(),
                 doc.getEmail(),
                 doc.getFechaNac(),
-                doc.getImagen());
+                doc.getImagen(),
+                doc.getNombreInst());
+            if (ediciones != null) dd.getEdiciones().addAll(ediciones);
+            if (cursos != null) dd.getCursos().addAll(cursos);
+            return dd;
         }
 
         ManejadorEstudiantes me = ManejadorEstudiantes.getInstance();
@@ -236,7 +240,8 @@ public class UsuarioController implements IUsuario{
                 est.getApellido(),
                 est.getEmail(),
                 est.getFechaNac(),
-                est.getImagen());
+                est.getImagen(),
+                edicionesInsc);
         }
 
         throw new com.grupo9.edext.grupo9.mensajes.ErrorNoExiste("El usuario con nickname " + nickname + " no existe.");

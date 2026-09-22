@@ -58,6 +58,32 @@ public class EdicionCursoControllerTest {
     }
 
     @Test
+    public void testInscripcionEstudianteExitosaYDuplicada() {
+        String nombreInst = "InstInsc_" + System.currentTimeMillis();
+        DataInstituto inst = institutoController.guardarNuevoInstituto(new DataInstituto(nombreInst));
+
+        String nombreCurso = "CursoInsc_" + System.currentTimeMillis();
+        DataCurso curso = cursoController.guardarNuevoCurso(new DataCurso(
+                inst, nombreCurso, "Desc", 6, 40, 4, LocalDate.now(), "http://test.com", new HashSet<>(), new HashSet<>()
+        ));
+
+        String nombreEdicion = "EdInsc_" + System.currentTimeMillis();
+        edicionController.guardarNuevaEdicionCurso(new DataEdicionCurso(
+                nombreEdicion, curso, LocalDate.now(), LocalDate.now().plusMonths(3), 30, new HashSet<>(), new HashSet<>(), LocalDate.now()
+        ));
+
+        String nickEst = "estInsc_" + System.currentTimeMillis();
+        assertDoesNotThrow(() -> {
+            usuarioController.registrarEstudiante(nickEst, "Alumno", "Inscripto", "estinsc_" + System.currentTimeMillis() + "@test.com", LocalDate.of(2001, 1, 1), null);
+            edicionController.inscribirNuevoEstudiante(LocalDate.now(), nickEst, nombreEdicion);
+        });
+
+        assertThrows(ErrorRepetidos.class, () -> {
+            edicionController.inscribirNuevoEstudiante(LocalDate.now(), nickEst, nombreEdicion);
+        });
+    }
+
+    @Test
     public void testConsultarEdicionInexistente() {
         String edicionInexistente = "EdInexistente_" + System.currentTimeMillis();
         assertThrows(ErrorNoExiste.class, () -> {
