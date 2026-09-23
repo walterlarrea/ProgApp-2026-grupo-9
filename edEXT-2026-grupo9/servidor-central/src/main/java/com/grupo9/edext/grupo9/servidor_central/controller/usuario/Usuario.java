@@ -37,7 +37,7 @@ public class Usuario implements Serializable{
     }
 
     public Usuario(String nickname) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        this.nickname = nickname;
     }
 
     public String getNickname() {
@@ -81,6 +81,10 @@ public class Usuario implements Serializable{
     }
     
     public String getImagen() {
+        return imagen;
+    }
+    
+    public String getRutaImagen() {
         return imagen;
     }
 

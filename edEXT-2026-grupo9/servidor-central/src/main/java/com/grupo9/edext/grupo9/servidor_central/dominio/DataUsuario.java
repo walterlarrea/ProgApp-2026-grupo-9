@@ -20,7 +20,7 @@ public class DataUsuario {
     }
 
     public DataUsuario(String nickname) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        this.nickname = nickname;
     }
 
     public String getNickname() {

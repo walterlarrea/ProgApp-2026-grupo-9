@@ -1,6 +1,7 @@
 package com.grupo9.edext.grupo9.servidor_web.servlets;
 
-import com.grupo9.edext.grupo9.miscelanea.Fabrica;
+import com.grupo9.edext.grupo9.interfaces.IServidorCentral;
+import com.grupo9.edext.grupo9.servidor_central.controller.ServidorCentralController;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataCurso;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataInstituto;
 
@@ -25,14 +26,10 @@ public class HomeServlet extends HttpServlet {
         String estadoDb = "Conectado al Servidor Central";
 
         try {
-            Fabrica fabrica = Fabrica.getInstance();
-            if (fabrica != null) {
-                if (fabrica.getIInstituto() != null) {
-                    institutos = fabrica.getIInstituto().todosLosInstitutos();
-                }
-                if (fabrica.getICurso() != null) {
-                    cursos = fabrica.getICurso().todosLosCursos();
-                }
+            IServidorCentral servidorCentral = ServidorCentralController.getInstance();
+            if (servidorCentral != null) {
+                institutos = servidorCentral.consultarTodosLosInstitutos();
+                cursos = servidorCentral.consultarTodosLosCursos();
             }
         } catch (Exception e) {
             estadoDb = "Servidor Central activo (sin conexión a base de datos o vacía: " + e.getMessage() + ")";

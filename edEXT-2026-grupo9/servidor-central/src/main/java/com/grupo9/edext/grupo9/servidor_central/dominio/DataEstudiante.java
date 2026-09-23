@@ -10,7 +10,13 @@ public class DataEstudiante extends DataUsuario {
 
     public DataEstudiante(String nickname, String nombreUs, String apellidoUs, String email, LocalDate fechaNac, String imagen) {
         super(nickname, nombreUs, apellidoUs, email, fechaNac, imagen);
-        if (edicionesInscriptas != null) this.edicionesInscriptas = edicionesInscriptas;
+    }
+
+    public DataEstudiante(String nickname, String nombreUs, String apellidoUs, String email, LocalDate fechaNac, String imagen, Set<String> edicionesInscriptas) {
+        super(nickname, nombreUs, apellidoUs, email, fechaNac, imagen);
+        if (edicionesInscriptas != null) {
+            this.edicionesInscriptas = edicionesInscriptas;
+        }
     }
     
     public Set<DataInscEdicion> getInscripciones(){
@@ -19,6 +25,10 @@ public class DataEstudiante extends DataUsuario {
 
     public Set<String> getEdicionesInscriptas() {
         return edicionesInscriptas;
+    }
+
+    public void setEdicionesInscriptas(Set<String> edicionesInscriptas) {
+        this.edicionesInscriptas = edicionesInscriptas;
     }
     
     @Override

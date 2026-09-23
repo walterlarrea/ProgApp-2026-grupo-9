@@ -146,11 +146,14 @@ public class DtoMapper {
             return null;
         }
 
-        Usuario usuario = new Usuario(
-                dataUsuario.getNickname()
+        return new Usuario(
+                dataUsuario.getNickname(),
+                dataUsuario.getNombre(),
+                dataUsuario.getApellido(),
+                dataUsuario.getEmail(),
+                dataUsuario.getFechaNac(),
+                dataUsuario.getImagen()
         );
-        
-        return usuario;
     }
 
     public static DataUsuario toData(Usuario usuario){
@@ -158,11 +161,14 @@ public class DtoMapper {
             return null;
         }
         
-        DataUsuario dataUsuario = new DataUsuario(
-                usuario.getNickname()
+        return new DataUsuario(
+                usuario.getNickname(),
+                usuario.getNombre(),
+                usuario.getApellido(),
+                usuario.getEmail(),
+                usuario.getFechaNac(),
+                usuario.getRutaImagen()
         );
-        
-        return dataUsuario;
     }
     
     // Ediciones de cursos
@@ -230,23 +236,30 @@ public class DtoMapper {
     }
     
     public static Docente toEntity(DataDocente dataDocente) {
+        if (dataDocente == null) {
+            return null;
+        }
         return new Docente(
             dataDocente.getNickname(),
             dataDocente.getNombre(),
             dataDocente.getApellido(),
             dataDocente.getEmail(),
             dataDocente.getFechaNac(),
-            null,
+            dataDocente.getImagen(),
             dataDocente.getNombreInst());
     }
     
     public static DataDocente toData(Docente docente) {
+        if (docente == null) {
+            return null;
+        }
         return new DataDocente(
             docente.getNickname(),
             docente.getNombre(),
             docente.getApellido(),
             docente.getEmail(),
             docente.getFechaNac(),
+            docente.getRutaImagen(),
             docente.getNombreInst());
     }
 

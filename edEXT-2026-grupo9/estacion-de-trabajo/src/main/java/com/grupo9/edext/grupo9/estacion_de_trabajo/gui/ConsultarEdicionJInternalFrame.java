@@ -52,8 +52,32 @@ public class ConsultarEdicionJInternalFrame extends javax.swing.JInternalFrame {
                 }
             }
         }
-        
-        
+    }
+
+    public ConsultarEdicionJInternalFrame(String nombreEdicion) {
+        initComponents();
+        setTitle("Consultar Edición");
+        setClosable(true);
+        setResizable(true);
+        setMaximizable(true);
+        setIconifiable(true);
+        noEditable();
+        ocultarDatos();
+        jScrollPaneEstudiantes.setVerticalScrollBarPolicy(javax.swing.JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+
+        if (nombreEdicion != null && !nombreEdicion.trim().isEmpty()) {
+            try {
+                DataEdicionCurso ed = edicionCursoPres.muestroEdicionCurso(nombreEdicion);
+                if (ed != null && ed.getCursoAsoc() != null) {
+                    this.cursoSeleccionado = com.grupo9.edext.grupo9.servidor_central.controller.DtoMapper.toEntity(ed.getCursoAsoc());
+                    cargarEdiciones();
+                    jComboBoxEdiciones.setSelectedItem(nombreEdicion);
+                    jButtonBuscarEdicionActionPerformed(null);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
     
     private void noEditable(){
