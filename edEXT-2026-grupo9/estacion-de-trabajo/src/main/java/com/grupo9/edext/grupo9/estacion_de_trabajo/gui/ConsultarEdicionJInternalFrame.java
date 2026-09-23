@@ -1,10 +1,9 @@
 package com.grupo9.edext.grupo9.estacion_de_trabajo.gui;
 
 import com.grupo9.edext.grupo9.estacion_de_trabajo.cliente.EdicionCursoPres;
-import com.grupo9.edext.grupo9.servidor_central.controller.curso.Curso;
-import com.grupo9.edext.grupo9.servidor_central.controller.edicion_de_curso.EdicionCurso;
-import com.grupo9.edext.grupo9.servidor_central.dominio.DataEstudiante;
+import com.grupo9.edext.grupo9.servidor_central.dominio.DataCurso;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataEdicionCurso;
+import com.grupo9.edext.grupo9.servidor_central.dominio.DataEstudiante;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataInscEdicion;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataDocente;
 import com.grupo9.edext.grupo9.mensajes.ErrorNoExiste;
@@ -12,12 +11,12 @@ import javax.swing.*;
 import java.awt.Dimension;
 
 public class ConsultarEdicionJInternalFrame extends javax.swing.JInternalFrame {
-    private Curso cursoSeleccionado;
+    private DataCurso cursoSeleccionado;
     private DataEdicionCurso edicion;
-    private EdicionCurso[] ediciones;
+    private DataEdicionCurso[] ediciones;
     private final EdicionCursoPres edicionCursoPres = new EdicionCursoPres();
     
-    public ConsultarEdicionJInternalFrame(Curso cursoSeleccionado) {
+    public ConsultarEdicionJInternalFrame(DataCurso cursoSeleccionado) {
         initComponents();
         this.cursoSeleccionado = cursoSeleccionado;
         setTitle("Consultar");
@@ -31,7 +30,7 @@ public class ConsultarEdicionJInternalFrame extends javax.swing.JInternalFrame {
         jScrollPaneEstudiantes.setVerticalScrollBarPolicy(javax.swing.JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
     }
     
-    public ConsultarEdicionJInternalFrame(Curso cursoSeleccionado, DataEdicionCurso edicionPreSeleccionada) {
+    public ConsultarEdicionJInternalFrame(DataCurso cursoSeleccionado, DataEdicionCurso edicionPreSeleccionada) {
         initComponents();
         this.cursoSeleccionado = cursoSeleccionado;
         setTitle("Consultar");
@@ -69,7 +68,7 @@ public class ConsultarEdicionJInternalFrame extends javax.swing.JInternalFrame {
             try {
                 DataEdicionCurso ed = edicionCursoPres.muestroEdicionCurso(nombreEdicion);
                 if (ed != null && ed.getCursoAsoc() != null) {
-                    this.cursoSeleccionado = com.grupo9.edext.grupo9.servidor_central.controller.DtoMapper.toEntity(ed.getCursoAsoc());
+                    this.cursoSeleccionado = ed.getCursoAsoc();
                     cargarEdiciones();
                     jComboBoxEdiciones.setSelectedItem(nombreEdicion);
                     jButtonBuscarEdicionActionPerformed(null);
@@ -126,8 +125,10 @@ public class ConsultarEdicionJInternalFrame extends javax.swing.JInternalFrame {
     private void cargarEdiciones() {
         ediciones = edicionCursoPres.traerEdiciones(cursoSeleccionado);
         jComboBoxEdiciones.removeAllItems();
-        for (EdicionCurso ed : ediciones) {
-            jComboBoxEdiciones.addItem(ed.getNombreEdi());
+        if (ediciones != null) {
+            for (DataEdicionCurso ed : ediciones) {
+                jComboBoxEdiciones.addItem(ed.getNombreEdi());
+            }
         }
     }
     /**

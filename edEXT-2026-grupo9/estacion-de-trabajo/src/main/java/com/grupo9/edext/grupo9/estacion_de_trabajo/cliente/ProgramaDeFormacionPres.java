@@ -1,14 +1,14 @@
 package com.grupo9.edext.grupo9.estacion_de_trabajo.cliente;
 
 import com.grupo9.edext.grupo9.interfaces.IServidorCentral;
-import com.grupo9.edext.grupo9.servidor_central.controller.ServidorCentralController;
+import com.grupo9.edext.grupo9.miscelanea.Fabrica;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataProgramaFormacion;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataCurso;
 import java.time.LocalDate;
 import java.util.HashSet;
 
 public class ProgramaDeFormacionPres {
-    IServidorCentral servidorCentral = ServidorCentralController.getInstance();
+    IServidorCentral servidorCentral = Fabrica.getInstance().getIServidorCentral();
   
     public ProgramaDeFormacionPres(){
 //        servidorCentral.logStatus();

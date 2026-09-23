@@ -5,15 +5,13 @@ import com.grupo9.edext.grupo9.servidor_central.dominio.DataCurso;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataInstituto;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataProgramaFormacion;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataEdicionCurso;
-import com.grupo9.edext.grupo9.servidor_central.controller.usuario.Docente;
-import com.grupo9.edext.grupo9.servidor_central.controller.usuario.Estudiante;
-import com.grupo9.edext.grupo9.servidor_central.controller.instituto.Instituto;
-import com.grupo9.edext.grupo9.servidor_central.controller.edicion_de_curso.EdicionCurso;
+import com.grupo9.edext.grupo9.servidor_central.dominio.DataDocente;
+import com.grupo9.edext.grupo9.servidor_central.dominio.DataEstudiante;
 import com.grupo9.edext.grupo9.mensajes.ErrorNoExiste;
 import com.grupo9.edext.grupo9.mensajes.ErrorRepetidos;
-import com.grupo9.edext.grupo9.servidor_central.controller.curso.Curso;
 import java.util.HashSet;
 import java.time.LocalDate;
+
 
 public interface IServidorCentral {
     public void logStatus();
@@ -28,11 +26,11 @@ public interface IServidorCentral {
     
     // Ediciones de cursos
     public DataEdicionCurso guardarEdicionCurso(DataEdicionCurso nuevaEdicion);
-    public Docente[] traerDocentes(Instituto instituto);
+    public DataDocente[] traerDocentes(DataInstituto instituto);
     public DataEdicionCurso consultarUnaEdicionCurso(String nEdi) throws ErrorNoExiste;
-    public EdicionCurso[] traerEdiciones(Curso curso);
-    public HashSet<DataEdicionCurso> traerEdiciones(DataCurso curso);
-    public Estudiante[] traerEstudiantes();
+    public DataEdicionCurso[] traerEdiciones(DataCurso curso);
+    public HashSet<DataEdicionCurso> traerEdiciones(DataCurso curso, boolean asSet);
+    public DataEstudiante[] traerEstudiantes();
     public void inscribirEstudiante(LocalDate fechaInsc, String nickname, String nombreEdi)throws ErrorRepetidos, ErrorNoExiste ;
     
     // Cursos
@@ -51,4 +49,6 @@ public interface IServidorCentral {
     public DataUsuario consultarUsuario(String nickname) throws ErrorNoExiste;
     public void modificarUsuario(String nick, String nom, String ape, LocalDate fechaNac, String rutaImg);
     public void eliminarUsuario(String nick) throws ErrorNoExiste;
+    public void registrarEstudiante(String nickname, String nombre, String apellido, String email, LocalDate fechaNac, String rutaImagen) throws ErrorRepetidos;
+    public void registrarDocente(String nickname, String nombre, String apellido, String email, LocalDate fechaNac, String rutaImagen, String nombreInst) throws ErrorRepetidos;
 }

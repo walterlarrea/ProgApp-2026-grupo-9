@@ -6,7 +6,6 @@ import com.grupo9.edext.grupo9.estacion_de_trabajo.cliente.InstitutoPres;
 import com.grupo9.edext.grupo9.estacion_de_trabajo.cliente.ProgramaDeFormacionPres;
 import com.grupo9.edext.grupo9.estacion_de_trabajo.gui.ConsultarEdicionJInternalFrame;
 import com.grupo9.edext.grupo9.estacion_de_trabajo.gui.programa_de_formacion.ConsultarProgramasJInternalFrame;
-import com.grupo9.edext.grupo9.servidor_central.controller.DtoMapper;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataCurso;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataInstituto;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataProgramaFormacion;
@@ -559,7 +558,7 @@ public class ConsultarCursosJInternalFrame extends javax.swing.JInternalFrame {
     }
     
     private void abrirEdicionRelacionada(DataCurso cursoSeleccionada, DataEdicionCurso edicionSeleccionada){
-        JInternalFrame frame = new ConsultarEdicionJInternalFrame(DtoMapper.toEntity(cursoSeleccionada), edicionSeleccionada);
+        JInternalFrame frame = new ConsultarEdicionJInternalFrame(cursoSeleccionada, edicionSeleccionada);
 
         this.jDesktopPane.add(frame);
         frame.setVisible(true);

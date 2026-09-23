@@ -728,19 +728,15 @@ public class MainJFrame extends javax.swing.JFrame {
         String rutaImg = (this.archivoImagenSeleccionado != null) ? this.archivoImagenSeleccionado.getAbsolutePath() : null;
 
         try {
-            // Pedir la interfaz al controlador mediante la Fábrica
-            com.grupo9.edext.grupo9.servidor_central.controller.usuario.IUsuario iu = 
-                com.grupo9.edext.grupo9.miscelanea.Fabrica.getInstance().getIUsuario();
-
             if (jRadioButtonDocente.isSelected()) {
                 String inst = (String) jComboBoxInstituto.getSelectedItem();
                 if (inst == null || inst.equals("Instituto") || inst.equals("Seleccione un Instituto...") || inst.isEmpty()) {
                     javax.swing.JOptionPane.showMessageDialog(this, "Debe seleccionar un Instituto para el docente.", "Advertencia", javax.swing.JOptionPane.WARNING_MESSAGE);
                     return;
                 }
-                iu.registrarDocente(nick, nombre, apellido, email, fechaNac, rutaImg, inst);
+                usuarioPres.registrarDocente(nick, nombre, apellido, email, fechaNac, rutaImg, inst);
             } else {
-                iu.registrarEstudiante(nick, nombre, apellido, email, fechaNac, rutaImg);
+                usuarioPres.registrarEstudiante(nick, nombre, apellido, email, fechaNac, rutaImg);
             }
 
             javax.swing.JOptionPane.showMessageDialog(this, "¡Usuario registrado y guardado en la base de datos con éxito!", "Éxito", javax.swing.JOptionPane.INFORMATION_MESSAGE);
