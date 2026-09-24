@@ -263,6 +263,19 @@ public class DtoMapper {
             docente.getNombreInst());
     }
 
+    public static DataEstudiante toData(Estudiante estudiante) {
+        if (estudiante == null) {
+            return null;
+        }
+        return new DataEstudiante(
+            estudiante.getNickname(),
+            estudiante.getNombre(),
+            estudiante.getApellido(),
+            estudiante.getEmail(),
+            estudiante.getFechaNac(),
+            estudiante.getRutaImagen());
+    }
+
     private static <Source, Target> HashSet<Target> convertList(
             Set<Source> sourceList, Class<Target> targetType) {
         if (sourceList == null) {

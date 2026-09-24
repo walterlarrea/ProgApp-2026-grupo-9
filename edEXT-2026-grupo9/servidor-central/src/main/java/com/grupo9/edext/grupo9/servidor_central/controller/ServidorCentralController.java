@@ -16,9 +16,12 @@ import com.grupo9.edext.grupo9.servidor_central.dominio.DataInstituto;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataProgramaFormacion;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataUsuario;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataEdicionCurso;
+import com.grupo9.edext.grupo9.servidor_central.dominio.DataDocente;
+import com.grupo9.edext.grupo9.servidor_central.dominio.DataEstudiante;
 import com.grupo9.edext.grupo9.servidor_central.controller.instituto.Instituto;
 import com.grupo9.edext.grupo9.servidor_central.controller.usuario.Docente;
 import com.grupo9.edext.grupo9.servidor_central.controller.edicion_de_curso.EdicionCurso;
+import com.grupo9.edext.grupo9.servidor_central.controller.usuario.Estudiante;
 import com.grupo9.edext.grupo9.mensajes.ErrorNoExiste;
 import com.grupo9.edext.grupo9.mensajes.ErrorRepetidos;
 import com.grupo9.edext.grupo9.servidor_central.controller.curso.Curso;
@@ -26,7 +29,7 @@ import com.grupo9.edext.grupo9.servidor_central.controller.usuario.Estudiante;
 import java.time.LocalDate;
 import java.util.HashSet;
 
-public class ServidorCentralController implements IServidorCentral {
+class ServidorCentralController implements IServidorCentral {
     
     private final IProgramaDeFormacion progDeFormacionCtrl = new ProgramaDeFormacionController();
     private final IEdicionCurso edicionCursoCtrl = new EdicionCursoController();
@@ -49,7 +52,7 @@ public class ServidorCentralController implements IServidorCentral {
     }
 
     // Step 3: Public static method provides global access to the instance
-    public static ServidorCentralController getInstance() {
+    public static IServidorCentral getInstance() {
         return ServidorCentral.INSTANCE;
     }
     
@@ -96,13 +99,24 @@ public class ServidorCentralController implements IServidorCentral {
     }
     
     @Override
-    public Docente[] traerDocentes(Instituto instituto) {
-        return this.edicionCursoCtrl.traerDocentes(instituto);
+    public DataDocente[] traerDocentes(DataInstituto dataInstituto) {
+        Instituto instituto = DtoMapper.toEntity(dataInstituto);
+        Docente[] entidades = this.edicionCursoCtrl.traerDocentes(instituto);
+        DataDocente[] datos = new DataDocente[entidades.length];
+        for (int i = 0; i < entidades.length; i++) {
+            datos[i] = DtoMapper.toData(entidades[i]);
+        }
+        return datos;
     }
     
     @Override
-    public Estudiante[] traerEstudiantes(){
-        return this.edicionCursoCtrl.traerEstudiantes();
+    public DataEstudiante[] traerEstudiantes(){
+        Estudiante[] entidades = this.edicionCursoCtrl.traerEstudiantes();
+        DataEstudiante[] datos = new DataEstudiante[entidades.length];
+        for (int i = 0; i < entidades.length; i++) {
+            datos[i] = DtoMapper.toData(entidades[i]);
+        }
+        return datos;
     }
     
     @Override
@@ -116,12 +130,18 @@ public class ServidorCentralController implements IServidorCentral {
     }
     
     @Override
-    public EdicionCurso[] traerEdiciones(Curso curso){
-        return this.edicionCursoCtrl.traerEdiciones(curso);
+    public DataEdicionCurso[] traerEdiciones(DataCurso dataCurso){
+        Curso curso = DtoMapper.toEntity(dataCurso);
+        EdicionCurso[] entidades = this.edicionCursoCtrl.traerEdiciones(curso);
+        DataEdicionCurso[] datos = new DataEdicionCurso[entidades.length];
+        for (int i = 0; i < entidades.length; i++) {
+            datos[i] = DtoMapper.toData(entidades[i]);
+        }
+        return datos;
     }
     
     @Override
-    public HashSet<DataEdicionCurso> traerEdiciones(DataCurso dataCurso){
+    public HashSet<DataEdicionCurso> traerEdiciones(DataCurso dataCurso, boolean asSet){
         return this.edicionCursoCtrl.traerEdiciones(dataCurso);
     }
     
@@ -186,5 +206,15 @@ public class ServidorCentralController implements IServidorCentral {
     @Override
     public void eliminarUsuario(String nick) throws ErrorNoExiste {
         this.usuarioCtrl.eliminarUsuario(nick);
+    }
+
+    @Override
+    public void registrarEstudiante(String nickname, String nombre, String apellido, String email, LocalDate fechaNac, String rutaImagen) throws ErrorRepetidos {
+        this.usuarioCtrl.registrarEstudiante(nickname, nombre, apellido, email, fechaNac, rutaImagen);
+    }
+
+    @Override
+    public void registrarDocente(String nickname, String nombre, String apellido, String email, LocalDate fechaNac, String rutaImagen, String nombreInst) throws ErrorRepetidos {
+        this.usuarioCtrl.registrarDocente(nickname, nombre, apellido, email, fechaNac, rutaImagen, nombreInst);
     }
 }

@@ -1,9 +1,9 @@
 package com.grupo9.edext.grupo9.estacion_de_trabajo.gui;
 
 import com.grupo9.edext.grupo9.estacion_de_trabajo.cliente.EdicionCursoPres;
-import com.grupo9.edext.grupo9.servidor_central.controller.curso.Curso;
-import com.grupo9.edext.grupo9.servidor_central.controller.edicion_de_curso.EdicionCurso;
-import com.grupo9.edext.grupo9.servidor_central.controller.usuario.Estudiante;
+import com.grupo9.edext.grupo9.servidor_central.dominio.DataCurso;
+import com.grupo9.edext.grupo9.servidor_central.dominio.DataEdicionCurso;
+import com.grupo9.edext.grupo9.servidor_central.dominio.DataEstudiante;
 import com.grupo9.edext.grupo9.mensajes.ErrorRepetidos;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -11,12 +11,12 @@ import java.util.Date;
 import javax.swing.JOptionPane;
 
 public class InscribirAEdicionJInternalFrame extends javax.swing.JInternalFrame {
-    private Curso cursoSeleccionado;
-    private Estudiante[] estudiantes;
-    private EdicionCurso[] ediciones;
+    private DataCurso cursoSeleccionado;
+    private DataEstudiante[] estudiantes;
+    private DataEdicionCurso[] ediciones;
     private final EdicionCursoPres edicionCursoPres = new EdicionCursoPres();
     
-    public InscribirAEdicionJInternalFrame(Curso cursoSeleccionado) {
+    public InscribirAEdicionJInternalFrame(DataCurso cursoSeleccionado) {
         initComponents();
         this.cursoSeleccionado = cursoSeleccionado;
         jSpinnerFechaInsc.setModel(new javax.swing.SpinnerDateModel(new java.util.Date(), null, null, java.util.Calendar.DAY_OF_MONTH));
@@ -115,8 +115,10 @@ public class InscribirAEdicionJInternalFrame extends javax.swing.JInternalFrame 
         ediciones = edicionCursoPres.traerEdiciones(cursoSeleccionado);
         jComboBoxNombreEdi.removeAllItems();
         jComboBoxNombreEdi.addItem("Ninguno");
-        for(EdicionCurso edicion : ediciones) {
-            jComboBoxNombreEdi.addItem(edicion.getNombreEdi());
+        if (ediciones != null) {
+            for(DataEdicionCurso edicion : ediciones) {
+                jComboBoxNombreEdi.addItem(edicion.getNombreEdi());
+            }
         }
     }
     
@@ -124,8 +126,10 @@ public class InscribirAEdicionJInternalFrame extends javax.swing.JInternalFrame 
         estudiantes = edicionCursoPres.traerEstudiantes();
         jComboBoxEdicionEstudiante.removeAllItems();
         jComboBoxEdicionEstudiante.addItem("Ninguno");
-        for(Estudiante estudiante : estudiantes) {
-            jComboBoxEdicionEstudiante.addItem(estudiante.getNombre() + " " + estudiante.getApellido());
+        if (estudiantes != null) {
+            for(DataEstudiante estudiante : estudiantes) {
+                jComboBoxEdicionEstudiante.addItem(estudiante.getNombre() + " " + estudiante.getApellido());
+            }
         }
     }
     
@@ -142,8 +146,8 @@ public class InscribirAEdicionJInternalFrame extends javax.swing.JInternalFrame 
             JOptionPane.showMessageDialog(this, "Debe seleccionar una edición y un estudiante.", "Datos requeridos", JOptionPane.WARNING_MESSAGE);
             return;
         }
-        Estudiante estudiante = estudiantes[indice- 1];
-        EdicionCurso edicion = ediciones[indice1 - 1];
+        DataEstudiante estudiante = estudiantes[indice- 1];
+        DataEdicionCurso edicion = ediciones[indice1 - 1];
         try {
             edicionCursoPres.inscribirNuevoEstudianteEdicion(estudiante.getNickname(), edicion.getNombreEdi(), fechaInsc);
             JOptionPane.showMessageDialog(this, "Inscripción realizada con éxito!", "Éxito", JOptionPane.INFORMATION_MESSAGE);

@@ -10,6 +10,8 @@ import com.grupo9.edext.grupo9.servidor_central.controller.usuario.IUsuario;
 import com.grupo9.edext.grupo9.servidor_central.controller.usuario.UsuarioController;
 import com.grupo9.edext.grupo9.servidor_central.controller.instituto.IInstituto;
 import com.grupo9.edext.grupo9.servidor_central.controller.instituto.InstitutoController;
+import com.grupo9.edext.grupo9.interfaces.IServidorCentral;
+import com.grupo9.edext.grupo9.servidor_central.controller.ServidorCentralFactory;
         
 public class Fabrica {
     private static Fabrica instance;
@@ -21,6 +23,10 @@ public class Fabrica {
             instance = new Fabrica();
         }
         return instance;
+    }
+
+    public IServidorCentral getIServidorCentral() {
+        return ServidorCentralFactory.getServidorCentral();
     }
         
     public IEdicionCurso getIEdicionCurso() {

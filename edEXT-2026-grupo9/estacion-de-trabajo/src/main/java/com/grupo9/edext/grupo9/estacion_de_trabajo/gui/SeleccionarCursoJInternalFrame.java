@@ -1,22 +1,18 @@
 package com.grupo9.edext.grupo9.estacion_de_trabajo.gui;
 
-import com.grupo9.edext.grupo9.estacion_de_trabajo.gui.AltaEdicionJInternalFrame;
-import com.grupo9.edext.grupo9.estacion_de_trabajo.gui.ConsultarEdicionJInternalFrame;
-import com.grupo9.edext.grupo9.estacion_de_trabajo.gui.InscribirAEdicionJInternalFrame;
-import com.grupo9.edext.grupo9.servidor_central.controller.curso.Curso;
-import com.grupo9.edext.grupo9.servidor_central.controller.curso.ManejadorCurso;
-import com.grupo9.edext.grupo9.servidor_central.controller.instituto.ManejadorInstituto;
-import com.grupo9.edext.grupo9.servidor_central.controller.instituto.Instituto;
+import com.grupo9.edext.grupo9.interfaces.IServidorCentral;
+import com.grupo9.edext.grupo9.miscelanea.Fabrica;
+import com.grupo9.edext.grupo9.servidor_central.dominio.DataCurso;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataInstituto;
-import com.grupo9.edext.grupo9.servidor_central.controller.DtoMapper;
 import javax.swing.*;
 import java.util.*;
 
 public class SeleccionarCursoJInternalFrame extends javax.swing.JInternalFrame {
     private JDesktopPane jDesktopPane;
     private OperacionCurso operacion;
-    private List<Curso> cursos;
-    private List<Instituto> institutos;
+    private List<DataCurso> cursos;
+    private List<DataInstituto> institutos;
+    private final IServidorCentral servidorCentral = Fabrica.getInstance().getIServidorCentral();
     
     public SeleccionarCursoJInternalFrame(JDesktopPane jDesktopPane, OperacionCurso operacion) {
         initComponents();
@@ -109,8 +105,8 @@ public class SeleccionarCursoJInternalFrame extends javax.swing.JInternalFrame {
         }
 
         // 2. Mapeo directo y seguro de los objetos
-        Curso cursoSeleccionado = cursos.get(indiceCursoCombo);
-        Instituto instituto = institutos.get(indiceInstitutoCombo - 1); // Restamos 1 por el elemento "Ninguno"
+        DataCurso cursoSeleccionado = cursos.get(indiceCursoCombo);
+        DataInstituto instituto = institutos.get(indiceInstitutoCombo - 1); // Restamos 1 por el elemento "Ninguno"
         JInternalFrame frame = null;
 
         // 3. Apertura de la ventana según la operación
@@ -139,35 +135,33 @@ public class SeleccionarCursoJInternalFrame extends javax.swing.JInternalFrame {
             jComboBoxCurso.removeAllItems();
             return;
         }
-        Instituto institutoSeleccionado = institutos.get(indice - 1);
+        DataInstituto institutoSeleccionado = institutos.get(indice - 1);
         obtenerCursosDelInstituto(institutoSeleccionado);
     }//GEN-LAST:event_jComboBoxInstitutoActionPerformed
 
     private void cargarInstitutos() {
         institutos = new ArrayList<>();
-        HashSet<DataInstituto> datosInstitutos = ManejadorInstituto.getInstance().traerTodos();
-        for(DataInstituto data : datosInstitutos) {
-            institutos.add(DtoMapper.toEntity(data));
+        HashSet<DataInstituto> datosInstitutos = servidorCentral.consultarTodosLosInstitutos();
+        if (datosInstitutos != null) {
+            institutos.addAll(datosInstitutos);
         }
         jComboBoxInstituto.removeAllItems();
         jComboBoxInstituto.addItem("Ninguno");
-        for (Instituto instituto : institutos) {
-            jComboBoxInstituto.addItem(instituto.getNombreI());
+        for (DataInstituto instituto : institutos) {
+            jComboBoxInstituto.addItem(instituto.nombreI());
         }
     }
     
-    private void obtenerCursosDelInstituto(Instituto inst){
+    private void obtenerCursosDelInstituto(DataInstituto inst){
         cursos = new ArrayList<>();
-        HashSet<Curso> todosLosCursos = ManejadorCurso.getInstance().traerTodosEntidades();
-        for (Curso curso : todosLosCursos) {
-            if (curso.getInstituto() != null && curso.getInstituto().getNombreI().equals(inst.getNombreI())) {
-                cursos.add(curso);
-            }
+        HashSet<DataCurso> cursosDelInstituto = servidorCentral.cursosPorInstituto(inst.nombreI());
+        if (cursosDelInstituto != null) {
+            cursos.addAll(cursosDelInstituto);
         }
         // Limpiamos el combo antes de cargar los nuevos cursos
         jComboBoxCurso.removeAllItems();
-        for (Curso curso : cursos) {
-            jComboBoxCurso.addItem(curso.getNombreCurso());
+        for (DataCurso curso : cursos) {
+            jComboBoxCurso.addItem(curso.nombreCurso());
         }
     }
     

@@ -1,10 +1,11 @@
 package com.grupo9.edext.grupo9.estacion_de_trabajo.gui;
 
-import com.grupo9.edext.grupo9.servidor_central.controller.curso.Curso;
-import com.grupo9.edext.grupo9.servidor_central.controller.instituto.Instituto;
-import com.grupo9.edext.grupo9.servidor_central.controller.usuario.Docente;
+import com.grupo9.edext.grupo9.servidor_central.dominio.DataCurso;
+import com.grupo9.edext.grupo9.servidor_central.dominio.DataInstituto;
+import com.grupo9.edext.grupo9.servidor_central.dominio.DataDocente;
 import com.grupo9.edext.grupo9.estacion_de_trabajo.cliente.EdicionCursoPres;
-import com.grupo9.edext.grupo9.servidor_central.controller.ServidorCentralController;
+import com.grupo9.edext.grupo9.interfaces.IServidorCentral;
+import com.grupo9.edext.grupo9.miscelanea.Fabrica;
 import com.grupo9.edext.grupo9.mensajes.ErrorNoExiste;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -14,17 +15,17 @@ import java.util.HashSet;
 import javax.swing.JOptionPane;
 
 public class AltaEdicionJInternalFrame extends javax.swing.JInternalFrame {
-    private Curso cursoSeleccionado;
-    private Instituto instituto;
-    private Docente[] docentes;
+    private DataCurso cursoSeleccionado;
+    private DataInstituto instituto;
+    private DataDocente[] docentes;
     private final EdicionCursoPres edicionCursoPres = new EdicionCursoPres();
-    private final ServidorCentralController servidorCentral;
+    private final IServidorCentral servidorCentral;
     
-    public AltaEdicionJInternalFrame(Curso cursoSeleccionado, Instituto instituto) {
+    public AltaEdicionJInternalFrame(DataCurso cursoSeleccionado, DataInstituto instituto) {
         initComponents();
         this.cursoSeleccionado = cursoSeleccionado;
-        this.instituto = cursoSeleccionado.getInstituto();
-        servidorCentral = ServidorCentralController.getInstance();
+        this.instituto = cursoSeleccionado.instituto();
+        servidorCentral = Fabrica.getInstance().getIServidorCentral();
         setTitle("Alta de Edición");
         setClosable(true);
         setResizable(true);
@@ -169,7 +170,7 @@ public class AltaEdicionJInternalFrame extends javax.swing.JInternalFrame {
         jComboBoxDocenteOpEdicion.removeAllItems();
         jComboBoxDocenteOpEdicion.addItem("Ninguno");
         if (docentes != null) {
-            for (Docente docente : docentes) {
+            for (DataDocente docente : docentes) {
                 String nombreCompleto = docente.getNombre() + " " + docente.getApellido();
                 jComboBoxDocenteEdicion.addItem(nombreCompleto);
                 jComboBoxDocenteOpEdicion.addItem(nombreCompleto);
@@ -208,18 +209,18 @@ public class AltaEdicionJInternalFrame extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(this, "Debe seleccionar al menos un docente.", "Datos requeridos", JOptionPane.WARNING_MESSAGE);
             return;
         }
-        Docente docente1 = docentes[indiceDocente1];
-        Docente docente2 = null;
+        DataDocente docente1 = docentes[indiceDocente1];
+        DataDocente docente2 = null;
         
         if(indiceDocente2 > 0) {
             docente2 = docentes[indiceDocente2 - 1];
-            if (docente1.equals(docente2)) {
+            if (docente1.getNickname().equals(docente2.getNickname())) {
                 JOptionPane.showMessageDialog(this, "El docente ya fue seleccionado.", "Datos inválidos", JOptionPane.WARNING_MESSAGE);
                 return;
             }
         }
         
-        Set<Docente> docentesSeleccionados = new HashSet<>();
+        Set<DataDocente> docentesSeleccionados = new HashSet<>();
         docentesSeleccionados.add(docente1);
         if(docente2 != null) {
             docentesSeleccionados.add(docente2);
@@ -245,7 +246,7 @@ public class AltaEdicionJInternalFrame extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(this, "Ya existe una edición con ese nombre.", "Edición duplicada", JOptionPane.WARNING_MESSAGE);
         } catch (ErrorNoExiste e) {
             System.out.println("[GUI] Crear nueva Edición: " + nombreEdi);
-            System.out.println("[GUI] De curso: " + cursoSeleccionado);
+            System.out.println("[GUI] De curso: " + cursoSeleccionado.nombreCurso());
             System.out.println("[GUI] Fecha de inicio: " + fecha0);
             System.out.println("[GUI] Fecha de finalización: " + fecha1);
             System.out.println("[GUI] Docente(s): " + docentesSeleccionados);
