@@ -1,4 +1,4 @@
-package com.grupo9.edext.grupo9.estacion_de_trabajo.gui;
+package com.grupo9.edext.grupo9.estacion_de_trabajo.gui.edicion_de_curso;
 
 import com.grupo9.edext.grupo9.estacion_de_trabajo.cliente.EdicionCursoPres;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataCurso;

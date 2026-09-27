@@ -1,4 +1,4 @@
-package com.grupo9.edext.grupo9.estacion_de_trabajo.gui;
+package com.grupo9.edext.grupo9.estacion_de_trabajo.gui.edicion_de_curso;
 
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataCurso;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataInstituto;
@@ -11,13 +11,16 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.Set;
-import java.util.HashSet;
+import javax.swing.DefaultListModel;
+import java.util.LinkedHashSet;
 import javax.swing.JOptionPane;
 
 public class AltaEdicionJInternalFrame extends javax.swing.JInternalFrame {
     private DataCurso cursoSeleccionado;
     private DataInstituto instituto;
     private DataDocente[] docentes;
+    private Set<DataDocente> docentesSeleccionados = new LinkedHashSet<>();
+    private DefaultListModel<String> modeloDocentes;
     private final EdicionCursoPres edicionCursoPres = new EdicionCursoPres();
     private final IServidorCentral servidorCentral;
     
@@ -26,6 +29,9 @@ public class AltaEdicionJInternalFrame extends javax.swing.JInternalFrame {
         this.cursoSeleccionado = cursoSeleccionado;
         this.instituto = cursoSeleccionado.instituto();
         servidorCentral = Fabrica.getInstance().getIServidorCentral();
+        modeloDocentes = new DefaultListModel<>();
+        jListDocentes.setModel(modeloDocentes);
+        jComboBoxDocenteEdicion.setPrototypeDisplayValue("XXXXXXXXXXXXXXXXXXXXXXXX");
         setTitle("Alta de Edición");
         setClosable(true);
         setResizable(true);
@@ -62,10 +68,12 @@ public class AltaEdicionJInternalFrame extends javax.swing.JInternalFrame {
         jTextEdicionCupo = new javax.swing.JTextField();
         jButtonGuardarEdicion = new javax.swing.JButton();
         jComboBoxDocenteEdicion = new javax.swing.JComboBox<>();
-        jLabelDocenteOpEdicion = new javax.swing.JLabel();
-        jComboBoxDocenteOpEdicion = new javax.swing.JComboBox<>();
+        jLabelDocentesAgregados = new javax.swing.JLabel();
+        jButtonAgregarDocente = new javax.swing.JButton();
+        jScrollPaneListaDocentes = new javax.swing.JScrollPane();
+        jListDocentes = new javax.swing.JList<>();
 
-        setPreferredSize(new java.awt.Dimension(380, 500));
+        setPreferredSize(new java.awt.Dimension(380, 630));
 
         jLabelAltaEdicion.setText("Crear Edición");
         jLabelAltaEdicion.setMaximumSize(new java.awt.Dimension(83, 16));
@@ -75,7 +83,7 @@ public class AltaEdicionJInternalFrame extends javax.swing.JInternalFrame {
 
         jLabelEdicionNombre.setText("Nombre");
 
-        jLabelEdicionDocente.setText("Docente 1");
+        jLabelEdicionDocente.setText("Docente");
 
         jLabelEdicionFInicio.setText("Fecha Inicio");
 
@@ -88,11 +96,17 @@ public class AltaEdicionJInternalFrame extends javax.swing.JInternalFrame {
         jButtonGuardarEdicion.setText("Guardar");
         jButtonGuardarEdicion.addActionListener(this::jButtonGuardarEdicionActionPerformed);
 
-        jComboBoxDocenteEdicion.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jLabelDocentesAgregados.setText("Docentes agregados");
 
-        jLabelDocenteOpEdicion.setText("Docente 2 (Adicional)");
+        jButtonAgregarDocente.setText("Agregar");
+        jButtonAgregarDocente.addActionListener(this::jButtonAgregarDocenteActionPerformed);
 
-        jComboBoxDocenteOpEdicion.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jListDocentes.setModel(new javax.swing.AbstractListModel<String>() {
+            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            public int getSize() { return strings.length; }
+            public String getElementAt(int i) { return strings[i]; }
+        });
+        jScrollPaneListaDocentes.setViewportView(jListDocentes);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -101,29 +115,34 @@ public class AltaEdicionJInternalFrame extends javax.swing.JInternalFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jButtonGuardarEdicion))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextEdicionNombre)
-                            .addComponent(jComboBoxDocenteOpEdicion, 0, 249, Short.MAX_VALUE)
-                            .addComponent(jComboBoxDocenteEdicion, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jSpinnerEdicionFInicio)
-                            .addComponent(jSpinnerEdicionFFin)
-                            .addComponent(jTextEdicionCupo)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(jButtonGuardarEdicion))
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabelEdicionCupo)
-                                    .addComponent(jLabelEdicionFFin)
-                                    .addComponent(jLabelEdicionFInicio)
-                                    .addComponent(jLabelDocenteOpEdicion)
-                                    .addComponent(jLabelEdicionDocente)
-                                    .addComponent(jLabelEdicionNombre)
-                                    .addComponent(jLabelAltaEdicion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(0, 0, Short.MAX_VALUE)))
-                        .addGap(107, 107, 107)))
-                .addContainerGap())
+                                    .addComponent(jTextEdicionNombre)
+                                    .addComponent(jComboBoxDocenteEdicion, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jSpinnerEdicionFFin)
+                                    .addComponent(jTextEdicionCupo)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabelEdicionCupo)
+                                            .addComponent(jLabelEdicionFFin)
+                                            .addComponent(jLabelEdicionFInicio)
+                                            .addComponent(jLabelDocentesAgregados)
+                                            .addComponent(jLabelEdicionDocente)
+                                            .addComponent(jLabelEdicionNombre)
+                                            .addComponent(jLabelAltaEdicion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGap(0, 142, Short.MAX_VALUE))
+                                    .addComponent(jScrollPaneListaDocentes))
+                                .addGap(31, 31, 31)
+                                .addComponent(jButtonAgregarDocente)))
+                        .addContainerGap())
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jSpinnerEdicionFInicio)
+                        .addGap(113, 113, 113))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -137,20 +156,22 @@ public class AltaEdicionJInternalFrame extends javax.swing.JInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabelEdicionDocente)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jComboBoxDocenteEdicion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jComboBoxDocenteEdicion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButtonAgregarDocente))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabelDocenteOpEdicion)
+                .addComponent(jLabelDocentesAgregados)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jComboBoxDocenteOpEdicion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPaneListaDocentes, javax.swing.GroupLayout.DEFAULT_SIZE, 142, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
                 .addComponent(jLabelEdicionFInicio)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSpinnerEdicionFInicio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(18, 18, 18)
                 .addComponent(jLabelEdicionFFin)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSpinnerEdicionFFin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 11, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addComponent(jLabelEdicionCupo)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jTextEdicionCupo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -166,15 +187,19 @@ public class AltaEdicionJInternalFrame extends javax.swing.JInternalFrame {
         docentes = edicionCursoPres.traerDocentes(instituto);
         //docente obligatorio
         jComboBoxDocenteEdicion.removeAllItems();
-        //docente adicional
-        jComboBoxDocenteOpEdicion.removeAllItems();
-        jComboBoxDocenteOpEdicion.addItem("Ninguno");
         if (docentes != null) {
             for (DataDocente docente : docentes) {
                 String nombreCompleto = docente.getNombre() + " " + docente.getApellido();
                 jComboBoxDocenteEdicion.addItem(nombreCompleto);
-                jComboBoxDocenteOpEdicion.addItem(nombreCompleto);
             }
+        }
+    }
+    
+    private void actualizarListaDocentes() {
+        modeloDocentes.clear();
+        for (DataDocente docente : docentesSeleccionados) {
+            String nombreCompleto = docente.getNombre() + " " + docente.getApellido();
+            modeloDocentes.addElement(nombreCompleto);
         }
     }
     
@@ -203,27 +228,9 @@ public class AltaEdicionJInternalFrame extends javax.swing.JInternalFrame {
         }
         
         //sobre el docente
-        int indiceDocente1 = jComboBoxDocenteEdicion.getSelectedIndex();
-        int indiceDocente2 = jComboBoxDocenteOpEdicion.getSelectedIndex();
-        if (indiceDocente1 == -1) {
+        if (docentesSeleccionados.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Debe seleccionar al menos un docente.", "Datos requeridos", JOptionPane.WARNING_MESSAGE);
             return;
-        }
-        DataDocente docente1 = docentes[indiceDocente1];
-        DataDocente docente2 = null;
-        
-        if(indiceDocente2 > 0) {
-            docente2 = docentes[indiceDocente2 - 1];
-            if (docente1.getNickname().equals(docente2.getNickname())) {
-                JOptionPane.showMessageDialog(this, "El docente ya fue seleccionado.", "Datos inválidos", JOptionPane.WARNING_MESSAGE);
-                return;
-            }
-        }
-        
-        Set<DataDocente> docentesSeleccionados = new HashSet<>();
-        docentesSeleccionados.add(docente1);
-        if(docente2 != null) {
-            docentesSeleccionados.add(docente2);
         }
         
         //sobre la fecha
@@ -256,22 +263,39 @@ public class AltaEdicionJInternalFrame extends javax.swing.JInternalFrame {
             jTextEdicionNombre.setText("");
             jTextEdicionCupo.setText("");
             jComboBoxDocenteEdicion.setSelectedIndex(-1);
-            jComboBoxDocenteOpEdicion.setSelectedIndex(0);
         }
     }//GEN-LAST:event_jButtonGuardarEdicionActionPerformed
 
+    private void jButtonAgregarDocenteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAgregarDocenteActionPerformed
+        int indiceDocente = jComboBoxDocenteEdicion.getSelectedIndex();
+        if (indiceDocente == -1) {
+            JOptionPane.showMessageDialog(this, "Debe seleccionar un docente.", "Datos requeridos",JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        
+        DataDocente docente = docentes[indiceDocente];
+        if (docentesSeleccionados.contains(docente)) {
+            JOptionPane.showMessageDialog(this, "El docente ya fue seleccionado.", "Docente repetido",JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        docentesSeleccionados.add(docente);
+        actualizarListaDocentes();
+    }//GEN-LAST:event_jButtonAgregarDocenteActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButtonAgregarDocente;
     private javax.swing.JButton jButtonGuardarEdicion;
     private javax.swing.JComboBox<String> jComboBoxDocenteEdicion;
-    private javax.swing.JComboBox<String> jComboBoxDocenteOpEdicion;
     private javax.swing.JLabel jLabelAltaEdicion;
-    private javax.swing.JLabel jLabelDocenteOpEdicion;
+    private javax.swing.JLabel jLabelDocentesAgregados;
     private javax.swing.JLabel jLabelEdicionCupo;
     private javax.swing.JLabel jLabelEdicionDocente;
     private javax.swing.JLabel jLabelEdicionFFin;
     private javax.swing.JLabel jLabelEdicionFInicio;
     private javax.swing.JLabel jLabelEdicionNombre;
+    private javax.swing.JList<String> jListDocentes;
+    private javax.swing.JScrollPane jScrollPaneListaDocentes;
     private javax.swing.JSpinner jSpinnerEdicionFFin;
     private javax.swing.JSpinner jSpinnerEdicionFInicio;
     private javax.swing.JTextField jTextEdicionCupo;

@@ -1,4 +1,4 @@
-package com.grupo9.edext.grupo9.estacion_de_trabajo.gui;
+package com.grupo9.edext.grupo9.estacion_de_trabajo.gui.edicion_de_curso;
 
 import com.grupo9.edext.grupo9.estacion_de_trabajo.cliente.EdicionCursoPres;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataCurso;
@@ -22,6 +22,8 @@ public class InscribirAEdicionJInternalFrame extends javax.swing.JInternalFrame 
         jSpinnerFechaInsc.setModel(new javax.swing.SpinnerDateModel(new java.util.Date(), null, null, java.util.Calendar.DAY_OF_MONTH));
         javax.swing.JSpinner.DateEditor editor1 = new javax.swing.JSpinner.DateEditor(jSpinnerFechaInsc, "dd/MM/yyyy");
         jSpinnerFechaInsc.setEditor(editor1);
+        jComboBoxNombreEdi.setPrototypeDisplayValue("XXXXXXXXXXXXXXXXXXXXXXXX");
+        jComboBoxEdicionEstudiante.setPrototypeDisplayValue("XXXXXXXXXXXXXXXXXXXXXXXX");
         setTitle("Inscripción");
         setClosable(true);
         setResizable(true);

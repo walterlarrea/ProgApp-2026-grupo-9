@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JInternalFrame.java to edit this template
- */
 package com.grupo9.edext.grupo9.estacion_de_trabajo.gui.programa_de_formacion;
 
 import com.grupo9.edext.grupo9.estacion_de_trabajo.cliente.CursoPres;
