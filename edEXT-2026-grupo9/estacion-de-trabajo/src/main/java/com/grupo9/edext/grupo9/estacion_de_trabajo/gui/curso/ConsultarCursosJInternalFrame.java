@@ -4,7 +4,7 @@ import com.grupo9.edext.grupo9.estacion_de_trabajo.cliente.CursoPres;
 import com.grupo9.edext.grupo9.estacion_de_trabajo.cliente.EdicionCursoPres;
 import com.grupo9.edext.grupo9.estacion_de_trabajo.cliente.InstitutoPres;
 import com.grupo9.edext.grupo9.estacion_de_trabajo.cliente.ProgramaDeFormacionPres;
-import com.grupo9.edext.grupo9.estacion_de_trabajo.gui.ConsultarEdicionJInternalFrame;
+import com.grupo9.edext.grupo9.estacion_de_trabajo.gui.edicion_de_curso.ConsultarEdicionJInternalFrame;
 import com.grupo9.edext.grupo9.estacion_de_trabajo.gui.programa_de_formacion.ConsultarProgramasJInternalFrame;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataCurso;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataInstituto;

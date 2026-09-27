@@ -1,6 +1,6 @@
 package com.grupo9.edext.grupo9.estacion_de_trabajo.gui.usuario;
 
-import com.grupo9.edext.grupo9.estacion_de_trabajo.gui.ConsultarEdicionJInternalFrame;
+import com.grupo9.edext.grupo9.estacion_de_trabajo.gui.edicion_de_curso.ConsultarEdicionJInternalFrame;
 import com.grupo9.edext.grupo9.estacion_de_trabajo.gui.MainJFrame;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataDocente;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataEstudiante;

@@ -1,5 +1,7 @@
 package com.grupo9.edext.grupo9.estacion_de_trabajo.gui;
 
+import com.grupo9.edext.grupo9.estacion_de_trabajo.gui.edicion_de_curso.OperacionCurso;
+import com.grupo9.edext.grupo9.estacion_de_trabajo.gui.edicion_de_curso.SeleccionarCursoJInternalFrame;
 import com.grupo9.edext.grupo9.estacion_de_trabajo.cliente.UsuarioPres;
 import com.grupo9.edext.grupo9.estacion_de_trabajo.cliente.InstitutoPres;
 
@@ -32,6 +34,7 @@ public class MainJFrame extends javax.swing.JFrame {
         initComponents();
         setTitle("edEXT");
         setResizable(true);
+        jComboBoxInstituto.setPrototypeDisplayValue("XXXXXXXXXXXXXXXXXXXXXXXX");
         //alta usuario
         jSpinnerFechaNac.setModel(new javax.swing.SpinnerDateModel(new java.util.Date(), null, null, java.util.Calendar.DAY_OF_MONTH));
         javax.swing.JSpinner.DateEditor editor = new javax.swing.JSpinner.DateEditor(jSpinnerFechaNac, "dd/MM/yyyy");
