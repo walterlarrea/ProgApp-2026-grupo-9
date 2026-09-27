@@ -50,6 +50,8 @@ public class InscribirAEdicionJInternalFrame extends javax.swing.JInternalFrame 
         jSpinnerFechaInsc = new javax.swing.JSpinner();
         jButtonGuardarInscripcion = new javax.swing.JButton();
 
+        setMinimumSize(new java.awt.Dimension(440, 274));
+
         jLabelNombreEdi.setText("Edición");
 
         jComboBoxNombreEdi.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));

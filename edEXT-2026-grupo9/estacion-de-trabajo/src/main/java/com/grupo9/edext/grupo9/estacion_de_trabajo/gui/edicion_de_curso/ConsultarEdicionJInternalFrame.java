@@ -8,7 +8,7 @@ import com.grupo9.edext.grupo9.servidor_central.dominio.DataInscEdicion;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataDocente;
 import com.grupo9.edext.grupo9.mensajes.ErrorNoExiste;
 import javax.swing.*;
-import java.awt.Dimension;
+import javax.swing.DefaultListModel;
 
 public class ConsultarEdicionJInternalFrame extends javax.swing.JInternalFrame {
     private DataCurso cursoSeleccionado;
@@ -19,6 +19,7 @@ public class ConsultarEdicionJInternalFrame extends javax.swing.JInternalFrame {
     public ConsultarEdicionJInternalFrame(DataCurso cursoSeleccionado) {
         initComponents();
         this.cursoSeleccionado = cursoSeleccionado;
+        jComboBoxEdiciones.setPrototypeDisplayValue("XXXXXXXXXXXXXXXXXXXXXXXX");
         setTitle("Consultar");
         setClosable(true);
         setResizable(true);
@@ -84,7 +85,6 @@ public class ConsultarEdicionJInternalFrame extends javax.swing.JInternalFrame {
         jTextFieldCurso.setEditable(false);
         jTextFieldFechaInicio.setEditable(false);
         jTextFieldFechaFin.setEditable(false);
-        jTextFieldDocente.setEditable(false);
         jTextFieldCupo.setEditable(false);
     }
     
@@ -98,7 +98,7 @@ public class ConsultarEdicionJInternalFrame extends javax.swing.JInternalFrame {
         jLabelFechaFin.setVisible(true);
         jTextFieldFechaFin.setVisible(true);
         jLabelDocente.setVisible(true);
-        jTextFieldDocente.setVisible(true);
+        jScrollPaneDocente.setVisible(true);
         jLabelEstudiantes.setVisible(true);
         jScrollPaneEstudiantes.setVisible(true);
         jLabelCupo.setVisible(true);
@@ -115,7 +115,7 @@ public class ConsultarEdicionJInternalFrame extends javax.swing.JInternalFrame {
         jLabelFechaFin.setVisible(false);
         jTextFieldFechaFin.setVisible(false);
         jLabelDocente.setVisible(false);
-        jTextFieldDocente.setVisible(false);
+        jScrollPaneDocente.setVisible(false);
         jLabelEstudiantes.setVisible(false);
         jScrollPaneEstudiantes.setVisible(false);
         jLabelCupo.setVisible(false);
@@ -150,7 +150,6 @@ public class ConsultarEdicionJInternalFrame extends javax.swing.JInternalFrame {
         jLabelFechaInicio = new javax.swing.JLabel();
         jLabelDocente = new javax.swing.JLabel();
         jLabelEstudiantes = new javax.swing.JLabel();
-        jTextFieldDocente = new javax.swing.JTextField();
         jScrollPaneEstudiantes = new javax.swing.JScrollPane();
         jListEstudiantes = new javax.swing.JList<>();
         jTextFieldFechaInicio = new javax.swing.JTextField();
@@ -158,6 +157,12 @@ public class ConsultarEdicionJInternalFrame extends javax.swing.JInternalFrame {
         jLabelCupo = new javax.swing.JLabel();
         jTextFieldCupo = new javax.swing.JTextField();
         jButtonBuscarEdicion = new javax.swing.JButton();
+        jScrollPaneDocente = new javax.swing.JScrollPane();
+        jListDocentes = new javax.swing.JList<>();
+
+        setMaximumSize(new java.awt.Dimension(1500, 1500));
+        setMinimumSize(new java.awt.Dimension(480, 660));
+        setPreferredSize(new java.awt.Dimension(480, 660));
 
         jLabelEdicionNombre.setText("Ediciones");
 
@@ -189,6 +194,13 @@ public class ConsultarEdicionJInternalFrame extends javax.swing.JInternalFrame {
         jButtonBuscarEdicion.setText("Buscar");
         jButtonBuscarEdicion.addActionListener(this::jButtonBuscarEdicionActionPerformed);
 
+        jListDocentes.setModel(new javax.swing.AbstractListModel<String>() {
+            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            public int getSize() { return strings.length; }
+            public String getElementAt(int i) { return strings[i]; }
+        });
+        jScrollPaneDocente.setViewportView(jListDocentes);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -197,32 +209,32 @@ public class ConsultarEdicionJInternalFrame extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabelEstudiantes)
-                                .addGap(36, 36, 36)
-                                .addComponent(jLabelCupo)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jTextFieldCupo, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jTextFieldFechaInicio, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextFieldFechaFin, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(jLabelEdicionNombre, javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabelNombre, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextFieldNombre, javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabelCurso, javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabelFechaFin, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextFieldCurso, javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabelFechaInicio, javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabelDocente, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextFieldDocente, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jComboBoxEdiciones, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jScrollPaneEstudiantes, javax.swing.GroupLayout.Alignment.LEADING))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addComponent(jTextFieldCurso, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jComboBoxEdiciones, javax.swing.GroupLayout.Alignment.LEADING, 0, 360, Short.MAX_VALUE)
+                            .addComponent(jTextFieldNombre, javax.swing.GroupLayout.Alignment.LEADING))
+                        .addGap(18, 18, 18)
                         .addComponent(jButtonBuscarEdicion)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addContainerGap(8, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPaneDocente, javax.swing.GroupLayout.PREFERRED_SIZE, 274, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jTextFieldFechaInicio, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jTextFieldFechaFin, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jScrollPaneEstudiantes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabelEstudiantes)
+                                .addGap(42, 42, 42)
+                                .addComponent(jLabelCupo)
+                                .addGap(18, 18, 18)
+                                .addComponent(jTextFieldCupo, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 0, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -252,15 +264,16 @@ public class ConsultarEdicionJInternalFrame extends javax.swing.JInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabelDocente)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextFieldDocente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabelEstudiantes)
-                    .addComponent(jLabelCupo)
-                    .addComponent(jTextFieldCupo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jScrollPaneDocente, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabelEstudiantes, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabelCupo)
+                        .addComponent(jTextFieldCupo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPaneEstudiantes, javax.swing.GroupLayout.DEFAULT_SIZE, 131, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(jScrollPaneEstudiantes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(7, Short.MAX_VALUE))
         );
 
         pack();
@@ -278,18 +291,16 @@ public class ConsultarEdicionJInternalFrame extends javax.swing.JInternalFrame {
             jTextFieldCurso.setText(edicion.getCursoAsoc().nombreCurso());
             jTextFieldFechaInicio.setText(edicion.getFechaInicio().toString());
             jTextFieldFechaFin.setText(edicion.getFechaFin().toString());
+            DefaultListModel<String> modeloDocentes = new DefaultListModel<>();
             if (edicion.getDocentes() != null && !edicion.getDocentes().isEmpty()) {
-                StringBuilder nombresDocentes = new StringBuilder();
                 for (DataDocente docente : edicion.getDocentes()) {
-                    if (nombresDocentes.length() > 0) {
-                        nombresDocentes.append(", ");
-                    }
-                nombresDocentes.append(docente.getNombre()).append(" ").append(docente.getApellido());
+                    String nombreCompleto = docente.getNombre() + " " + docente.getApellido();
+                    modeloDocentes.addElement(nombreCompleto);
                 }
-                jTextFieldDocente.setText(nombresDocentes.toString());
             } else {
-                jTextFieldDocente.setText("Sin docente");
+                modeloDocentes.addElement("Sin docente");
             }
+            jListDocentes.setModel(modeloDocentes);
             jTextFieldCupo.setText(String.valueOf(edicion.getCupo()));
             //
             DefaultListModel<String> modelo = new DefaultListModel<>();
@@ -318,11 +329,12 @@ public class ConsultarEdicionJInternalFrame extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabelFechaFin;
     private javax.swing.JLabel jLabelFechaInicio;
     private javax.swing.JLabel jLabelNombre;
+    private javax.swing.JList<String> jListDocentes;
     private javax.swing.JList<String> jListEstudiantes;
+    private javax.swing.JScrollPane jScrollPaneDocente;
     private javax.swing.JScrollPane jScrollPaneEstudiantes;
     private javax.swing.JTextField jTextFieldCupo;
     private javax.swing.JTextField jTextFieldCurso;
-    private javax.swing.JTextField jTextFieldDocente;
     private javax.swing.JTextField jTextFieldFechaFin;
     private javax.swing.JTextField jTextFieldFechaInicio;
     private javax.swing.JTextField jTextFieldNombre;

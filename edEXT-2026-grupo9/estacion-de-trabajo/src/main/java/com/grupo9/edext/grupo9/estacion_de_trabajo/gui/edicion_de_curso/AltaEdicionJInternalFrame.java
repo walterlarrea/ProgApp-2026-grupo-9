@@ -73,6 +73,7 @@ public class AltaEdicionJInternalFrame extends javax.swing.JInternalFrame {
         jScrollPaneListaDocentes = new javax.swing.JScrollPane();
         jListDocentes = new javax.swing.JList<>();
 
+        setMinimumSize(new java.awt.Dimension(380, 630));
         setPreferredSize(new java.awt.Dimension(380, 630));
 
         jLabelAltaEdicion.setText("Crear Edición");

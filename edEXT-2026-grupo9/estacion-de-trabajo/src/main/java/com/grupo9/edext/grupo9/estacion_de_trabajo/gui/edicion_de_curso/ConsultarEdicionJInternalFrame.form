@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
 <Form version="1.3" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JInternalFrameFormInfo">
+  <Properties>
+    <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+      <Dimension value="[1500, 1500]"/>
+    </Property>
+    <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+      <Dimension value="[480, 660]"/>
+    </Property>
+    <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+      <Dimension value="[480, 660]"/>
+    </Property>
+  </Properties>
   <SyntheticProperties>
     <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
   </SyntheticProperties>
@@ -23,36 +34,36 @@
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" attributes="0">
-                              <Component id="jLabelEstudiantes" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace min="-2" pref="36" max="-2" attributes="0"/>
-                              <Component id="jLabelCupo" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="jTextFieldCupo" min="-2" pref="34" max="-2" attributes="0"/>
-                          </Group>
-                          <Component id="jTextFieldFechaInicio" min="-2" pref="110" max="-2" attributes="0"/>
-                          <Component id="jTextFieldFechaFin" alignment="0" min="-2" pref="110" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                  </Group>
-                  <Group type="102" attributes="0">
                       <Group type="103" groupAlignment="1" max="-2" attributes="0">
                           <Component id="jLabelEdicionNombre" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Component id="jLabelNombre" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="jTextFieldNombre" alignment="0" max="32767" attributes="0"/>
                           <Component id="jLabelCurso" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Component id="jLabelFechaFin" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="jTextFieldCurso" alignment="0" max="32767" attributes="0"/>
                           <Component id="jLabelFechaInicio" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Component id="jLabelDocente" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="jTextFieldDocente" alignment="0" max="32767" attributes="0"/>
-                          <Component id="jComboBoxEdiciones" alignment="0" max="32767" attributes="0"/>
-                          <Component id="jScrollPaneEstudiantes" alignment="0" max="32767" attributes="0"/>
+                          <Component id="jTextFieldCurso" alignment="0" max="32767" attributes="0"/>
+                          <Component id="jComboBoxEdiciones" alignment="0" pref="360" max="32767" attributes="0"/>
+                          <Component id="jTextFieldNombre" alignment="0" max="32767" attributes="0"/>
                       </Group>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="jButtonBuscarEdicion" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="32767" attributes="0"/>
+                      <EmptySpace pref="8" max="32767" attributes="0"/>
+                  </Group>
+                  <Group type="102" attributes="0">
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="jScrollPaneDocente" min="-2" pref="274" max="-2" attributes="0"/>
+                          <Component id="jTextFieldFechaInicio" min="-2" pref="110" max="-2" attributes="0"/>
+                          <Component id="jTextFieldFechaFin" alignment="0" min="-2" pref="110" max="-2" attributes="0"/>
+                          <Component id="jScrollPaneEstudiantes" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Component id="jLabelEstudiantes" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="42" max="-2" attributes="0"/>
+                              <Component id="jLabelCupo" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace type="separate" max="-2" attributes="0"/>
+                              <Component id="jTextFieldCupo" min="-2" pref="34" max="-2" attributes="0"/>
+                          </Group>
+                      </Group>
+                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                   </Group>
               </Group>
           </Group>
@@ -87,16 +98,18 @@
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Component id="jLabelDocente" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="jTextFieldDocente" min="-2" max="-2" attributes="0"/>
-              <EmptySpace type="unrelated" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="jLabelEstudiantes" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="jLabelCupo" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="jTextFieldCupo" alignment="3" min="-2" max="-2" attributes="0"/>
+              <Component id="jScrollPaneDocente" min="-2" pref="110" max="-2" attributes="0"/>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="1" attributes="0">
+                  <Component id="jLabelEstudiantes" min="-2" pref="25" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="jLabelCupo" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="jTextFieldCupo" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="jScrollPaneEstudiantes" pref="131" max="32767" attributes="0"/>
-              <EmptySpace max="-2" attributes="0"/>
+              <Component id="jScrollPaneEstudiantes" min="-2" max="-2" attributes="0"/>
+              <EmptySpace pref="7" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -159,8 +172,6 @@
         <Property name="text" type="java.lang.String" value="Estudiantes inscriptos:"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JTextField" name="jTextFieldDocente">
-    </Component>
     <Container class="javax.swing.JScrollPane" name="jScrollPaneEstudiantes">
       <Properties>
         <Property name="verticalScrollBarPolicy" type="int" value="22"/>
@@ -209,5 +220,27 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonBuscarEdicionActionPerformed"/>
       </Events>
     </Component>
+    <Container class="javax.swing.JScrollPane" name="jScrollPaneDocente">
+
+      <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+      <SubComponents>
+        <Component class="javax.swing.JList" name="jListDocentes">
+          <Properties>
+            <Property name="model" type="javax.swing.ListModel" editor="org.netbeans.modules.form.editors2.ListModelEditor">
+              <StringArray count="5">
+                <StringItem index="0" value="Item 1"/>
+                <StringItem index="1" value="Item 2"/>
+                <StringItem index="2" value="Item 3"/>
+                <StringItem index="3" value="Item 4"/>
+                <StringItem index="4" value="Item 5"/>
+              </StringArray>
+            </Property>
+          </Properties>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+          </AuxValues>
+        </Component>
+      </SubComponents>
+    </Container>
   </SubComponents>
 </Form>

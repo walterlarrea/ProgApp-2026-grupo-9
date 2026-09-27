@@ -44,6 +44,8 @@ public class SeleccionarCursoJInternalFrame extends javax.swing.JInternalFrame {
         jComboBoxCurso = new javax.swing.JComboBox<>();
         jComboBoxInstituto = new javax.swing.JComboBox<>();
 
+        setMinimumSize(new java.awt.Dimension(560, 288));
+
         jLabelInstituto.setText("Instituto");
 
         jLabelCurso.setText("Curso");
