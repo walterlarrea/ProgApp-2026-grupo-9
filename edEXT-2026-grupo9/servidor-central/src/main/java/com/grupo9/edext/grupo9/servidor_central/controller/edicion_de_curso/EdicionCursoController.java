@@ -1,7 +1,6 @@
 package com.grupo9.edext.grupo9.servidor_central.controller.edicion_de_curso;
 
-import com.grupo9.edext.grupo9.mensajes.ErrorNoExiste;
-import com.grupo9.edext.grupo9.mensajes.ErrorRepetidos;
+import com.grupo9.edext.grupo9.mensajes.*;
 import com.grupo9.edext.grupo9.servidor_central.controller.curso.Curso;
 import com.grupo9.edext.grupo9.servidor_central.controller.usuario.Docente;
 import com.grupo9.edext.grupo9.servidor_central.controller.usuario.ManejadorEstudiantes;
@@ -14,6 +13,8 @@ import com.grupo9.edext.grupo9.servidor_central.dominio.DataDocente;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataEstudiante;
 import com.grupo9.edext.grupo9.servidor_central.controller.DtoMapper;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataCurso;
+import com.grupo9.edext.grupo9.miscelanea.UtensiliosJPA;
+import jakarta.persistence.*;
 import java.time.LocalDate;
 import java.util.Set;
 import java.util.HashSet;
@@ -60,23 +61,23 @@ public class EdicionCursoController implements IEdicionCurso {
     
     @Override
     public DataEdicionCurso consultarEdicionCurso(String nEdi) throws ErrorNoExiste{
-       ManejadorEdiciones me = ManejadorEdiciones.getInstance();
-    EdicionCurso ed = me.obtenerEdicion(nEdi);
+        ManejadorEdiciones me = ManejadorEdiciones.getInstance();
+        EdicionCurso ed = me.obtenerEdicion(nEdi);
     
-    if (ed != null) {
-        // FORZAMOS A HIBERNATE A CARGAR LAS PREVIAS DEL CURSO ASOCIADO
-        if (ed.getCursoAsoc() != null) {
-            org.hibernate.Hibernate.initialize(ed.getCursoAsoc().getPrevias());
-        }
+        if (ed != null) {
+            // FORZAMOS A HIBERNATE A CARGAR LAS PREVIAS DEL CURSO ASOCIADO
+            if (ed.getCursoAsoc() != null) {
+                org.hibernate.Hibernate.initialize(ed.getCursoAsoc().getPrevias());
+            }
 
-        //para obtener los inscriptos
-        Set<DataInscEdicion> datosInscriptos = new HashSet<>();
-        for(InscEdicion inscriptos : ed.getInscripciones()){
-            Estudiante estudiante = inscriptos.getEstudiante();
-            DataEstudiante datosEst = new DataEstudiante(estudiante.getNickname(),estudiante.getNombre(),estudiante.getApellido(),estudiante.getEmail(), estudiante.getFechaNac(), null);
-            DataInscEdicion datosInsc = new DataInscEdicion(inscriptos.getFechaInscE(), datosEst, inscriptos.getEdicion().getNombreEdi());
-            datosInscriptos.add(datosInsc);
-        }
+            //para obtener los inscriptos
+            Set<DataInscEdicion> datosInscriptos = new HashSet<>();
+            for(InscEdicion inscriptos : ed.getInscripciones()){
+                Estudiante estudiante = inscriptos.getEstudiante();
+                DataEstudiante datosEst = new DataEstudiante(estudiante.getNickname(),estudiante.getNombre(),estudiante.getApellido(),estudiante.getEmail(), estudiante.getFechaNac(), null);
+                DataInscEdicion datosInsc = new DataInscEdicion(inscriptos.getFechaInscE(), datosEst, inscriptos.getEdicion().getNombreEdi(), inscriptos.getEstado());
+                datosInscriptos.add(datosInsc);
+            }
             
             //docentes
             Set<DataDocente> datosDocentes = DtoMapper.toData(ed.getDocentes());
@@ -99,7 +100,6 @@ public class EdicionCursoController implements IEdicionCurso {
         for (EdicionCurso edicion: edicionesList){
             ediciones.add(DtoMapper.toData(edicion));
         }
-        
         return ediciones;
     } 
     
@@ -118,12 +118,9 @@ public class EdicionCursoController implements IEdicionCurso {
         }
 
         // 1. Chequeo en Base de Datos
-        jakarta.persistence.EntityManager em = com.grupo9.edext.grupo9.miscelanea.UtensiliosJPA.getEntityManagerFactory().createEntityManager();
+        EntityManager em = UtensiliosJPA.getEntityManagerFactory().createEntityManager();
         try {
-            Long count = em.createQuery("SELECT COUNT(i) FROM InscEdicion i WHERE i.estudiante.nickname = :nick AND i.edicion.nombreEdi = :nEdi", Long.class)
-                .setParameter("nick", nickEstudiante)
-                .setParameter("nEdi", nEdi)
-                .getSingleResult();
+            Long count = em.createQuery("SELECT COUNT(i) FROM InscEdicion i WHERE i.estudiante.nickname = :nick AND i.edicion.nombreEdi = :nEdi", Long.class).setParameter("nick", nickEstudiante).setParameter("nEdi", nEdi).getSingleResult();
             if (count > 0) {
                 throw new ErrorRepetidos("El estudiante " + nickEstudiante + " ya está inscripto.");
             }
@@ -164,6 +161,24 @@ public class EdicionCursoController implements IEdicionCurso {
     
     @Override
     public void inscribirNuevoEstudiante(LocalDate fechaInsc, String nickname, String nombreEdi) throws ErrorRepetidos, ErrorNoExiste {
-        inscripcionEdicionCurso(fechaInsc,nickname,nombreEdi);
+        inscripcionEdicionCurso(fechaInsc, nickname, nombreEdi);
+    }
+    
+    @Override
+    public void cambiarEstadoInscripcion(String nombreEdicion, String nicknameEstudiante, EstadoInscripcion nuevoEstado) throws ErrorNoExiste, ErrorEstadoInvalido {
+        ManejadorEdiciones me = ManejadorEdiciones.getInstance();
+        EdicionCurso edicion = me.obtenerEdicion(nombreEdicion);
+
+        if (edicion == null) {
+            throw new ErrorNoExiste("La Edición " + nombreEdicion + " no existe.");
+        }
+
+        for (InscEdicion inscripcion : edicion.getInscripciones()) {
+            if (inscripcion.getEstudiante().getNickname().equals(nicknameEstudiante)) {
+                inscripcion.cambiarEstado(nuevoEstado);
+                return;
+            }
+        }
+        throw new ErrorNoExiste("El estudiante " + nicknameEstudiante + " no está inscripto en la edición.");
     }
 }
