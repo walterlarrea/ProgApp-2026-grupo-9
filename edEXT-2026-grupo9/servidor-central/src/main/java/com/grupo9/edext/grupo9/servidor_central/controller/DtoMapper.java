@@ -199,7 +199,7 @@ public class DtoMapper {
                 estudiante.getEmail(),
                 estudiante.getFechaNac(),
                 null);
-            DataInscEdicion dataInsc = new DataInscEdicion(insc.getFechaInscE(), dataEstudiante, insc.getEdicion().getNombreEdi());
+            DataInscEdicion dataInsc = new DataInscEdicion(insc.getFechaInscE(), dataEstudiante, insc.getEdicion().getNombreEdi(), insc.getEstado());
             inscripciones.add(dataInsc);
         }
 
