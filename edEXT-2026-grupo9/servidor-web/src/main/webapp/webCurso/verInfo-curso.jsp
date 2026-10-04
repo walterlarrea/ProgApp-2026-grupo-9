@@ -12,7 +12,19 @@
 <body>
     <!-- cabezal fijo -->
     <%@ include file="../webMiscelanea/header.jsp" %>
-    <!-- Sidebar / Menú Lateral -->
-    <%@ include file="../webMiscelanea/sidebar.jsp" %>
+    <!-- Layout Principal: Contenido Dinámico -->
+    <div class="layout-container">
+        <!-- Sidebar / Menú Lateral -->
+        <%@ include file="../webMiscelanea/sidebar.jsp" %>
+        <main class="main-content">
+            <section class="hero-banner">
+                <h1>${curso.nombreCurso()}</h1>
+                <p>${curso.descCurso()}</p>
+            </section>
+            <p>Créditos: ${curso.cantCred()}</p>
+            <p>Duración: ${curso.duracion()}</p>
+        </main>
+    </div>
+    
 </body>
 </html>

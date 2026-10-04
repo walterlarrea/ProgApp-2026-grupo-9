@@ -1,13 +1,5 @@
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
-<!DOCTYPE html>
-<html lang="es">
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Sidebar</title>
-    </head>
-    <body>
-        <!-- Barra lateral fija (sidebar) -->
+<!-- Barra lateral fija (sidebar) -->
         <aside class="sidebar">
             <h3>Institutos</h3>
             <ul class="nav-list">
@@ -30,7 +22,7 @@
             <h3 style="margin-top: 1.5rem;">Explorar</h3>
             <ul class="nav-list">
                 <li><a href="${pageContext.request.contextPath}/cursos">Todos los Cursos</a></li>
-                <li><a href="${pageContext.request.contextPath}/programas">Programas de FormaciÃ³n</a></li>
+                <li><a href="${pageContext.request.contextPath}/programas">Programas de Formación</a></li>
             </ul>
 
             <div class="status-box">
@@ -38,5 +30,4 @@
                 <span class="badge badge-success"><c:out value="${estadoDb}"/></span>
             </div>
         </aside>
-    </body>
-</html>
+

@@ -12,10 +12,7 @@
 <body>
     <!-- cabezal fijo -->
     <%@ include file="../webMiscelanea/header.jsp" %>
-    <!-- Layout Principal: Contenido Dinámico -->
-    <div class="layout-container">
-        <!-- Sidebar / Menú Lateral -->
-        <%@ include file="../webMiscelanea/sidebar.jsp" %>
-    </div>
+    <!-- Sidebar / Menú Lateral -->
+    <%@ include file="../webMiscelanea/sidebar.jsp" %>
 </body>
 </html>

@@ -1,12 +1,4 @@
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html lang="es">
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Header</title>
-    </head>
-<body>
-    <!-- Cabezal Fijo (Header) -->
+<!-- Cabezal Fijo (Header) -->
     <header class="navbar">
         <div class="nav-container">
             <a href="${pageContext.request.contextPath}/" class="brand">
@@ -21,10 +13,9 @@
             </div>
 
             <nav class="nav-actions">
-                <a href="${pageContext.request.contextPath}/login" class="btn btn-outline">Iniciar SesiÃ³n</a>
+                <a href="${pageContext.request.contextPath}/login" class="btn btn-outline">Iniciar Sesión</a>
                 <a href="${pageContext.request.contextPath}/alta-usuario" class="btn btn-primary">Registrarse</a>
             </nav>
         </div>
     </header>
-</body>
-</html>
+
