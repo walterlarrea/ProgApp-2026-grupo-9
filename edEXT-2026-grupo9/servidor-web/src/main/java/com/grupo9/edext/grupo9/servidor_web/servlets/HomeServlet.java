@@ -19,8 +19,7 @@ import java.util.Set;
 public class HomeServlet extends HttpServlet {
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Set<DataInstituto> institutos = Collections.emptySet();
         Set<DataCurso> cursos = Collections.emptySet();
         String estadoDb = "Conectado al Servidor Central";

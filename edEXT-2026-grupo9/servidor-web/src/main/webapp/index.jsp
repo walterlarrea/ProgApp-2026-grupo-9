@@ -9,62 +9,13 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/styles.css">
 </head>
 <body>
-
-    <!-- Cabezal Fijo (Header) -->
-    <header class="navbar">
-        <div class="nav-container">
-            <a href="${pageContext.request.contextPath}/" class="brand">
-                <span class="brand-accent">ed</span>EXT
-            </a>
-
-            <div class="search-box">
-                <form action="${pageContext.request.contextPath}/buscar" method="get">
-                    <input type="text" name="q" placeholder="Buscar cursos y programas...">
-                    <button type="submit">Buscar</button>
-                </form>
-            </div>
-
-            <nav class="nav-actions">
-                <a href="${pageContext.request.contextPath}/login" class="btn btn-outline">Iniciar Sesión</a>
-                <a href="${pageContext.request.contextPath}/alta-usuario" class="btn btn-primary">Registrarse</a>
-            </nav>
-        </div>
-    </header>
-
-    <!-- Layout Principal: Sidebar + Contenido Dinámico -->
+    <!-- cabezal fijo -->
+    <%@ include file="includes/header.jsp" %>
+    <!-- Sidebar / Menú Lateral -->
+    <%@ include file="includes/sidebar.jsp" %>
+    
+    <!-- Layout Principal: Contenido Dinámico -->
     <div class="layout-container">
-        <!-- Sidebar / Menú Lateral -->
-        <aside class="sidebar">
-            <h3>Institutos</h3>
-            <ul class="nav-list">
-                <c:choose>
-                    <c:when test="${not empty institutos}">
-                        <c:forEach var="inst" items="${institutos}">
-                            <li>
-                                <a href="${pageContext.request.contextPath}/cursos?instituto=${inst.nombreI()}">
-                                    <c:out value="${inst.nombreI()}"/>
-                                </a>
-                            </li>
-                        </c:forEach>
-                    </c:when>
-                    <c:otherwise>
-                        <li class="empty-hint">Sin institutos disponibles</li>
-                    </c:otherwise>
-                </c:choose>
-            </ul>
-
-            <h3 style="margin-top: 1.5rem;">Explorar</h3>
-            <ul class="nav-list">
-                <li><a href="${pageContext.request.contextPath}/cursos">Todos los Cursos</a></li>
-                <li><a href="${pageContext.request.contextPath}/programas">Programas de Formación</a></li>
-            </ul>
-
-            <div class="status-box">
-                <small>Estado:</small>
-                <span class="badge badge-success"><c:out value="${estadoDb}"/></span>
-            </div>
-        </aside>
-
         <!-- Contenido Central Dinámico -->
         <main class="main-content">
             <section class="hero-banner">
