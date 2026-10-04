@@ -170,6 +170,11 @@ class ServidorCentralController implements IServidorCentral {
     public HashSet<DataCurso> cursosNoRelacionadosConUnProgDeFormacion(String idProgramaDeFormacion){
         return this.cursoCtrl.cursosNoRelacionadosConUnProgDeFormacion(idProgramaDeFormacion);
     }
+    
+    @Override
+    public DataCurso buscarCurso(String nombre){
+        return this.cursoCtrl.traerCurso(nombre);
+    }
 
     // Institutos
     @Override

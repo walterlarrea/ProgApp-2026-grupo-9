@@ -152,4 +152,23 @@ public class ManejadorCurso {
         throw e;
         }
     }
+    
+    public DataCurso traerCursoPorNombre(String nombre){
+        try {
+            CriteriaBuilder cBuilder = em.getCriteriaBuilder();
+            CriteriaQuery<Curso> cQuery = cBuilder.createQuery(Curso.class);
+            Root<Curso> rootEntry = cQuery.from(Curso.class);
+            cQuery.select(rootEntry).where(cBuilder.equal(rootEntry.get("nombreCurso"), nombre));
+            TypedQuery<Curso> query = em.createQuery(cQuery);
+            query.setMaxResults(1);
+
+            if (query.getResultList().isEmpty()) {
+                return null;
+            }
+            Curso curso = query.getSingleResult();
+            return DtoMapper.toDataList(new HashSet<>(Set.of(curso)), DataCurso.class).iterator().next();
+        } catch (Exception e) {
+            throw e;
+        }
+    }
 }

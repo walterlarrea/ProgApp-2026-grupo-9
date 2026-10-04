@@ -39,12 +39,14 @@ public interface IServidorCentral {
     public HashSet<DataCurso> cursosPorInstituto(String nombreInstituto);
     public Boolean existeCurso(String nombre);
     public HashSet<DataCurso> cursosNoRelacionadosConUnProgDeFormacion(String idProgramaDeFormacion);
+    public DataCurso buscarCurso(String nombre);
     
     // Institutos
     public DataInstituto guardarInstituto(DataInstituto nuevoInstituto);
     public HashSet<DataInstituto> consultarTodosLosInstitutos();
     public Boolean existeInstituto(String nombre);
     
+    // Usuarios
     public String[] listarUsuarios();
     public DataUsuario consultarUsuario(String nickname) throws ErrorNoExiste;
     public void modificarUsuario(String nick, String nom, String ape, LocalDate fechaNac, String rutaImg);

@@ -9,4 +9,5 @@ public interface ICurso {
     public HashSet<DataCurso> cursosPorInstituto(String nombreInstituto);
     public Boolean existeCurso(String nombre);
     public HashSet<DataCurso> cursosNoRelacionadosConUnProgDeFormacion(String idProgramaDeFormacion);
+    public DataCurso traerCurso(String nombre);
 }

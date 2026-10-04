@@ -90,4 +90,16 @@ public class CursoController implements ICurso{
         }
         return null;
     }
+    
+    @Override
+    public DataCurso traerCurso (String nombre){
+        System.out.println("[SERVIDOR] Busca un curso por su nombre " + nombre + " a persistencia");
+        try{
+            return this.manejadorCurso.traerCursoPorNombre(nombre);
+        }catch (Exception e){
+            System.out.println("[SERVIDOR] Persistencia FALLÓ al intentar traer el curso: " + nombre);
+            System.out.println(e);
+        }
+        return null;
+    }
 }

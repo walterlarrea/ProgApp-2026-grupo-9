@@ -10,12 +10,11 @@
 </head>
 <body>
     <!-- cabezal fijo -->
-    <%@ include file="includes/header.jsp" %>
-    <!-- Sidebar / Menú Lateral -->
-    <%@ include file="includes/sidebar.jsp" %>
-    
+    <%@ include file="webMiscelanea/header.jsp" %>
     <!-- Layout Principal: Contenido Dinámico -->
     <div class="layout-container">
+        <!-- Sidebar / Menú Lateral -->
+        <%@ include file="webMiscelanea/sidebar.jsp" %>
         <!-- Contenido Central Dinámico -->
         <main class="main-content">
             <section class="hero-banner">
