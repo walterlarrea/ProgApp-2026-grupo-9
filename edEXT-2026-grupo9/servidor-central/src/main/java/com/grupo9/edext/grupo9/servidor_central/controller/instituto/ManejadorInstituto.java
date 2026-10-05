@@ -11,6 +11,7 @@ import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Root;
 import java.util.HashSet;
+import java.util.Set;
 
 
 public class ManejadorInstituto {
@@ -89,6 +90,25 @@ public class ManejadorInstituto {
             TypedQuery<Instituto> query = em.createQuery(cQuery);
             query.setMaxResults(1);
             return !query.getResultList().isEmpty();
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+    
+    public DataInstituto traerInstPorNombre(String nombre){
+        try {
+            CriteriaBuilder cBuilder = em.getCriteriaBuilder();
+            CriteriaQuery<Instituto> cQuery = cBuilder.createQuery(Instituto.class);
+            Root<Instituto> rootEntry = cQuery.from(Instituto.class);
+            cQuery.select(rootEntry).where(cBuilder.equal(rootEntry.get("nombreI"), nombre));
+            TypedQuery<Instituto> query = em.createQuery(cQuery);
+            query.setMaxResults(1);
+
+            if (query.getResultList().isEmpty()) {
+                return null;
+            }
+            Instituto inst = query.getSingleResult();
+            return DtoMapper.toDataList(new HashSet<>(Set.of(inst)), DataInstituto.class).iterator().next();
         } catch (Exception e) {
             throw e;
         }

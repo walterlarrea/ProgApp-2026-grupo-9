@@ -320,3 +320,82 @@ body {
     font-size: 0.9rem;
     margin-top: 0.5rem;
 }
+
+.dato {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.dato h4,
+.dato p {
+    margin: 0;
+}
+
+.table-container {
+    width: 100%;
+    overflow-x: auto;
+    margin-top: 1rem;
+    margin-bottom: 2rem;
+}
+
+.inscriptos-table {
+    width: 100%;
+    table-layout: fixed;
+    border-collapse: separate;
+    border-spacing: 20px 0;
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.inscriptos-table th,
+.inscriptos-table td {
+    padding: 0.9rem 1rem;
+    text-align: left;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.inscriptos-table th {
+    background: #f3f4f6;
+    font-weight: 600;
+    color: #374151;
+}
+
+.inscriptos-table tbody tr:hover {
+    background: #f9fafb;
+}
+
+.inscriptos-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.checkbox-cell {
+    text-align: center !important;
+}
+
+.checkbox-cell input {
+    width: 18px;
+    height: 18px;
+    cursor: default;
+}
+
+.estado-badge {
+    display: inline-block;
+    padding: 0.35rem 0.7rem;
+    border-radius: 999px;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.empty-table {
+    text-align: center !important;
+    color: #6b7280;
+    padding: 2rem !important;
+}
+
+.inscriptos-table th,
+.inscriptos-table td {
+    padding: 0.9rem 2rem !important;
+}

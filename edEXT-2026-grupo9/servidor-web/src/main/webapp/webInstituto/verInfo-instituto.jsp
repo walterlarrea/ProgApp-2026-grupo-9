@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>edEXT - Cursos</title>
+    <title>edEXT - Instituto</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/styles.css">
 </head>
 
@@ -18,30 +18,23 @@
         <%@ include file="../webMiscelanea/sidebar.jsp" %>
         <main class="main-content">
             <section class="hero-banner">
-                <h1>${curso.nombreCurso()}</h1>
-                <p>${curso.descCurso()}</p>
+                <h1>${instituto.nombreI()}</h1>
             </section>
-            <div class="dato">
-                <h4>Instituto:</h4> <p>${curso.instituto.nombreI()}</p>
-                <h4>Créditos:</h4> <p>${curso.cantCred()}</p>
-                <h4>Cantidad de horas:</h4> <p>${curso.cantHoras()}</p>
-                <h4>Duración:</h4> <p>${curso.duracion()}</p>
-                <h4>URL:</h4> <p>${curso.url}</p>
-            </div>
-            <h3>Ediciones</h3>
+            <h3>Docentes</h3>
             <ol class="nav-list">
                 <c:choose>
-                    <c:when test="${not empty ediciones}">
-                        <c:forEach var="edi" items="${ediciones}">
+                    <c:when test="${not empty docentes}">
+                        <c:forEach var="doc" items="${docentes}">
                             <li>
-                                <a href="${pageContext.request.contextPath}/edicionCurso?nombre=${edi.getNombreEdi()}">
-                                    <c:out value="${edi.getNombreEdi()}"/>
-                                </a>
+                                <!-- para cuando sea clickeable sería algo así <a href="${pageContext.request.contextPath}/docentes?nickname=${edi.getNombreEdi()}"> -->
+                                <c:out value="${doc.nombre}"/> 
+                                <c:out value="${doc.apellido}"/>
+                                
                             </li>
                         </c:forEach>
                     </c:when>
                     <c:otherwise>
-                        <li class="empty-hint">Sin ediciones disponibles</li>
+                        <li class="empty-hint">Sin docentes disponibles</li>
                     </c:otherwise>
                 </c:choose>
             </ol>    

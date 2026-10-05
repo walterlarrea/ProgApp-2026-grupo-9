@@ -18,16 +18,17 @@ import com.grupo9.edext.grupo9.servidor_central.dominio.DataUsuario;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataEdicionCurso;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataDocente;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataEstudiante;
+import com.grupo9.edext.grupo9.servidor_central.dominio.DataInscEdicion;
 import com.grupo9.edext.grupo9.servidor_central.controller.instituto.Instituto;
 import com.grupo9.edext.grupo9.servidor_central.controller.usuario.Docente;
 import com.grupo9.edext.grupo9.servidor_central.controller.edicion_de_curso.EdicionCurso;
-import com.grupo9.edext.grupo9.servidor_central.controller.usuario.Estudiante;
 import com.grupo9.edext.grupo9.mensajes.ErrorNoExiste;
 import com.grupo9.edext.grupo9.mensajes.ErrorRepetidos;
 import com.grupo9.edext.grupo9.servidor_central.controller.curso.Curso;
 import com.grupo9.edext.grupo9.servidor_central.controller.usuario.Estudiante;
 import java.time.LocalDate;
 import java.util.HashSet;
+import java.util.Set;
 
 class ServidorCentralController implements IServidorCentral {
     
@@ -145,6 +146,15 @@ class ServidorCentralController implements IServidorCentral {
         return this.edicionCursoCtrl.traerEdiciones(dataCurso);
     }
     
+    @Override
+    public DataDocente[] buscarDocentes(DataEdicionCurso edicion){
+        return this.edicionCursoCtrl.traerDocentesEdicion(edicion);
+    }
+    
+    @Override
+    public Set<DataInscEdicion> buscarInscriptos(DataEdicionCurso edicion){
+        return this.edicionCursoCtrl.traerInscriptos(edicion);
+    }    
     // Cursos
     @Override
     public DataCurso guardarCurso(DataCurso nuevoCurso){
@@ -190,6 +200,11 @@ class ServidorCentralController implements IServidorCentral {
     @Override
     public Boolean existeInstituto(String nombre){
         return this.institutoCtrl.existeInstituto(nombre);
+    }
+    
+    @Override
+    public DataInstituto buscarInstituto(String nombre){
+        return this.institutoCtrl.traerInstituto(nombre);
     }
     
     // Usuarios

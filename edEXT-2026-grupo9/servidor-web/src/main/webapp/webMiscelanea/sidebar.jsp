@@ -2,12 +2,12 @@
 <!-- Barra lateral fija (sidebar) -->
         <aside class="sidebar">
             <h3>Institutos</h3>
-            <ul class="nav-list">
+            <ol class="nav-list">
                 <c:choose>
                     <c:when test="${not empty institutos}">
                         <c:forEach var="inst" items="${institutos}">
                             <li>
-                                <a href="${pageContext.request.contextPath}/cursos?instituto=${inst.nombreI()}">
+                                <a href="${pageContext.request.contextPath}/instituto?nombre=${inst.nombreI()}">
                                     <c:out value="${inst.nombreI()}"/>
                                 </a>
                             </li>
@@ -17,7 +17,7 @@
                         <li class="empty-hint">Sin institutos disponibles</li>
                     </c:otherwise>
                 </c:choose>
-            </ul>
+            </ol>
 
             <h3 style="margin-top: 1.5rem;">Explorar</h3>
             <ul class="nav-list">
