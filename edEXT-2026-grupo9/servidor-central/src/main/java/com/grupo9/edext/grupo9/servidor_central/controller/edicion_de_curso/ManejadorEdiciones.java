@@ -2,19 +2,22 @@ package com.grupo9.edext.grupo9.servidor_central.controller.edicion_de_curso;
 
 import com.grupo9.edext.grupo9.miscelanea.UtensiliosJPA;
 import com.grupo9.edext.grupo9.servidor_central.controller.curso.Curso;
-import com.grupo9.edext.grupo9.servidor_central.dominio.DataCurso;
+import com.grupo9.edext.grupo9.servidor_central.dominio.DataDocente;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataEdicionCurso;
+import com.grupo9.edext.grupo9.servidor_central.dominio.DataInscEdicion;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.List;
 import jakarta.persistence.*;
-import java.util.HashSet;
+import java.util.Set;
 
 
 public class ManejadorEdiciones {
     private Map<String, EdicionCurso> edCurso;
     private static ManejadorEdiciones instance = null;
+    private EntityManager em;
     
     private ManejadorEdiciones(){
         edCurso = new HashMap<String, EdicionCurso>();
@@ -22,7 +25,7 @@ public class ManejadorEdiciones {
     }
     
     private void cargarEdicionesDesdeBD() {
-    EntityManager em = UtensiliosJPA.getEntityManagerFactory().createEntityManager();
+    em = UtensiliosJPA.getEntityManagerFactory().createEntityManager();
     try {
         List<EdicionCurso> lista = em.createQuery("SELECT edc FROM EdicionCurso edc", EdicionCurso.class).getResultList();
         for (EdicionCurso edC : lista) {
@@ -54,7 +57,7 @@ public class ManejadorEdiciones {
     public void addEdicion(EdicionCurso ed){
         String nombreEC = ed.getNombreEdi();
         edCurso.put(nombreEC, ed);
-        EntityManager em = UtensiliosJPA.getEntityManagerFactory().createEntityManager();
+        em = UtensiliosJPA.getEntityManagerFactory().createEntityManager();
         EntityTransaction et = em.getTransaction();
         try{
             et.begin();
@@ -85,9 +88,7 @@ public class ManejadorEdiciones {
     }
     
     public void addInscripcion(InscEdicion ie){
-//        String nombreEC = ed.getNombreEdi();
-//        edCurso.put(nombreEC, ed);
-        EntityManager em = UtensiliosJPA.getEntityManagerFactory().createEntityManager();
+        em = UtensiliosJPA.getEntityManagerFactory().createEntityManager();
         EntityTransaction et = em.getTransaction();
         try{
             et.begin();
@@ -120,5 +121,24 @@ public class ManejadorEdiciones {
                 );
             }
         }
+    }
+    
+    public DataDocente[] traerDocenteDeSuEdi(DataEdicionCurso edicion){
+        try {
+            Set<DataDocente> docentes = edicion.getDocentes();
+            if (docentes == null || docentes.isEmpty()) {
+                return new DataDocente[0];
+            }
+            return docentes.toArray(new DataDocente[0]);
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+    
+    public Set<DataInscEdicion> traerInscripcionesDeEdicion(DataEdicionCurso edicion) {
+        if (edicion == null || edicion.getInscripciones() == null) {
+            return Collections.emptySet();
+        }
+        return edicion.getInscripciones();
     }
 }

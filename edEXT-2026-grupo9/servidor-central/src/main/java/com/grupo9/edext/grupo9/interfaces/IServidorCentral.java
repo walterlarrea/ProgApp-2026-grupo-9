@@ -7,9 +7,11 @@ import com.grupo9.edext.grupo9.servidor_central.dominio.DataProgramaFormacion;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataEdicionCurso;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataDocente;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataEstudiante;
+import com.grupo9.edext.grupo9.servidor_central.dominio.DataInscEdicion;
 import com.grupo9.edext.grupo9.mensajes.ErrorNoExiste;
 import com.grupo9.edext.grupo9.mensajes.ErrorRepetidos;
 import java.util.HashSet;
+import java.util.Set;
 import java.time.LocalDate;
 
 
@@ -31,7 +33,9 @@ public interface IServidorCentral {
     public DataEdicionCurso[] traerEdiciones(DataCurso curso);
     public HashSet<DataEdicionCurso> traerEdiciones(DataCurso curso, boolean asSet);
     public DataEstudiante[] traerEstudiantes();
-    public void inscribirEstudiante(LocalDate fechaInsc, String nickname, String nombreEdi)throws ErrorRepetidos, ErrorNoExiste ;
+    public void inscribirEstudiante(LocalDate fechaInsc, String nickname, String nombreEdi)throws ErrorRepetidos, ErrorNoExiste;
+    public DataDocente[] buscarDocentes(DataEdicionCurso edicion);
+    public Set<DataInscEdicion> buscarInscriptos(DataEdicionCurso edicion);
     
     // Cursos
     public DataCurso guardarCurso(DataCurso nuevoCurso);
@@ -45,6 +49,7 @@ public interface IServidorCentral {
     public DataInstituto guardarInstituto(DataInstituto nuevoInstituto);
     public HashSet<DataInstituto> consultarTodosLosInstitutos();
     public Boolean existeInstituto(String nombre);
+    public DataInstituto buscarInstituto(String nombre);
     
     // Usuarios
     public String[] listarUsuarios();

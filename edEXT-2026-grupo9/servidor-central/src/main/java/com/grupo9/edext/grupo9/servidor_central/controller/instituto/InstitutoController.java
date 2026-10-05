@@ -54,4 +54,16 @@ public class InstitutoController implements IInstituto{
         }
         return false;
     }
+    
+    @Override
+    public DataInstituto traerInstituto(String nombre){
+        System.out.println("[SERVIDOR] Busca un instituto por su nombre " + nombre + " a persistencia");
+        try{
+            return this.manejadorInstituto.traerInstPorNombre(nombre);
+        }catch (Exception e){
+            System.out.println("[SERVIDOR] Persistencia FALLÓ al intentar traer el instituto: " + nombre);
+            System.out.println(e);
+        }
+        return null;
+    }
 }

@@ -20,8 +20,11 @@ import java.util.Set;
 import java.util.HashSet;
 
 public class EdicionCursoController implements IEdicionCurso {
-    
-    public EdicionCursoController(){}
+    private ManejadorEdiciones manejadorEdiciones;
+
+    public EdicionCursoController() {
+        manejadorEdiciones = ManejadorEdiciones.getInstance();
+    }
     
     @Override
     public DataEdicionCurso guardarNuevaEdicionCurso(DataEdicionCurso nuevaEdicion){
@@ -164,6 +167,29 @@ public class EdicionCursoController implements IEdicionCurso {
         inscripcionEdicionCurso(fechaInsc, nickname, nombreEdi);
     }
     
+    @Override
+    public DataDocente[] traerDocentesEdicion(DataEdicionCurso edicion){ 
+        System.out.println("[SERVIDOR] Busca docentes por su edición " + edicion + " a persistencia");
+        try{
+            return this.manejadorEdiciones.traerDocenteDeSuEdi(edicion);
+        }catch (Exception e){
+            System.out.println("[SERVIDOR] Persistencia FALLÓ al intentar traer la edición: " + edicion);
+            System.out.println(e);
+        }
+        return null;
+    }
+    
+    @Override
+    public Set<DataInscEdicion> traerInscriptos(DataEdicionCurso edicion){
+        System.out.println("[SERVIDOR] Busca docentes por su edición " + edicion + " a persistencia");
+        try{
+            return this.manejadorEdiciones.traerInscripcionesDeEdicion(edicion);
+        }catch (Exception e){
+            System.out.println("[SERVIDOR] Persistencia FALLÓ al intentar traer la edición: " + edicion);
+            System.out.println(e);
+        }
+        return null;
+    }
     @Override
     public void cambiarEstadoInscripcion(String nombreEdicion, String nicknameEstudiante, EstadoInscripcion nuevoEstado) throws ErrorNoExiste, ErrorEstadoInvalido {
         ManejadorEdiciones me = ManejadorEdiciones.getInstance();
