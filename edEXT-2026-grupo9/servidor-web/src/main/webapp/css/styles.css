@@ -399,3 +399,9 @@ body {
 .inscriptos-table td {
     padding: 0.9rem 2rem !important;
 }
+
+.corte-texto {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
