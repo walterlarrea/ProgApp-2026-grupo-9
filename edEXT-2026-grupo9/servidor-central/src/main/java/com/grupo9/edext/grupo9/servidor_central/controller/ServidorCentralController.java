@@ -1,6 +1,8 @@
 package com.grupo9.edext.grupo9.servidor_central.controller;
 
 import com.grupo9.edext.grupo9.interfaces.IServidorCentral;
+import com.grupo9.edext.grupo9.servidor_central.controller.busqueda.IBusqueda;
+import com.grupo9.edext.grupo9.servidor_central.controller.busqueda.BusquedaController;
 import com.grupo9.edext.grupo9.servidor_central.controller.programa_de_formacion.IProgramaDeFormacion;
 import com.grupo9.edext.grupo9.servidor_central.controller.programa_de_formacion.ProgramaDeFormacionController;
 import com.grupo9.edext.grupo9.servidor_central.controller.edicion_de_curso.IEdicionCurso;
@@ -19,6 +21,7 @@ import com.grupo9.edext.grupo9.servidor_central.dominio.DataEdicionCurso;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataDocente;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataEstudiante;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataInscEdicion;
+import com.grupo9.edext.grupo9.servidor_central.dominio.ResultadoBusqueda;
 import com.grupo9.edext.grupo9.servidor_central.controller.instituto.Instituto;
 import com.grupo9.edext.grupo9.servidor_central.controller.usuario.Docente;
 import com.grupo9.edext.grupo9.servidor_central.controller.edicion_de_curso.EdicionCurso;
@@ -29,6 +32,7 @@ import com.grupo9.edext.grupo9.servidor_central.controller.usuario.Estudiante;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.List;
 
 class ServidorCentralController implements IServidorCentral {
     
@@ -37,6 +41,7 @@ class ServidorCentralController implements IServidorCentral {
     private final ICurso cursoCtrl = new CursoController();
     private final IInstituto institutoCtrl = new InstitutoController();
     private final IUsuario usuarioCtrl = new UsuarioController();
+    private final IBusqueda busquedaCtrl = new BusquedaController();
     
     
     // Step 1: Private constructor prevents instantiation from other classes
@@ -61,7 +66,28 @@ class ServidorCentralController implements IServidorCentral {
     public void logStatus(){
         System.out.println("Server ACTIVE");
     }
-    
+
+    // Busqueda
+    @Override
+    public HashSet<DataCurso> buscarCursosPorNombre(String nombre) {
+        return this.busquedaCtrl.buscarCursosPorNombre(nombre);
+    }
+
+    @Override
+    public HashSet<DataProgramaFormacion> buscarProgramasPorNombre(String nombre) {
+        return this.busquedaCtrl.buscarProgramasPorNombre(nombre);
+    }
+
+    @Override
+    public HashSet<DataUsuario> buscarUsuariosPorNombreYApellido(String nombre, String apellido) {
+        return this.busquedaCtrl.buscarUsuariosPorNombreYApellido(nombre, apellido);
+    }
+
+    @Override
+    public List<ResultadoBusqueda> busquedaPrincipal(String query) {
+        return this.busquedaCtrl.busquedaPrincipal(query);
+    }
+
     // Programas de Formación
     @Override
     public DataProgramaFormacion guardarProgramaDeFormacion(DataProgramaFormacion nuevoPrograma){

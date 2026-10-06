@@ -22,11 +22,11 @@
                 <p>${curso.descCurso()}</p>
             </section>
             <div class="dato">
-                <h4>Instituto:</h4> <p>${curso.instituto.nombreI()}</p>
+                <h4>Instituto:</h4> <p>${curso.instituto().nombreI()}</p>
                 <h4>Créditos:</h4> <p>${curso.cantCred()}</p>
                 <h4>Cantidad de horas:</h4> <p>${curso.cantHoras()}</p>
                 <h4>Duración:</h4> <p>${curso.duracion()}</p>
-                <h4>URL:</h4> <p>${curso.url}</p>
+                <h4>URL:</h4> <p>${curso.url()}</p>
             </div>
             <h3>Ediciones</h3>
             <ol class="nav-list">
