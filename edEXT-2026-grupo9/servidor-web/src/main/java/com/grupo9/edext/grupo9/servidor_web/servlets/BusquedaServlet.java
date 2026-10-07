@@ -4,15 +4,14 @@ import com.google.gson.Gson;
 import com.grupo9.edext.grupo9.interfaces.IServidorCentral;
 import com.grupo9.edext.grupo9.miscelanea.Fabrica;
 import com.grupo9.edext.grupo9.servidor_central.controller.busqueda.TipoBusqueda;
-import static com.grupo9.edext.grupo9.servidor_central.controller.busqueda.TipoBusqueda.USUARIO;
-import static com.grupo9.edext.grupo9.servidor_central.controller.busqueda.TipoBusqueda.CURSO;
-import static com.grupo9.edext.grupo9.servidor_central.controller.busqueda.TipoBusqueda.PROGRAMA_FORMACION;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataCurso;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataProgramaFormacion;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataUsuario;
 import com.grupo9.edext.grupo9.servidor_central.dominio.ResultadoBusqueda;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -42,11 +41,8 @@ public class BusquedaServlet extends HttpServlet {
         String query = request.getParameter("q");
         String formatResponse = request.getParameter("format");
         List<ResultadoBusqueda> resultados = Collections.emptyList();
-        ArrayList<DataCurso> cursos = new ArrayList<>();
-        ArrayList<DataUsuario> usuarios = new ArrayList<>();
-        ArrayList<DataProgramaFormacion> programas = new ArrayList<>();
         
-        ArrayList<ResultadoBusqueda> listaResultados = new ArrayList<>();
+        ArrayList<ResultadoBusquedaExtendida> listaResultados = new ArrayList<>();
         
         try {
             if (servidorCentral != null){
@@ -57,7 +53,7 @@ public class BusquedaServlet extends HttpServlet {
         }
         
         for (ResultadoBusqueda res : resultados) {
-            listaResultados.add(res);
+            listaResultados.add(enriquecerResultado(res, request.getContextPath(), query));
         }
         
         if (formatResponse == null || !formatResponse.equals("json")) {
@@ -75,6 +71,64 @@ public class BusquedaServlet extends HttpServlet {
             out.print(jsonArray);
             out.flush();
         }
+    }
+
+    private String highlightQueryInText(String text, String query) {
+        if (text == null || query == null || query.isEmpty()) {
+            return text;
+        }
+        String escapedQuery = java.util.regex.Pattern.quote(query);
+        return text.replaceAll("(?i)" + escapedQuery, "<b>$0</b>");
+    }
+
+    private ResultadoBusquedaExtendida enriquecerResultado(ResultadoBusqueda resultado, String contextPath, String query) {
+        String tipoVisible;
+        String nombreVisible;
+        String nombreVisibleHighlighted;
+        String ruta;
+        String parametro;
+        String href;
+
+        switch (resultado.tipo()) {
+            case CURSO -> {
+                DataCurso curso = (DataCurso) resultado.data();
+                tipoVisible = "Curso";
+                nombreVisible = curso.nombreCurso();
+                nombreVisibleHighlighted = highlightQueryInText(nombreVisible, query);
+
+                ruta = "/curso";
+                parametro = curso.nombreCurso();
+                href = contextPath + ruta + "?nombre="
+                        + URLEncoder.encode(parametro, StandardCharsets.UTF_8);
+            }
+            case USUARIO -> {
+                DataUsuario usuario = (DataUsuario) resultado.data();
+                tipoVisible = "Usuario";
+                nombreVisible = usuario.getNombre() + " " + usuario.getApellido();
+                nombreVisibleHighlighted = highlightQueryInText(nombreVisible, query);
+
+                ruta = "/usuario";
+                parametro = usuario.getNickname();
+                href = contextPath + ruta + "?nombre="
+                        + URLEncoder.encode(parametro, StandardCharsets.UTF_8);
+            }
+            case PROGRAMA_FORMACION -> {
+                DataProgramaFormacion programa = (DataProgramaFormacion) resultado.data();
+                tipoVisible = "Programa";
+                nombreVisible = programa.nombre();
+                nombreVisibleHighlighted = highlightQueryInText(nombreVisible, query);
+
+                ruta = "/programa";
+                parametro = programa.nombre();
+                href = contextPath + ruta + "?nombre="
+                        + URLEncoder.encode(parametro, StandardCharsets.UTF_8);
+            }
+            default -> throw new IllegalArgumentException("Tipo de búsqueda no soportado: " + resultado.tipo());
+        }
+
+        String tipoCss = resultado.tipo().name().toLowerCase(java.util.Locale.ROOT);
+        return new ResultadoBusquedaExtendida(
+                resultado.tipo(), resultado.data(), tipoVisible, nombreVisible, nombreVisibleHighlighted, href, tipoCss);
     }
 
     /**
