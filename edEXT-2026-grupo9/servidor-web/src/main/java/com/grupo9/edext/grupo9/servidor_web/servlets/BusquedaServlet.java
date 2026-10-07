@@ -1,5 +1,6 @@
 package com.grupo9.edext.grupo9.servidor_web.servlets;
 
+import com.google.gson.Gson;
 import com.grupo9.edext.grupo9.interfaces.IServidorCentral;
 import com.grupo9.edext.grupo9.miscelanea.Fabrica;
 import com.grupo9.edext.grupo9.servidor_central.controller.busqueda.TipoBusqueda;
@@ -26,32 +27,6 @@ import java.util.List;
 public class BusquedaServlet extends HttpServlet {
     IServidorCentral servidorCentral = Fabrica.getInstance().getIServidorCentral();
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet BusquedaServlet</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet BusquedaServlet at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        }
-    }
-
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -65,6 +40,7 @@ public class BusquedaServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String query = request.getParameter("q");
+        String formatResponse = request.getParameter("format");
         List<ResultadoBusqueda> resultados = Collections.emptyList();
         ArrayList<DataCurso> cursos = new ArrayList<>();
         ArrayList<DataUsuario> usuarios = new ArrayList<>();
@@ -81,33 +57,24 @@ public class BusquedaServlet extends HttpServlet {
         }
         
         for (ResultadoBusqueda res : resultados) {
-            TipoBusqueda tipo = res.tipo();
             listaResultados.add(res);
-            
-            switch (tipo) {
-                case CURSO -> {
-                    DataCurso curso = (DataCurso) res.data();
-                    cursos.add(curso);
-                }
-                case USUARIO -> {
-                    usuarios.add((DataUsuario) res.data());
-                }
-                case PROGRAMA_FORMACION -> {
-                    programas.add((DataProgramaFormacion) res.data());
-                }
-                default -> {
-                    System.err.println("[ALERTA] Tipo de resultado no manejado");
-//                    throw new AssertionError();
-                }
-            }
         }
         
-        request.setAttribute("cursos", cursos);
-        request.setAttribute("usuarios", usuarios);
-        request.setAttribute("programas", programas);
-        request.setAttribute("listaResultados", listaResultados);
-//        processRequest(request, response);
-        request.getRequestDispatcher("/webBusqueda/resultadoBusqueda.jsp").forward(request, response);
+        if (formatResponse == null || !formatResponse.equals("json")) {
+            request.setAttribute("listaResultados", listaResultados);
+            //        processRequest(request, response);
+            request.getRequestDispatcher("/webBusqueda/resultadoBusqueda.jsp").forward(request, response);
+        } else {
+            Gson gson = new Gson();
+            String jsonArray = gson.toJson(listaResultados);
+
+            response.setContentType("application/json");
+            // Get the printwriter object from response to write the required json object to the output stream      
+            PrintWriter out = response.getWriter();
+            // Assuming your json object is **jsonObject**, perform the following, it will return your json object  
+            out.print(jsonArray);
+            out.flush();
+        }
     }
 
     /**
@@ -121,7 +88,19 @@ public class BusquedaServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        response.setContentType("text/html;charset=UTF-8");
+        try (PrintWriter out = response.getWriter()) {
+            /* TODO output your page here. You may use following sample code. */
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Servlet BusquedaServlet</title>");            
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<h1>Servlet BusquedaServlet at " + request.getContextPath() + "</h1>");
+            out.println("</body>");
+            out.println("</html>");
+        }
     }
 
     /**

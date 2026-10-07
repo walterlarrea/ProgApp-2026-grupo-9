@@ -17,12 +17,7 @@
             ed<span class="brand-accent">EXT</span>
         </a>
 
-        <div class="search-box">
-            <form action="<%= request.getContextPath() %>/busqueda" method="GET">
-                <input type="text" name="query" placeholder="Buscar cursos o programas...">
-                <button type="submit">Buscar</button>
-            </form>
-        </div>
+        <%@ include file="../webBusqueda/busquedaPrincipal.jsp" %>
 
         <div class="nav-actions">
             <% if (usuarioLogueado == null) { %>
