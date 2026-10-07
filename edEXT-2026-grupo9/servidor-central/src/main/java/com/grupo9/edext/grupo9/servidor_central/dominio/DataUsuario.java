@@ -8,7 +8,19 @@ public class DataUsuario {
     private String apellido;
     private String email;
     private LocalDate fechaNac;
+    private String fechaNac_str;
     private String imagen;
+    private String password;
+
+    public DataUsuario(String nickname, String nombre, String apellido, String email, LocalDate fechaNac, String imagen, String password) {
+        this.nickname = nickname;
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.email = email;
+        this.fechaNac = fechaNac;
+        this.imagen = imagen;
+        this.password = password;
+    }
 
     public DataUsuario(String nickname, String nombre, String apellido, String email, LocalDate fechaNac, String imagen) {
         this.nickname = nickname;
@@ -21,6 +33,14 @@ public class DataUsuario {
 
     public DataUsuario(String nickname) {
         this.nickname = nickname;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getNickname() {

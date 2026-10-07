@@ -23,6 +23,19 @@ public class Usuario implements Serializable{
     private LocalDate fechaNac;
     private String imagen;
 
+    private String fechaNac_str; // Optional helper if used
+    private String password;
+
+    public Usuario(String nickname, String nombre, String apellido, String email, LocalDate fechaNac, String rutaImagen, String password) {
+        this.nickname = nickname;
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.email = email;
+        this.fechaNac = fechaNac;
+        this.imagen = rutaImagen;
+        this.password = password;
+    }
+
     public Usuario(String nickname, String nombre, String apellido, String email, LocalDate fechaNac, String rutaImagen) {
         this.nickname = nickname;
         this.nombre = nombre;
@@ -38,6 +51,14 @@ public class Usuario implements Serializable{
 
     public Usuario(String nickname) {
         this.nickname = nickname;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getNickname() {

@@ -19,6 +19,9 @@ public class Estudiante extends Usuario implements Serializable{
     public Estudiante() {
         super();
     }
+    public Estudiante(String nickname, String nombre, String apellido, String email, LocalDate fechaNac, String rutaImagen, String password) {
+        super(nickname, nombre, apellido, email, fechaNac, rutaImagen, password);
+    }
     public Estudiante(String nickname, String nombre, String apellido, String email, LocalDate fechaNac, String rutaImagen) {
         super(nickname, nombre, apellido, email, fechaNac, rutaImagen);
     }
