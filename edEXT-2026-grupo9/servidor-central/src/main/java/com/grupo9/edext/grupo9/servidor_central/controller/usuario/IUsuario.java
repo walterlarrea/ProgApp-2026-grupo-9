@@ -19,6 +19,7 @@ import java.util.Date;
 public interface IUsuario {
 
     public void modificarUsuario(String nick, String nom, String ape, LocalDate fechaNac, String rutaImg);
+    public void modificarUsuario(String nick, String nom, String ape, LocalDate fechaNac, String rutaImg, String passActual, String passNueva) throws ErrorNoExiste;
     public void modificarUsuario(String nick, String nom, String ape, LocalDate fechaNac, String rutaImg, String nombreInst);
     public void modificarUsuario(String nick, String nom, String ape, LocalDate fechaNac, String rutaImg, String nombreInst, boolean esDocente);
     public void eliminarUsuario(String nick) throws ErrorNoExiste;

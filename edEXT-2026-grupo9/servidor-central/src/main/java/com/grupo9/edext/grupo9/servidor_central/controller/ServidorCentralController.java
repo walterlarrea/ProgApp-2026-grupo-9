@@ -250,6 +250,11 @@ class ServidorCentralController implements IServidorCentral {
     }
 
     @Override
+    public void modificarUsuario(String nick, String nom, String ape, java.time.LocalDate fechaNac, String rutaImg, String passActual, String passNueva) throws ErrorNoExiste {
+        this.usuarioCtrl.modificarUsuario(nick, nom, ape, fechaNac, rutaImg, passActual, passNueva);
+    }
+
+    @Override
     public void eliminarUsuario(String nick) throws ErrorNoExiste {
         this.usuarioCtrl.eliminarUsuario(nick);
     }

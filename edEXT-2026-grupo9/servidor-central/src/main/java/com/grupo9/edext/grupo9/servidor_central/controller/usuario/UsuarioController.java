@@ -55,6 +55,68 @@ public class UsuarioController implements IUsuario{
     }
 
     @Override
+    public void modificarUsuario(String nick, String nom, String ape, LocalDate fechaNac, String rutaImg, String passActual, String passNueva) throws com.grupo9.edext.grupo9.mensajes.ErrorNoExiste {
+        ManejadorDocente md = ManejadorDocente.getInstance();
+        Docente docMem = md.obtenerDocente(nick);
+        
+        ManejadorEstudiantes me = ManejadorEstudiantes.getInstance();
+        Estudiante estMem = me.obtenerEstudiante(nick);
+
+        Usuario u = (docMem != null) ? docMem : estMem;
+        if (u == null) {
+            throw new com.grupo9.edext.grupo9.mensajes.ErrorNoExiste("No existe el usuario con nickname: " + nick);
+        }
+
+        String nuevaPassword = u.getPassword();
+        if (passNueva != null && !passNueva.trim().isEmpty()) {
+            if (u.getPassword() != null && !u.getPassword().isEmpty()) {
+                if (passActual == null || !u.getPassword().equals(passActual.trim())) {
+                    throw new IllegalArgumentException("La contraseña actual no es correcta.");
+                }
+            }
+            nuevaPassword = passNueva.trim();
+        }
+
+        jakarta.persistence.EntityManager em = com.grupo9.edext.grupo9.miscelanea.UtensiliosJPA.getEntityManagerFactory().createEntityManager();
+        jakarta.persistence.EntityTransaction et = em.getTransaction();
+        try {
+            et.begin();
+
+            em.createNativeQuery("UPDATE usuarios SET nombre = :nom, apellido = :ape, fechaNac = :fecha, imagen = :img, password = :pass WHERE nickname = :nick")
+              .setParameter("nom", nom)
+              .setParameter("ape", ape)
+              .setParameter("fecha", fechaNac)
+              .setParameter("img", rutaImg)
+              .setParameter("pass", nuevaPassword)
+              .setParameter("nick", nick)
+              .executeUpdate();
+
+            et.commit();
+        } catch (Exception e) {
+            if (et.isActive()) et.rollback();
+            throw e;
+        } finally {
+            em.close();
+        }
+
+        // Actualizar en memoria el objeto existente (Docente o Estudiante)
+        if (docMem != null) {
+            docMem.setNombre(nom);
+            docMem.setApellido(ape);
+            docMem.setFechaNac(fechaNac);
+            docMem.setImagen(rutaImg);
+            docMem.setPassword(nuevaPassword);
+        }
+        if (estMem != null) {
+            estMem.setNombre(nom);
+            estMem.setApellido(ape);
+            estMem.setFechaNac(fechaNac);
+            estMem.setImagen(rutaImg);
+            estMem.setPassword(nuevaPassword);
+        }
+    }
+
+    @Override
     public void modificarUsuario(String nick, String nom, String ape, LocalDate fechaNac, String rutaImg, String nombreInst) {
         modificarUsuario(nick, nom, ape, fechaNac, rutaImg);
     }
