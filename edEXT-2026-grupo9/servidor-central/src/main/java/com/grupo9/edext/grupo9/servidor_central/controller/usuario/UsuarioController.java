@@ -133,6 +133,11 @@ public class UsuarioController implements IUsuario{
 
     @Override
     public void registrarEstudiante(String nickname, String nombre, String apellido, String email, LocalDate fechaNac, String rutaImagen) throws ErrorRepetidos {
+        registrarEstudiante(nickname, nombre, apellido, email, fechaNac, rutaImagen, null);
+    }
+
+    @Override
+    public void registrarEstudiante(String nickname, String nombre, String apellido, String email, LocalDate fechaNac, String rutaImagen, String password) throws ErrorRepetidos {
         ManejadorDocente mDocente = ManejadorDocente.getInstance();
         ManejadorEstudiantes mEstudiante = ManejadorEstudiantes.getInstance();
 
@@ -145,12 +150,17 @@ public class UsuarioController implements IUsuario{
             throw new ErrorRepetidos("Ya existe un usuario registrado con el email: " + email);
         }
 
-        Estudiante est = new Estudiante( nickname,  nombre,  apellido,  email,  fechaNac, rutaImagen);
+        Estudiante est = new Estudiante(nickname, nombre, apellido, email, fechaNac, rutaImagen, password);
         mEstudiante.addEstudiante(est);
     }
 
     @Override
-    public void registrarDocente(String nickname, String nombre, String apellido, String email, LocalDate fechaNac, String rutaImagen,String nombreInst) throws ErrorRepetidos {
+    public void registrarDocente(String nickname, String nombre, String apellido, String email, LocalDate fechaNac, String rutaImagen, String nombreInst) throws ErrorRepetidos {
+        registrarDocente(nickname, nombre, apellido, email, fechaNac, rutaImagen, nombreInst, null);
+    }
+
+    @Override
+    public void registrarDocente(String nickname, String nombre, String apellido, String email, LocalDate fechaNac, String rutaImagen, String nombreInst, String password) throws ErrorRepetidos {
         ManejadorDocente mDocente = ManejadorDocente.getInstance();
         ManejadorEstudiantes mEstudiante = ManejadorEstudiantes.getInstance();
 
@@ -162,7 +172,7 @@ public class UsuarioController implements IUsuario{
             throw new ErrorRepetidos("Ya existe un usuario registrado con el email: " + email);
         }
 
-        Docente doc = new Docente(nickname, nombre, apellido, email, fechaNac, rutaImagen, nombreInst);
+        Docente doc = new Docente(nickname, nombre, apellido, email, fechaNac, rutaImagen, nombreInst, password);
         
         Instituto instituto = ManejadorInstituto.getInstance().obtenerInstituto(nombreInst);
 
@@ -172,6 +182,39 @@ public class UsuarioController implements IUsuario{
         }
 
         mDocente.addDocente(doc);
+    }
+
+    @Override
+    public com.grupo9.edext.grupo9.servidor_central.dominio.DataUsuario iniciarSesion(String nicknameOEmail, String password) throws com.grupo9.edext.grupo9.mensajes.ErrorNoExiste {
+        ManejadorDocente md = ManejadorDocente.getInstance();
+        Docente[] docentes = md.getDocente();
+        if (docentes != null) {
+            for (Docente d : docentes) {
+                if (d.getNickname().equalsIgnoreCase(nicknameOEmail) || d.getEmail().equalsIgnoreCase(nicknameOEmail)) {
+                    if (d.getPassword() == null || d.getPassword().equals(password)) {
+                        return consultarUsuario(d.getNickname());
+                    } else {
+                        throw new com.grupo9.edext.grupo9.mensajes.ErrorNoExiste("Contraseña incorrecta.");
+                    }
+                }
+            }
+        }
+
+        ManejadorEstudiantes me = ManejadorEstudiantes.getInstance();
+        Estudiante[] estudiantes = me.getEstudiante();
+        if (estudiantes != null) {
+            for (Estudiante e : estudiantes) {
+                if (e.getNickname().equalsIgnoreCase(nicknameOEmail) || e.getEmail().equalsIgnoreCase(nicknameOEmail)) {
+                    if (e.getPassword() == null || e.getPassword().equals(password)) {
+                        return consultarUsuario(e.getNickname());
+                    } else {
+                        throw new com.grupo9.edext.grupo9.mensajes.ErrorNoExiste("Contraseña incorrecta.");
+                    }
+                }
+            }
+        }
+
+        throw new com.grupo9.edext.grupo9.mensajes.ErrorNoExiste("No existe un usuario registrado con ese nickname o email.");
     }
 
     @Override

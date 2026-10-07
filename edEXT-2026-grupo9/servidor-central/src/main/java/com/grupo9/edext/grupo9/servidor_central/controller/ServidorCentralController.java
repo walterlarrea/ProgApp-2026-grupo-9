@@ -234,7 +234,22 @@ class ServidorCentralController implements IServidorCentral {
     }
 
     @Override
+    public void registrarEstudiante(String nickname, String nombre, String apellido, String email, LocalDate fechaNac, String rutaImagen, String password) throws ErrorRepetidos {
+        this.usuarioCtrl.registrarEstudiante(nickname, nombre, apellido, email, fechaNac, rutaImagen, password);
+    }
+
+    @Override
     public void registrarDocente(String nickname, String nombre, String apellido, String email, LocalDate fechaNac, String rutaImagen, String nombreInst) throws ErrorRepetidos {
         this.usuarioCtrl.registrarDocente(nickname, nombre, apellido, email, fechaNac, rutaImagen, nombreInst);
+    }
+
+    @Override
+    public void registrarDocente(String nickname, String nombre, String apellido, String email, LocalDate fechaNac, String rutaImagen, String nombreInst, String password) throws ErrorRepetidos {
+        this.usuarioCtrl.registrarDocente(nickname, nombre, apellido, email, fechaNac, rutaImagen, nombreInst, password);
+    }
+
+    @Override
+    public DataUsuario iniciarSesion(String nicknameOEmail, String password) throws ErrorNoExiste {
+        return this.usuarioCtrl.iniciarSesion(nicknameOEmail, password);
     }
 }
