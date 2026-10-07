@@ -8,10 +8,12 @@ import com.grupo9.edext.grupo9.servidor_central.dominio.DataEdicionCurso;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataDocente;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataEstudiante;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataInscEdicion;
+import com.grupo9.edext.grupo9.servidor_central.dominio.ResultadoBusqueda;
 import com.grupo9.edext.grupo9.mensajes.ErrorNoExiste;
 import com.grupo9.edext.grupo9.mensajes.ErrorRepetidos;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.List;
 import java.time.LocalDate;
 
 
@@ -44,6 +46,10 @@ public interface IServidorCentral {
     public Boolean existeCurso(String nombre);
     public HashSet<DataCurso> cursosNoRelacionadosConUnProgDeFormacion(String idProgramaDeFormacion);
     public DataCurso buscarCurso(String nombre);
+    public HashSet<DataCurso> buscarCursosPorNombre(String nombre);
+    public HashSet<DataProgramaFormacion> buscarProgramasPorNombre(String nombre);
+    public HashSet<DataUsuario> buscarUsuariosPorNombreYApellido(String nombre, String apellido);
+    public List<ResultadoBusqueda> busquedaPrincipal(String query);
     
     // Institutos
     public DataInstituto guardarInstituto(DataInstituto nuevoInstituto);
