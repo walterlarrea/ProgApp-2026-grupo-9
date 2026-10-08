@@ -11,8 +11,8 @@
         }
     }
 %>
-<header class="navbar">
-    <div class="nav-container">
+<header class="barra-navegacion">
+    <div class="container-barra-navegacion">
         <a href="<%= request.getContextPath() %>/home" class="brand">
             ed<span class="brand-accent">EXT</span>
         </a>

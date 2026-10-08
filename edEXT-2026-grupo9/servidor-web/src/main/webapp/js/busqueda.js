@@ -34,7 +34,9 @@ async function busquedaTypeahead(query, resultadosContainer) {
 
 document.addEventListener('DOMContentLoaded', () => {
 	const inputBuscar = document.getElementById('campo-buscar');
-	const resultadosContainer = document.getElementById('resultados-busqueda');
+	const resultadosContainer = document.getElementById(
+		'resultados-busqueda-typeahead',
+	);
 	const timerDelay = 500; // para que no haga llamadas al servidor cada vez que se escribe una letra, sino que espere un tiempo antes de hacer la llamada
 	let timer;
 

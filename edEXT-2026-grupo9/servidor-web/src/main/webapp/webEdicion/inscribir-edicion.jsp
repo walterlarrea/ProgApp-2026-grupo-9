@@ -9,9 +9,6 @@ uri="jakarta.tags.core" %>
 		<link
 			rel="stylesheet"
 			href="${pageContext.request.contextPath}/css/styles.css" />
-		<script
-			type="text/javascript"
-			src="${pageContext.request.contextPath}/js/busqueda.js"></script>
 	</head>
 
 	<body>
