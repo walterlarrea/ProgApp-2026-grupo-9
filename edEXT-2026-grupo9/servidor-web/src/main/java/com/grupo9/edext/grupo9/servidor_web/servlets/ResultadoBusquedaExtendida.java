@@ -9,6 +9,7 @@ public record ResultadoBusquedaExtendida(
         String tipoVisible,
         String nombreVisible,
         String nombreVisibleHighlighted,
+        String descVisibleHighlighted,
         String href,
         String tipoCss,
         String fechaCreacion

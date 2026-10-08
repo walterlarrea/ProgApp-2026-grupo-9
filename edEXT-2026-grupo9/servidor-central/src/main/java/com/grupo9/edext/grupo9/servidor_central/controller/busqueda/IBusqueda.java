@@ -8,8 +8,8 @@ import java.util.HashSet;
 import java.util.List;
 
 public interface IBusqueda {
-	HashSet<DataCurso> buscarCursosPorNombre(String nombre);
-	HashSet<DataProgramaFormacion> buscarProgramasPorNombre(String nombre);
-	HashSet<DataUsuario> buscarUsuariosPorNombreYApellido(String nombre, String apellido);
+	HashSet<DataCurso> buscarCursos(String query);
+	HashSet<DataProgramaFormacion> buscarProgramas(String query);
+	HashSet<DataUsuario> buscarUsuarios(String nombre, String apellido);
 	List<ResultadoBusqueda> busquedaPrincipal(String query);
 }
