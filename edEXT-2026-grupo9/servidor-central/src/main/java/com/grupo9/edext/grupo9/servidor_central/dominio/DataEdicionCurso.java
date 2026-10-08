@@ -12,8 +12,9 @@ public class DataEdicionCurso {
     private Set<DataDocente> docentes;
     private Set<DataInscEdicion> inscripciones;
     private LocalDate fechaPub;
+    private String imagen;
     
-    public DataEdicionCurso(String nombreEdi, DataCurso cursoAsoc, LocalDate fechaInicio, LocalDate fechaFin, Integer cupo, Set<DataDocente> docentes, Set<DataInscEdicion> inscripciones, LocalDate fechaPub) {
+    public DataEdicionCurso(String nombreEdi, DataCurso cursoAsoc, LocalDate fechaInicio, LocalDate fechaFin, Integer cupo, Set<DataDocente> docentes, Set<DataInscEdicion> inscripciones, LocalDate fechaPub, String imagen) {
         this.nombreEdi = nombreEdi;
         this.cursoAsoc = cursoAsoc;
         this.fechaInicio = fechaInicio;
@@ -22,6 +23,7 @@ public class DataEdicionCurso {
         this.docentes = docentes;
         this.inscripciones = inscripciones;
         this.fechaPub = fechaPub;
+        this.imagen = imagen;
     }
 
     public String getNombreEdi() {
@@ -82,5 +84,13 @@ public class DataEdicionCurso {
     
     public Set<DataInscEdicion> getInscripciones(){
         return inscripciones;
+    }
+    
+    public String getImagen(){
+        return imagen;
+    }
+    
+    public void setImagen(String imagen){
+        this.imagen = imagen;
     }
 }

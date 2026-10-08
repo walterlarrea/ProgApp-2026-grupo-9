@@ -1,10 +1,16 @@
-
 package com.grupo9.edext.grupo9.servidor_central.controller.usuario;
 
-import com.grupo9.edext.grupo9.mensajes.ErrorRepetidos;
 import com.grupo9.edext.grupo9.servidor_central.controller.instituto.Instituto;
+import com.grupo9.edext.grupo9.servidor_central.controller.edicion_de_curso.InscEdicion;
 import com.grupo9.edext.grupo9.servidor_central.controller.instituto.ManejadorInstituto;
-import com.grupo9.edext.grupo9.servidor_central.controller.usuario.ManejadorDocente;
+import com.grupo9.edext.grupo9.servidor_central.controller.edicion_de_curso.ManejadorEdiciones;
+import com.grupo9.edext.grupo9.servidor_central.controller.edicion_de_curso.EdicionCurso;
+import com.grupo9.edext.grupo9.servidor_central.dominio.DataDocente;
+import com.grupo9.edext.grupo9.servidor_central.dominio.DataEstudiante;
+import com.grupo9.edext.grupo9.servidor_central.dominio.DataUsuario;
+import com.grupo9.edext.grupo9.mensajes.*;
+import com.grupo9.edext.grupo9.miscelanea.UtensiliosJPA;
+import jakarta.persistence.*;
 import java.time.LocalDate;
 
 public class UsuarioController implements IUsuario{
@@ -17,8 +23,8 @@ public class UsuarioController implements IUsuario{
         ManejadorEstudiantes me = ManejadorEstudiantes.getInstance();
         Estudiante estMem = me.obtenerEstudiante(nick);
 
-        jakarta.persistence.EntityManager em = com.grupo9.edext.grupo9.miscelanea.UtensiliosJPA.getEntityManagerFactory().createEntityManager();
-        jakarta.persistence.EntityTransaction et = em.getTransaction();
+        EntityManager em = UtensiliosJPA.getEntityManagerFactory().createEntityManager();
+        EntityTransaction et = em.getTransaction();
         try {
             et.begin();
 
@@ -73,19 +79,19 @@ public class UsuarioController implements IUsuario{
         Estudiante est = me.obtenerEstudiante(nick);
 
         if (doc == null && est == null) {
-            jakarta.persistence.EntityManager emTest = com.grupo9.edext.grupo9.miscelanea.UtensiliosJPA.getEntityManagerFactory().createEntityManager();
+            EntityManager emTest = UtensiliosJPA.getEntityManagerFactory().createEntityManager();
             try {
                 Usuario u = emTest.find(Usuario.class, nick);
                 if (u == null) {
-                    throw new com.grupo9.edext.grupo9.mensajes.ErrorNoExiste("No existe el usuario con nickname: " + nick);
+                    throw new ErrorNoExiste("No existe el usuario con nickname: " + nick);
                 }
             } finally {
                 emTest.close();
             }
         }
 
-        jakarta.persistence.EntityManager em = com.grupo9.edext.grupo9.miscelanea.UtensiliosJPA.getEntityManagerFactory().createEntityManager();
-        jakarta.persistence.EntityTransaction et = em.getTransaction();
+        EntityManager em = UtensiliosJPA.getEntityManagerFactory().createEntityManager();
+        EntityTransaction et = em.getTransaction();
         try {
             et.begin();
             em.createNativeQuery("DELETE FROM inscripciones_a_ediciones WHERE estudiane_nickname = :nick").setParameter("nick", nick).executeUpdate();
@@ -110,8 +116,8 @@ public class UsuarioController implements IUsuario{
             me.removerEstudiante(nick);
         }
 
-        com.grupo9.edext.grupo9.servidor_central.controller.edicion_de_curso.ManejadorEdiciones.getInstance().removerInscripcionesDeEstudiante(nick);
-        com.grupo9.edext.grupo9.servidor_central.controller.edicion_de_curso.ManejadorEdiciones.getInstance().removerDocenteDeEdiciones(nick);
+        ManejadorEdiciones.getInstance().removerInscripcionesDeEstudiante(nick);
+        ManejadorEdiciones.getInstance().removerDocenteDeEdiciones(nick);
     }
 
     private boolean existeEmail(String email) {
@@ -199,18 +205,18 @@ public class UsuarioController implements IUsuario{
     }
 
     @Override
-    public com.grupo9.edext.grupo9.servidor_central.dominio.DataUsuario consultarUsuario(String nickname) throws com.grupo9.edext.grupo9.mensajes.ErrorNoExiste {
+    public DataUsuario consultarUsuario(String nickname) throws ErrorNoExiste {
         ManejadorDocente md = ManejadorDocente.getInstance();
         Docente doc = md.obtenerDocente(nickname);
         if (doc != null) {
             java.util.Set<String> ediciones = new java.util.HashSet<>();
             if (doc.getEdiciones() != null) {
-                for (com.grupo9.edext.grupo9.servidor_central.controller.edicion_de_curso.EdicionCurso ed : doc.getEdiciones()) {
+                for (EdicionCurso ed : doc.getEdiciones()) {
                     ediciones.add(ed.getNombreEdi());
                 }
             }
             java.util.Set<String> cursos = new java.util.HashSet<>();
-            com.grupo9.edext.grupo9.servidor_central.dominio.DataDocente dd = new com.grupo9.edext.grupo9.servidor_central.dominio.DataDocente(
+            DataDocente dd = new DataDocente(
                 doc.getNickname(),
                 doc.getNombre(),
                 doc.getApellido(),
@@ -228,13 +234,13 @@ public class UsuarioController implements IUsuario{
         if (est != null) {
             java.util.Set<String> edicionesInsc = new java.util.HashSet<>();
             if (est.getInscripciones() != null) {
-                for (com.grupo9.edext.grupo9.servidor_central.controller.edicion_de_curso.InscEdicion insc : est.getInscripciones()) {
+                for (InscEdicion insc : est.getInscripciones()) {
                     if (insc.getEdicion() != null) {
                         edicionesInsc.add(insc.getEdicion().getNombreEdi());
                     }
                 }
             }
-            return new com.grupo9.edext.grupo9.servidor_central.dominio.DataEstudiante(
+            return new DataEstudiante(
                 est.getNickname(),
                 est.getNombre(),
                 est.getApellido(),
@@ -244,7 +250,7 @@ public class UsuarioController implements IUsuario{
                 edicionesInsc);
         }
 
-        throw new com.grupo9.edext.grupo9.mensajes.ErrorNoExiste("El usuario con nickname " + nickname + " no existe.");
+        throw new ErrorNoExiste("El usuario con nickname " + nickname + " no existe.");
     }
 }
     

@@ -4,6 +4,7 @@ import com.grupo9.edext.grupo9.interfaces.IServidorCentral;
 import com.grupo9.edext.grupo9.miscelanea.Fabrica;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataCurso;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataInstituto;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -14,9 +15,9 @@ public class CursoPres {
     public CursoPres(){}
 
     
-    public DataCurso guardarNuevoCurso(DataInstituto instituto, String nombre, String descripcion, int duracion, int cantHoras, int cantCreditos, String url, Set<DataCurso> previas){
+    public DataCurso guardarNuevoCurso(DataInstituto instituto, String nombre, String descripcion, int duracion, int cantHoras, int cantCreditos, String url, Set<DataCurso> previas, String imagen){
         System.out.println("[CLIENTE] Crear nuevo Curso: " + nombre);
-        DataCurso nuevoCurso = new DataCurso(instituto, nombre, descripcion, duracion, cantHoras, cantCreditos, null, url, previas, null);
+        DataCurso nuevoCurso = new DataCurso(instituto, nombre, descripcion, duracion, cantHoras, cantCreditos, LocalDate.now(), url, previas, null, imagen);
         
         DataCurso cursoCreado = servidorCentral.guardarCurso(nuevoCurso);
         if(cursoCreado != null){

@@ -72,7 +72,7 @@ public class ProgramaDeFormacionControllerTest {
 
         String nombreCurso = "CursoProg_" + System.currentTimeMillis();
         DataCurso curso = cursoController.guardarNuevoCurso(new DataCurso(
-                inst, nombreCurso, "Desc", 4, 20, 2, LocalDate.now(), "http://test.com", new HashSet<>(), new HashSet<>()
+                inst, nombreCurso, "Desc", 4, 20, 2, LocalDate.now(), "http://test.com", new HashSet<>(), new HashSet<>(), null
         ));
 
         String nombreProg = "ProgConCurso_" + System.currentTimeMillis();

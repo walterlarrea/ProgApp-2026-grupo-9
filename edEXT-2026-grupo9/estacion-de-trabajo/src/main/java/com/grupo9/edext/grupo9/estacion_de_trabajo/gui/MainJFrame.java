@@ -4,7 +4,6 @@ import com.grupo9.edext.grupo9.estacion_de_trabajo.gui.edicion_de_curso.Operacio
 import com.grupo9.edext.grupo9.estacion_de_trabajo.gui.edicion_de_curso.SeleccionarCursoJInternalFrame;
 import com.grupo9.edext.grupo9.estacion_de_trabajo.cliente.UsuarioPres;
 import com.grupo9.edext.grupo9.estacion_de_trabajo.cliente.InstitutoPres;
-
 import com.grupo9.edext.grupo9.estacion_de_trabajo.gui.curso.ConsultarCursosJInternalFrame;
 import com.grupo9.edext.grupo9.estacion_de_trabajo.gui.curso.CrearCursosJInternalFrame;
 import com.grupo9.edext.grupo9.estacion_de_trabajo.gui.instituto.GestionarInstitutosJInternalFrame;
@@ -12,6 +11,7 @@ import com.grupo9.edext.grupo9.estacion_de_trabajo.gui.programa_de_formacion.Con
 import com.grupo9.edext.grupo9.estacion_de_trabajo.gui.programa_de_formacion.CrearProgramasJInternalFrame;
 import com.grupo9.edext.grupo9.mensajes.ErrorNoExiste;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataInstituto;
+
 import java.awt.Component;
 import java.beans.PropertyVetoException;
 import javax.swing.*;

@@ -71,7 +71,7 @@ public class DtoMapperTest {
         DataInstituto dataInst = new DataInstituto("Instituto FING");
         DataCurso dataCurso = new DataCurso(
                 dataInst, "Curso 101", "Descripción del curso", 10, 60, 5,
-                LocalDate.of(2024, 1, 1), "http://curso101.com", new HashSet<>(), new HashSet<>()
+                LocalDate.of(2024, 1, 1), "http://curso101.com", new HashSet<>(), new HashSet<>(), null
         );
 
         Curso curso = DtoMapper.toEntity(dataCurso);
@@ -116,12 +116,12 @@ public class DtoMapperTest {
         DataInstituto dataInst = new DataInstituto("Instituto FING");
         DataCurso dataCurso = new DataCurso(
                 dataInst, "Curso Base", "Desc", 4, 30, 3,
-                LocalDate.now(), "http://base.com", new HashSet<>(), new HashSet<>()
+                LocalDate.now(), "http://base.com", new HashSet<>(), new HashSet<>(), null
         );
 
         DataEdicionCurso dataEd = new DataEdicionCurso(
                 "Edición 2024", dataCurso, LocalDate.of(2024, 3, 1), LocalDate.of(2024, 7, 1),
-                30, new HashSet<>(), new HashSet<>(), LocalDate.now()
+                30, new HashSet<>(), new HashSet<>(), LocalDate.now(), null
         );
 
         EdicionCurso ed = DtoMapper.toEntity(dataEd);

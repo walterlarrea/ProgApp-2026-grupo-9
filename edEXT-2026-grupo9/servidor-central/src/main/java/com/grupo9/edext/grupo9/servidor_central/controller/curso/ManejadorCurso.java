@@ -97,8 +97,7 @@ public class ManejadorCurso {
             Root<Curso> rootEntry = cQuery.from(Curso.class);
             Join<Curso, Instituto> instituto = rootEntry.join("instituto");
 
-            cQuery.select(rootEntry)
-                    .where(cBuilder.equal(instituto.get("nombreI"), nombreInstituto));
+            cQuery.select(rootEntry).where(cBuilder.equal(instituto.get("nombreI"), nombreInstituto));
 
             TypedQuery<Curso> query = em.createQuery(cQuery);
             return DtoMapper.toDataList(new HashSet<>(query.getResultList()), DataCurso.class);
@@ -117,13 +116,9 @@ public class ManejadorCurso {
             Subquery<Curso> cursosRelacionados = cQuery.subquery(Curso.class);
             Root<ProgramaDeFormacion> programa = cursosRelacionados.from(ProgramaDeFormacion.class);
             Join<ProgramaDeFormacion, Curso> cursoRelacionado = programa.join("cursos");
-            cursosRelacionados
-                .select(cursoRelacionado)
-                .where(cBuilder.equal(programa.get("nombre"), idProgramaDeFormacion));
+            cursosRelacionados.select(cursoRelacionado).where(cBuilder.equal(programa.get("nombre"), idProgramaDeFormacion));
 
-            CriteriaQuery<Curso> todo = cQuery
-                .select(rootEntry)
-                .where(cBuilder.not(rootEntry.in(cursosRelacionados)));
+            CriteriaQuery<Curso> todo = cQuery.select(rootEntry).where(cBuilder.not(rootEntry.in(cursosRelacionados)));
 
             TypedQuery<Curso> queryTodo = em.createQuery(todo);
                         
@@ -149,7 +144,7 @@ public class ManejadorCurso {
             }
             return cursos;
         } catch (Exception e) {
-        throw e;
+            throw e;
         }
     }
     

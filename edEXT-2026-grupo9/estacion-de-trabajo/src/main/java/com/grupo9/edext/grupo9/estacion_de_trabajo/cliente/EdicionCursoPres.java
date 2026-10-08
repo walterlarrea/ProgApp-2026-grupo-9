@@ -18,9 +18,9 @@ public class EdicionCursoPres {
     
     public EdicionCursoPres(){}
 
-    public void guardarNuevaEdicion(String nombreEdi, DataCurso dataCurso, LocalDate fechaInicio, LocalDate fechaFin, Integer cupo, Set<DataDocente> docentes){
+    public void guardarNuevaEdicion(String nombreEdi, DataCurso dataCurso, LocalDate fechaInicio, LocalDate fechaFin, Integer cupo, Set<DataDocente> docentes, String imagen){
         System.out.println("[CLIENTE] Llamada al servidor central: " + nombreEdi);
-        DataEdicionCurso nuevaEdicion = new DataEdicionCurso(nombreEdi, dataCurso, fechaInicio, fechaFin, cupo, new HashSet<>(docentes), new HashSet<>(), LocalDate.now());
+        DataEdicionCurso nuevaEdicion = new DataEdicionCurso(nombreEdi, dataCurso, fechaInicio, fechaFin, cupo, new HashSet<>(docentes), new HashSet<>(), LocalDate.now(), imagen);
         DataEdicionCurso edicionCreada = servidorCentral.guardarEdicionCurso(nuevaEdicion);
         if (edicionCreada != null) {
             System.out.println("[CLIENTE] Edición creada con éxito!");

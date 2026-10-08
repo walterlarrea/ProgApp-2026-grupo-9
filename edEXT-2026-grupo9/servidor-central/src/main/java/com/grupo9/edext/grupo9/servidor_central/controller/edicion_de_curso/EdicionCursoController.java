@@ -37,7 +37,9 @@ public class EdicionCursoController implements IEdicionCurso {
                 nuevaEdicion.getFechaFin(),
                 nuevaEdicion.getCupo(),
                 inscripciones,
-                DtoMapper.toEntity(nuevaEdicion.getDocentes()));
+                DtoMapper.toEntity(nuevaEdicion.getDocentes()),
+                nuevaEdicion.getImagen()
+            );
             return nuevaEdicion;
         }catch(ErrorRepetidos e) {
             System.out.println("[SERVIDOR] " + e.getMessage());
@@ -51,11 +53,11 @@ public class EdicionCursoController implements IEdicionCurso {
     }
     
     @Override
-    public void altaEdicionCurso(String nEdi, Curso cur, LocalDate fInicio, LocalDate fFin, Integer c, Set<InscEdicion> insc, Set<Docente> d) throws ErrorRepetidos{
+    public void altaEdicionCurso(String nEdi, Curso cur, LocalDate fInicio, LocalDate fFin, Integer c, Set<InscEdicion> insc, Set<Docente> d, String imagen) throws ErrorRepetidos{
         ManejadorEdiciones me = ManejadorEdiciones.getInstance();
         EdicionCurso ed = me.obtenerEdicion(nEdi);
         if(ed == null){
-            ed = new EdicionCurso(nEdi, cur, fInicio,fFin, c, d, insc, LocalDate.now());
+            ed = new EdicionCurso(nEdi, cur, fInicio,fFin, c, d, insc, LocalDate.now(), imagen);
             me.addEdicion(ed);
         }else{
             throw new ErrorRepetidos("La Edición " + nEdi + " ya ha sido registrada. \n ¿Desea modificar los datos?");
@@ -84,7 +86,7 @@ public class EdicionCursoController implements IEdicionCurso {
             
             //docentes
             Set<DataDocente> datosDocentes = DtoMapper.toData(ed.getDocentes());
-            return new DataEdicionCurso(ed.getNombreEdi(), DtoMapper.toData(ed.getCursoAsoc()), ed.getFechaInicio(), ed.getFechaFin(), ed.getCupo(), datosDocentes, datosInscriptos, ed.getFechaPub()); 
+            return new DataEdicionCurso(ed.getNombreEdi(), DtoMapper.toData(ed.getCursoAsoc()), ed.getFechaInicio(), ed.getFechaFin(), ed.getCupo(), datosDocentes, datosInscriptos, ed.getFechaPub(), ed.getImagen()); 
         }else{
             throw new ErrorNoExiste("La Edición " + nEdi + " no está registrada.");
         }
