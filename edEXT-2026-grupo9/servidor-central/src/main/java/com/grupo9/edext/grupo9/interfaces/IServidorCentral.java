@@ -46,9 +46,11 @@ public interface IServidorCentral {
     public Boolean existeCurso(String nombre);
     public HashSet<DataCurso> cursosNoRelacionadosConUnProgDeFormacion(String idProgramaDeFormacion);
     public DataCurso buscarCurso(String nombre);
-    public HashSet<DataCurso> buscarCursosPorNombre(String nombre);
-    public HashSet<DataProgramaFormacion> buscarProgramasPorNombre(String nombre);
-    public HashSet<DataUsuario> buscarUsuariosPorNombreYApellido(String nombre, String apellido);
+    
+    // Busqueda
+    public HashSet<DataCurso> buscarCursos(String query);
+    public HashSet<DataProgramaFormacion> buscarProgramas(String query);
+    public HashSet<DataUsuario> buscarUsuarios(String nombre, String apellido);
     public List<ResultadoBusqueda> busquedaPrincipal(String query);
     
     // Institutos

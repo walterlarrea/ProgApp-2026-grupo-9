@@ -90,6 +90,7 @@ public class BusquedaServlet extends HttpServlet {
         String tipoVisible;
         String nombreVisible;
         String nombreVisibleHighlighted;
+        String descVisibleHighlighted;
         String ruta;
         String parametro;
         String href;
@@ -101,6 +102,7 @@ public class BusquedaServlet extends HttpServlet {
                 tipoVisible = "Curso";
                 nombreVisible = curso.nombreCurso();
                 nombreVisibleHighlighted = highlightQueryInText(nombreVisible, query);
+                descVisibleHighlighted = highlightQueryInText(curso.descCurso(), query);
 
                 ruta = "/curso";
                 parametro = curso.nombreCurso();
@@ -113,6 +115,7 @@ public class BusquedaServlet extends HttpServlet {
                 tipoVisible = "Usuario";
                 nombreVisible = usuario.getNombre() + " " + usuario.getApellido();
                 nombreVisibleHighlighted = highlightQueryInText(nombreVisible, query);
+                descVisibleHighlighted = "";
 
                 ruta = "/usuario";
                 parametro = usuario.getNickname();
@@ -125,6 +128,7 @@ public class BusquedaServlet extends HttpServlet {
                 tipoVisible = "Programa";
                 nombreVisible = programa.nombre();
                 nombreVisibleHighlighted = highlightQueryInText(nombreVisible, query);
+                descVisibleHighlighted = highlightQueryInText(programa.descripcion(), query);
 
                 ruta = "/programa";
                 parametro = programa.nombre();
@@ -137,7 +141,7 @@ public class BusquedaServlet extends HttpServlet {
 
         String tipoCss = resultado.tipo().name().toLowerCase(java.util.Locale.ROOT);
         return new ResultadoBusquedaExtendida(
-                resultado.tipo(), resultado.data(), tipoVisible, nombreVisible, nombreVisibleHighlighted, href, tipoCss, fechaCreacion);
+                resultado.tipo(), resultado.data(), tipoVisible, nombreVisible, nombreVisibleHighlighted, descVisibleHighlighted, href, tipoCss, fechaCreacion);
     }
 
     /**

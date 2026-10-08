@@ -74,22 +74,29 @@
             </section>
 
             <section>
-                <ol class="nav-list" id="resultados-busqueda">
+                <ol class="lista-busqueda" id="resultados-busqueda">
                     <%
                         ArrayList<ResultadoBusquedaExtendida> resultados = (ArrayList<ResultadoBusquedaExtendida>) request.getAttribute("listaResultados");
                         for (ResultadoBusquedaExtendida resultado : resultados) {
                     %>
                             <li class="resultado-busqueda" data-tipo="<%= resultado.tipoCss() %>" data-fecha-creacion="<%= resultado.fechaCreacion() %>" data-nombre-visible="<%= resultado.nombreVisible() %>">
                                 <a href="<%= resultado.href() %>" class="w-100">
-                                    <span class="resultado-tipo" data-tipo="<%= resultado.tipoCss() %>"><%= resultado.tipoVisible() %></span>
-                                    <span><%= resultado.nombreVisibleHighlighted() %></span>
-                                    <%
-                                        if (resultado.fechaCreacion() != null){
-                                    %>
-                                        <span class="float-end"><%= resultado.fechaCreacion() %></span>
-                                    <%
-                                        }
-                                    %>
+                                    <div class="d-flex flex-column w-100">
+                                        <div class="d-inline-flex">
+                                            <span class="resultado-tipo flex-shrink-0" data-tipo="<%= resultado.tipoCss() %>"><%= resultado.tipoVisible() %></span>
+                                            <span class="flex-grow-1 resultado-titulo overflow-hidden text-truncate"><%= resultado.nombreVisibleHighlighted() %></span>
+                                            <%
+                                                if (resultado.fechaCreacion() != null){
+                                            %>
+                                                <span class="fs-sm"><%= resultado.fechaCreacion() %></span>
+                                            <%
+                                                }
+                                            %>
+                                        </div>
+                                        <p>
+                                            <%= resultado.descVisibleHighlighted() %>
+                                        </p>
+                                    </div>
                                 </a>
                             </li>
                     <%

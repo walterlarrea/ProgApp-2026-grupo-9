@@ -478,10 +478,52 @@ body {
 	overflow: hidden;
 }
 
+.lista-busqueda {
+	list-style: none;
+}
+
+.lista-busqueda a {
+	display: block;
+	padding: 0.5rem 0.75rem;
+	color: var(--text-primary);
+	text-decoration: none;
+	border-radius: 6px;
+	font-size: 0.95rem;
+	margin-bottom: 1rem;
+}
+
+.lista-busqueda p {
+	padding: 0.5rem 0.75rem;
+	color: var(--text-primary);
+	text-decoration: none;
+	border-radius: 6px;
+	font-size: 0.95rem;
+	margin: 0;
+	opacity: 0.85;
+}
+
+.lista-busqueda .resultado-busqueda a:hover {
+	background-color: #f1f5f9;
+	color: var(--primary);
+}
+
+.resultado-busqueda div {
+}
+
+.resultado-busqueda a {
+	display: inline-flex;
+}
+
 .resultado-item a:hover {
 	background-color: #f1f5f9;
 	color: var(--primary);
 }
+
+.resultado-titulo {
+	/* font-weight: 500; */
+	font-size: 1.25rem;
+}
+
 .resultado-tipo {
 	display: inline-block;
 	width: 5rem;
@@ -493,6 +535,7 @@ body {
 	border-radius: 4px;
 	/* margin-bottom: 0.5rem; */
 	font-weight: 600;
+	align-self: end;
 }
 
 .resultado-tipo[data-tipo='curso'] {

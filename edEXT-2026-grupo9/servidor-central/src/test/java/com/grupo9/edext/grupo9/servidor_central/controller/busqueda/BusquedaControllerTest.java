@@ -45,11 +45,11 @@ class BusquedaControllerTest {
         cursoController.guardarNuevoCurso(new DataCurso(
                 instituto, nombreCurso, "Descripcion", 4, 20, 2, LocalDate.now(), "", new HashSet<>(), new HashSet<>(), null));
 
-        HashSet<DataCurso> resultados = busquedaController.buscarCursosPorNombre("cursobusqueda" + sufijo);
+        HashSet<DataCurso> resultados = busquedaController.buscarCursos("cursobusqueda" + sufijo);
 
         assertEquals(1, resultados.size());
         assertTrue(resultados.stream().anyMatch(curso -> curso.nombreCurso().equals(nombreCurso)));
-        assertTrue(busquedaController.buscarCursosPorNombre("  ").isEmpty());
+        assertTrue(busquedaController.buscarCursos("  ").isEmpty());
     }
 
     @Test
@@ -58,7 +58,7 @@ class BusquedaControllerTest {
         programaController.guardarNuevoProgramaDeFormacion(new DataProgramaFormacion(
                 nombrePrograma, "Descripcion", new HashSet<>(), LocalDate.now(), LocalDate.now().plusMonths(1), LocalDate.now()));
 
-        HashSet<DataProgramaFormacion> resultados = busquedaController.buscarProgramasPorNombre("programabusqueda");
+        HashSet<DataProgramaFormacion> resultados = busquedaController.buscarProgramas("programabusqueda");
 
         assertTrue(resultados.stream().anyMatch(programa -> programa.nombre().equals(nombrePrograma)));
     }
@@ -70,13 +70,13 @@ class BusquedaControllerTest {
         usuarioController.registrarEstudiante(nickname, "AnaBusqueda", "LopezBusqueda",
                 nickname + "@test.com", LocalDate.of(2000, 1, 1), null);
 
-        HashSet<DataUsuario> resultados = busquedaController.buscarUsuariosPorNombreYApellido(
+        HashSet<DataUsuario> resultados = busquedaController.buscarUsuarios(
                 "anabusqueda", "lopezbusqueda");
 
         assertEquals(1, resultados.size());
         assertEquals(nickname, resultados.iterator().next().getNickname());
-        assertTrue(busquedaController.buscarUsuariosPorNombreYApellido("AnaBusqueda", "apellidoIncorrecto").isEmpty());
-        assertTrue(busquedaController.buscarUsuariosPorNombreYApellido("", "").isEmpty());
+        assertTrue(busquedaController.buscarUsuarios("AnaBusqueda", "apellidoIncorrecto").isEmpty());
+        assertTrue(busquedaController.buscarUsuarios("", "").isEmpty());
     }
 
         @Test
