@@ -61,7 +61,11 @@ public interface IServidorCentral {
     public String[] listarUsuarios();
     public DataUsuario consultarUsuario(String nickname) throws ErrorNoExiste;
     public void modificarUsuario(String nick, String nom, String ape, LocalDate fechaNac, String rutaImg);
+    public void modificarUsuario(String nick, String nom, String ape, LocalDate fechaNac, String rutaImg, String passActual, String passNueva) throws ErrorNoExiste;
     public void eliminarUsuario(String nick) throws ErrorNoExiste;
     public void registrarEstudiante(String nickname, String nombre, String apellido, String email, LocalDate fechaNac, String rutaImagen) throws ErrorRepetidos;
+    public void registrarEstudiante(String nickname, String nombre, String apellido, String email, LocalDate fechaNac, String rutaImagen, String password) throws ErrorRepetidos;
     public void registrarDocente(String nickname, String nombre, String apellido, String email, LocalDate fechaNac, String rutaImagen, String nombreInst) throws ErrorRepetidos;
+    public void registrarDocente(String nickname, String nombre, String apellido, String email, LocalDate fechaNac, String rutaImagen, String nombreInst, String password) throws ErrorRepetidos;
+    public DataUsuario iniciarSesion(String nicknameOEmail, String password) throws ErrorNoExiste;
 }
