@@ -43,7 +43,7 @@ class BusquedaControllerTest {
                 new DataInstituto("InstitutoBusqueda" + sufijo));
         String nombreCurso = "CursoBusqueda" + sufijo;
         cursoController.guardarNuevoCurso(new DataCurso(
-                instituto, nombreCurso, "Descripcion", 4, 20, 2, LocalDate.now(), "", new HashSet<>(), new HashSet<>()));
+                instituto, nombreCurso, "Descripcion", 4, 20, 2, LocalDate.now(), "", new HashSet<>(), new HashSet<>(), null));
 
         HashSet<DataCurso> resultados = busquedaController.buscarCursosPorNombre("cursobusqueda" + sufijo);
 
@@ -85,7 +85,7 @@ class BusquedaControllerTest {
         DataInstituto instituto = institutoController.guardarNuevoInstituto(
             new DataInstituto("Instituto" + termino));
         cursoController.guardarNuevoCurso(new DataCurso(
-            instituto, "Curso" + termino, "Descripcion", 4, 20, 2, LocalDate.now(), "", new HashSet<>(), new HashSet<>()));
+            instituto, "Curso" + termino, "Descripcion", 4, 20, 2, LocalDate.now(), "", new HashSet<>(), new HashSet<>(), null));
         programaController.guardarNuevoProgramaDeFormacion(new DataProgramaFormacion(
             "Programa" + termino, "Descripcion", new HashSet<>(), LocalDate.now(), LocalDate.now().plusMonths(1), LocalDate.now()));
         usuarioController.registrarEstudiante("usuario" + termino, "Nombre" + termino, "Apellido" + termino,

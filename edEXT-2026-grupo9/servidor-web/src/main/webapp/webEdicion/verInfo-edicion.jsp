@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>edEXT - Ediciones de curso</title>
+    <title>edEXT - Edición de curso</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/styles.css">
 </head>
 
@@ -22,11 +22,16 @@
                 <h2>${edicion.cursoAsoc.instituto().nombreI()}</h2>
                 <h3>${edicion.cursoAsoc.nombreCurso()}</h3>
             </section>
-            
-                <h3>${edicion.cursoAsoc.nombreCurso()}</h3>
-                <h4>Fecha de inicio:</h4> <p>${edicion.fechaInicio}</p>
-                <h4>Fecha de finalización:</h4> <p>${edicion.fechaFin}</p>
-                <h4>Cupo:</h4> <p>${edicion.cupo}</p>
+                <div class="dato-space">
+                    <h4>Fecha de inicio</h4> <p>${edicion.fechaInicio}</p>
+                </div>      
+                <div class="dato-space">
+                    <h4>Fecha de finalización</h4> <p>${edicion.fechaFin}</p>
+                </div>
+                <div class="dato-space"> 
+                    <h4>Cupo</h4> <p>${edicion.cupo}</p>
+                </div>
+                
             
             <h3>Docentes</h3>
             <ol class="nav-list">
@@ -52,7 +57,7 @@
                     <thead>
                         <tr>
                             <th>Estudiante</th>
-                            <th>Fecha de<br>inscripción</th>
+                            <th>Fecha <br>inscripción</th>
                             <th>Inscripto</th>
                             <th>Estado</th>
                         </tr>

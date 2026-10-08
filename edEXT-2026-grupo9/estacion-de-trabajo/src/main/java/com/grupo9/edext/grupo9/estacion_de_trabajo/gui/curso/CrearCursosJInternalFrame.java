@@ -1,15 +1,9 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JInternalFrame.java to edit this template
- */
 package com.grupo9.edext.grupo9.estacion_de_trabajo.gui.curso;
 
 import com.grupo9.edext.grupo9.estacion_de_trabajo.cliente.CursoPres;
 import com.grupo9.edext.grupo9.estacion_de_trabajo.cliente.InstitutoPres;
-import com.grupo9.edext.grupo9.estacion_de_trabajo.gui.programa_de_formacion.ConsultarProgramasJInternalFrame;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataCurso;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataInstituto;
-import com.grupo9.edext.grupo9.servidor_central.dominio.DataProgramaFormacion;
 import java.awt.Component;
 import java.util.HashSet;
 import javax.swing.DefaultComboBoxModel;
@@ -17,15 +11,10 @@ import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
 import javax.swing.JCheckBox;
 import javax.swing.JDesktopPane;
-import javax.swing.JInternalFrame;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.ListSelectionModel;
 
-/**
- *
- * @author Walter
- */
 public class CrearCursosJInternalFrame extends javax.swing.JInternalFrame {
     private JDesktopPane jDesktopPane;
     private final CursoPres cursoPres = new CursoPres();
@@ -340,7 +329,7 @@ public class CrearCursosJInternalFrame extends javax.swing.JInternalFrame {
         final HashSet<DataCurso> previas = new HashSet<>(cursosPreviosSeleccionados);
 
         System.out.println("[GUI] Crear nuevo Curso: " + nombre);
-        DataCurso nuevoCurso = cursoPres.guardarNuevoCurso(instituto, nombre, descripcion, duracion, cantHoras, cantCreditos, url, previas);
+        DataCurso nuevoCurso = cursoPres.guardarNuevoCurso(instituto, nombre, descripcion, duracion, cantHoras, cantCreditos, url, previas, null);
         if (nuevoCurso != null){
             this.limpiarFormularioCurso();
             javax.swing.JOptionPane.showMessageDialog(this, "Curso registrado y guardado con éxito", "Éxito", javax.swing.JOptionPane.INFORMATION_MESSAGE);

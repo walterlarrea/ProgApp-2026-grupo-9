@@ -13,5 +13,6 @@ public record DataCurso (
     LocalDate fechaReg,
     String url,
     Set<DataCurso> previas,
-    Set<DataProgramaFormacion> programas
+    Set<DataProgramaFormacion> programas,
+    String imagen
 ){}

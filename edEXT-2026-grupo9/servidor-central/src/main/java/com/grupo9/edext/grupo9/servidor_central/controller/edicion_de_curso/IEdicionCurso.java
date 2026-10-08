@@ -16,7 +16,7 @@ import java.util.Set;
 public interface IEdicionCurso {
     public DataEdicionCurso guardarNuevaEdicionCurso(DataEdicionCurso nuevaEdicion);
     public Docente[] traerDocentes(Instituto instituto);
-    public abstract void altaEdicionCurso(String nEdi, Curso cur, LocalDate fInicio, LocalDate fFin, Integer c, Set<InscEdicion> insc, Set<Docente> d) throws ErrorRepetidos;
+    public abstract void altaEdicionCurso(String nEdi, Curso cur, LocalDate fInicio, LocalDate fFin, Integer c, Set<InscEdicion> insc, Set<Docente> d, String imagen) throws ErrorRepetidos;
     public abstract DataEdicionCurso consultarEdicionCurso(String nInst) throws ErrorNoExiste;
     public EdicionCurso[] traerEdiciones(Curso curso);
     public HashSet<DataEdicionCurso> traerEdiciones(DataCurso dataCurso);

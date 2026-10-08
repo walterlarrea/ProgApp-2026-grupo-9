@@ -36,13 +36,13 @@ public class EdicionCursoControllerTest {
 
         String nombreCurso = "CursoEdicion_" + System.currentTimeMillis();
         DataCurso curso = cursoController.guardarNuevoCurso(new DataCurso(
-                inst, nombreCurso, "Desc", 6, 40, 4, LocalDate.now(), "http://test.com", new HashSet<>(), new HashSet<>()
+                inst, nombreCurso, "Desc", 6, 40, 4, LocalDate.now(), "http://test.com", new HashSet<>(), new HashSet<>(), null
         ));
 
         String nombreEdicion = "EdicionTest_" + System.currentTimeMillis();
         DataEdicionCurso nuevaEdicion = new DataEdicionCurso(
                 nombreEdicion, curso, LocalDate.of(2024, 3, 1), LocalDate.of(2024, 7, 1),
-                25, new HashSet<>(), new HashSet<>(), LocalDate.now()
+                25, new HashSet<>(), new HashSet<>(), LocalDate.now(), null
         );
 
         assertDoesNotThrow(() -> {
@@ -64,12 +64,12 @@ public class EdicionCursoControllerTest {
 
         String nombreCurso = "CursoInsc_" + System.currentTimeMillis();
         DataCurso curso = cursoController.guardarNuevoCurso(new DataCurso(
-                inst, nombreCurso, "Desc", 6, 40, 4, LocalDate.now(), "http://test.com", new HashSet<>(), new HashSet<>()
+                inst, nombreCurso, "Desc", 6, 40, 4, LocalDate.now(), "http://test.com", new HashSet<>(), new HashSet<>(), null
         ));
 
         String nombreEdicion = "EdInsc_" + System.currentTimeMillis();
         edicionController.guardarNuevaEdicionCurso(new DataEdicionCurso(
-                nombreEdicion, curso, LocalDate.now(), LocalDate.now().plusMonths(3), 30, new HashSet<>(), new HashSet<>(), LocalDate.now()
+                nombreEdicion, curso, LocalDate.now(), LocalDate.now().plusMonths(3), 30, new HashSet<>(), new HashSet<>(), LocalDate.now(), null
         ));
 
         String nickEst = "estInsc_" + System.currentTimeMillis();
@@ -107,14 +107,14 @@ public class EdicionCursoControllerTest {
         assertDoesNotThrow(() -> {
             edicionController.altaEdicionCurso(
                     nombreEdi, null, LocalDate.now(), LocalDate.now().plusMonths(3),
-                    20, new HashSet<>(), new HashSet<>()
+                    20, new HashSet<>(), new HashSet<>(), null
             );
         });
 
         assertThrows(ErrorRepetidos.class, () -> {
             edicionController.altaEdicionCurso(
                     nombreEdi, null, LocalDate.now(), LocalDate.now().plusMonths(3),
-                    20, new HashSet<>(), new HashSet<>()
+                    20, new HashSet<>(), new HashSet<>(), null
             );
         });
     }
