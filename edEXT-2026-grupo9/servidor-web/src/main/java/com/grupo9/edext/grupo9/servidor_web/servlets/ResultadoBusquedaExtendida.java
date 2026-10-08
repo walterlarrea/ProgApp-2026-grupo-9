@@ -1,6 +1,7 @@
 package com.grupo9.edext.grupo9.servidor_web.servlets;
 
 import com.grupo9.edext.grupo9.servidor_central.controller.busqueda.TipoBusqueda;
+import java.time.LocalDate;
 
 public record ResultadoBusquedaExtendida(
         TipoBusqueda tipo,
@@ -9,6 +10,7 @@ public record ResultadoBusquedaExtendida(
         String nombreVisible,
         String nombreVisibleHighlighted,
         String href,
-        String tipoCss
+        String tipoCss,
+        String fechaCreacion
 ) {
 }

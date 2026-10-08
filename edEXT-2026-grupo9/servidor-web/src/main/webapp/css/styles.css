@@ -9,10 +9,12 @@
 	--navbar-height: 64px;
 }
 
-* {
-	margin: 0;
-	padding: 0;
-	box-sizing: border-box;
+@layer reset {
+	* {
+		margin: 0;
+		padding: 0;
+		box-sizing: border-box;
+	}
 }
 
 body {
@@ -25,7 +27,7 @@ body {
 }
 
 /* Header / Cabezal Fijo */
-.navbar {
+.barra-navegacion {
 	position: sticky;
 	top: 0;
 	height: var(--navbar-height);
@@ -35,7 +37,7 @@ body {
 	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
-.nav-container {
+.container-barra-navegacion {
 	max-width: 1400px;
 	height: 100%;
 	margin: 0 auto;
@@ -458,6 +460,10 @@ body {
 }
 .resultado-tipo {
 	display: inline-block;
+	width: 5rem;
+	text-align: center;
+	margin-inline-end: 0.5rem;
+
 	font-size: 0.75rem;
 	padding: 0.2rem 0.5rem;
 	border-radius: 4px;
@@ -478,4 +484,8 @@ body {
 .resultado-tipo[data-tipo='programa_formacion'] {
 	background-color: #ffedd5;
 	color: #9a3412;
+}
+
+.boton-ordenar-busqueda {
+	width: 250px;
 }
