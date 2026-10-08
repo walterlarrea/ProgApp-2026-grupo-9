@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>edEXT - Cursos</title>
+    <title>edEXT - Curso</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/styles.css">
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/busqueda.js"></script>
 </head>
@@ -22,14 +22,24 @@
                 <h1>${curso.nombreCurso()}</h1>
                 <p>${curso.descCurso()}</p>
             </section>
-            <div class="dato">
-                <h4>Instituto:</h4> <p>${curso.instituto().nombreI()}</p>
-                <h4>Créditos:</h4> <p>${curso.cantCred()}</p>
-                <h4>Cantidad de horas:</h4> <p>${curso.cantHoras()}</p>
-                <h4>Duración:</h4> <p>${curso.duracion()}</p>
-                <h4>URL:</h4> <p>${curso.url()}</p>
+                <div class="dato-space">
+                    <h4>Instituto</h4> <p>${curso.instituto().nombreI()}</p>
+                </div>
+                <div class="dato-space">
+                    <h4>Créditos</h4> <p>${curso.cantCred()}</p>
+                </div>
+                <div class="dato-space">
+                    <h4>Cantidad de horas</h4> <p>${curso.cantHoras()}</p>
+                </div>
+                <div class="dato-space">
+                    <h4>Duración</h4> <p>${curso.duracion()} semanas</p>
+                </div>
+                <div class="dato-space">
+                    <h4>URL</h4> <p>${curso.url()}</p>
+                </div>
+            <div class="dato-space">
+                <h3>Ediciones</h3>
             </div>
-            <h3>Ediciones</h3>
             <ol class="nav-list">
                 <c:choose>
                     <c:when test="${not empty ediciones}">

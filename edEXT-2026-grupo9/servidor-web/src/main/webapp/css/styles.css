@@ -326,6 +326,18 @@ body {
 	margin-top: 0.5rem;
 }
 
+.dato-space {
+	margin-bottom: 20px;
+}
+
+.dato-space h4 {
+	margin: 0 0 6px 0;
+}
+
+.dato-space p {
+	margin: 0;
+}
+
 .dato {
 	display: flex;
 	align-items: center;
@@ -410,6 +422,18 @@ body {
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
+}
+
+.seccion {
+	padding: 10px 20px;
+	border-bottom: 2px solid #222;
+}
+
+.salir a::before {
+	content: '↪';
+	margin-right: 8px;
+	font-size: 20px;
+	font-weight: bold;
 }
 
 .container-busqueda-typeahead {

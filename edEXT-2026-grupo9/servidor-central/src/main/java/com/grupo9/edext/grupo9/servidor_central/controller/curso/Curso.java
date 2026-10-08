@@ -39,11 +39,12 @@ public class Curso implements Serializable {
     private Set<Curso> dependientes = new HashSet<>();
     @ManyToMany(mappedBy = "cursos")
     private Set<ProgramaDeFormacion> programas;
+    private String imagen;
        
     
     public Curso(){}
 
-    public Curso(Instituto instituto, String nombreCurso, String descCurso, int duracion, int cantHoras, int cantCred, LocalDate fechaReg, String url, Set<Curso> previas) {
+    public Curso(Instituto instituto, String nombreCurso, String descCurso, int duracion, int cantHoras, int cantCred, LocalDate fechaReg, String url, Set<Curso> previas, String imagen) {
         this.instituto = instituto;
         this.nombreCurso = nombreCurso;
         this.descCurso = descCurso;
@@ -53,9 +54,10 @@ public class Curso implements Serializable {
         this.fechaReg = fechaReg;
         this.url = url;
         this.previas = previas;
+        this.imagen = imagen;
     }
 
-    public Curso(Instituto instituto, String nombreCurso, String descCurso, int duracion, int cantHoras, int cantCred, LocalDate fechaReg, String url, Set<Curso> previas, Set<ProgramaDeFormacion> programas) {
+    public Curso(Instituto instituto, String nombreCurso, String descCurso, int duracion, int cantHoras, int cantCred, LocalDate fechaReg, String url, Set<Curso> previas, Set<ProgramaDeFormacion> programas, String imagen) {
         this.instituto = instituto;
         this.nombreCurso = nombreCurso;
         this.descCurso = descCurso;
@@ -66,6 +68,7 @@ public class Curso implements Serializable {
         this.url = url;
         this.previas = previas;
         this.programas = programas;
+        this.imagen = imagen;
     }
 
     public Instituto getInstituto() {
@@ -150,5 +153,13 @@ public class Curso implements Serializable {
     
     public Set<ProgramaDeFormacion> getProgramas(){
         return this.programas;
+    }
+    
+    public String getImagen(){
+        return this.imagen;
+    }
+    
+    public void setImagen(String imagen){
+        this.imagen = imagen;
     }
 }

@@ -39,7 +39,8 @@ public class DtoMapper {
                 dataCurso.fechaReg(),
                 dataCurso.url(),
                 previas,
-                new HashSet<>() // programas
+                new HashSet<>(), // programas
+                dataCurso.imagen()
         );
         
         return curso;
@@ -62,7 +63,8 @@ public class DtoMapper {
                 curso.getFechaReg(),
                 curso.getUrl(),
                 dataPrevias,
-                new HashSet<>() // programas
+                new HashSet<>(),  // programas
+                curso.getImagen()
         );
         
         return dataCurso;
@@ -184,7 +186,9 @@ public class DtoMapper {
             dataEdicion.getCupo(),
             toEntity(dataEdicion.getDocentes()),
             inscripciones,
-            dataEdicion.getFechaPub());
+            dataEdicion.getFechaPub(),
+            dataEdicion.getImagen()
+        );
     }
     
     public static DataEdicionCurso toData(EdicionCurso edicion) {
@@ -211,7 +215,9 @@ public class DtoMapper {
             edicion.getCupo(),
             toData(edicion.getDocentes()),
             inscripciones,
-            edicion.getFechaPub());
+            edicion.getFechaPub(),
+            edicion.getImagen()
+        );
     }
     
     public static Set<Docente> toEntity(Set<DataDocente> datos) {

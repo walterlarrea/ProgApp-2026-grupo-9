@@ -1,8 +1,27 @@
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <!-- Barra lateral fija (sidebar) -->
         <aside class="sidebar">
+            <div class="seccion">
+                <a href="${pageContext.request.contextPath}/perfil"><h3>Mi perfil</h3></a>
+            </div>
+            <div class="seccion">
+                <h3>Inscripciones (si es est)</h3>
+                <ul class="nav-list">
+                    <li><a href="${pageContext.request.contextPath}/edicionCurso?accion=insc">Inscribirme</a></li>
+                    <li><a href="${pageContext.request.contextPath}/edicionCurso?accion=resultado">Ver resultados</a></li>
+                </ul>
+            </div>
+            <div class="seccion">
+                <h3>Cursos (si es doc)</h3>
+                <ul class="nav-list">
+                    <li><a href="${pageContext.request.contextPath}/curso?accion=alta">Alta curso</a></li>
+                    <li><a href="${pageContext.request.contextPath}/edicionCurso?accion=alta">Alta edición</a></li>
+                    <li><a href="${pageContext.request.contextPath}/programas">Alta programa</a></li>
+                </ul>
+            </div>
+            <div class="seccion">
             <h3>Institutos</h3>
-            <ol class="nav-list">
+            <ul class="nav-list">
                 <c:choose>
                     <c:when test="${not empty institutos}">
                         <c:forEach var="inst" items="${institutos}">
@@ -17,17 +36,17 @@
                         <li class="empty-hint">Sin institutos disponibles</li>
                     </c:otherwise>
                 </c:choose>
-            </ol>
-
-            <h3 style="margin-top: 1.5rem;">Explorar</h3>
-            <ul class="nav-list">
-                <li><a href="${pageContext.request.contextPath}/cursos">Todos los Cursos</a></li>
-                <li><a href="${pageContext.request.contextPath}/programas">Programas de Formación</a></li>
             </ul>
-
-            <div class="status-box">
+            </div>
+            <div class="seccion">
+            <h3>Categorías</h3>
+            </div>
+                <div class="salir">
+                    <a href="${pageContext.request.contextPath}/logout"><h4>Salir</h4></a>
+                </div>
+            <!-- <div class="status-box">
                 <small>Estado:</small>
                 <span class="badge badge-success"><c:out value="${estadoDb}"/></span>
-            </div>
+            </div> -->
         </aside>
 

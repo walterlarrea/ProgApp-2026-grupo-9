@@ -25,18 +25,20 @@ public class EdicionCurso {
     @OneToMany(mappedBy = "edicion")
     private Set<InscEdicion> inscripciones;
     private LocalDate fechaPub;
+    private String imagen;
     
     public EdicionCurso(){}
     
-    public EdicionCurso(String nombreEdi, Curso cursoAsoc, LocalDate fechaInicio, LocalDate fechaFin, Integer cupo, Set<Docente> docentes, Set<InscEdicion> inscripciones, LocalDate fechaPub) {
+    public EdicionCurso(String nombreEdi, Curso cursoAsoc, LocalDate fechaInicio, LocalDate fechaFin, Integer cupo, Set<Docente> docentes, Set<InscEdicion> inscripciones, LocalDate fechaPub, String imagen) {
         this.nombreEdi = nombreEdi;
-       this.cursoAsoc = cursoAsoc;
+        this.cursoAsoc = cursoAsoc;
         this.fechaInicio = fechaInicio;
         this.fechaFin = fechaFin;
         this.cupo = cupo;
-       this.docentes = docentes;
+        this.docentes = docentes;
         this.inscripciones = inscripciones;
         this.fechaPub = fechaPub;
+        this.imagen = imagen;
     }
 
     public String getNombreEdi() {
@@ -107,5 +109,13 @@ public class EdicionCurso {
     
     public void quitarDocente(Docente docente) {
         docentes.remove(docente);
+    }
+    
+    public String getImagen(){
+        return this.imagen;
+    }
+    
+    public void setImagen(String imagen){
+        this.imagen = imagen;
     }
 }

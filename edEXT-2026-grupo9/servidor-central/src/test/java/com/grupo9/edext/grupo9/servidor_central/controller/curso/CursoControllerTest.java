@@ -30,7 +30,7 @@ public class CursoControllerTest {
         String nombreCurso = "CursoTest_" + System.currentTimeMillis();
         DataCurso nuevoCurso = new DataCurso(
                 inst, nombreCurso, "Descripción de prueba", 12, 100, 10,
-                LocalDate.now(), "http://test.com", new HashSet<>(), new HashSet<>()
+                LocalDate.now(), "http://test.com", new HashSet<>(), new HashSet<>(), null
         );
 
         assertDoesNotThrow(() -> {
@@ -51,7 +51,7 @@ public class CursoControllerTest {
         String nombreCurso = "CursoPorInst_" + System.currentTimeMillis();
         DataCurso nuevoCurso = new DataCurso(
                 inst, nombreCurso, "Desc", 8, 40, 5,
-                LocalDate.now(), "http://test.com", new HashSet<>(), new HashSet<>()
+                LocalDate.now(), "http://test.com", new HashSet<>(), new HashSet<>(), null
         );
 
         assertDoesNotThrow(() -> {
