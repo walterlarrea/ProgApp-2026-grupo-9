@@ -20,16 +20,33 @@
             <section class="hero-banner">
                 <h1>${instituto.nombreI()}</h1>
             </section>
-            <h3>Docentes</h3>
+            <h2>Cursos de este instituto</h2>
+            <ol class="nav-list">
+                <c:choose>
+                    <c:when test="${not empty cursosInstituto}">
+                        <c:forEach var="curso" items="${cursosInstituto}">
+                            <li>
+                                <a href="${pageContext.request.contextPath}/curso?nombre=${curso.nombreCurso()}">
+                                    <c:out value="${curso.nombreCurso()}"/>
+                                </a>
+                            </li>
+                        </c:forEach>
+                    </c:when>
+                    <c:otherwise>
+                        <li class="empty-hint">Sin cursos disponibles</li>
+                    </c:otherwise>
+                </c:choose>
+            </ol>   
+            <h2>Docentes</h2>
             <ol class="nav-list">
                 <c:choose>
                     <c:when test="${not empty docentes}">
                         <c:forEach var="doc" items="${docentes}">
                             <li>
-                                <!-- para cuando sea clickeable sería algo así <a href="${pageContext.request.contextPath}/docentes?nickname=${edi.getNombreEdi()}"> -->
-                                <c:out value="${doc.nombre}"/> 
-                                <c:out value="${doc.apellido}"/>
-                                
+                                <a href="${pageContext.request.contextPath}/usuario?nickname=${doc.nickname}">
+                                    <c:out value="${doc.nombre}"/> 
+                                    <c:out value="${doc.apellido}"/>
+                                </a>
                             </li>
                         </c:forEach>
                     </c:when>

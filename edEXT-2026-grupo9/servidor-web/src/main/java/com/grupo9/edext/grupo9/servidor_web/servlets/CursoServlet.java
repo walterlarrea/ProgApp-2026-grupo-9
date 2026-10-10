@@ -25,6 +25,7 @@ public class CursoServlet extends HttpServlet {
     Set<DataInstituto> institutos = Collections.emptySet();
     Set<DataCurso> cursos = Collections.emptySet();
     Set<DataEdicionCurso> ediciones = Collections.emptySet();
+    Set<DataCurso> previas = new HashSet<>();
     String estadoDb = "Conectado al Servidor Central";
     IServidorCentral servidorCentral = Fabrica.getInstance().getIServidorCentral();
     
@@ -33,17 +34,24 @@ public class CursoServlet extends HttpServlet {
         String nombre = request.getParameter("nombre");
         DataCurso curso = null;
         String accion = request.getParameter("accion");
+        String nombreInst = request.getParameter("instituto");
 
-        if ("alta".equals(accion)) {
+        if("alta".equals(accion)) {
             try {
-                if (servidorCentral != null) {
+                if(servidorCentral != null) {
                     institutos = servidorCentral.consultarTodosLosInstitutos();
+                    if(nombreInst != null && !nombreInst.isBlank()){
+                        previas = new HashSet<>(servidorCentral.cursosPorInstituto(nombreInst));
+            }else {
+                previas = new HashSet<>();
+            }
                 }
             } catch (Exception e) {
                 estadoDb = "Servidor Central activo (sin conexión a base de datos o vacía: "+ e.getMessage() + ")";
             }
 
             request.setAttribute("institutos", institutos);
+            request.setAttribute("previas", previas);
 
             request.getRequestDispatcher("/webCurso/alta-curso.jsp").forward(request, response);
             return;
@@ -55,6 +63,8 @@ public class CursoServlet extends HttpServlet {
                 institutos = servidorCentral.consultarTodosLosInstitutos();
                 cursos = servidorCentral.consultarTodosLosCursos();
                 ediciones = servidorCentral.traerEdiciones(curso, true);
+                // Recuperar las previas asociadas al curso consultado.
+                previas = curso.previas();
             }
         } catch (Exception e) {
             estadoDb = "Servidor Central activo (sin conexión a base de datos o vacía: " + e.getMessage() + ")";
@@ -64,11 +74,12 @@ public class CursoServlet extends HttpServlet {
             response.sendError(HttpServletResponse.SC_NOT_FOUND, "Curso no encontrado");
             return;
         }
+        
         request.setAttribute("curso", curso);
         request.setAttribute("institutos", institutos);
         request.setAttribute("cursos", cursos);
         request.setAttribute("ediciones", ediciones);
-        request.setAttribute("estadoDb", estadoDb);
+        request.setAttribute("previas", previas);
         
         request.getRequestDispatcher("/webCurso/verInfo-curso.jsp").forward(request, response);
     }
@@ -82,40 +93,47 @@ public class CursoServlet extends HttpServlet {
         int cantCred = Integer.parseInt(request.getParameter("cantCred"));
         int cantHoras = Integer.parseInt(request.getParameter("cantHoras"));
         String url = request.getParameter("url");
-        String[] nombresPrevias = request.getParameterValues("previas");
         Part imagenPart = request.getPart("imagen");
-        
+        String[] nombresPrevias = request.getParameterValues("previas");
+
         String imagen = null;
         LocalDate fechaReg = LocalDate.now();
-        Set<DataCurso> previas = new HashSet<>();
         DataInstituto instituto = null;
-        
-        try{
-            if(servidorCentral != null){
+        //las previas pertenecen únicamente a esta solicitud.
+        Set<DataCurso> previasSeleccionadas = new HashSet<>();
+
+        try {
+            if (servidorCentral != null) {
                 instituto = servidorCentral.buscarInstituto(nombreInst);
-                for (String nombrePrevia : nombresPrevias) {
-                    DataCurso previa = servidorCentral.buscarCurso(nombrePrevia);
-                    previas.add(previa);
+                if (nombresPrevias != null) {
+                    for (String nombrePrevia : nombresPrevias) {
+                        DataCurso previa = servidorCentral.buscarCurso(nombrePrevia);
+                        if (previa != null) {
+                            previasSeleccionadas.add(previa);
+                        }
+                    }
                 }
             }
-        }catch (Exception e){
-            estadoDb = "Servidor Central activo (sin conexión a base de datos o vacía: " + e.getMessage() + ")";
-        }   
-        //procesar/guardar imagen
+        } catch (Exception e) {
+            estadoDb = "Error al buscar el instituto o las previas: " + e.getMessage();
+            e.printStackTrace();
+        }
+
+        // Procesar y guardar imagen.
         if (imagenPart != null && imagenPart.getSize() > 0) {
             imagen = imagenPart.getSubmittedFileName();
             String rutaUploads = getServletContext().getRealPath("/uploads/curso");
             File carpeta = new File(rutaUploads);
 
-            if (!carpeta.exists()) {
-                carpeta.mkdirs();
+            if (!carpeta.exists() && !carpeta.mkdirs()) {
+                throw new IOException("nao nao imagen");
             }
             imagenPart.write(rutaUploads + File.separator + imagen);
         }
-        //registrar curso...
-        DataCurso nuevoCurso = new DataCurso(instituto, nombre, desc, duracion, cantHoras, cantCred, fechaReg, url, previas, new HashSet<>(), imagen);
+        //registro el curso..
+        DataCurso nuevoCurso = new DataCurso(instituto, nombre, desc, duracion, cantHoras, cantCred, fechaReg, url, previasSeleccionadas, new HashSet<>(), imagen);
         servidorCentral.guardarCurso(nuevoCurso);
-        //vuelve a los detalles
-        response.sendRedirect(request.getContextPath() + "/curso");     
+        //vuekvo al menú principal..
+        response.sendRedirect(request.getContextPath() + "/home");
     }
 }

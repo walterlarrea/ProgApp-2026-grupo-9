@@ -21,6 +21,7 @@ import java.util.Set;
 import java.util.HashSet;
 import java.io.File;
 
+
 @MultipartConfig
 @WebServlet(name = "EdicionCursoServlet", urlPatterns = {"/edicionCurso"})
 public class EdicionCursoServlet extends HttpServlet {
@@ -43,25 +44,33 @@ public class EdicionCursoServlet extends HttpServlet {
         
         if ("alta".equals(accion)) {
             try {
-                if (servidorCentral != null) {
+                if(servidorCentral != null){
                     institutos = servidorCentral.consultarTodosLosInstitutos();
-                    //si ya se seleccionó un instituto
-                    if (nombreInst != null && !nombreInst.isBlank()) {
+
+                    if(nombreInst != null && !nombreInst.isBlank()){
                         instituto = servidorCentral.buscarInstituto(nombreInst);
-                        cursos = servidorCentral.cursosPorInstituto(nombreInst);
-                        docentes = servidorCentral.traerDocentes(instituto);
-                    } else {
-                        //todavía no se seleccionó instituto
+
+                        if(instituto != null){
+                            cursos = servidorCentral.cursosPorInstituto(nombreInst);
+                            docentes = servidorCentral.traerDocentes(instituto);
+                        }else{
+                            cursos = Collections.emptySet();
+                            docentes = new DataDocente[0];
+                        }
+                    }else{
                         cursos = Collections.emptySet();
                         docentes = new DataDocente[0];
                     }
                 }
-            } catch (Exception e) {
-                estadoDb = "Servidor Central activo (sin conexión a base de datos o vacía: "+ e.getMessage() + ")";
+            }catch (Exception e){
+                estadoDb = "Error al cargar cursos y docentes: " + e.getMessage();e.printStackTrace();
             }
 
             request.setAttribute("institutos", institutos);
-            request.setAttribute("cursos", cursos);    
+            request.setAttribute("cursos", cursos);
+            request.setAttribute("docentes", docentes);
+            request.setAttribute("estadoDb", estadoDb);
+
             request.getRequestDispatcher("/webEdicion/alta-edicion.jsp").forward(request, response);
             return;
         }
@@ -92,13 +101,13 @@ public class EdicionCursoServlet extends HttpServlet {
     
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String nombreEdi = request.getParameter("nombre");
+        String nombreEdi = request.getParameter("nombreEdi");
         String nombreCurso = request.getParameter("curso");
         String nombreInst = request.getParameter("instituto");
         String[] nombresDocentes = request.getParameterValues("docentes");
         LocalDate fInicio = LocalDate.parse(request.getParameter("fInicio"));
         LocalDate fFin = LocalDate.parse(request.getParameter("fFin"));
-        int cupo = Integer.parseInt(request.getParameter("cupo"));
+        String cupoParam = request.getParameter("cupo");
         Part imagenPart = request.getPart("imagen");
         
         LocalDate fechaPub = LocalDate.now();
@@ -108,7 +117,9 @@ public class EdicionCursoServlet extends HttpServlet {
         Set<DataDocente> docentesSeleccionados = new HashSet<>();
         Set<DataCurso> cursos = null;
         DataCurso dataCurso = null;
-         
+        
+        Integer cupo = (cupoParam == null || cupoParam.isBlank()) ? null : Integer.valueOf(cupoParam);
+        
         try{
             if(servidorCentral != null){
                 instituto = servidorCentral.buscarInstituto(nombreInst);
@@ -126,10 +137,10 @@ public class EdicionCursoServlet extends HttpServlet {
             estadoDb = "Servidor Central activo (sin conexión a base de datos o vacía: " + e.getMessage() + ")";
         }
         //seleccionar docentes...
-        if (nombresDocentes != null) {
-            for (String nombreDocente : nombresDocentes) {
-                for (DataDocente docente : docentes) {
-                    if (docente.getNombre().equals(nombreDocente)) {
+        if(nombresDocentes != null){
+            for(String nickname : nombresDocentes){
+                for(DataDocente docente : docentes){
+                    if(docente.getNickname().equals(nickname)){
                         docentesSeleccionados.add(docente);
                         break;
                     }
@@ -151,6 +162,6 @@ public class EdicionCursoServlet extends HttpServlet {
         DataEdicionCurso nuevaEdicion = new DataEdicionCurso(nombreEdi, dataCurso, fInicio, fFin, cupo, docentesSeleccionados, new HashSet<>(), fechaPub, imagen);
         servidorCentral.guardarEdicionCurso(nuevaEdicion);
         //vuelve a los detalles
-        response.sendRedirect(request.getContextPath() + "/edicionCurso");
+        response.sendRedirect(request.getContextPath() + "/home");
     }
 }

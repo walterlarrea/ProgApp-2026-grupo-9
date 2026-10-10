@@ -26,13 +26,17 @@ public class InstitutoServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         
         String nombre = request.getParameter("nombre");
-        DataInstituto instituto = servidorCentral.buscarInstituto(nombre);
+        String nombreInst = request.getParameter("instituto");
+        Set<DataCurso> cursosInstituto = Collections.emptySet();
+        DataInstituto instituto = null;
 
         try {
             if (servidorCentral != null) {
                 institutos = servidorCentral.consultarTodosLosInstitutos();
                 cursos = servidorCentral.consultarTodosLosCursos();
+                instituto = servidorCentral.buscarInstituto(nombre);
                 docentes = servidorCentral.traerDocentes(instituto);
+                cursosInstituto = servidorCentral.cursosPorInstituto(nombre);
             }
         } catch (Exception e) {
             estadoDb = "Servidor Central activo (sin conexión a base de datos o vacía: " + e.getMessage() + ")";
@@ -41,6 +45,7 @@ public class InstitutoServlet extends HttpServlet {
         request.setAttribute("institutos", institutos);
         request.setAttribute("cursos", cursos);
         request.setAttribute("docentes", docentes);
+        request.setAttribute("cursosInstituto", cursosInstituto);
         request.setAttribute("instituto", instituto);
         request.setAttribute("estadoDb", estadoDb);
 

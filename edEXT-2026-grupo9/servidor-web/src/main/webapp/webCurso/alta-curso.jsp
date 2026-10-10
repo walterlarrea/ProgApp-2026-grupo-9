@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/styles.css">
 </head>
 
-<body>
+<body data-context-path="${pageContext.request.contextPath}">
     <!-- cabezal fijo -->
     <%@ include file="../webMiscelanea/header.jsp" %>
     <!-- Layout Principal: Contenido Dinámico -->
@@ -18,35 +18,44 @@
         <%@ include file="../webMiscelanea/sidebar.jsp" %>
         <main class="main-content">
             <section class="hero-banner">
-                <h1>Crear un nuevo curso</h1>
+                <h1>Registrar nuevo curso</h1>
                 <p>Crea y agrega un curso a un instituto</p>
             </section>
             <form action="${pageContext.request.contextPath}/curso" method="post" enctype="multipart/form-data">
-                <label><br>Nombre</br></label> <input type="text" name="nombre">
+                <h3>Datos</h3>
+                
                 <label for="instituto"><br>Instituto</br></label>
-                <select id="instituto" name="instituto">
-                    <option value="">Seleccione un instituto</option>
+                <select id="instituto" name="instituto" required>
+                <option value="" ${empty param.instituto ? 'selected' : ''}>Seleccione un instituto</option>
                     <c:forEach var="instituto" items="${institutos}">
-                        <option value="${instituto.nombreI()}">
-                            ${instituto.nombreI()}
+                        <option value="${instituto.nombreI()}" ${param.instituto eq instituto.nombreI() ? 'selected' : ''}>
+                            <c:out value="${instituto.nombreI()}"/>
                         </option>
                     </c:forEach>
                 </select>
-                <label><br>Descripción</br></label> <input type="text" name="descripcion">
+                <script src="${pageContext.request.contextPath}/js/cargarInstCursos.js"></script>
+                
+                <label><br>Nombre</br></label> <input type="text" name="nombre">
+                <label><br>Descripción</br></label> <input type="text" name="desc">
                 <label><br>Duración (Semanas)</br></label> <input type="text" name="duracion">
                 <label><br>Cantidad de horas (Semestral)</br></label> <input type="text" name="cantHoras">
                 <label><br>Créditos</br></label> <input type="text" name="cantCred">
-                <label><br>URL</br></label> <input type="text" name="url">
-                <label for="previas"><br>Previas</br></label>
-                <select id="previas" name="previas" multiple>
-                    <option value="">previassssss</option>
-                    <c:forEach var="curso" items="${cursos}">
-                        <option value="${curso.nombreCurso()}">
-                            ${curso.nombreCurso()}
-                        </option>
-                    </c:forEach>
-                </select>
                 
+                <label><br>Previas</br></label>
+                <div class="lista-checkbox">
+                    <c:forEach var="prev" items="${previas}">
+                        <label class="alta-checkbox ">
+                            <input type="checkbox" name="previas" value="${prev.nombreCurso}">
+                                <c:out value="${prev.nombreCurso}"/>
+                        </label>
+                    </c:forEach>
+
+                    <c:if test="${empty previas}">
+                        <p>No contiene previas.</p>
+                    </c:if>
+                </div>
+                
+                <label><br>URL</br></label> <input type="text" name="url">
                 <label><br>Imagen representativa</br></label> 
                 <img src="${pageContext.request.contextPath}/uploads/curso/${curso.imagen()}">
                 <input type="file" name="imagen" accept="image/*">

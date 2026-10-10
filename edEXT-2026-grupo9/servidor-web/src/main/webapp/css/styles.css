@@ -428,7 +428,14 @@ body {
 
 .seccion {
 	padding: 10px 20px;
-	border-bottom: 2px solid #222;
+	border-bottom: 2px solid #9FAFCF;
+}
+.salir a {
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
+    gap: 8px;
+    font-weight: bold;
 }
 
 .salir a::before {
@@ -436,6 +443,11 @@ body {
 	margin-right: 8px;
 	font-size: 20px;
 	font-weight: bold;
+}
+
+.salir a h4 {
+    margin: 0;
+    font-weight: bold;
 }
 
 .container-busqueda-typeahead {
@@ -553,6 +565,25 @@ body {
 	color: #9a3412;
 }
 
+.lista-checkbox {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 10px 0 20px;
+}
+
+.alta-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+}
+
+.alta-checkbox input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    margin: 0;
+}
 .boton-ordenar-busqueda {
 	width: 250px;
 }
