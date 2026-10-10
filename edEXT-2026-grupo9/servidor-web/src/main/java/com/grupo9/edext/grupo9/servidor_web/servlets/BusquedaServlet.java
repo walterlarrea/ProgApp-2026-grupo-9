@@ -3,7 +3,6 @@ package com.grupo9.edext.grupo9.servidor_web.servlets;
 import com.google.gson.Gson;
 import com.grupo9.edext.grupo9.interfaces.IServidorCentral;
 import com.grupo9.edext.grupo9.miscelanea.Fabrica;
-import com.grupo9.edext.grupo9.servidor_central.controller.busqueda.TipoBusqueda;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataCurso;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataProgramaFormacion;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataUsuario;
@@ -17,8 +16,10 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -26,7 +27,6 @@ import java.util.List;
 public class BusquedaServlet extends HttpServlet {
     IServidorCentral servidorCentral = Fabrica.getInstance().getIServidorCentral();
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *
@@ -41,6 +41,7 @@ public class BusquedaServlet extends HttpServlet {
         String query = request.getParameter("q");
         String formatResponse = request.getParameter("format");
         List<ResultadoBusqueda> resultados = Collections.emptyList();
+        HashMap<String, String> filtros = new HashMap<>();
         
         ArrayList<ResultadoBusquedaExtendida> listaResultados = new ArrayList<>();
         
@@ -53,11 +54,15 @@ public class BusquedaServlet extends HttpServlet {
         }
         
         for (ResultadoBusqueda res : resultados) {
-            listaResultados.add(enriquecerResultado(res, request.getContextPath(), query));
+            ResultadoBusquedaExtendida resEnriquecido = enriquecerResultado(res, request.getContextPath(), query);
+            listaResultados.add(resEnriquecido);
+            filtros.put(resEnriquecido.tipoCss(), resEnriquecido.tipoVisible());
         }
         
         if (formatResponse == null || !formatResponse.equals("json")) {
             request.setAttribute("listaResultados", listaResultados);
+            request.setAttribute("filtros", filtros);
+            request.setAttribute("query-param", query);
             //        processRequest(request, response);
             request.getRequestDispatcher("/webBusqueda/resultadoBusqueda.jsp").forward(request, response);
         } else {
@@ -85,9 +90,11 @@ public class BusquedaServlet extends HttpServlet {
         String tipoVisible;
         String nombreVisible;
         String nombreVisibleHighlighted;
+        String descVisibleHighlighted;
         String ruta;
         String parametro;
         String href;
+        String fechaCreacion;
 
         switch (resultado.tipo()) {
             case CURSO -> {
@@ -95,40 +102,46 @@ public class BusquedaServlet extends HttpServlet {
                 tipoVisible = "Curso";
                 nombreVisible = curso.nombreCurso();
                 nombreVisibleHighlighted = highlightQueryInText(nombreVisible, query);
+                descVisibleHighlighted = highlightQueryInText(curso.descCurso(), query);
 
                 ruta = "/curso";
                 parametro = curso.nombreCurso();
                 href = contextPath + ruta + "?nombre="
                         + URLEncoder.encode(parametro, StandardCharsets.UTF_8);
+                fechaCreacion = curso.fechaReg().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
             }
             case USUARIO -> {
                 DataUsuario usuario = (DataUsuario) resultado.data();
                 tipoVisible = "Usuario";
                 nombreVisible = usuario.getNombre() + " " + usuario.getApellido();
                 nombreVisibleHighlighted = highlightQueryInText(nombreVisible, query);
+                descVisibleHighlighted = "";
 
                 ruta = "/usuario";
                 parametro = usuario.getNickname();
                 href = contextPath + ruta + "?nombre="
                         + URLEncoder.encode(parametro, StandardCharsets.UTF_8);
+                fechaCreacion = "-";
             }
             case PROGRAMA_FORMACION -> {
                 DataProgramaFormacion programa = (DataProgramaFormacion) resultado.data();
                 tipoVisible = "Programa";
                 nombreVisible = programa.nombre();
                 nombreVisibleHighlighted = highlightQueryInText(nombreVisible, query);
+                descVisibleHighlighted = highlightQueryInText(programa.descripcion(), query);
 
                 ruta = "/programa";
                 parametro = programa.nombre();
                 href = contextPath + ruta + "?nombre="
                         + URLEncoder.encode(parametro, StandardCharsets.UTF_8);
+                fechaCreacion = programa.fechaDeCreacion().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
             }
             default -> throw new IllegalArgumentException("Tipo de búsqueda no soportado: " + resultado.tipo());
         }
 
         String tipoCss = resultado.tipo().name().toLowerCase(java.util.Locale.ROOT);
         return new ResultadoBusquedaExtendida(
-                resultado.tipo(), resultado.data(), tipoVisible, nombreVisible, nombreVisibleHighlighted, href, tipoCss);
+                resultado.tipo(), resultado.data(), tipoVisible, nombreVisible, nombreVisibleHighlighted, descVisibleHighlighted, href, tipoCss, fechaCreacion);
     }
 
     /**

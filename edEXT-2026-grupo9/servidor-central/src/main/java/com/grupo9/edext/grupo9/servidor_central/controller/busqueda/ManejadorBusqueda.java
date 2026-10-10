@@ -33,35 +33,35 @@ public class ManejadorBusqueda {
         return instancia;
     }
 
-    public HashSet<DataCurso> buscarCursosPorNombre(String nombre) {
-        if (!tieneTexto(nombre)) {
+    public HashSet<DataCurso> buscarCursos(String query) {
+        if (!tieneTexto(query)) {
             return new HashSet<>();
         }
 
         List<Curso> cursos = em.createQuery(
-                "SELECT c FROM Curso c WHERE LOWER(c.nombreCurso) LIKE :nombre", Curso.class)
-            .setParameter("nombre", patron(nombre))
+                "SELECT c FROM Curso c WHERE LOWER(c.nombreCurso) LIKE :query OR LOWER(c.descCurso) LIKE :query", Curso.class)
+            .setParameter("query", patron(query))
             .getResultList();
         HashSet<DataCurso> resultados = new HashSet<>();
         cursos.forEach(curso -> resultados.add(DtoMapper.toData(curso)));
         return resultados;
     }
 
-    public HashSet<DataProgramaFormacion> buscarProgramasPorNombre(String nombre) {
-        if (!tieneTexto(nombre)) {
+    public HashSet<DataProgramaFormacion> buscarProgramas(String query) {
+        if (!tieneTexto(query)) {
             return new HashSet<>();
         }
 
         List<ProgramaDeFormacion> programas = em.createQuery(
-                "SELECT p FROM ProgramaDeFormacion p WHERE LOWER(p.nombre) LIKE :nombre", ProgramaDeFormacion.class)
-            .setParameter("nombre", patron(nombre))
+                "SELECT p FROM ProgramaDeFormacion p WHERE LOWER(p.nombre) LIKE :query OR LOWER(p.descripcion) LIKE :query", ProgramaDeFormacion.class)
+            .setParameter("query", patron(query))
             .getResultList();
         HashSet<DataProgramaFormacion> resultados = new HashSet<>();
         programas.forEach(programa -> resultados.add(DtoMapper.toData(programa)));
         return resultados;
     }
 
-    public HashSet<DataUsuario> buscarUsuariosPorNombreYApellido(String nombre, String apellido) {
+    public HashSet<DataUsuario> buscarUsuarios(String nombre, String apellido) {
         if (!tieneTexto(nombre) && !tieneTexto(apellido)) {
             return new HashSet<>();
         }
@@ -83,7 +83,7 @@ public class ManejadorBusqueda {
         }
 
         List<ResultadoBusqueda> resultados = new ArrayList<>();
-        buscarCursosPorNombre(query).forEach(curso ->
+        buscarCursos(query).forEach(curso ->
                 resultados.add(new ResultadoBusqueda(TipoBusqueda.CURSO, curso)));
 
         List<Usuario> usuarios = em.createQuery(
@@ -95,7 +95,7 @@ public class ManejadorBusqueda {
         usuarios.forEach(usuario -> resultados.add(
                 new ResultadoBusqueda(TipoBusqueda.USUARIO, DtoMapper.toData(usuario))));
 
-        buscarProgramasPorNombre(query).forEach(programa ->
+        buscarProgramas(query).forEach(programa ->
                 resultados.add(new ResultadoBusqueda(TipoBusqueda.PROGRAMA_FORMACION, programa)));
         return resultados;
     }

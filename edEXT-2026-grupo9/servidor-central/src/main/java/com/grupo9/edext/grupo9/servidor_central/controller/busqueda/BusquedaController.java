@@ -15,18 +15,18 @@ public class BusquedaController implements IBusqueda {
     }
 
     @Override
-    public HashSet<DataCurso> buscarCursosPorNombre(String nombre) {
-        return manejadorBusqueda.buscarCursosPorNombre(nombre);
+    public HashSet<DataCurso> buscarCursos(String query) {
+        return manejadorBusqueda.buscarCursos(query);
     }
 
     @Override
-    public HashSet<DataProgramaFormacion> buscarProgramasPorNombre(String nombre) {
-        return manejadorBusqueda.buscarProgramasPorNombre(nombre);
+    public HashSet<DataProgramaFormacion> buscarProgramas(String query) {
+        return manejadorBusqueda.buscarProgramas(query);
     }
 
     @Override
-    public HashSet<DataUsuario> buscarUsuariosPorNombreYApellido(String nombre, String apellido) {
-        return manejadorBusqueda.buscarUsuariosPorNombreYApellido(nombre, apellido);
+    public HashSet<DataUsuario> buscarUsuarios(String nombre, String apellido) {
+        return manejadorBusqueda.buscarUsuarios(nombre, apellido);
     }
 
     @Override

@@ -69,18 +69,18 @@ class ServidorCentralController implements IServidorCentral {
 
     // Busqueda
     @Override
-    public HashSet<DataCurso> buscarCursosPorNombre(String nombre) {
-        return this.busquedaCtrl.buscarCursosPorNombre(nombre);
+    public HashSet<DataCurso> buscarCursos(String query) {
+        return this.busquedaCtrl.buscarCursos(query);
     }
 
     @Override
-    public HashSet<DataProgramaFormacion> buscarProgramasPorNombre(String nombre) {
-        return this.busquedaCtrl.buscarProgramasPorNombre(nombre);
+    public HashSet<DataProgramaFormacion> buscarProgramas(String query) {
+        return this.busquedaCtrl.buscarProgramas(query);
     }
 
     @Override
-    public HashSet<DataUsuario> buscarUsuariosPorNombreYApellido(String nombre, String apellido) {
-        return this.busquedaCtrl.buscarUsuariosPorNombreYApellido(nombre, apellido);
+    public HashSet<DataUsuario> buscarUsuarios(String nombre, String apellido) {
+        return this.busquedaCtrl.buscarUsuarios(nombre, apellido);
     }
 
     @Override
