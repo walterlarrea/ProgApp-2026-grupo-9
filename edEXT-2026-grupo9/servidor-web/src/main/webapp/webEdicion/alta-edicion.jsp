@@ -10,7 +10,7 @@
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/busqueda.js"></script>
 </head>
 
-<body>
+<body data-context-path="${pageContext.request.contextPath}">
     <!-- cabezal fijo -->
     <%@ include file="../webMiscelanea/header.jsp" %>
     <!-- Layout Principal: Contenido Dinámico -->
@@ -19,20 +19,23 @@
         <%@ include file="../webMiscelanea/sidebar.jsp" %>
         <main class="main-content">
             <section class="hero-banner">
-                <h1>Crear una nueva edición</h1>
+                <h1>Registrar nueva edición de curso</h1>
                 <p>Crea y agrega una edición a un curso existente</p>
             </section>
             <form action="${pageContext.request.contextPath}/edicionCurso" method="post" enctype="multipart/form-data">
-                <label><br>Nombre de la edición</br></label> <input type="text" name="nombreEdi">
+                <h3>Datos</h3>
+                
                 <label for="instituto"><br>Instituto</br></label>
-                <select id="instituto" name="instituto" onchange="this.form.submit()" required>
-                    <option value="">Seleccione un instituto</option>
+                <select id="instituto" name="instituto" required>
+                <option value="" ${empty param.instituto ? 'selected' : ''}>Seleccione un instituto</option>
                     <c:forEach var="instituto" items="${institutos}">
-                        <option value="${instituto.nombreI()}">
-                            ${instituto.nombreI()}
+                        <option value="${instituto.nombreI()}" ${param.instituto eq instituto.nombreI() ? 'selected' : ''}>
+                            <c:out value="${instituto.nombreI()}"/>
                         </option>
                     </c:forEach>
                 </select>
+                <script src="${pageContext.request.contextPath}/js/cargarInstitutos.js"></script>
+                
                 <label for="curso"><br>Curso perteneciente</br></label>
                 <select id="curso" name="curso">
                     <option value="">Seleccione un curso</option>
@@ -42,19 +45,26 @@
                         </option>
                     </c:forEach>
                 </select>
-                <label for="docentes"><br>Docente(s)</br>
-                <select id="docentes" name="docentes" multiple>
-                    <option value="">Docentes</option>
-                    <c:forEach var="docentes" items="${docentes}">
-                        <option value="${docentes.nombre()}">
-                            ${docentes.nombre()}
-                            ${docentes.apellido()}
-                        </option>
+                
+                <label><br>Docente(s)</br></label>
+                <div class="lista-checkbox">
+                    <c:forEach var="docente" items="${docentes}">
+                        <label class="alta-checkbox ">
+                            <input type="checkbox" name="docentes" value="${docente.nickname}">
+                                <c:out value="${docente.nombre}"/>
+                                <c:out value="${docente.apellido}"/>
+                        </label>
                     </c:forEach>
-                </select>
+
+                    <c:if test="${empty docentes}">
+                        <p>No hay docentes disponibles.</p>
+                    </c:if>
+                </div>
+                
+                <label><br>Nombre de la edición</br></label> <input type="text" name="nombreEdi">
                 <label><br>Fecha de inicio</br></label> <input type="date" name="fInicio">
                 <label><br>Fecha de finalización</br></label> <input type="date" name="fFin">
-                <label><br>Cupo</br></label><input type="text" name="cupo">
+                <label><br>Cupo</br></label> <input type="number" id="cupo" name="cupo" min="1">
                 
                 <label><br>Imagen representativa</br></label>
                 <img src="${pageContext.request.contextPath}/uploads/edicionCurso/${curso.imagen()}">

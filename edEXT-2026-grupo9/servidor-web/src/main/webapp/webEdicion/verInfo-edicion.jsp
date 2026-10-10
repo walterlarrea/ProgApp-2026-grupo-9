@@ -29,21 +29,31 @@
                 <div class="dato-space">
                     <h4>Fecha de finalización</h4> <p>${edicion.fechaFin}</p>
                 </div>
-                <div class="dato-space"> 
-                    <h4>Cupo</h4> <p>${edicion.cupo}</p>
+                <div class="dato-space">
+                    <h4>Cupo</h4>
+                    <p>
+                        <c:choose>
+                            <c:when test="${edicion.cupo == null}">
+                                Libre
+                            </c:when>
+                            <c:otherwise>
+                                <c:out value="${edicion.cupo}"/>
+                            </c:otherwise>
+                        </c:choose>
+                    </p>
                 </div>
                 
-            
-            <h3>Docentes</h3>
+            <div class="dato-space">
+            <h2>Docentes</h2>
             <ol class="nav-list">
                 <c:choose>
                     <c:when test="${not empty docentes}">
                         <c:forEach var="doc" items="${docentes}">
                             <li>
-                                <!-- para cuando sea clickeable sería algo así <a href="${pageContext.request.contextPath}/docentes?nickname=${doc.nickname}"> -->
-                                <c:out value="${doc.nombre}"/> 
-                                <c:out value="${doc.apellido}"/>
-                                
+                                <a href="${pageContext.request.contextPath}/usuario?nickname=${doc.nickname}">
+                                    <c:out value="${doc.nombre}"/> 
+                                    <c:out value="${doc.apellido}"/>
+                                </a>
                             </li>
                         </c:forEach>
                     </c:when>
@@ -52,7 +62,8 @@
                     </c:otherwise>
                 </c:choose>
             </ol>
-            <h3>Inscriptos</h3>
+            </div>
+            <h2>Inscriptos</h2>
             <div class="table-container">
                 <table class="inscriptos-table">
                     <thead>
@@ -63,15 +74,16 @@
                             <th>Estado</th>
                         </tr>
                     </thead>
-
                 <tbody>
                     <c:choose>
                         <c:when test="${not empty inscriptos}">
                             <c:forEach var="insc" items="${inscriptos}">
                                 <tr>
-                                    <td>
-                                        <c:out value="${insc.estudiante.nombre}"/>
-                                        <c:out value="${insc.estudiante.apellido}"/>
+                                    <td class="nav-list">
+                                        <a href="${pageContext.request.contextPath}/usuario?nickname=${insc.estudiante.nickname}">
+                                            <c:out value="${insc.estudiante.nombre}"/>
+                                            <c:out value="${insc.estudiante.apellido}"/>
+                                        </a>
                                     </td>
                                     <td>
                                         <c:out value="${insc.fechaInscE}"/>

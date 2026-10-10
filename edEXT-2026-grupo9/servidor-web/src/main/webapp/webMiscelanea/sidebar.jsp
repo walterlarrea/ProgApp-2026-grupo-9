@@ -2,7 +2,9 @@
 <!-- Barra lateral fija (sidebar) -->
         <aside class="sidebar">
             <div class="seccion">
-                <a href="${pageContext.request.contextPath}/perfil"><h3>Mi perfil</h3></a>
+                <div class="nav-list">
+                    <a href="${pageContext.request.contextPath}/perfil"><h3>Mi perfil</h3></a>
+                </div>
             </div>
             <div class="seccion">
                 <h3>Inscripciones (si es est)</h3>
@@ -39,10 +41,15 @@
             </ul>
             </div>
             <div class="seccion">
-            <h3>Categorías</h3>
+            <h3>Cursos</h3>
+                <div class="nav-list">
+                    <a href="<%= request.getContextPath() %>/home">Ver todos los cursos</a>
+                </div>
             </div>
                 <div class="salir">
-                    <a href="${pageContext.request.contextPath}/logout"><h4>Salir</h4></a>
+                    <div class="nav-list">
+                        <a href="${pageContext.request.contextPath}/logout">Salir</a>
+                    </div>
                 </div>
             <!-- <div class="status-box">
                 <small>Estado:</small>

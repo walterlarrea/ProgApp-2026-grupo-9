@@ -35,11 +35,30 @@
                     <h4>Duración</h4> <p>${curso.duracion()} semanas</p>
                 </div>
                 <div class="dato-space">
+                    
+                </div>
+                <h4>Previas del curso</h4> 
+                <ol class="nav-list">
+                <c:choose>
+                    <c:when test="${not empty previas}">
+                        <c:forEach var="prev" items="${previas}">
+                            <li>
+                                <a href="${pageContext.request.contextPath}/curso?nombre=${prev.nombreCurso()}">
+                                    <c:out value="${prev.nombreCurso()}"/>
+                                </a>
+                            </li>
+                        </c:forEach>
+                    </c:when>
+                    <c:otherwise>
+                        <li class="empty-hint">No contiene previas.</li>
+                    </c:otherwise>
+                </c:choose>
+            </ol>
+                <div class="dato-space">
                     <h4>URL</h4> <p>${curso.url()}</p>
                 </div>
             <div class="dato-space">
-                <h3>Ediciones</h3>
-            </div>
+            <h2>Ediciones</h2> 
             <ol class="nav-list">
                 <c:choose>
                     <c:when test="${not empty ediciones}">
@@ -55,7 +74,8 @@
                         <li class="empty-hint">Sin ediciones disponibles</li>
                     </c:otherwise>
                 </c:choose>
-            </ol>    
+            </ol>
+            </div>
         </main>
     </div>
 </body>
