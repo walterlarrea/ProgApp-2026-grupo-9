@@ -9,8 +9,8 @@
             <div class="seccion">
                 <h3>Inscripciones (si es est)</h3>
                 <ul class="nav-list">
-                    <li><a href="${pageContext.request.contextPath}/edicionCurso?accion=insc">Inscribirme</a></li>
-                    <li><a href="${pageContext.request.contextPath}/edicionCurso?accion=resultado">Ver resultados</a></li>
+                    <li><a href="${pageContext.request.contextPath}/inscripcion?accion=insc">Inscribirme</a></li>
+                    <li><a href="${pageContext.request.contextPath}/inscripcion">Ver resultados</a></li>
                 </ul>
             </div>
             <div class="seccion">

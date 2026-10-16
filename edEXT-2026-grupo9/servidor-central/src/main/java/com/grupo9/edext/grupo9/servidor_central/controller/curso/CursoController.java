@@ -3,6 +3,7 @@ package com.grupo9.edext.grupo9.servidor_central.controller.curso;
 import com.grupo9.edext.grupo9.servidor_central.controller.DtoMapper;
 import com.grupo9.edext.grupo9.servidor_central.controller.instituto.Instituto;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataCurso;
+import com.grupo9.edext.grupo9.mensajes.*;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
@@ -16,26 +17,18 @@ public class CursoController implements ICurso{
     }
     
     @Override
-    public DataCurso guardarNuevoCurso(DataCurso curso){
+    public DataCurso guardarNuevoCurso(DataCurso curso) throws ErrorRepetidos{
         System.out.println("[SERVIDOR] Persistencia de un nuevo Curso: " + curso.nombreCurso());
         LocalDate fechaDeCreacion = LocalDate.now();
         
         Instituto instituto = DtoMapper.toEntity(curso.instituto());
         Set<Curso> previas = DtoMapper.toEntityList(curso.previas(), Curso.class);
         
-        
         Curso nuevoCurso = new Curso(instituto, curso.nombreCurso(), curso.descCurso(), curso.duracion(), curso.cantHoras(), curso.cantCred(), fechaDeCreacion, curso.url(), previas, curso.imagen());
-
-        try{
-            this.manejadorCurso.guardarNuevo(nuevoCurso);
+        this.manejadorCurso.guardarNuevo(nuevoCurso);
             
-            // TODO: devolver un nuevo DTO creado a partir del Curso ya guardado
-            return curso;
-        }catch(Exception e){
-            System.out.println("[SERVIDOR] Persistencia FALLÓ al crear un nuevo Curso: " + nuevoCurso.getNombreCurso());
-            System.out.println(e);
-        }
-        return null;
+        // TODO: devolver un nuevo DTO creado a partir del Curso ya guardado
+        return curso;
     }
     
     @Override

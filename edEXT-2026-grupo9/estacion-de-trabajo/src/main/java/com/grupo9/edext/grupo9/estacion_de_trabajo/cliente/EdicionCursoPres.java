@@ -7,8 +7,8 @@ import com.grupo9.edext.grupo9.servidor_central.dominio.DataEdicionCurso;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataEstudiante;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataCurso;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataInstituto;
-import com.grupo9.edext.grupo9.mensajes.ErrorNoExiste;
-import com.grupo9.edext.grupo9.mensajes.ErrorRepetidos;
+import com.grupo9.edext.grupo9.servidor_central.controller.edicion_de_curso.EstadoInscripcion;
+import com.grupo9.edext.grupo9.mensajes.*;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
@@ -18,7 +18,7 @@ public class EdicionCursoPres {
     
     public EdicionCursoPres(){}
 
-    public void guardarNuevaEdicion(String nombreEdi, DataCurso dataCurso, LocalDate fechaInicio, LocalDate fechaFin, Integer cupo, Set<DataDocente> docentes, String imagen){
+    public void guardarNuevaEdicion(String nombreEdi, DataCurso dataCurso, LocalDate fechaInicio, LocalDate fechaFin, Integer cupo, Set<DataDocente> docentes, String imagen) throws ErrorRepetidos{
         System.out.println("[CLIENTE] Llamada al servidor central: " + nombreEdi);
         DataEdicionCurso nuevaEdicion = new DataEdicionCurso(nombreEdi, dataCurso, fechaInicio, fechaFin, cupo, new HashSet<>(docentes), new HashSet<>(), LocalDate.now(), imagen);
         DataEdicionCurso edicionCreada = servidorCentral.guardarEdicionCurso(nuevaEdicion);
@@ -47,9 +47,9 @@ public class EdicionCursoPres {
         return servidorCentral.traerEstudiantes();
     }
     
-    public void inscribirNuevoEstudianteEdicion(String nickname, String nombreEdi, LocalDate fechaInsc) throws ErrorRepetidos {
+    public void inscribirNuevoEstudianteEdicion(String nickname, String nombreEdi, LocalDate fechaInsc, EstadoInscripcion estado) throws ErrorRepetidos {
         try {
-            servidorCentral.inscribirEstudiante(fechaInsc, nickname, nombreEdi);
+            servidorCentral.inscribirEstudiante(fechaInsc, nickname, nombreEdi, estado);
             System.out.println("[CLIENTE] Inscripción exitosa!");
         } catch (ErrorRepetidos e) {
             System.out.println("[CLIENTE] " + e.getMessage());

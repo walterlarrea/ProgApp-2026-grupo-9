@@ -1,4 +1,4 @@
-package com.grupo9.edext.grupo9.servidor_web.servlets;
+package com.grupo9.edext.grupo9.servidor_web.servlets.usuario;
 
 import com.grupo9.edext.grupo9.miscelanea.Fabrica;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataUsuario;
@@ -16,14 +16,12 @@ import java.io.IOException;
 public class LoginServlet extends HttpServlet {
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.getRequestDispatcher("/webUsuario/login.jsp").forward(request, response);
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String nicknameOEmail = request.getParameter("nicknameOEmail");
         String password = request.getParameter("password");
 

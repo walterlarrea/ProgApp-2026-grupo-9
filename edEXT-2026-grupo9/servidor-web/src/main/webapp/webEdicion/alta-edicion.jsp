@@ -21,8 +21,15 @@
                 <h1>Registrar nueva edición de curso</h1>
                 <p>Crea y agrega una edición a un curso existente</p>
             </section>
-            <form action="${pageContext.request.contextPath}/edicionCurso" method="post" enctype="multipart/form-data">
-                <h3>Datos</h3>
+            
+            <c:if test="${not empty error}">
+                <p class="error">
+                    <c:out value="${error}"/>
+                </p>
+            </c:if>
+            
+            <form id="formularioEdicion" action="${pageContext.request.contextPath}/edicionCurso" method="post" enctype="multipart/form-data">
+                <h2>Datos</h2>
                 
                 <label for="instituto"><br>Instituto</br></label>
                 <select id="instituto" name="instituto" required>
@@ -35,8 +42,9 @@
                 </select>
                 <script src="${pageContext.request.contextPath}/js/cargarInstitutos.js"></script>
                 
-                <label for="curso"><br>Curso perteneciente</br></label>
-                <select id="curso" name="curso">
+                <br>
+                <label for="curso"><br>Curso(s) perteneciente(s)</br></label>
+                <select id="curso" name="curso" required>
                     <option value="">Seleccione un curso</option>
                     <c:forEach var="curso" items="${cursos}">
                         <option value="${curso.nombreCurso()}">
@@ -44,7 +52,25 @@
                         </option>
                     </c:forEach>
                 </select>
-                
+                </br>  
+
+ 
+                <label><br>Nombre de la edición</br></label> <input type="text" name="nombreEdi" required>
+                <div class="dato-space2">
+                    <label><br>Fecha de inicio</br></label> <input type="date" name="fInicio" required>
+                </div>
+                <div class="dato-space2">
+                    <label><br>Fecha de finalización</br></label> <input type="date" name="fFin" required>
+                </div>
+                <div class="dato-space2">
+                    <label><br>Cupo</br></label> <input type="number" id="cupo" name="cupo" min="1">
+                </div>
+                <div class="dato-space2">
+                    <label><br>Imagen representativa</br></label>
+                    <img src="${pageContext.request.contextPath}/uploads/edicionCurso/${curso.imagen()}">
+                    <input type="file" name="imagen" accept="image/*">
+                </div>
+                    
                 <label><br>Docente(s)</br></label>
                 <div class="lista-checkbox">
                     <c:forEach var="docente" items="${docentes}">
@@ -58,19 +84,12 @@
                     <c:if test="${empty docentes}">
                         <p>No hay docentes disponibles.</p>
                     </c:if>
+                </div>  
+                
+                <div class="btn-der">
+                    <button type="submit" class="btn btn-primary">Guardar</button>
                 </div>
-                
-                <label><br>Nombre de la edición</br></label> <input type="text" name="nombreEdi">
-                <label><br>Fecha de inicio</br></label> <input type="date" name="fInicio">
-                <label><br>Fecha de finalización</br></label> <input type="date" name="fFin">
-                <label><br>Cupo</br></label> <input type="number" id="cupo" name="cupo" min="1">
-                
-                <label><br>Imagen representativa</br></label>
-                <img src="${pageContext.request.contextPath}/uploads/edicionCurso/${curso.imagen()}">
-                <input type="file" name="imagen" accept="image/*">
-                <br>
-                    <button type="submit">Guardar</button>
-                </br>    
+            </form>
         </main>
     </div>
 </body>

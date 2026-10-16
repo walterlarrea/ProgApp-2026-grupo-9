@@ -4,6 +4,7 @@ import com.grupo9.edext.grupo9.estacion_de_trabajo.cliente.EdicionCursoPres;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataCurso;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataEdicionCurso;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataEstudiante;
+import com.grupo9.edext.grupo9.servidor_central.controller.edicion_de_curso.EstadoInscripcion;
 import com.grupo9.edext.grupo9.mensajes.ErrorRepetidos;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -153,7 +154,7 @@ public class InscribirAEdicionJInternalFrame extends javax.swing.JInternalFrame 
         DataEstudiante estudiante = estudiantes[indice- 1];
         DataEdicionCurso edicion = ediciones[indice1 - 1];
         try {
-            edicionCursoPres.inscribirNuevoEstudianteEdicion(estudiante.getNickname(), edicion.getNombreEdi(), fechaInsc);
+            edicionCursoPres.inscribirNuevoEstudianteEdicion(estudiante.getNickname(), edicion.getNombreEdi(), fechaInsc, EstadoInscripcion.INSCRIPTO);
             JOptionPane.showMessageDialog(this, "Inscripción realizada con éxito!", "Éxito", JOptionPane.INFORMATION_MESSAGE);
         } catch (ErrorRepetidos e) {
             JOptionPane.showMessageDialog(this, "El estudiante fue inscripto previamente.", "Inscripción duplicada", JOptionPane.WARNING_MESSAGE);        

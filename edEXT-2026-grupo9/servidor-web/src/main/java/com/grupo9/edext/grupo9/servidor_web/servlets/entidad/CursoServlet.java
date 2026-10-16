@@ -1,10 +1,11 @@
-package com.grupo9.edext.grupo9.servidor_web.servlets;
+package com.grupo9.edext.grupo9.servidor_web.servlets.entidad;
 
 import com.grupo9.edext.grupo9.interfaces.IServidorCentral;
 import com.grupo9.edext.grupo9.miscelanea.Fabrica;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataCurso;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataInstituto;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataEdicionCurso;
+import com.grupo9.edext.grupo9.mensajes.*;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -63,7 +64,7 @@ public class CursoServlet extends HttpServlet {
                 institutos = servidorCentral.consultarTodosLosInstitutos();
                 cursos = servidorCentral.consultarTodosLosCursos();
                 ediciones = servidorCentral.traerEdiciones(curso, true);
-                // Recuperar las previas asociadas al curso consultado.
+                //recuperar las previas asociadas al curso consultado.
                 previas = curso.previas();
             }
         } catch (Exception e) {
@@ -99,7 +100,6 @@ public class CursoServlet extends HttpServlet {
         String imagen = null;
         LocalDate fechaReg = LocalDate.now();
         DataInstituto instituto = null;
-        //las previas pertenecen únicamente a esta solicitud.
         Set<DataCurso> previasSeleccionadas = new HashSet<>();
 
         try {
@@ -130,10 +130,16 @@ public class CursoServlet extends HttpServlet {
             }
             imagenPart.write(rutaUploads + File.separator + imagen);
         }
-        //registro el curso..
-        DataCurso nuevoCurso = new DataCurso(instituto, nombre, desc, duracion, cantHoras, cantCred, fechaReg, url, previasSeleccionadas, new HashSet<>(), imagen);
-        servidorCentral.guardarCurso(nuevoCurso);
-        //vuekvo al menú principal..
-        response.sendRedirect(request.getContextPath() + "/home");
+        try{
+            //registro el curso..
+            DataCurso nuevoCurso = new DataCurso(instituto, nombre, desc, duracion, cantHoras, cantCred, fechaReg, url, previasSeleccionadas, new HashSet<>(), imagen);
+            servidorCentral.guardarCurso(nuevoCurso);
+            //vuekvo al menú principal..
+            response.sendRedirect(request.getContextPath() + "/home");
+        }catch(ErrorRepetidos e){
+            request.setAttribute("error", e.getMessage());
+            request.getRequestDispatcher("/webUsuario/alta-curso.jsp").forward(request, response);
+        }
+        
     }
 }

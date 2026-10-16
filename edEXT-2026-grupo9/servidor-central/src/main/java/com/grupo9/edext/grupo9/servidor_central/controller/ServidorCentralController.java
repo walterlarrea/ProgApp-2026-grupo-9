@@ -28,6 +28,7 @@ import com.grupo9.edext.grupo9.servidor_central.controller.edicion_de_curso.Edic
 import com.grupo9.edext.grupo9.mensajes.ErrorNoExiste;
 import com.grupo9.edext.grupo9.mensajes.ErrorRepetidos;
 import com.grupo9.edext.grupo9.servidor_central.controller.curso.Curso;
+import com.grupo9.edext.grupo9.servidor_central.controller.edicion_de_curso.EstadoInscripcion;
 import com.grupo9.edext.grupo9.servidor_central.controller.usuario.Estudiante;
 import java.time.LocalDate;
 import java.util.HashSet;
@@ -121,7 +122,7 @@ class ServidorCentralController implements IServidorCentral {
     
     // Ediciones de Cursos
     @Override
-    public DataEdicionCurso guardarEdicionCurso(DataEdicionCurso nuevaEdicion){
+    public DataEdicionCurso guardarEdicionCurso(DataEdicionCurso nuevaEdicion) throws ErrorRepetidos{
         return this.edicionCursoCtrl.guardarNuevaEdicionCurso(nuevaEdicion);
     }
     
@@ -147,8 +148,8 @@ class ServidorCentralController implements IServidorCentral {
     }
     
     @Override
-    public void inscribirEstudiante(LocalDate fechaInsc, String nickname, String nombreEdi)throws ErrorRepetidos, ErrorNoExiste {
-        this.edicionCursoCtrl.inscribirNuevoEstudiante(fechaInsc, nickname, nombreEdi);
+    public void inscribirEstudiante(LocalDate fechaInsc, String nickname, String nombreEdi, EstadoInscripcion estado)throws ErrorRepetidos, ErrorNoExiste {
+        this.edicionCursoCtrl.inscribirNuevoEstudiante(fechaInsc, nickname, nombreEdi, estado);
     }
     
     @Override
@@ -183,7 +184,7 @@ class ServidorCentralController implements IServidorCentral {
     }    
     // Cursos
     @Override
-    public DataCurso guardarCurso(DataCurso nuevoCurso){
+    public DataCurso guardarCurso(DataCurso nuevoCurso) throws ErrorRepetidos{
         return this.cursoCtrl.guardarNuevoCurso(nuevoCurso);
     }
     

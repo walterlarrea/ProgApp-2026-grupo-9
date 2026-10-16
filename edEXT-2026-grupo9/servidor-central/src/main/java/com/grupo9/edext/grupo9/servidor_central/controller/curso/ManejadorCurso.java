@@ -6,6 +6,7 @@ import com.grupo9.edext.grupo9.servidor_central.controller.DtoMapper;
 import com.grupo9.edext.grupo9.servidor_central.controller.instituto.Instituto;
 import com.grupo9.edext.grupo9.servidor_central.controller.programa_de_formacion.ProgramaDeFormacion;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataCurso;
+import com.grupo9.edext.grupo9.mensajes.*;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.EntityTransaction;
@@ -36,7 +37,26 @@ public class ManejadorCurso {
         return instancia;
     }
     
-    public void guardarNuevo(Curso curso) {
+    
+    public void guardarNuevo(Curso curso) throws ErrorRepetidos {
+        if (existeCurso(curso.getNombreCurso())) {
+            throw new ErrorRepetidos("Ya existe un curso con ese nombre.");
+        }
+
+        EntityTransaction et = em.getTransaction();
+
+        try {
+            et.begin();
+            em.persist(curso);
+            et.commit();
+        } catch (Exception e) {
+            if (et.isActive()) {
+                et.rollback();
+            }
+            throw e;
+        }
+    }
+    /*public void guardarNuevo(Curso curso) {
         try {
             EntityTransaction et = em.getTransaction();
             try{
@@ -52,7 +72,7 @@ public class ManejadorCurso {
         }catch(Exception e){
             throw e;
         }
-    }
+    }*/
     
     public HashSet<DataCurso> traerTodos(){
         try {
