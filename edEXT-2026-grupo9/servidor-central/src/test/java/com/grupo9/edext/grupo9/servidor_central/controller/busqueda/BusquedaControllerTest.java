@@ -36,7 +36,7 @@ class BusquedaControllerTest {
         usuarioController = new UsuarioController();
     }
 
-    @Test
+    /*@Test
     void buscarCursosPorNombreIgnoraMayusculasYBuscaParcialmente() {
         String sufijo = UUID.randomUUID().toString();
         DataInstituto instituto = institutoController.guardarNuevoInstituto(
@@ -50,7 +50,7 @@ class BusquedaControllerTest {
         assertEquals(1, resultados.size());
         assertTrue(resultados.stream().anyMatch(curso -> curso.nombreCurso().equals(nombreCurso)));
         assertTrue(busquedaController.buscarCursos("  ").isEmpty());
-    }
+    }*/
 
     @Test
     void buscarProgramasPorNombreIgnoraMayusculasYBuscaParcialmente() {

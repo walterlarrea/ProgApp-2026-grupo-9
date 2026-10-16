@@ -4,6 +4,7 @@ import com.grupo9.edext.grupo9.interfaces.IServidorCentral;
 import com.grupo9.edext.grupo9.miscelanea.Fabrica;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataCurso;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataInstituto;
+import com.grupo9.edext.grupo9.mensajes.*;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
@@ -15,7 +16,7 @@ public class CursoPres {
     public CursoPres(){}
 
     
-    public DataCurso guardarNuevoCurso(DataInstituto instituto, String nombre, String descripcion, int duracion, int cantHoras, int cantCreditos, String url, Set<DataCurso> previas, String imagen){
+    public DataCurso guardarNuevoCurso(DataInstituto instituto, String nombre, String descripcion, int duracion, int cantHoras, int cantCreditos, String url, Set<DataCurso> previas, String imagen) throws ErrorRepetidos{
         System.out.println("[CLIENTE] Crear nuevo Curso: " + nombre);
         DataCurso nuevoCurso = new DataCurso(instituto, nombre, descripcion, duracion, cantHoras, cantCreditos, LocalDate.now(), url, previas, null, imagen);
         

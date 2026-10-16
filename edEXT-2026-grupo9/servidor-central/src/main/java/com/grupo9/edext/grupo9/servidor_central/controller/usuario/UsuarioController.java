@@ -12,6 +12,8 @@ import com.grupo9.edext.grupo9.mensajes.*;
 import com.grupo9.edext.grupo9.miscelanea.UtensiliosJPA;
 import jakarta.persistence.*;
 import java.time.LocalDate;
+import java.util.Set;
+import java.util.HashSet;
 
 public class UsuarioController implements IUsuario{
 
@@ -61,7 +63,7 @@ public class UsuarioController implements IUsuario{
     }
 
     @Override
-    public void modificarUsuario(String nick, String nom, String ape, LocalDate fechaNac, String rutaImg, String passActual, String passNueva) throws com.grupo9.edext.grupo9.mensajes.ErrorNoExiste {
+    public void modificarUsuario(String nick, String nom, String ape, LocalDate fechaNac, String rutaImg, String passActual, String passNueva) throws ErrorNoExiste {
         ManejadorDocente md = ManejadorDocente.getInstance();
         Docente docMem = md.obtenerDocente(nick);
         
@@ -70,7 +72,7 @@ public class UsuarioController implements IUsuario{
 
         Usuario u = (docMem != null) ? docMem : estMem;
         if (u == null) {
-            throw new com.grupo9.edext.grupo9.mensajes.ErrorNoExiste("No existe el usuario con nickname: " + nick);
+            throw new ErrorNoExiste("No existe el usuario con nickname: " + nick);
         }
 
         String nuevaPassword = u.getPassword();
@@ -83,8 +85,8 @@ public class UsuarioController implements IUsuario{
             nuevaPassword = passNueva.trim();
         }
 
-        jakarta.persistence.EntityManager em = com.grupo9.edext.grupo9.miscelanea.UtensiliosJPA.getEntityManagerFactory().createEntityManager();
-        jakarta.persistence.EntityTransaction et = em.getTransaction();
+        EntityManager em = UtensiliosJPA.getEntityManagerFactory().createEntityManager();
+        EntityTransaction et = em.getTransaction();
         try {
             et.begin();
 
@@ -133,7 +135,7 @@ public class UsuarioController implements IUsuario{
     }
 
     @Override
-    public void eliminarUsuario(String nick) throws com.grupo9.edext.grupo9.mensajes.ErrorNoExiste {
+    public void eliminarUsuario(String nick) throws ErrorNoExiste {
         ManejadorDocente md = ManejadorDocente.getInstance();
         Docente doc = md.obtenerDocente(nick);
         
@@ -253,7 +255,7 @@ public class UsuarioController implements IUsuario{
     }
 
     @Override
-    public com.grupo9.edext.grupo9.servidor_central.dominio.DataUsuario iniciarSesion(String nicknameOEmail, String password) throws com.grupo9.edext.grupo9.mensajes.ErrorNoExiste {
+    public DataUsuario iniciarSesion(String nicknameOEmail, String password) throws ErrorNoExiste {
         ManejadorDocente md = ManejadorDocente.getInstance();
         Docente[] docentes = md.getDocente();
         if (docentes != null) {
@@ -262,7 +264,7 @@ public class UsuarioController implements IUsuario{
                     if (d.getPassword() == null || d.getPassword().equals(password)) {
                         return consultarUsuario(d.getNickname());
                     } else {
-                        throw new com.grupo9.edext.grupo9.mensajes.ErrorNoExiste("Contraseña incorrecta.");
+                        throw new ErrorNoExiste("Contraseña incorrecta.");
                     }
                 }
             }
@@ -276,13 +278,13 @@ public class UsuarioController implements IUsuario{
                     if (e.getPassword() == null || e.getPassword().equals(password)) {
                         return consultarUsuario(e.getNickname());
                     } else {
-                        throw new com.grupo9.edext.grupo9.mensajes.ErrorNoExiste("Contraseña incorrecta.");
+                        throw new ErrorNoExiste("Contraseña incorrecta.");
                     }
                 }
             }
         }
 
-        throw new com.grupo9.edext.grupo9.mensajes.ErrorNoExiste("No existe un usuario registrado con ese nickname o email.");
+        throw new ErrorNoExiste("No existe un usuario registrado con ese nickname o email.");
     }
 
     @Override
@@ -314,13 +316,13 @@ public class UsuarioController implements IUsuario{
         ManejadorDocente md = ManejadorDocente.getInstance();
         Docente doc = md.obtenerDocente(nickname);
         if (doc != null) {
-            java.util.Set<String> ediciones = new java.util.HashSet<>();
+            Set<String> ediciones = new HashSet<>();
             if (doc.getEdiciones() != null) {
                 for (EdicionCurso ed : doc.getEdiciones()) {
                     ediciones.add(ed.getNombreEdi());
                 }
             }
-            java.util.Set<String> cursos = new java.util.HashSet<>();
+            Set<String> cursos = new HashSet<>();
             DataDocente dd = new DataDocente(
                 doc.getNickname(),
                 doc.getNombre(),
@@ -337,7 +339,7 @@ public class UsuarioController implements IUsuario{
         ManejadorEstudiantes me = ManejadorEstudiantes.getInstance();
         Estudiante est = me.obtenerEstudiante(nickname);
         if (est != null) {
-            java.util.Set<String> edicionesInsc = new java.util.HashSet<>();
+            Set<String> edicionesInsc = new HashSet<>();
             if (est.getInscripciones() != null) {
                 for (InscEdicion insc : est.getInscripciones()) {
                     if (insc.getEdicion() != null) {
