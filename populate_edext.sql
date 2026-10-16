@@ -3,45 +3,6 @@
 
 USE edEXT;
 
-ALTER TABLE `programas_de_formacion`
-	ADD COLUMN `imagen` varchar(255) NULL;
-
-CREATE TABLE IF NOT EXISTS `categorias` (
-	`nombreCategoria` varchar(255) NOT NULL,
-	PRIMARY KEY (`nombreCategoria`)
-) ENGINE=InnoDB;
-
-CREATE TABLE IF NOT EXISTS `categorias_cursos` (
-	`categoria_nombreCategoria` varchar(255) NOT NULL,
-	`curso_nombreCurso` varchar(255) NOT NULL,
-	PRIMARY KEY (`categoria_nombreCategoria`, `curso_nombreCurso`),
-	CONSTRAINT `fk_categorias_cursos_categoria`
-		FOREIGN KEY (`categoria_nombreCategoria`) REFERENCES `categorias` (`nombreCategoria`),
-	CONSTRAINT `fk_categorias_cursos_curso`
-		FOREIGN KEY (`curso_nombreCurso`) REFERENCES `cursos` (`nombreCurso`)
-) ENGINE=InnoDB;
-
-CREATE TABLE IF NOT EXISTS `seguidores` (
-	`seguidor_nickname` varchar(255) NOT NULL,
-	`seguido_nickname` varchar(255) NOT NULL,
-	PRIMARY KEY (`seguidor_nickname`, `seguido_nickname`),
-	CONSTRAINT `fk_seguidores_seguidor`
-		FOREIGN KEY (`seguidor_nickname`) REFERENCES `usuarios` (`nickname`),
-	CONSTRAINT `fk_seguidores_seguido`
-		FOREIGN KEY (`seguido_nickname`) REFERENCES `usuarios` (`nickname`)
-) ENGINE=InnoDB;
-
-CREATE TABLE IF NOT EXISTS `inscripciones_a_programas` (
-	`estudiante_nickname` varchar(255) NOT NULL,
-	`programa_nombre` varchar(255) NOT NULL,
-	`fechaInscripcion` date NOT NULL,
-	PRIMARY KEY (`estudiante_nickname`, `programa_nombre`),
-	CONSTRAINT `fk_inscripciones_programas_estudiante`
-		FOREIGN KEY (`estudiante_nickname`) REFERENCES `estudiantes` (`nickname`),
-	CONSTRAINT `fk_inscripciones_programas_programa`
-		FOREIGN KEY (`programa_nombre`) REFERENCES `programas_de_formacion` (`nombre`)
-) ENGINE=InnoDB;
-
 START TRANSACTION;
 
 INSERT INTO `institutos` (`nombreI`)
@@ -172,9 +133,9 @@ VALUES
 
 INSERT INTO `ediciones_de_cursos` (`nombreEdi`, `fechaInicio`, `fechaFin`, `cupo`, `fechaPub`, `curso_nombreCurso`)
 VALUES
-	('Flor del Ceibo - 2010', '2010-03-15', '2010-07-07', -1, '2010-02-16', 'Flor del Ceibo'),
-	('Flor del Ceibo - 2012', '2012-08-01', '2012-11-20', -1, '2012-07-10', 'Flor del Ceibo'),
-	('Flor del Ceibo - 2025', '2025-04-10', '2025-08-07', -1, '2025-03-06', 'Flor del Ceibo'),
+	('Flor del Ceibo - 2010', '2010-03-15', '2010-07-07', null, '2010-02-16', 'Flor del Ceibo'),
+	('Flor del Ceibo - 2012', '2012-08-01', '2012-11-20', null, '2012-07-10', 'Flor del Ceibo'),
+	('Flor del Ceibo - 2025', '2025-04-10', '2025-08-07', null, '2025-03-06', 'Flor del Ceibo'),
 	('Dalavuelta - 2025', '2024-08-20', '2024-11-10', 15, '2024-07-20', 'Dalavuelta'),
 	('Extensionismo Industrial - 2025', '2025-08-10', '2025-11-10', 15, '2025-07-08', 'Extensionismo Industrial'),
 	('Inclusión Energética - 2026', '2026-03-15', '2026-04-30', 30, '2026-02-20', 'Inclusión Energética'),
@@ -184,8 +145,8 @@ VALUES
 	('Participación en investigación sobre el empleo del juego Komikan como recurso didáctico en la Escuela - 2026', '2026-07-29', '2026-10-07', 5, '2026-07-10', 'Participación en investigación sobre el empleo del juego Komikan como recurso didáctico en la Escuela'),
 	('Herramientas de apoyo a la enseñanza de inglés. Instalación y evaluación - 26', '2026-09-15', '2026-12-15', 5, '2026-06-02', 'Herramientas de apoyo a la enseñanza de inglés. Instalación y evaluación'),
 	('MicroBit - 2026', '2026-08-12', '2026-12-05', 30, '2026-07-02', 'MicroBit'),
-	('Talleres plenarios - 2026', '2026-03-10', '2026-03-30', -1, '2026-03-02', 'Talleres plenarios'),
-	('Seminarios de Resolución de Problemas - 2026', '2026-09-10', '2026-10-20', -1, '2026-07-12', 'Seminarios de Resolución de Problemas');
+	('Talleres plenarios - 2026', '2026-03-10', '2026-03-30', null, '2026-03-02', 'Talleres plenarios'),
+	('Seminarios de Resolución de Problemas - 2026', '2026-09-10', '2026-10-20', null, '2026-07-12', 'Seminarios de Resolución de Problemas');
 
 UPDATE `ediciones_de_cursos` SET `imagen` = 'imagenes/ediciones/e1.jpg' WHERE `nombreEdi` = 'Flor del Ceibo - 2010';
 UPDATE `ediciones_de_cursos` SET `imagen` = 'imagenes/ediciones/e2.jpg' WHERE `nombreEdi` = 'Flor del Ceibo - 2012';
