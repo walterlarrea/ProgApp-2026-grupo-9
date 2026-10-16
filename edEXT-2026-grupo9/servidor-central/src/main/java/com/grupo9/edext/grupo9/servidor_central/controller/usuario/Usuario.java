@@ -1,6 +1,5 @@
 package com.grupo9.edext.grupo9.servidor_central.controller.usuario;
 
-
 import java.time.LocalDate;
 
 /**
@@ -9,12 +8,13 @@ import java.time.LocalDate;
  */
 import jakarta.persistence.*;
 import java.io.Serializable;
-
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "usuarios")
-public class Usuario implements Serializable{
+public class Usuario implements Serializable {
     @Id
     private String nickname;
     private String nombre;
@@ -25,8 +25,14 @@ public class Usuario implements Serializable{
 
     private String fechaNac_str; // Optional helper if used
     private String password;
+    @ManyToMany
+    @JoinTable(name = "seguidores", joinColumns = @JoinColumn(name = "seguidor_nickname"), inverseJoinColumns = @JoinColumn(name = "seguido_nickname"))
+    private Set<Usuario> seguidos = new HashSet<>();
+    @ManyToMany(mappedBy = "seguidos")
+    private Set<Usuario> seguidores = new HashSet<>();
 
-    public Usuario(String nickname, String nombre, String apellido, String email, LocalDate fechaNac, String rutaImagen, String password) {
+    public Usuario(String nickname, String nombre, String apellido, String email, LocalDate fechaNac, String rutaImagen,
+            String password) {
         this.nickname = nickname;
         this.nombre = nombre;
         this.apellido = apellido;
@@ -36,7 +42,8 @@ public class Usuario implements Serializable{
         this.password = password;
     }
 
-    public Usuario(String nickname, String nombre, String apellido, String email, LocalDate fechaNac, String rutaImagen) {
+    public Usuario(String nickname, String nombre, String apellido, String email, LocalDate fechaNac,
+            String rutaImagen) {
         this.nickname = nickname;
         this.nombre = nombre;
         this.apellido = apellido;
@@ -100,11 +107,11 @@ public class Usuario implements Serializable{
     public void setFechaNac(LocalDate fechaNac) {
         this.fechaNac = fechaNac;
     }
-    
+
     public String getImagen() {
         return imagen;
     }
-    
+
     public String getRutaImagen() {
         return imagen;
     }
@@ -112,6 +119,17 @@ public class Usuario implements Serializable{
     public void setImagen(String imagen) {
         this.imagen = imagen;
     }
-    
-    
+
+    public Set<Usuario> getSeguidos() {
+        return seguidos;
+    }
+
+    public void setSeguidos(Set<Usuario> seguidos) {
+        this.seguidos = seguidos;
+    }
+
+    public Set<Usuario> getSeguidores() {
+        return seguidores;
+    }
+
 }

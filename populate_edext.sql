@@ -1,8 +1,46 @@
 -- Test-data seed script for the edEXT database.
--- Add INSERT statements in the section below when the test data is available.
--- This script intentionally contains no CREATE, ALTER, DROP, or TRUNCATE statements.
+-- Test-data seed and supplemental schema for the edEXT database.
 
 USE edEXT;
+
+ALTER TABLE `programas_de_formacion`
+	ADD COLUMN `imagen` varchar(255) NULL;
+
+CREATE TABLE IF NOT EXISTS `categorias` (
+	`nombreCategoria` varchar(255) NOT NULL,
+	PRIMARY KEY (`nombreCategoria`)
+) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS `categorias_cursos` (
+	`categoria_nombreCategoria` varchar(255) NOT NULL,
+	`curso_nombreCurso` varchar(255) NOT NULL,
+	PRIMARY KEY (`categoria_nombreCategoria`, `curso_nombreCurso`),
+	CONSTRAINT `fk_categorias_cursos_categoria`
+		FOREIGN KEY (`categoria_nombreCategoria`) REFERENCES `categorias` (`nombreCategoria`),
+	CONSTRAINT `fk_categorias_cursos_curso`
+		FOREIGN KEY (`curso_nombreCurso`) REFERENCES `cursos` (`nombreCurso`)
+) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS `seguidores` (
+	`seguidor_nickname` varchar(255) NOT NULL,
+	`seguido_nickname` varchar(255) NOT NULL,
+	PRIMARY KEY (`seguidor_nickname`, `seguido_nickname`),
+	CONSTRAINT `fk_seguidores_seguidor`
+		FOREIGN KEY (`seguidor_nickname`) REFERENCES `usuarios` (`nickname`),
+	CONSTRAINT `fk_seguidores_seguido`
+		FOREIGN KEY (`seguido_nickname`) REFERENCES `usuarios` (`nickname`)
+) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS `inscripciones_a_programas` (
+	`estudiante_nickname` varchar(255) NOT NULL,
+	`programa_nombre` varchar(255) NOT NULL,
+	`fechaInscripcion` date NOT NULL,
+	PRIMARY KEY (`estudiante_nickname`, `programa_nombre`),
+	CONSTRAINT `fk_inscripciones_programas_estudiante`
+		FOREIGN KEY (`estudiante_nickname`) REFERENCES `estudiantes` (`nickname`),
+	CONSTRAINT `fk_inscripciones_programas_programa`
+		FOREIGN KEY (`programa_nombre`) REFERENCES `programas_de_formacion` (`nombre`)
+) ENGINE=InnoDB;
 
 START TRANSACTION;
 
@@ -15,23 +53,23 @@ VALUES
 	('Eléctrica'),
 	('DISI');
 
-INSERT INTO `usuarios` (`nickname`, `apellido`, `email`, `fechaNac`, `imagen`, `nombre`)
+INSERT INTO `usuarios` (`nickname`, `apellido`, `email`, `fechaNac`, `imagen`, `nombre`, `password`)
 VALUES
-	('eleven11', 'Twelve', 'eleven11@gmail.com', '1971-12-31', NULL, 'Eleven'),
-	('costas', 'Costas', 'gcostas@gmail.com', '1983-11-15', NULL, 'Gerardo'),
-	('roro', 'Cotelo', 'rcotelo@yahoo.com', '1975-08-02', NULL, 'Rodrigo'),
-	('chechi', 'Garrido', 'cgarrido@hotmail.com', '1987-09-12', NULL, 'Cecilia'),
-	('jeffw', 'Williams', 'jwilliams@gmail.com', '1964-11-27', NULL, 'Jeff'),
-	('weiss', 'Weiss', 'aweiss@hotmail.com', '1978-12-23', NULL, 'Adrian'),
-	('heisenberg', 'White', 'heisenberg@gmail.com', '1956-03-07', NULL, 'Walter'),
-	('benkenobi', 'Kenobi', 'benKenobi@gmail.com', '1914-04-02', NULL, 'Obi-Wan'),
-	('watson', 'Watson', 'e.watson@gmail.com', '1990-04-15', NULL, 'Emma'),
-	('house', 'House', 'greghouse@gmail.com', '1959-05-15', NULL, 'Gregory'),
-	('timmy', 'Cook', 'tim.cook@apple.com', '1960-11-01', NULL, 'Tim'),
-	('danny', 'Riccio', 'dan.riccio@gmail.com', '1963-07-05', NULL, 'Daniel'),
-	('phils', 'Schiller', 'schiller@gmail.com', '1961-10-07', NULL, 'Philip'),
-	('bruces', 'Sewell', 'sewell@gmail.com', '1959-12-03', NULL, 'Bruce'),
-	('adri', 'García', 'agarcia@gmail.com', '1978-07-28', NULL, 'Adriana');
+	('eleven11', 'Twelve', 'eleven11@gmail.com', '1971-12-31', NULL, 'Eleven', '1234'),
+	('costas', 'Costas', 'gcostas@gmail.com', '1983-11-15', NULL, 'Gerardo', '1234'),
+	('roro', 'Cotelo', 'rcotelo@yahoo.com', '1975-08-02', 'imagenes/usuarios/roro.jpg', 'Rodrigo', '1234'),
+	('chechi', 'Garrido', 'cgarrido@hotmail.com', '1987-09-12', 'imagenes/usuarios/chechi.jpg', 'Cecilia', '1234'),
+	('jeffw', 'Williams', 'jwilliams@gmail.com', '1964-11-27', 'imagenes/usuarios/jeffw.jpg', 'Jeff', '1234'),
+	('weiss', 'Weiss', 'aweiss@hotmail.com', '1978-12-23', NULL, 'Adrian', '1234'),
+	('heisenberg', 'White', 'heisenberg@gmail.com', '1956-03-07', 'imagenes/usuarios/heisenberg.png', 'Walter', '1234'),
+	('benkenobi', 'Kenobi', 'benKenobi@gmail.com', '1914-04-02', 'imagenes/usuarios/benkenobi.jpg', 'Obi-Wan', '1234'),
+	('waston', 'Watson', 'e.watson@gmail.com', '1990-04-15', 'imagenes/usuarios/waston.jpg', 'Emma', '1234'),
+	('house', 'House', 'greghouse@gmail.com', '1959-05-15', 'imagenes/usuarios/house.jpg', 'Gregory', '1234'),
+	('timmy', 'Cook', 'tim.cook@apple.com', '1960-11-01', 'imagenes/usuarios/timmy.jpg', 'Tim', '1234'),
+	('danny', 'Riccio', 'dan.riccio@gmail.com', '1963-07-05', NULL, 'Daniel', '1234'),
+	('phils', 'Schiller', 'schiller@gmail.com', '1961-10-07', NULL, 'Philip', '1234'),
+	('bruces', 'Sewell', 'sewell@gmail.com', '1959-12-03', NULL, 'Bruce', '1234'),
+	('adri', 'García', 'agarcia@gmail.com', '1978-07-28', NULL, 'Adriana', '1234');
 
 INSERT INTO `estudiantes` (`nickname`)
 VALUES
@@ -46,7 +84,7 @@ INSERT INTO `docentes` (`nickname`, `nombreInst`)
 VALUES
 	('heisenberg', 'INCO'), -- Walter White
 	('benkenobi', 'INCO'), -- Obi-Wan Kenobi
-	('watson', 'INCO'), -- Emma Watson
+	('waston', 'INCO'), -- Emma Watson
 	('house', 'Eléctrica'), -- Gregory House
 	('timmy', 'IMERL'), -- Tim Cook
 	('danny', 'IMERL'), -- Daniel Riccio
@@ -58,7 +96,7 @@ INSERT INTO `docente_instituto` (`docente_nickname`, `instituto_nombreI`)
 VALUES
 	('heisenberg', 'INCO'),
 	('benkenobi', 'INCO'),
-	('watson', 'INCO'),
+	('waston', 'INCO'),
 	('house', 'Eléctrica'),
 	('timmy', 'IMERL'),
 	('danny', 'IMERL'),
@@ -78,6 +116,53 @@ VALUES
 		('Participación en investigación sobre el empleo del juego Komikan como recurso didáctico en la Escuela', 'Se propone desarrollar una aplicación interactiva para tablet Android basada en el juego de tablero Komikan (versión web del juego), que incluya los distintos aspectos concernientes al juego, así como a situaciones específicas particulares.', 9, 45, 3, '2026-06-15', 'https://eva.fing.edu.uy/mod/folder/view.php?id=89398', 'INCO'),
 		('Herramientas de apoyo a la enseñanza de inglés. Instalación y evaluación', 'Se realizarán visitas a escuelas rurales participantes en un proyecto conjunto del grupo PLN y el Programa de Políticas Lingüísticas de ANEP, en el marco del cual se desarrollaron diferentes herramientas para uso de maestros que enseñan inglés con apoyo remoto de profesores especializados desde Montevideo.', 12, 60, 4, '2026-05-24', 'https://eva.fing.edu.uy/mod/folder/view.php?id=89398', 'INCO'),
 		('MicroBit', 'El Centro Ceibal se encuentra distribuyendo placas micro:bit para que estudiantes de primaria y secundaria aprendan nociones básicas de robótica, electrónica y programación de forma autónoma y lúdica. Estas placas se basan en un microcontrolador y cuentan con leds, botones, acelerómetro, brújula, bluetooth y otros sensores. Las placas se programan fácilmente con lenguaje tipo scratch y python, por lo que son muy útiles para un primer acercamiento a la temática.', 15, 105, 7, '2026-03-13', 'https://www.fing.edu.uy/noticias/extension/modulo-detallerextensionmicrobit', 'Eléctrica');
+
+UPDATE `cursos` SET `imagen` = 'imagenes/cursos/c3.jpg' WHERE `nombreCurso` = 'Dalavuelta';
+UPDATE `cursos` SET `imagen` = 'imagenes/cursos/c5.jpg' WHERE `nombreCurso` = 'Inclusión Energética';
+UPDATE `cursos` SET `imagen` = 'imagenes/cursos/c6.jpg' WHERE `nombreCurso` = 'Flor del Ceibo';
+UPDATE `cursos` SET `imagen` = 'imagenes/cursos/c7.jpg' WHERE `nombreCurso` = 'Taller de robótica educativa.';
+UPDATE `cursos` SET `imagen` = 'imagenes/cursos/c8.jpg' WHERE `nombreCurso` = 'Participación en investigación sobre el empleo del juego Komikan como recurso didáctico en la Escuela';
+UPDATE `cursos` SET `imagen` = 'imagenes/cursos/c10.jpg' WHERE `nombreCurso` = 'MicroBit';
+
+INSERT INTO `categorias` (`nombreCategoria`)
+VALUES
+	('Social'),
+	('Industrial'),
+	('Educativo'),
+	('Interdisciplinario');
+
+INSERT INTO `categorias_cursos` (`categoria_nombreCategoria`, `curso_nombreCurso`)
+VALUES
+	('Social', 'Dalavuelta'),
+	('Social', 'Taller de robótica educativa.'),
+	('Social', 'Herramientas de apoyo a la enseñanza de inglés. Instalación y evaluación'),
+	('Industrial', 'Extensionismo Industrial'),
+	('Industrial', 'Inclusión Energética'),
+	('Industrial', 'MicroBit'),
+	('Educativo', 'Flor del Ceibo'),
+	('Educativo', 'Taller de robótica educativa.'),
+	('Educativo', 'Participación en investigación sobre el empleo del juego Komikan como recurso didáctico en la Escuela'),
+	('Educativo', 'Herramientas de apoyo a la enseñanza de inglés. Instalación y evaluación'),
+	('Educativo', 'MicroBit'),
+	('Interdisciplinario', 'Flor del Ceibo');
+
+INSERT INTO `seguidores` (`seguidor_nickname`, `seguido_nickname`)
+VALUES
+	('eleven11', 'roro'), ('eleven11', 'heisenberg'), ('eleven11', 'waston'),
+	('costas', 'chechi'), ('costas', 'jeffw'), ('costas', 'benkenobi'), ('costas', 'danny'), ('costas', 'phils'),
+	('roro', 'costas'), ('roro', 'weiss'),
+	('chechi', 'eleven11'), ('chechi', 'waston'), ('chechi', 'house'),
+	('jeffw', 'eleven11'),
+	('weiss', 'costas'), ('weiss', 'heisenberg'), ('weiss', 'timmy'),
+	('heisenberg', 'roro'),
+	('benkenobi', 'timmy'),
+	('waston', 'roro'), ('waston', 'weiss'), ('waston', 'heisenberg'),
+	('house', 'jeffw'), ('house', 'weiss'), ('house', 'benkenobi'),
+	('timmy', 'eleven11'), ('timmy', 'chechi'), ('timmy', 'jeffw'),
+	('danny', 'costas'), ('danny', 'weiss'), ('danny', 'heisenberg'),
+	('phils', 'bruces'),
+	('bruces', 'phils'),
+	('adri', 'heisenberg');
 
 INSERT INTO `cursos_previas` (`nombre_curso`, `nombre_curso_previa`)
 VALUES
@@ -102,6 +187,14 @@ VALUES
 	('Talleres plenarios - 2026', '2026-03-10', '2026-03-30', -1, '2026-03-02', 'Talleres plenarios'),
 	('Seminarios de Resolución de Problemas - 2026', '2026-09-10', '2026-10-20', -1, '2026-07-12', 'Seminarios de Resolución de Problemas');
 
+UPDATE `ediciones_de_cursos` SET `imagen` = 'imagenes/ediciones/e1.jpg' WHERE `nombreEdi` = 'Flor del Ceibo - 2010';
+UPDATE `ediciones_de_cursos` SET `imagen` = 'imagenes/ediciones/e2.jpg' WHERE `nombreEdi` = 'Flor del Ceibo - 2012';
+UPDATE `ediciones_de_cursos` SET `imagen` = 'imagenes/ediciones/e3.jpg' WHERE `nombreEdi` = 'Flor del Ceibo - 2025';
+UPDATE `ediciones_de_cursos` SET `imagen` = 'imagenes/ediciones/e4.jpg' WHERE `nombreEdi` = 'Dalavuelta - 2025';
+UPDATE `ediciones_de_cursos` SET `imagen` = 'imagenes/ediciones/e7.jpg' WHERE `nombreEdi` = 'Taller de robótica educativa - 2024';
+UPDATE `ediciones_de_cursos` SET `imagen` = 'imagenes/ediciones/e8.jpg' WHERE `nombreEdi` = 'Taller de robótica educativa - 2026';
+UPDATE `ediciones_de_cursos` SET `imagen` = 'imagenes/ediciones/e9.jpg' WHERE `nombreEdi` = 'Taller de robótica educativa - 2026-2';
+
 INSERT INTO `edicion_docente` (`edicion_nombreEdi`, `docente_nickname`)
 VALUES
 	('Flor del Ceibo - 2010', 'bruces'),
@@ -116,8 +209,8 @@ VALUES
 	('Taller de robótica educativa - 2026', 'heisenberg'),
 	('Taller de robótica educativa - 2026', 'benkenobi'),
 	('Taller de robótica educativa - 2026-2', 'benkenobi'),
-	('Taller de robótica educativa - 2026-2', 'watson'),
-	('Participación en investigación sobre el empleo del juego Komikan como recurso didáctico en la Escuela - 2026', 'watson'),
+	('Taller de robótica educativa - 2026-2', 'waston'),
+	('Participación en investigación sobre el empleo del juego Komikan como recurso didáctico en la Escuela - 2026', 'waston'),
 	('Herramientas de apoyo a la enseñanza de inglés. Instalación y evaluación - 26', 'heisenberg'),
 	('MicroBit - 2026', 'house'),
 	('Talleres plenarios - 2026', 'timmy'),
@@ -173,11 +266,68 @@ VALUES
 	('2026-08-06', 'roro', 'Seminarios de Resolución de Problemas - 2026'),
 	('2026-08-30', 'chechi', 'Seminarios de Resolución de Problemas - 2026');
 
-INSERT INTO `programas_de_formacion` (`nombre`, `descripcion`, `fechaInicio`, `fechaFin`, `fechaDeCreacion`)
+UPDATE `inscripciones_a_ediciones`
+SET `fechaInscE` = CASE
+	WHEN `edicion_nombreEdi` = 'Flor del Ceibo - 2010' AND `estudiane_nickname` = 'eleven11' THEN '2017-02-20'
+	WHEN `edicion_nombreEdi` = 'Flor del Ceibo - 2010' AND `estudiane_nickname` = 'chechi' THEN '2017-02-25'
+	WHEN `edicion_nombreEdi` = 'Flor del Ceibo - 2012' AND `estudiane_nickname` = 'costas' THEN '2019-07-12'
+	WHEN `edicion_nombreEdi` = 'Flor del Ceibo - 2012' AND `estudiane_nickname` = 'roro' THEN '2019-07-15'
+	WHEN `edicion_nombreEdi` = 'Flor del Ceibo - 2012' AND `estudiane_nickname` = 'weiss' THEN '2019-07-30'
+	WHEN `edicion_nombreEdi` = 'Taller de robótica educativa - 2024' AND `estudiane_nickname` = 'weiss' THEN '2024-02-18'
+	ELSE `fechaInscE`
+END;
+
+UPDATE `inscripciones_a_ediciones`
+SET `estado` = 'ACEPTADA'
+WHERE (`edicion_nombreEdi`, `estudiane_nickname`) IN (
+	('Flor del Ceibo - 2010', 'eleven11'), ('Flor del Ceibo - 2010', 'chechi'),
+	('Flor del Ceibo - 2012', 'costas'), ('Flor del Ceibo - 2012', 'weiss'),
+	('Flor del Ceibo - 2025', 'roro'), ('Flor del Ceibo - 2025', 'jeffw'),
+	('Dalavuelta - 2025', 'chechi'), ('Dalavuelta - 2025', 'roro'), ('Dalavuelta - 2025', 'costas'),
+	('Extensionismo Industrial - 2025', 'costas'), ('Extensionismo Industrial - 2025', 'chechi'),
+	('Extensionismo Industrial - 2025', 'eleven11'), ('Extensionismo Industrial - 2025', 'weiss'),
+	('Inclusión Energética - 2026', 'roro'), ('Inclusión Energética - 2026', 'chechi'),
+	('Taller de robótica educativa - 2024', 'eleven11'),
+	('Taller de robótica educativa - 2026', 'jeffw'), ('Taller de robótica educativa - 2026', 'costas'),
+	('Participación en investigación sobre el empleo del juego Komikan como recurso didáctico en la Escuela - 2026', 'chechi'),
+	('Participación en investigación sobre el empleo del juego Komikan como recurso didáctico en la Escuela - 2026', 'weiss'),
+	('Participación en investigación sobre el empleo del juego Komikan como recurso didáctico en la Escuela - 2026', 'roro'),
+	('Talleres plenarios - 2026', 'weiss'), ('Talleres plenarios - 2026', 'roro'),
+	('Seminarios de Resolución de Problemas - 2026', 'weiss'),
+	('Seminarios de Resolución de Problemas - 2026', 'roro')
+);
+
+UPDATE `inscripciones_a_ediciones`
+SET `estado` = 'RECHAZADA'
+WHERE (`edicion_nombreEdi`, `estudiane_nickname`) IN (
+	('Flor del Ceibo - 2012', 'roro'),
+	('Dalavuelta - 2025', 'eleven11'), ('Dalavuelta - 2025', 'jeffw'),
+	('Inclusión Energética - 2026', 'weiss'), ('Inclusión Energética - 2026', 'eleven11'),
+	('Taller de robótica educativa - 2024', 'weiss'), ('Taller de robótica educativa - 2024', 'roro'),
+	('Taller de robótica educativa - 2026', 'roro'),
+	('Talleres plenarios - 2026', 'costas'),
+	('Seminarios de Resolución de Problemas - 2026', 'costas'),
+	('Seminarios de Resolución de Problemas - 2026', 'chechi')
+);
+
+UPDATE `inscripciones_a_ediciones`
+SET `estado` = 'INSCRIPTO'
+WHERE (`edicion_nombreEdi`, `estudiane_nickname`) IN (
+	('Taller de robótica educativa - 2026-2', 'weiss'),
+	('Taller de robótica educativa - 2026-2', 'chechi'),
+	('Taller de robótica educativa - 2026-2', 'roro'),
+	('Herramientas de apoyo a la enseñanza de inglés. Instalación y evaluación - 26', 'weiss'),
+	('Herramientas de apoyo a la enseñanza de inglés. Instalación y evaluación - 26', 'eleven11'),
+	('Herramientas de apoyo a la enseñanza de inglés. Instalación y evaluación - 26', 'jeffw'),
+	('MicroBit - 2026', 'chechi'), ('MicroBit - 2026', 'roro'),
+	('MicroBit - 2026', 'eleven11'), ('MicroBit - 2026', 'jeffw')
+);
+
+INSERT INTO `programas_de_formacion` (`nombre`, `descripcion`, `fechaInicio`, `fechaFin`, `fechaDeCreacion`, `imagen`)
 VALUES
-	('EFI Ingeniería Mecánica', 'Programa mecánica', '2026-05-01', '2026-10-31', CURDATE()),
-	('Formación integral', 'Programa varios institutos', '2026-07-15', '2027-01-01', CURDATE()),
-	('EFI Robótica', 'Programa robótica', '2026-09-03', '2026-11-18', CURDATE());
+	('EFI Ingeniería Mecánica', 'Programa mecánica', '2026-05-01', '2026-10-31', CURDATE(), 'imagenes/programas/p1.jpg'),
+	('Formación integral', 'Programa varios institutos', '2026-07-15', '2027-01-01', CURDATE(), 'imagenes/programas/p2.jpg'),
+	('EFI Robótica', 'Programa robótica', '2026-09-03', '2026-11-18', CURDATE(), 'imagenes/programas/p3.jpg');
 
 INSERT INTO `programas_cursos` (`nombre_programa`, `nombre_curso`)
 VALUES
@@ -190,5 +340,21 @@ VALUES
 	('Formación integral', 'Participación en investigación sobre el empleo del juego Komikan como recurso didáctico en la Escuela'),
 	('EFI Robótica', 'Taller de robótica educativa.'),
 	('EFI Robótica', 'MicroBit');
+
+INSERT INTO `inscripciones_a_programas` (`estudiante_nickname`, `programa_nombre`, `fechaInscripcion`)
+VALUES
+	('eleven11', 'EFI Ingeniería Mecánica', '2026-04-15'),
+	('chechi', 'EFI Ingeniería Mecánica', '2026-04-20'),
+	('costas', 'Formación integral', '2026-07-10'),
+	('chechi', 'Formación integral', '2026-07-10'),
+	('eleven11', 'Formación integral', '2026-07-12'),
+	('weiss', 'Formación integral', '2026-07-15'),
+	('roro', 'Formación integral', '2026-07-18'),
+	('costas', 'EFI Robótica', '2026-08-11'),
+	('chechi', 'EFI Robótica', '2026-08-15'),
+	('roro', 'EFI Robótica', '2026-08-22'),
+	('jeffw', 'EFI Robótica', '2026-08-30');
+
+-- Las rutas de imagen son relativas a la carpeta local de imágenes del servidor.
 
 COMMIT;

@@ -2,6 +2,7 @@ package com.grupo9.edext.grupo9.servidor_central.controller.usuario;
 
 import com.grupo9.edext.grupo9.servidor_central.controller.usuario.Usuario;
 import com.grupo9.edext.grupo9.servidor_central.controller.edicion_de_curso.InscEdicion;
+import com.grupo9.edext.grupo9.servidor_central.controller.programa_de_formacion.InscripcionPrograma;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Set;
@@ -12,21 +13,31 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "estudiantes")
-public class Estudiante extends Usuario implements Serializable{
+public class Estudiante extends Usuario implements Serializable {
     @OneToMany(mappedBy = "estudiante")
     private Set<InscEdicion> inscripciones = new HashSet<>();
+    @OneToMany(mappedBy = "estudiante")
+    private Set<InscripcionPrograma> inscripcionesProgramas = new HashSet<>();
 
     public Estudiante() {
         super();
     }
-    public Estudiante(String nickname, String nombre, String apellido, String email, LocalDate fechaNac, String rutaImagen, String password) {
+
+    public Estudiante(String nickname, String nombre, String apellido, String email, LocalDate fechaNac,
+            String rutaImagen, String password) {
         super(nickname, nombre, apellido, email, fechaNac, rutaImagen, password);
     }
-    public Estudiante(String nickname, String nombre, String apellido, String email, LocalDate fechaNac, String rutaImagen) {
+
+    public Estudiante(String nickname, String nombre, String apellido, String email, LocalDate fechaNac,
+            String rutaImagen) {
         super(nickname, nombre, apellido, email, fechaNac, rutaImagen);
     }
 
-    public Set<InscEdicion> getInscripciones(){
+    public Set<InscEdicion> getInscripciones() {
         return inscripciones;
+    }
+
+    public Set<InscripcionPrograma> getInscripcionesProgramas() {
+        return inscripcionesProgramas;
     }
 }
