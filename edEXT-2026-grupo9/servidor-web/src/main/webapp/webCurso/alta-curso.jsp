@@ -21,9 +21,16 @@
                 <h1>Registrar nuevo curso</h1>
                 <p>Crea y agrega un curso a un instituto</p>
             </section>
+            
+            <c:if test="${not empty error}">
+                <p class="error">
+                    <c:out value="${error}"/>
+                </p>
+            </c:if>
+            
             <form action="${pageContext.request.contextPath}/curso" method="post" enctype="multipart/form-data">
-                <h3>Datos</h3>
-                
+                <h2>Datos</h2>
+
                 <label for="instituto"><br>Instituto</br></label>
                 <select id="instituto" name="instituto" required>
                 <option value="" ${empty param.instituto ? 'selected' : ''}>Seleccione un instituto</option>
@@ -34,12 +41,21 @@
                     </c:forEach>
                 </select>
                 <script src="${pageContext.request.contextPath}/js/cargarInstCursos.js"></script>
-                
-                <label><br>Nombre</br></label> <input type="text" name="nombre">
-                <label><br>Descripción</br></label> <input type="text" name="desc">
-                <label><br>Duración (Semanas)</br></label> <input type="text" name="duracion">
-                <label><br>Cantidad de horas (Semestral)</br></label> <input type="text" name="cantHoras">
-                <label><br>Créditos</br></label> <input type="text" name="cantCred">
+                <div class="dato-space2">
+                    <label><br>Nombre</br></label> <input type="text" name="nombre" required>
+                </div>
+                <div class="dato-space2">
+                    <label><br>Descripción</br></label> <input type="text" name="desc" required>
+                </div>
+                <div class="dato-space2">
+                    <label><br>Duración (Semanas)</br></label> <input type="text" name="duracion" required>
+                </div>
+                <div class="dato-space2">
+                    <label><br>Cantidad de horas (Semestral)</br></label> <input type="text" name="cantHoras" required>
+                </div>
+                <div class="dato-space2">
+                    <label><br>Créditos</br></label> <input type="text" name="cantCred" required>
+                </div>
                 
                 <label><br>Previas</br></label>
                 <div class="lista-checkbox">
@@ -55,13 +71,16 @@
                     </c:if>
                 </div>
                 
-                <label><br>URL</br></label> <input type="text" name="url">
-                <label><br>Imagen representativa</br></label> 
-                <img src="${pageContext.request.contextPath}/uploads/curso/${curso.imagen()}">
-                <input type="file" name="imagen" accept="image/*">
-                <br>
-                    <button type="submit">Guardar</button>
-                </br> 
+                <label><br>URL</br></label> <input type="text" name="url" required>
+                
+                <div class="dato-space2">
+                    <label><br>Imagen representativa</br></label> 
+                    <img src="${pageContext.request.contextPath}/uploads/curso/${curso.imagen()}">
+                    <input type="file" name="imagen" accept="image/*">
+                </div>
+                <div class="btn-der">
+                    <button type="submit" class="btn btn-primary">Guardar</button>
+                </div>
             </form>
         </main>
     </div>

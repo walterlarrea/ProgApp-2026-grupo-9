@@ -4,6 +4,7 @@ import com.grupo9.edext.grupo9.estacion_de_trabajo.cliente.CursoPres;
 import com.grupo9.edext.grupo9.estacion_de_trabajo.cliente.InstitutoPres;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataCurso;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataInstituto;
+import com.grupo9.edext.grupo9.mensajes.*;
 import java.awt.Component;
 import java.util.HashSet;
 import javax.swing.DefaultComboBoxModel;
@@ -327,14 +328,13 @@ public class CrearCursosJInternalFrame extends javax.swing.JInternalFrame {
         }
 
         final HashSet<DataCurso> previas = new HashSet<>(cursosPreviosSeleccionados);
-
-        System.out.println("[GUI] Crear nuevo Curso: " + nombre);
-        DataCurso nuevoCurso = cursoPres.guardarNuevoCurso(instituto, nombre, descripcion, duracion, cantHoras, cantCreditos, url, previas, null);
-        if (nuevoCurso != null){
+        try{
+            System.out.println("[GUI] Crear nuevo Curso: " + nombre);
+            DataCurso nuevoCurso = cursoPres.guardarNuevoCurso(instituto, nombre, descripcion, duracion, cantHoras, cantCreditos, url, previas, null);
             this.limpiarFormularioCurso();
             javax.swing.JOptionPane.showMessageDialog(this, "Curso registrado y guardado con éxito", "Éxito", javax.swing.JOptionPane.INFORMATION_MESSAGE);
-        } else {
-            JOptionPane.showMessageDialog(this, "No se pudo crear el curso. Verifique los datos ingresados.", "Error al crear curso", JOptionPane.ERROR_MESSAGE);
+        }catch(ErrorRepetidos e){
+            JOptionPane.showMessageDialog(this, e.getMessage(), "Curso duplicado", JOptionPane.WARNING_MESSAGE);
         }
     }//GEN-LAST:event_jButtonGuardarCursoActionPerformed
 

@@ -6,7 +6,7 @@ import com.grupo9.edext.grupo9.servidor_central.dominio.DataDocente;
 import com.grupo9.edext.grupo9.estacion_de_trabajo.cliente.EdicionCursoPres;
 import com.grupo9.edext.grupo9.interfaces.IServidorCentral;
 import com.grupo9.edext.grupo9.miscelanea.Fabrica;
-import com.grupo9.edext.grupo9.mensajes.ErrorNoExiste;
+import com.grupo9.edext.grupo9.mensajes.*;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
@@ -245,21 +245,20 @@ public class AltaEdicionJInternalFrame extends javax.swing.JInternalFrame {
         }
         
         //sobre el ingreso
-        try {
-            servidorCentral.consultarUnaEdicionCurso(nombreEdi);
-            JOptionPane.showMessageDialog(this, "Ya existe una edición con ese nombre.", "Edición duplicada", JOptionPane.WARNING_MESSAGE);
-        } catch (ErrorNoExiste e) {
+       try {
             System.out.println("[GUI] Crear nueva Edición: " + nombreEdi);
             System.out.println("[GUI] De curso: " + cursoSeleccionado.nombreCurso());
             System.out.println("[GUI] Fecha de inicio: " + fecha0);
             System.out.println("[GUI] Fecha de finalización: " + fecha1);
             System.out.println("[GUI] Docente(s): " + docentesSeleccionados);
-
+           
             edicionCursoPres.guardarNuevaEdicion(nombreEdi, cursoSeleccionado, fechaInicio, fechaFin, cupo, docentesSeleccionados, null);
             JOptionPane.showMessageDialog(this, "Edición registrada y guardada con éxito!", "Éxito", JOptionPane.INFORMATION_MESSAGE);
             jTextEdicionNombre.setText("");
             jTextEdicionCupo.setText("");
             jComboBoxDocenteEdicion.setSelectedIndex(-1);
+        }catch (ErrorRepetidos e){
+            JOptionPane.showMessageDialog(this, e.getMessage(),"Edición duplicada",JOptionPane.WARNING_MESSAGE);
         }
     }//GEN-LAST:event_jButtonGuardarEdicionActionPerformed
 

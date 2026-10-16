@@ -27,24 +27,19 @@ public class EdicionCursoController implements IEdicionCurso {
     }
     
     @Override
-    public DataEdicionCurso guardarNuevaEdicionCurso(DataEdicionCurso nuevaEdicion){
-        try{
-            Set<InscEdicion> inscripciones = new HashSet<>();
-            altaEdicionCurso(
-                nuevaEdicion.getNombreEdi(),
-                DtoMapper.toEntity(nuevaEdicion.getCursoAsoc()),
-                nuevaEdicion.getFechaInicio(),
-                nuevaEdicion.getFechaFin(),
-                nuevaEdicion.getCupo(),
-                inscripciones,
-                DtoMapper.toEntity(nuevaEdicion.getDocentes()),
-                nuevaEdicion.getImagen()
-            );
-            return nuevaEdicion;
-        }catch(ErrorRepetidos e) {
-            System.out.println("[SERVIDOR] " + e.getMessage());
-            return null;
-        }
+    public DataEdicionCurso guardarNuevaEdicionCurso(DataEdicionCurso nuevaEdicion) throws ErrorRepetidos{
+        Set<InscEdicion> inscripciones = new HashSet<>();
+        altaEdicionCurso(
+            nuevaEdicion.getNombreEdi(),
+            DtoMapper.toEntity(nuevaEdicion.getCursoAsoc()),
+            nuevaEdicion.getFechaInicio(),
+            nuevaEdicion.getFechaFin(),
+            nuevaEdicion.getCupo(),
+            inscripciones,
+            DtoMapper.toEntity(nuevaEdicion.getDocentes()),
+            nuevaEdicion.getImagen()
+        );
+        return nuevaEdicion; 
     }
     
     @Override
@@ -109,7 +104,7 @@ public class EdicionCursoController implements IEdicionCurso {
     } 
     
     @Override
-    public void inscripcionEdicionCurso(LocalDate fInsc, String nickEstudiante, String nEdi) throws ErrorRepetidos, ErrorNoExiste {
+    public void inscripcionEdicionCurso(LocalDate fInsc, String nickEstudiante, String nEdi, EstadoInscripcion estado) throws ErrorRepetidos, ErrorNoExiste {
         ManejadorEdiciones me = ManejadorEdiciones.getInstance();
         ManejadorEstudiantes mest = ManejadorEstudiantes.getInstance();
         Estudiante est = mest.obtenerEstudiante(nickEstudiante);
@@ -165,8 +160,8 @@ public class EdicionCursoController implements IEdicionCurso {
     }
     
     @Override
-    public void inscribirNuevoEstudiante(LocalDate fechaInsc, String nickname, String nombreEdi) throws ErrorRepetidos, ErrorNoExiste {
-        inscripcionEdicionCurso(fechaInsc, nickname, nombreEdi);
+    public void inscribirNuevoEstudiante(LocalDate fechaInsc, String nickname, String nombreEdi, EstadoInscripcion estadoInsc) throws ErrorRepetidos, ErrorNoExiste {
+        inscripcionEdicionCurso(fechaInsc, nickname, nombreEdi, estadoInsc);
     }
     
     @Override
@@ -192,6 +187,7 @@ public class EdicionCursoController implements IEdicionCurso {
         }
         return null;
     }
+    
     @Override
     public void cambiarEstadoInscripcion(String nombreEdicion, String nicknameEstudiante, EstadoInscripcion nuevoEstado) throws ErrorNoExiste, ErrorEstadoInvalido {
         ManejadorEdiciones me = ManejadorEdiciones.getInstance();
@@ -208,5 +204,15 @@ public class EdicionCursoController implements IEdicionCurso {
             }
         }
         throw new ErrorNoExiste("El estudiante " + nicknameEstudiante + " no está inscripto en la edición.");
+    }
+    
+    @Override
+    public Boolean existeEdicion(String nombre) {
+        try {
+            return this.manejadorEdiciones.existeEdicion(nombre);
+        } catch (Exception e) {
+            System.out.println("[SERVIDOR] Persistencia FALLÓ al consultar la edición: " + nombre);
+            throw e;
+        }
     }
 }

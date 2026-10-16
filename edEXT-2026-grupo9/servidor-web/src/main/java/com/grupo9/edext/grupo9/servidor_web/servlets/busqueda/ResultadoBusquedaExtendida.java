@@ -1,4 +1,4 @@
-package com.grupo9.edext.grupo9.servidor_web.servlets;
+package com.grupo9.edext.grupo9.servidor_web.servlets.busqueda;
 
 import com.grupo9.edext.grupo9.servidor_central.controller.busqueda.TipoBusqueda;
 import java.time.LocalDate;

@@ -1,4 +1,4 @@
-package com.grupo9.edext.grupo9.servidor_web.servlets;
+package com.grupo9.edext.grupo9.servidor_web.servlets.entidad;
 
 import com.grupo9.edext.grupo9.interfaces.IServidorCentral;
 import com.grupo9.edext.grupo9.miscelanea.Fabrica;
@@ -7,6 +7,7 @@ import com.grupo9.edext.grupo9.servidor_central.dominio.DataDocente;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataEdicionCurso;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataInscEdicion;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataInstituto;
+import com.grupo9.edext.grupo9.mensajes.*;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -21,7 +22,7 @@ import java.util.Set;
 import java.util.HashSet;
 import java.io.File;
 
-
+//para ver detalles de la edición
 @MultipartConfig
 @WebServlet(name = "EdicionCursoServlet", urlPatterns = {"/edicionCurso"})
 public class EdicionCursoServlet extends HttpServlet {
@@ -31,18 +32,22 @@ public class EdicionCursoServlet extends HttpServlet {
     Set<DataCurso> cursos = Collections.emptySet();
     String estadoDb = "Conectado al Servidor Central";
     //exclusivo edición
+    Set<DataEdicionCurso> ediciones = Collections.emptySet();
     DataDocente[] docentes = new DataDocente[0];
     Set<DataInscEdicion> inscriptos = Collections.emptySet();
+    LocalDate fechaReg = LocalDate.now();
         
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException { 
         String nombre = request.getParameter("nombre");
         String accion = request.getParameter("accion");
         String nombreInst = request.getParameter("instituto");
+        String nombreCurso = request.getParameter("curso");
         DataEdicionCurso edicion = null;
         DataInstituto instituto = null;
         
-        if ("alta".equals(accion)) {
+        
+        if ("alta".equals(accion)) { //si voy a dar de alta una edición
             try {
                 if(servidorCentral != null){
                     institutos = servidorCentral.consultarTodosLosInstitutos();
@@ -69,12 +74,12 @@ public class EdicionCursoServlet extends HttpServlet {
             request.setAttribute("institutos", institutos);
             request.setAttribute("cursos", cursos);
             request.setAttribute("docentes", docentes);
-            request.setAttribute("estadoDb", estadoDb);
 
             request.getRequestDispatcher("/webEdicion/alta-edicion.jsp").forward(request, response);
             return;
         }
         
+        //continúo por acá si sólo es consulta
         try {
             if (servidorCentral != null) {
                 edicion = servidorCentral.consultarUnaEdicionCurso(nombre);
@@ -94,11 +99,12 @@ public class EdicionCursoServlet extends HttpServlet {
         request.setAttribute("cursos", cursos);
         request.setAttribute("docentes", docentes);
         request.setAttribute("inscriptos", inscriptos);
-        request.setAttribute("estadoDb", estadoDb);
 
         request.getRequestDispatcher("/webEdicion/verInfo-edicion.jsp").forward(request, response);
     }
+        
     
+    //para alta de edición
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String nombreEdi = request.getParameter("nombreEdi");
@@ -110,14 +116,12 @@ public class EdicionCursoServlet extends HttpServlet {
         String cupoParam = request.getParameter("cupo");
         Part imagenPart = request.getPart("imagen");
         
-        LocalDate fechaPub = LocalDate.now();
         String imagen = null;
         DataInstituto instituto = null;
         DataDocente[] docentes = null;
         Set<DataDocente> docentesSeleccionados = new HashSet<>();
         Set<DataCurso> cursos = null;
         DataCurso dataCurso = null;
-        
         Integer cupo = (cupoParam == null || cupoParam.isBlank()) ? null : Integer.valueOf(cupoParam);
         
         try{
@@ -136,6 +140,7 @@ public class EdicionCursoServlet extends HttpServlet {
         }catch (Exception e){
             estadoDb = "Servidor Central activo (sin conexión a base de datos o vacía: " + e.getMessage() + ")";
         }
+        
         //seleccionar docentes...
         if(nombresDocentes != null){
             for(String nickname : nombresDocentes){
@@ -147,6 +152,7 @@ public class EdicionCursoServlet extends HttpServlet {
                 }
             }
         }
+        
         //procesar/guardar imagen
         if (imagenPart != null && imagenPart.getSize() > 0) {
             imagen = imagenPart.getSubmittedFileName();
@@ -158,10 +164,15 @@ public class EdicionCursoServlet extends HttpServlet {
             }
             imagenPart.write(rutaUploads + File.separator + imagen);
         }
-        //registrar edición...
-        DataEdicionCurso nuevaEdicion = new DataEdicionCurso(nombreEdi, dataCurso, fInicio, fFin, cupo, docentesSeleccionados, new HashSet<>(), fechaPub, imagen);
-        servidorCentral.guardarEdicionCurso(nuevaEdicion);
-        //vuelve a los detalles
-        response.sendRedirect(request.getContextPath() + "/home");
+        try {
+            //registrar edición...
+            DataEdicionCurso nuevaEdicion = new DataEdicionCurso(nombreEdi, dataCurso, fInicio, fFin, cupo, docentesSeleccionados, new HashSet<>(), fechaReg, imagen);
+            servidorCentral.guardarEdicionCurso(nuevaEdicion);
+            //vuekvo al menú principal..
+            response.sendRedirect(request.getContextPath() + "/home");
+        }catch(ErrorRepetidos e){
+            request.setAttribute("error", e.getMessage());
+            request.getRequestDispatcher("/webUsuario/alta-edicion.jsp").forward(request, response);
+        }
     }
 }

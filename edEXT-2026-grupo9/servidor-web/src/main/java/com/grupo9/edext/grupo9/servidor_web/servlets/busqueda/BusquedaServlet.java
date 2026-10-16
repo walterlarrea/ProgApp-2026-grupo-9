@@ -1,4 +1,4 @@
-package com.grupo9.edext.grupo9.servidor_web.servlets;
+package com.grupo9.edext.grupo9.servidor_web.servlets.busqueda;
 
 import com.google.gson.Gson;
 import com.grupo9.edext.grupo9.interfaces.IServidorCentral;

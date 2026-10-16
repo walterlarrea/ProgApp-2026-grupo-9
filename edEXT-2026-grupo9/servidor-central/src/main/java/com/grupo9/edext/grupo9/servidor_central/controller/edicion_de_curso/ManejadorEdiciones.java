@@ -5,6 +5,7 @@ import com.grupo9.edext.grupo9.servidor_central.controller.curso.Curso;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataDocente;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataEdicionCurso;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataInscEdicion;
+import jakarta.persistence.criteria.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -140,5 +141,18 @@ public class ManejadorEdiciones {
             return Collections.emptySet();
         }
         return edicion.getInscripciones();
+    }
+    
+    public Boolean existeEdicion(String nombre) {
+        CriteriaBuilder cBuilder = em.getCriteriaBuilder();
+        CriteriaQuery<EdicionCurso> cQuery = cBuilder.createQuery(EdicionCurso.class);
+        Root<EdicionCurso> rootEntry = cQuery.from(EdicionCurso.class);
+
+        cQuery.select(rootEntry).where(cBuilder.equal(rootEntry.get("nombreEdi"), nombre));
+
+        TypedQuery<EdicionCurso> query = em.createQuery(cQuery);
+        query.setMaxResults(1);
+
+        return !query.getResultList().isEmpty();
     }
 }
