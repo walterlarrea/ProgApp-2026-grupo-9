@@ -105,7 +105,14 @@
                         </div>
                         <div class="info-item">
                             <div class="info-label">Fecha de Nacimiento</div>
-                            <div class="info-value"><c:out value="${usuario.fechaNac != null ? usuario.fechaNac : '-'}"/></div>
+                            <div class="info-value">
+                                <c:choose>
+                                    <c:when test="${usuario.fechaNac != null}">
+                                        <c:out value="${usuario.fechaNac.format(java.time.format.DateTimeFormatter.ofPattern('dd/MM/yyyy'))}"/>
+                                    </c:when>
+                                    <c:otherwise>-</c:otherwise>
+                                </c:choose>
+                            </div>
                         </div>
                         <c:if test="${usuario.tipo == 'Docente'}">
                             <div class="info-item">
