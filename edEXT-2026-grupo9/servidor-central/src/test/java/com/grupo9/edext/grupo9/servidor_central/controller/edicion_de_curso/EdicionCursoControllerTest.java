@@ -75,7 +75,7 @@ public class EdicionCursoControllerTest {
 
         String nickEst = "estInsc_" + System.currentTimeMillis();
         assertDoesNotThrow(() -> {
-            usuarioController.registrarEstudiante(nickEst, "Alumno", "Inscripto", "estinsc_" + System.currentTimeMillis() + "@test.com", LocalDate.of(2001, 1, 1), null);
+            usuarioController.registrarEstudiante(nickEst, "Alumno", "Inscripto", "estinsc_" + System.currentTimeMillis() + "@test.com", LocalDate.of(2001, 1, 1), null, "1234");
             edicionController.inscribirNuevoEstudiante(LocalDate.now(), nickEst, nombreEdicion);
         });
 

@@ -4,40 +4,59 @@
  */
 package com.grupo9.edext.grupo9.estacion_de_trabajo.gui.usuario;
 
+import com.grupo9.edext.grupo9.estacion_de_trabajo.cliente.InstitutoPres;
+import com.grupo9.edext.grupo9.estacion_de_trabajo.cliente.UsuarioPres;
 import com.grupo9.edext.grupo9.estacion_de_trabajo.gui.MainJFrame;
+import com.grupo9.edext.grupo9.servidor_central.dominio.DataUsuario;
+import java.awt.Image;
 import java.io.File;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
+import java.util.logging.Logger;
+import javax.swing.ButtonGroup;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPasswordField;
+import javax.swing.JSpinner;
+import javax.swing.JTextField;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
  *
  * @author Usuario
  */
-public class ModificarUsuarioFrame extends javax.swing.JFrame {
+public class ModificarUsuarioFrame extends JFrame {
     
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(ModificarUsuarioFrame.class.getName());
+    private static final Logger logger = Logger.getLogger(ModificarUsuarioFrame.class.getName());
     private File archivoImagenSeleccionado;
     private MainJFrame parentFrame;
-    private com.grupo9.edext.grupo9.servidor_central.dominio.DataUsuario usuarioActual;
-    private final com.grupo9.edext.grupo9.estacion_de_trabajo.cliente.UsuarioPres usuarioPres = new com.grupo9.edext.grupo9.estacion_de_trabajo.cliente.UsuarioPres();
-    private final com.grupo9.edext.grupo9.estacion_de_trabajo.cliente.InstitutoPres institutoPres = new com.grupo9.edext.grupo9.estacion_de_trabajo.cliente.InstitutoPres();
-    private javax.swing.ButtonGroup buttonGroupEstYDocMod = new javax.swing.ButtonGroup();
+    private DataUsuario usuarioActual;
+    private final UsuarioPres usuarioPres = new UsuarioPres();
+    private final InstitutoPres institutoPres = new InstitutoPres();
+    private ButtonGroup buttonGroupEstYDocMod = new ButtonGroup();
 
     /**
      * Creates new form ModificarUsuarioFrame
      */
     public ModificarUsuarioFrame() {
         initComponents();
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
     }
 
-    public ModificarUsuarioFrame(com.grupo9.edext.grupo9.servidor_central.dominio.DataUsuario du, MainJFrame parent) {
+    public ModificarUsuarioFrame(DataUsuario du, MainJFrame parent) {
         this.usuarioActual = du;
         this.parentFrame = parent;
         initComponents();
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setTitle("Modificar Usuario - " + (du != null ? du.getNickname() : ""));
 
-        jSpinnerFechaNac.setModel(new javax.swing.SpinnerDateModel(new java.util.Date(), null, null, java.util.Calendar.DAY_OF_MONTH));
-        javax.swing.JSpinner.DateEditor editor = new javax.swing.JSpinner.DateEditor(jSpinnerFechaNac, "dd/MM/yyyy");
+        jSpinnerFechaNac.setModel(new javax.swing.SpinnerDateModel(new Date(), null, null, java.util.Calendar.DAY_OF_MONTH));
+        JSpinner.DateEditor editor = new JSpinner.DateEditor(jSpinnerFechaNac, "dd/MM/yyyy");
         jSpinnerFechaNac.setEditor(editor);
 
         jButtonGuardar.addActionListener(new java.awt.event.ActionListener() {
@@ -105,46 +124,54 @@ public class ModificarUsuarioFrame extends javax.swing.JFrame {
         String apellido = jTextFieldApelMod.getText().trim();
 
         if (nombre.isEmpty() || apellido.isEmpty()) {
-            javax.swing.JOptionPane.showMessageDialog(this, "Por favor complete los campos de Nombre y Apellido.", "Advertencia", javax.swing.JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Por favor complete los campos de Nombre y Apellido.", "Advertencia", JOptionPane.WARNING_MESSAGE);
             return;
         }
 
-        java.util.Date fechaUtil = (java.util.Date) jSpinnerFechaNac.getValue();
-        java.time.LocalDate fechaNac = fechaUtil.toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalDate();
+        Date fechaUtil = (Date) jSpinnerFechaNac.getValue();
+        LocalDate fechaNac = fechaUtil.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 
         String rutaImg = (this.archivoImagenSeleccionado != null) ? this.archivoImagenSeleccionado.getAbsolutePath() :
                          (usuarioActual != null ? usuarioActual.getImagen() : null);
 
+        String passNueva = new String(jPasswordFieldPassMod.getPassword()).trim();
+        String passActual = null;
+        if (!passNueva.isEmpty()) {
+            passActual = (usuarioActual != null) ? usuarioActual.getPassword() : null;
+        } else {
+            passNueva = null;
+        }
+
         try {
-            usuarioPres.modificarUsuario(nick, nombre, apellido, fechaNac, rutaImg);
-            javax.swing.JOptionPane.showMessageDialog(this, "¡Usuario actualizado exitosamente!", "Éxito", javax.swing.JOptionPane.INFORMATION_MESSAGE);
+            usuarioPres.modificarUsuario(nick, nombre, apellido, fechaNac, rutaImg, passActual, passNueva);
+            JOptionPane.showMessageDialog(this, "¡Usuario actualizado exitosamente!", "Éxito", JOptionPane.INFORMATION_MESSAGE);
             if (parentFrame != null) {
                 parentFrame.refreshTablaUsuarios();
             }
             this.dispose();
         } catch (Exception e) {
-            javax.swing.JOptionPane.showMessageDialog(this, "Error al guardar los cambios: " + e.getMessage(), "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Error al guardar los cambios: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
     private void jButtonEliminarActionPerformed(java.awt.event.ActionEvent evt) {
         String nick = jTextFieldNickMod.getText().trim();
-        int confirm = javax.swing.JOptionPane.showConfirmDialog(this,
+        int confirm = JOptionPane.showConfirmDialog(this,
             "¿Está seguro que desea eliminar al usuario '" + nick + "'?",
             "Confirmar Eliminación",
-            javax.swing.JOptionPane.YES_NO_OPTION,
-            javax.swing.JOptionPane.WARNING_MESSAGE);
+            JOptionPane.YES_NO_OPTION,
+            JOptionPane.WARNING_MESSAGE);
 
-        if (confirm == javax.swing.JOptionPane.YES_OPTION) {
+        if (confirm == JOptionPane.YES_OPTION) {
             try {
                 usuarioPres.eliminarUsuario(nick);
-                javax.swing.JOptionPane.showMessageDialog(this, "¡Usuario eliminado exitosamente!", "Éxito", javax.swing.JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(this, "¡Usuario eliminado exitosamente!", "Éxito", JOptionPane.INFORMATION_MESSAGE);
                 if (parentFrame != null) {
                     parentFrame.refreshTablaUsuarios();
                 }
                 this.dispose();
             } catch (Exception e) {
-                javax.swing.JOptionPane.showMessageDialog(this, "Error al eliminar usuario: " + e.getMessage(), "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Error al eliminar usuario: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             }
         }
     }
@@ -162,6 +189,7 @@ public class ModificarUsuarioFrame extends javax.swing.JFrame {
         jLabelEmailMod = new javax.swing.JLabel();
         jLabelNomMod = new javax.swing.JLabel();
         jLabelApelMod = new javax.swing.JLabel();
+        jLabelPassMod = new javax.swing.JLabel();
         jLabelFechaNacMod = new javax.swing.JLabel();
         jSpinnerFechaNac = new javax.swing.JSpinner();
         jButtonGuardar = new javax.swing.JButton();
@@ -173,6 +201,7 @@ public class ModificarUsuarioFrame extends javax.swing.JFrame {
         jTextFieldEmailMod = new javax.swing.JTextField();
         jTextFieldNomMod = new javax.swing.JTextField();
         jTextFieldApelMod = new javax.swing.JTextField();
+        jPasswordFieldPassMod = new javax.swing.JPasswordField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -185,6 +214,8 @@ public class ModificarUsuarioFrame extends javax.swing.JFrame {
         jLabelNomMod.setText("Nombre");
 
         jLabelApelMod.setText("Apellido");
+
+        jLabelPassMod.setText("Contraseña");
 
         jLabelFechaNacMod.setText("Fecha de Nacimiento");
 
@@ -231,6 +262,7 @@ public class ModificarUsuarioFrame extends javax.swing.JFrame {
                                     .addComponent(jLabelNickMod)
                                     .addGap(18, 18, 18)
                                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jPasswordFieldPassMod, javax.swing.GroupLayout.Alignment.TRAILING)
                                         .addComponent(jTextFieldApelMod, javax.swing.GroupLayout.Alignment.TRAILING)
                                         .addComponent(jTextFieldNomMod, javax.swing.GroupLayout.Alignment.TRAILING)
                                         .addComponent(jTextFieldEmailMod, javax.swing.GroupLayout.Alignment.TRAILING)
@@ -240,6 +272,7 @@ public class ModificarUsuarioFrame extends javax.swing.JFrame {
                                     .addComponent(jLabelFechaNacMod)
                                     .addComponent(jSpinnerFechaNac, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                        .addComponent(jLabelPassMod, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                         .addComponent(jLabelApelMod, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                         .addComponent(jLabelNomMod, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                         .addComponent(jLabelEmailMod, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -282,8 +315,12 @@ public class ModificarUsuarioFrame extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jLabelApelMod)
-                            .addComponent(jTextFieldApelMod, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addGap(78, 78, 78)
+                            .addComponent(jTextFieldApelMod, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(8, 8, 8)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabelPassMod)
+                            .addComponent(jPasswordFieldPassMod, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(48, 48, 48)
                 .addComponent(jLabelFechaNacMod)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSpinnerFechaNac, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -303,30 +340,30 @@ public class ModificarUsuarioFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jSpinnerFechaNacStateChanged
 
     private void jLabelSeleccionarFotoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelSeleccionarFotoMouseClicked
-        javax.swing.JFileChooser fileChooser = new javax.swing.JFileChooser();
+        JFileChooser fileChooser = new JFileChooser();
 
         // Filtrar para que solo permita elegir imágenes JPG o PNG
-        javax.swing.filechooser.FileNameExtensionFilter filtro = new javax.swing.filechooser.FileNameExtensionFilter("Imágenes JPG y PNG", "jpg", "png");
+        FileNameExtensionFilter filtro = new FileNameExtensionFilter("Imágenes JPG y PNG", "jpg", "png");
         fileChooser.setFileFilter(filtro);
 
         int resultado = fileChooser.showOpenDialog(this);
 
-        if (resultado == javax.swing.JFileChooser.APPROVE_OPTION) {
+        if (resultado == JFileChooser.APPROVE_OPTION) {
             this.archivoImagenSeleccionado = fileChooser.getSelectedFile();
             String rutaImagen = this.archivoImagenSeleccionado.getAbsolutePath();
 
-            javax.swing.ImageIcon iconoOriginal = new javax.swing.ImageIcon(rutaImagen);
+            ImageIcon iconoOriginal = new ImageIcon(rutaImagen);
 
             int ancho = jLabelImagen.getWidth() > 0 ? jLabelImagen.getWidth() : 160;
             int alto = jLabelImagen.getHeight() > 0 ? jLabelImagen.getHeight() : 160;
 
-            java.awt.Image imagenEscalada = iconoOriginal.getImage().getScaledInstance(
+            Image imagenEscalada = iconoOriginal.getImage().getScaledInstance(
                 ancho,
                 alto,
-                java.awt.Image.SCALE_SMOOTH
+                Image.SCALE_SMOOTH
             );
 
-            jLabelImagen.setIcon(new javax.swing.ImageIcon(imagenEscalada));
+            jLabelImagen.setIcon(new ImageIcon(imagenEscalada));
             jLabelImagen.setText(""); // Quita el texto "Imagen"
         }
     }//GEN-LAST:event_jLabelSeleccionarFotoMouseClicked
@@ -343,8 +380,10 @@ public class ModificarUsuarioFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabelImagen;
     private javax.swing.JLabel jLabelNickMod;
     private javax.swing.JLabel jLabelNomMod;
+    private javax.swing.JLabel jLabelPassMod;
     private javax.swing.JLabel jLabelSeleccionarFoto;
     private javax.swing.JLabel jLabelVistaDeMod;
+    private javax.swing.JPasswordField jPasswordFieldPassMod;
     private javax.swing.JSpinner jSpinnerFechaNac;
     private javax.swing.JTextField jTextFieldApelMod;
     private javax.swing.JTextField jTextFieldEmailMod;

@@ -1,6 +1,8 @@
 package com.grupo9.edext.grupo9.servidor_central.dominio;
 
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 public class DataUsuario {
     private String nickname;
@@ -11,6 +13,8 @@ public class DataUsuario {
     private String fechaNac_str;
     private String imagen;
     private String password;
+    private Set<String> seguidos = new HashSet<>();
+    private Set<String> seguidores = new HashSet<>();
 
     public DataUsuario(String nickname, String nombre, String apellido, String email, LocalDate fechaNac, String imagen, String password) {
         this.nickname = nickname;
@@ -94,6 +98,27 @@ public class DataUsuario {
     public String getTipo(){
         return null;
     }
-    
+
+    public Set<String> getSeguidos() {
+        if (seguidos == null) {
+            seguidos = new HashSet<>();
+        }
+        return seguidos;
+    }
+
+    public void setSeguidos(Set<String> seguidos) {
+        this.seguidos = seguidos;
+    }
+
+    public Set<String> getSeguidores() {
+        if (seguidores == null) {
+            seguidores = new HashSet<>();
+        }
+        return seguidores;
+    }
+
+    public void setSeguidores(Set<String> seguidores) {
+        this.seguidores = seguidores;
+    }
 }
    

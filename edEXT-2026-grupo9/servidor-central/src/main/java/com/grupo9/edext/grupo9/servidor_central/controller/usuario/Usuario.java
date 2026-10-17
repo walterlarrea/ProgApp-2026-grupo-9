@@ -1,20 +1,24 @@
 package com.grupo9.edext.grupo9.servidor_central.controller.usuario;
 
-
-import java.time.LocalDate;
-
-/**
- *
- * @author Usuario
- */
-import jakarta.persistence.*;
+import jakarta.persistence.CollectionTable;
+import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.InheritanceType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.Table;
 import java.io.Serializable;
-
+import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "usuarios")
-public class Usuario implements Serializable{
+public class Usuario implements Serializable {
     @Id
     private String nickname;
     private String nombre;
@@ -26,6 +30,11 @@ public class Usuario implements Serializable{
     private String fechaNac_str; // Optional helper if used
     private String password;
 
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "usuario_seguidos", joinColumns = @JoinColumn(name = "usuario_nick"))
+    @Column(name = "seguido_nick")
+    private Set<String> seguidos = new HashSet<>();
+
     public Usuario(String nickname, String nombre, String apellido, String email, LocalDate fechaNac, String rutaImagen, String password) {
         this.nickname = nickname;
         this.nombre = nombre;
@@ -34,15 +43,7 @@ public class Usuario implements Serializable{
         this.fechaNac = fechaNac;
         this.imagen = rutaImagen;
         this.password = password;
-    }
-
-    public Usuario(String nickname, String nombre, String apellido, String email, LocalDate fechaNac, String rutaImagen) {
-        this.nickname = nickname;
-        this.nombre = nombre;
-        this.apellido = apellido;
-        this.email = email;
-        this.fechaNac = fechaNac;
-        this.imagen = rutaImagen;
+        this.seguidos = new HashSet<>();
     }
 
     public Usuario() {
@@ -112,6 +113,27 @@ public class Usuario implements Serializable{
     public void setImagen(String imagen) {
         this.imagen = imagen;
     }
-    
-    
+
+    public Set<String> getSeguidos() {
+        if (seguidos == null) {
+            seguidos = new HashSet<>();
+        }
+        return seguidos;
+    }
+
+    public void setSeguidos(Set<String> seguidos) {
+        this.seguidos = seguidos;
+    }
+
+    public void seguir(String nick) {
+        getSeguidos().add(nick);
+    }
+
+    public void dejarDeSeguir(String nick) {
+        getSeguidos().remove(nick);
+    }
+
+    public boolean loSigue(String nick) {
+        return getSeguidos().contains(nick);
+    }
 }

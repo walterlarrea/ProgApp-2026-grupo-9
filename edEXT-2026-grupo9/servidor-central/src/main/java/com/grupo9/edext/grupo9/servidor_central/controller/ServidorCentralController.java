@@ -246,12 +246,7 @@ class ServidorCentralController implements IServidorCentral {
     }
     
     @Override
-    public void modificarUsuario(String nick, String nom, String ape, java.time.LocalDate fechaNac, String rutaImg) {
-        this.usuarioCtrl.modificarUsuario(nick, nom, ape, fechaNac, rutaImg);
-    }
-
-    @Override
-    public void modificarUsuario(String nick, String nom, String ape, java.time.LocalDate fechaNac, String rutaImg, String passActual, String passNueva) throws ErrorNoExiste {
+    public void modificarUsuario(String nick, String nom, String ape, LocalDate fechaNac, String rutaImg, String passActual, String passNueva) throws ErrorNoExiste {
         this.usuarioCtrl.modificarUsuario(nick, nom, ape, fechaNac, rutaImg, passActual, passNueva);
     }
 
@@ -261,18 +256,8 @@ class ServidorCentralController implements IServidorCentral {
     }
 
     @Override
-    public void registrarEstudiante(String nickname, String nombre, String apellido, String email, LocalDate fechaNac, String rutaImagen) throws ErrorRepetidos {
-        this.usuarioCtrl.registrarEstudiante(nickname, nombre, apellido, email, fechaNac, rutaImagen);
-    }
-
-    @Override
     public void registrarEstudiante(String nickname, String nombre, String apellido, String email, LocalDate fechaNac, String rutaImagen, String password) throws ErrorRepetidos {
         this.usuarioCtrl.registrarEstudiante(nickname, nombre, apellido, email, fechaNac, rutaImagen, password);
-    }
-
-    @Override
-    public void registrarDocente(String nickname, String nombre, String apellido, String email, LocalDate fechaNac, String rutaImagen, String nombreInst) throws ErrorRepetidos {
-        this.usuarioCtrl.registrarDocente(nickname, nombre, apellido, email, fechaNac, rutaImagen, nombreInst);
     }
 
     @Override
@@ -284,4 +269,30 @@ class ServidorCentralController implements IServidorCentral {
     public DataUsuario iniciarSesion(String nicknameOEmail, String password) throws ErrorNoExiste {
         return this.usuarioCtrl.iniciarSesion(nicknameOEmail, password);
     }
+
+    @Override
+    public void seguirUsuario(String seguidorNick, String seguidoNick) throws ErrorNoExiste {
+        this.usuarioCtrl.seguirUsuario(seguidorNick, seguidoNick);
+    }
+
+    @Override
+    public void dejarDeSeguirUsuario(String seguidorNick, String seguidoNick) throws ErrorNoExiste {
+        this.usuarioCtrl.dejarDeSeguirUsuario(seguidorNick, seguidoNick);
+    }
+
+    @Override
+    public Set<String> obtenerSeguidos(String nickname) throws ErrorNoExiste {
+        return this.usuarioCtrl.obtenerSeguidos(nickname);
+    }
+
+    @Override
+    public Set<String> obtenerSeguidores(String nickname) throws ErrorNoExiste {
+        return this.usuarioCtrl.obtenerSeguidores(nickname);
+    }
+
+    @Override
+    public boolean esSeguidor(String seguidorNick, String seguidoNick) {
+        return this.usuarioCtrl.esSeguidor(seguidorNick, seguidoNick);
+    }
 }
+
