@@ -32,7 +32,7 @@
                 <h2>Datos</h2>
                 
                 <label for="instituto"><br>Instituto</br></label>
-                <select id="instituto" name="instituto" required>
+                <select id="instituto" name="instituto" style="width: 30%" required>
                 <option value="" ${empty param.instituto ? 'selected' : ''}>Seleccione un instituto</option>
                     <c:forEach var="instituto" items="${institutos}">
                         <option value="${instituto.nombreI()}" ${param.instituto eq instituto.nombreI() ? 'selected' : ''}>
@@ -43,8 +43,8 @@
                 <script src="${pageContext.request.contextPath}/js/cargarInstitutos.js"></script>
                 
                 <br>
-                <label for="curso"><br>Curso(s) perteneciente(s)</br></label>
-                <select id="curso" name="curso" required>
+                <label for="curso"><br>Curso perteneciente</br></label>
+                <select id="curso" name="curso" style="width: 30%" required>
                     <option value="">Seleccione un curso</option>
                     <c:forEach var="curso" items="${cursos}">
                         <option value="${curso.nombreCurso()}">
@@ -55,15 +55,15 @@
                 </br>  
 
  
-                <label><br>Nombre de la edición</br></label> <input type="text" name="nombreEdi" required>
+                <label><br>Nombre</br></label> <input type="text" name="nombreEdi" style="width: 30%" required>
                 <div class="dato-space2">
-                    <label><br>Fecha de inicio</br></label> <input type="date" name="fInicio" required>
+                    <label><br>Fecha de inicio</br></label> <input type="date" name="fInicio" style="width: 10%" required>
                 </div>
                 <div class="dato-space2">
-                    <label><br>Fecha de finalización</br></label> <input type="date" name="fFin" required>
+                    <label><br>Fecha de finalización</br></label> <input type="date" name="fFin" style="width: 10%" required>
                 </div>
                 <div class="dato-space2">
-                    <label><br>Cupo</br></label> <input type="number" id="cupo" name="cupo" min="1">
+                    <label><br>Cupo</br></label> <input type="number" id="cupo" name="cupo" min="1" max="5000" style="width: 10%">
                 </div>
                 <div class="dato-space2">
                     <label><br>Imagen representativa</br></label>
@@ -84,10 +84,11 @@
                     <c:if test="${empty docentes}">
                         <p>No hay docentes disponibles.</p>
                     </c:if>
-                </div>  
+                </div>
+                <script src="${pageContext.request.contextPath}/js/docObligatorio.js"></script>
                 
                 <div class="btn-der">
-                    <button type="submit" class="btn btn-primary">Guardar</button>
+                    <button type="submit" class="btn btn-primary">Guardar edición</button>
                 </div>
             </form>
         </main>

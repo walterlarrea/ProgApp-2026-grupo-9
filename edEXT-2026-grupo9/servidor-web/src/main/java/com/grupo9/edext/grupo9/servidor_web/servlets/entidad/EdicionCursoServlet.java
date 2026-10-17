@@ -164,6 +164,31 @@ public class EdicionCursoServlet extends HttpServlet {
             }
             imagenPart.write(rutaUploads + File.separator + imagen);
         }
+        
+        if (nombresDocentes == null || nombresDocentes.length == 0) {
+            request.setAttribute("error", "Debe seleccionar al menos un docente.");
+            try {
+                if (servidorCentral != null) {
+                    institutos = servidorCentral.consultarTodosLosInstitutos();
+
+                    if (nombreInst != null && !nombreInst.isBlank()) {
+                        instituto = servidorCentral.buscarInstituto(nombreInst);
+                        docentes = servidorCentral.traerDocentes(instituto);
+                        cursos = servidorCentral.cursosPorInstituto(nombreInst);
+                    }
+                }
+            } catch (Exception e) {
+                throw new ServletException("Error al recargar los datos del formulario.", e);
+            }
+
+            request.setAttribute("institutos", institutos);
+            request.setAttribute("docentes", docentes);
+            request.setAttribute("cursos", cursos);
+            
+            request.getRequestDispatcher("/webEdicion/alta-edicion.jsp").forward(request, response);
+            return;
+        }
+        
         try {
             //registrar edición...
             DataEdicionCurso nuevaEdicion = new DataEdicionCurso(nombreEdi, dataCurso, fInicio, fFin, cupo, docentesSeleccionados, new HashSet<>(), fechaReg, imagen);

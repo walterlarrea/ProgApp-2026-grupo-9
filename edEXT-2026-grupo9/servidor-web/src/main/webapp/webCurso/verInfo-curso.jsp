@@ -22,16 +22,21 @@
                 <p>${curso.descCurso()}</p>
             </section>
                 <div class="dato-space">
-                    <h4>Instituto</h4> <p>${curso.instituto().nombreI()}</p>
+                    <h4>Instituto</h4> 
+                    <div class="nav-list">
+                        <a href="${pageContext.request.contextPath}/instituto?nombre=${curso.instituto().nombreI()}">
+                            <p>${curso.instituto().nombreI()}</p>
+                        </a>
+                    </div>
                 </div>
                 <div class="dato-space">
-                    <h4>Créditos</h4> <p>${curso.cantCred()}</p>
+                    <h4>Créditos</h4> <p class="detalle">${curso.cantCred()}</p>
                 </div>
                 <div class="dato-space">
-                    <h4>Cantidad de horas</h4> <p>${curso.cantHoras()}</p>
+                    <h4>Cantidad de horas</h4> <p class="detalle">${curso.cantHoras()}</p>
                 </div>
                 <div class="dato-space">
-                    <h4>Duración</h4> <p>${curso.duracion()} semanas</p>
+                    <h4>Duración</h4> <p class="detalle">${curso.duracion()} semanas</p>
                 </div>
                 <div class="dato-space">
                     
@@ -54,7 +59,7 @@
                 </c:choose>
             </ol>
                 <div class="dato-space">
-                    <h4>URL</h4> <p>${curso.url()}</p>
+                    <h4>URL</h4> <p class="detalle">${curso.url()}</p>
                 </div>
             <div class="dato-space">
             <h2>Ediciones</h2> 

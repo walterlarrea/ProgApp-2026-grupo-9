@@ -100,6 +100,8 @@ public class InscripcionServlet extends HttpServlet  {
                   
         request.setAttribute("institutos", institutos);
         request.setAttribute("cursos", cursos);
+        
+        request.getRequestDispatcher("/webEdicion/verRes-inscripcion.jsp").forward(request, response);
     }
     
     
