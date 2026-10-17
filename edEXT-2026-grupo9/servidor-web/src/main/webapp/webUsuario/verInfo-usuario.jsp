@@ -3,6 +3,7 @@
 <%@ page import="com.grupo9.edext.grupo9.servidor_central.dominio.DataUsuario" %>
 <%@ page import="com.grupo9.edext.grupo9.servidor_central.dominio.DataEstudiante" %>
 <%@ page import="com.grupo9.edext.grupo9.servidor_central.dominio.DataDocente" %>
+<%@ page import="java.time.format.DateTimeFormatter" %>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -27,6 +28,9 @@
             </c:if>
 
             <c:if test="${not empty usuario}">
+                <%
+                    DataUsuario uObj = (DataUsuario) request.getAttribute("usuario");
+                %>
                 <div class="profile-container">
                     <div class="profile-header">
                         <div class="profile-user-details">
@@ -106,12 +110,13 @@
                         <div class="info-item">
                             <div class="info-label">Fecha de Nacimiento</div>
                             <div class="info-value">
-                                <c:choose>
-                                    <c:when test="${usuario.fechaNac != null}">
-                                        <c:out value="${usuario.fechaNac.format(java.time.format.DateTimeFormatter.ofPattern('dd/MM/yyyy'))}"/>
-                                    </c:when>
-                                    <c:otherwise>-</c:otherwise>
-                                </c:choose>
+                                <%
+                                    if (uObj != null && uObj.getFechaNac() != null) {
+                                        out.print(uObj.getFechaNac().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+                                    } else {
+                                        out.print("-");
+                                    }
+                                %>
                             </div>
                         </div>
                         <c:if test="${usuario.tipo == 'Docente'}">
@@ -132,7 +137,6 @@
                         </h3>
 
                         <%
-                            DataUsuario uObj = (DataUsuario) request.getAttribute("usuario");
                             java.util.Set<String> edicionesSet = new java.util.HashSet<>();
                             if (uObj instanceof DataEstudiante) {
                                 edicionesSet = ((DataEstudiante) uObj).getEdicionesInscriptas();
