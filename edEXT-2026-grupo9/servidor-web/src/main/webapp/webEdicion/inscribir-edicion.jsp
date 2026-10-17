@@ -32,7 +32,7 @@
                 <h2>Datos</h2>
                 
                 <label for="instituto"><br>Instituto</br></label>
-                <select id="instituto" name="instituto" required>
+                <select id="instituto" name="instituto" style="width: 30%" required>
                 <option value="" ${empty param.instituto ? 'selected' : ''}>Seleccione un instituto</option>
                     <c:forEach var="instituto" items="${institutos}">
                         <option value="${instituto.nombreI()}" ${param.instituto eq instituto.nombreI() ? 'selected' : ''}>
@@ -43,8 +43,8 @@
                 <script src="${pageContext.request.contextPath}/js/cargarInstInsc.js"></script>
                 
                 <br>
-                <label for="curso"><br>Curso(s) perteneciente(s)</br></label>
-                <select id="curso" name="curso" required>
+                <label for="curso"><br>Curso perteneciente</br></label>
+                <select id="curso" name="curso" style="width: 30%" required>
                     <option value="">Seleccione un curso</option>
                     <c:forEach var="curso" items="${cursos}">
                         <option value="${curso.nombreCurso()}" ${param.curso eq curso.nombreCurso() ? 'selected' : ''}>
@@ -55,8 +55,8 @@
                 </br>
                 <script src="${pageContext.request.contextPath}/js/cargarCursosInsc.js"></script>
                 
-                <label for="edicion"><br>Ediciones de este curso</br></label>
-                <select id="edicion" name="edicion" required>
+                <label for="edicion"><br>Edición a inscribirse</br></label>
+                <select id="edicion" name="edicion" style="width: 30%" required>
                     <option value="">Seleccione una edición</option>
                         <c:forEach var="edi" items="${ediciones}">
                             <option value="${edi.nombreEdi}" ${param.edicion eq edi.nombreEdi ? 'selected' : ''}>
@@ -94,14 +94,14 @@
                 
                 
                 <div class="dato-space">
-                    <h4>Fecha de inicio</h4> <p>${edicion.fechaInicio}</p>
+                    <h4>Fecha de inicio</h4> <p class="detalle">${edicion.fechaInicio}</p>
                 </div>      
                 <div class="dato-space">
-                    <h4>Fecha de finalización</h4> <p>${edicion.fechaFin}</p>
+                    <h4>Fecha de finalización</h4> <p class="detalle">${edicion.fechaFin}</p>
                 </div>
                 <div class="dato-space">
                     <h4>Cupo</h4>
-                    <p>
+                    <p class="detalle">
                         <c:choose>
                             <c:when test="${edicion.cupo == null}">
                                 Libre

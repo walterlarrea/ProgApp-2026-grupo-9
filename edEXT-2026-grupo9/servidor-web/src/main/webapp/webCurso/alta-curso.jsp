@@ -32,7 +32,7 @@
                 <h2>Datos</h2>
 
                 <label for="instituto"><br>Instituto</br></label>
-                <select id="instituto" name="instituto" required>
+                <select id="instituto" name="instituto" style="width: 30%" required>
                 <option value="" ${empty param.instituto ? 'selected' : ''}>Seleccione un instituto</option>
                     <c:forEach var="instituto" items="${institutos}">
                         <option value="${instituto.nombreI()}" ${param.instituto eq instituto.nombreI() ? 'selected' : ''}>
@@ -42,19 +42,27 @@
                 </select>
                 <script src="${pageContext.request.contextPath}/js/cargarInstCursos.js"></script>
                 <div class="dato-space2">
-                    <label><br>Nombre</br></label> <input type="text" name="nombre" required>
+                    <label><br>Nombre</br></label> <input type="text" name="nombre" style="width: 30%" required>
                 </div>
                 <div class="dato-space2">
-                    <label><br>Descripción</br></label> <input type="text" name="desc" required>
+                    <label><br>Descripción</br></label> <textarea id="desc" name="desc" rows="5" required></textarea>
                 </div>
                 <div class="dato-space2">
-                    <label><br>Duración (Semanas)</br></label> <input type="text" name="duracion" required>
+                    <label><br>Duración (Semanas)</br></label> <input type="number" name="duracion" step="1" min="1" max="52" style="width: 10%" required>
                 </div>
                 <div class="dato-space2">
-                    <label><br>Cantidad de horas (Semestral)</br></label> <input type="text" name="cantHoras" required>
+                    <label><br>Cantidad de horas (Semestral)</br></label> <input type="number" step="1" min="1" max="8760" name="cantHoras" style="width: 10%" required>
                 </div>
                 <div class="dato-space2">
-                    <label><br>Créditos</br></label> <input type="text" name="cantCred" required>
+                    <label><br>Créditos</br></label> <input type="number" name="cantCred" step="1" min="0" style="width: 10%" required>
+                </div>
+                
+                <label><br>URL</br></label> <input type="text" name="url" style="width: 30%" required>
+                
+                <div class="dato-space2">
+                    <label><br>Imagen representativa</br></label> 
+                    <img src="${pageContext.request.contextPath}/uploads/curso/${curso.imagen()}">
+                    <input type="file" name="imagen" accept="image/*">
                 </div>
                 
                 <label><br>Previas</br></label>
@@ -70,16 +78,9 @@
                         <p>No contiene previas.</p>
                     </c:if>
                 </div>
-                
-                <label><br>URL</br></label> <input type="text" name="url" required>
-                
-                <div class="dato-space2">
-                    <label><br>Imagen representativa</br></label> 
-                    <img src="${pageContext.request.contextPath}/uploads/curso/${curso.imagen()}">
-                    <input type="file" name="imagen" accept="image/*">
-                </div>
+                    
                 <div class="btn-der">
-                    <button type="submit" class="btn btn-primary">Guardar</button>
+                    <button type="submit" class="btn btn-primary">Guardar curso</button>
                 </div>
             </form>
         </main>
