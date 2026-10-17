@@ -154,7 +154,8 @@ public class DtoMapper {
                 dataUsuario.getApellido(),
                 dataUsuario.getEmail(),
                 dataUsuario.getFechaNac(),
-                dataUsuario.getImagen()
+                dataUsuario.getImagen(),
+                dataUsuario.getPassword()
         );
     }
 
@@ -252,7 +253,8 @@ public class DtoMapper {
             dataDocente.getEmail(),
             dataDocente.getFechaNac(),
             dataDocente.getImagen(),
-            dataDocente.getNombreInst());
+            dataDocente.getNombreInst(),
+            dataDocente.getPassword());
     }
     
     public static DataDocente toData(Docente docente) {

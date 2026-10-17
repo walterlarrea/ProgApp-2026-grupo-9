@@ -4,65 +4,115 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Iniciar Sesión - edEXT</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/styles.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .login-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: calc(100vh - 180px);
+            padding: 2rem 1rem;
+        }
+        .login-card {
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 2.5rem;
+            max-width: 440px;
+            width: 100%;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+        }
+        .login-title {
+            text-align: center;
+            color: var(--primary);
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+        }
+        .login-form .dato-space2 {
+            margin-bottom: 1.25rem;
+        }
+        .login-form label {
+            display: block;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.4rem;
+        }
+        .login-form input[type="text"],
+        .login-form input[type="password"] {
+            width: 100%;
+            padding: 0.65rem 0.9rem;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 0.95rem;
+            outline: none;
+            box-sizing: border-box;
+        }
+        .login-form input:focus {
+            border-color: var(--primary);
+        }
+        .login-actions {
+            margin-top: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+        .login-actions .btn {
+            text-align: center;
+            padding: 0.75rem;
+            font-size: 1rem;
+        }
+    </style>
 </head>
-<body class="bg-light">
+<body data-context-path="${pageContext.request.contextPath}">
 
     <%-- Incluir Header --%>
     <jsp:include page="/webMiscelanea/header.jsp" />
 
-    <div class="container my-5">
-        <div class="row justify-content-center">
-            <div class="col-md-5">
-                <div class="card shadow-sm border-0 rounded-3">
-                    <div class="card-body p-4">
-                        <h3 class="text-center mb-4 text-primary">
-                            <i class="fas fa-sign-in-alt me-2"></i>Iniciar Sesión
-                        </h3>
+    <div class="login-wrapper">
+        <div class="login-card">
+            <h2 class="login-title">Iniciar Sesión</h2>
 
-                        <% 
-                            String error = (String) request.getAttribute("error");
-                            if (error != null) { 
-                        %>
-                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                                <i class="fas fa-exclamation-circle me-2"></i><%= error %>
-                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                            </div>
-                        <% } %>
+            <% 
+                String error = (String) request.getAttribute("error");
+                if (error != null) { 
+            %>
+                <p class="error"><%= error %></p>
+            <% } %>
 
-                        <form action="<%= request.getContextPath() %>/login" method="POST">
-                            <div class="mb-3">
-                                <label for="nicknameOEmail" class="form-label font-weight-bold">Nickname o Correo Electrónico</label>
-                                <div class="input-group">
-                                    <span class="input-group-text"><i class="fas fa-user"></i></span>
-                                    <input type="text" class="form-control" id="nicknameOEmail" name="nicknameOEmail" placeholder="Ingresa tu nickname o email" required autofocus>
-                                </div>
-                            </div>
-
-                            <div class="mb-4">
-                                <label for="password" class="form-label font-weight-bold">Contraseña</label>
-                                <div class="input-group">
-                                    <span class="input-group-text"><i class="fas fa-lock"></i></span>
-                                    <input type="password" class="form-control" id="password" name="password" placeholder="Ingresa tu contraseña" required>
-                                </div>
-                            </div>
-
-                            <div class="d-grid gap-2">
-                                <button type="submit" class="btn btn-primary btn-lg">Ingresar</button>
-                                <a href="<%= request.getContextPath() %>/home" class="btn btn-outline-secondary mt-2">
-                                    <i class="fas fa-arrow-left me-2"></i>Volver a Inicio
-                                </a>
-                            </div>
-                        </form>
-                    </div>
+            <% 
+                String mensaje = request.getParameter("mensaje");
+                if (mensaje != null) { 
+            %>
+                <div style="background-color: #dcfce7; color: #166534; padding: 0.75rem 1rem; border-radius: 6px; margin-bottom: 1.25rem; border: 1px solid #bbf7d0; font-size: 0.9rem;">
+                    <%= mensaje %>
                 </div>
-            </div>
+            <% } %>
+
+            <form action="<%= request.getContextPath() %>/login" method="POST" class="login-form">
+                <div class="dato-space2">
+                    <label for="nicknameOEmail">Nickname o Correo Electrónico</label>
+                    <input type="text" id="nicknameOEmail" name="nicknameOEmail" placeholder="Ingresa tu nickname o email" required autofocus>
+                </div>
+
+                <div class="dato-space2">
+                    <label for="password">Contraseña</label>
+                    <input type="password" id="password" name="password" placeholder="Ingresa tu contraseña" required>
+                </div>
+
+                <div class="login-actions">
+                    <button type="submit" class="btn btn-primary">Ingresar</button>
+                    <a href="<%= request.getContextPath() %>/alta-usuario" class="btn btn-outline">¿No tienes cuenta? Regístrate</a>
+                    <a href="<%= request.getContextPath() %>/home" class="btn btn-outline" style="border: none; color: var(--text-secondary);">
+                        Volver al inicio
+                    </a>
+                </div>
+            </form>
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

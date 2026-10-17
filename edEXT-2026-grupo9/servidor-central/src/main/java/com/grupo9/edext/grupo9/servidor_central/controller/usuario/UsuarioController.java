@@ -8,59 +8,17 @@ import com.grupo9.edext.grupo9.servidor_central.controller.edicion_de_curso.Edic
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataDocente;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataEstudiante;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataUsuario;
-import com.grupo9.edext.grupo9.mensajes.*;
+import com.grupo9.edext.grupo9.mensajes.ErrorNoExiste;
+import com.grupo9.edext.grupo9.mensajes.ErrorRepetidos;
 import com.grupo9.edext.grupo9.miscelanea.UtensiliosJPA;
-import jakarta.persistence.*;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityTransaction;
 import java.time.LocalDate;
-import java.util.Set;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
-public class UsuarioController implements IUsuario{
-
-    @Override
-    public void modificarUsuario(String nick, String nom, String ape, LocalDate fechaNac, String rutaImg) {
-        ManejadorDocente md = ManejadorDocente.getInstance();
-        Docente docMem = md.obtenerDocente(nick);
-        
-        ManejadorEstudiantes me = ManejadorEstudiantes.getInstance();
-        Estudiante estMem = me.obtenerEstudiante(nick);
-
-        EntityManager em = UtensiliosJPA.getEntityManagerFactory().createEntityManager();
-        EntityTransaction et = em.getTransaction();
-        try {
-            et.begin();
-
-            // Actualizar datos básicos en tabla usuarios
-            em.createNativeQuery("UPDATE usuarios SET nombre = :nom, apellido = :ape, fechaNac = :fecha, imagen = :img WHERE nickname = :nick")
-              .setParameter("nom", nom)
-              .setParameter("ape", ape)
-              .setParameter("fecha", fechaNac)
-              .setParameter("img", rutaImg)
-              .setParameter("nick", nick)
-              .executeUpdate();
-
-            et.commit();
-        } catch (Exception e) {
-            if (et.isActive()) et.rollback();
-            e.printStackTrace();
-        } finally {
-            em.close();
-        }
-
-        // Actualizar en memoria el objeto existente (Docente o Estudiante)
-        if (docMem != null) {
-            docMem.setNombre(nom);
-            docMem.setApellido(ape);
-            docMem.setFechaNac(fechaNac);
-            docMem.setImagen(rutaImg);
-        }
-        if (estMem != null) {
-            estMem.setNombre(nom);
-            estMem.setApellido(ape);
-            estMem.setFechaNac(fechaNac);
-            estMem.setImagen(rutaImg);
-        }
-    }
+public class UsuarioController implements IUsuario {
 
     @Override
     public void modificarUsuario(String nick, String nom, String ape, LocalDate fechaNac, String rutaImg, String passActual, String passNueva) throws ErrorNoExiste {
@@ -122,16 +80,6 @@ public class UsuarioController implements IUsuario{
             estMem.setImagen(rutaImg);
             estMem.setPassword(nuevaPassword);
         }
-    }
-
-    @Override
-    public void modificarUsuario(String nick, String nom, String ape, LocalDate fechaNac, String rutaImg, String nombreInst) {
-        modificarUsuario(nick, nom, ape, fechaNac, rutaImg);
-    }
-
-    @Override
-    public void modificarUsuario(String nick, String nom, String ape, LocalDate fechaNac, String rutaImg, String nombreInst, boolean esDocente) {
-        modificarUsuario(nick, nom, ape, fechaNac, rutaImg);
     }
 
     @Override
@@ -202,11 +150,6 @@ public class UsuarioController implements IUsuario{
     }
 
     @Override
-    public void registrarEstudiante(String nickname, String nombre, String apellido, String email, LocalDate fechaNac, String rutaImagen) throws ErrorRepetidos {
-        registrarEstudiante(nickname, nombre, apellido, email, fechaNac, rutaImagen, null);
-    }
-
-    @Override
     public void registrarEstudiante(String nickname, String nombre, String apellido, String email, LocalDate fechaNac, String rutaImagen, String password) throws ErrorRepetidos {
         ManejadorDocente mDocente = ManejadorDocente.getInstance();
         ManejadorEstudiantes mEstudiante = ManejadorEstudiantes.getInstance();
@@ -222,11 +165,6 @@ public class UsuarioController implements IUsuario{
 
         Estudiante est = new Estudiante(nickname, nombre, apellido, email, fechaNac, rutaImagen, password);
         mEstudiante.addEstudiante(est);
-    }
-
-    @Override
-    public void registrarDocente(String nickname, String nombre, String apellido, String email, LocalDate fechaNac, String rutaImagen, String nombreInst) throws ErrorRepetidos {
-        registrarDocente(nickname, nombre, apellido, email, fechaNac, rutaImagen, nombreInst, null);
     }
 
     @Override
@@ -331,8 +269,11 @@ public class UsuarioController implements IUsuario{
                 doc.getFechaNac(),
                 doc.getImagen(),
                 doc.getNombreInst());
+            dd.setPassword(doc.getPassword());
             if (ediciones != null) dd.getEdiciones().addAll(ediciones);
             if (cursos != null) dd.getCursos().addAll(cursos);
+            dd.setSeguidos(obtenerSeguidos(nickname));
+            dd.setSeguidores(obtenerSeguidores(nickname));
             return dd;
         }
 
@@ -347,7 +288,7 @@ public class UsuarioController implements IUsuario{
                     }
                 }
             }
-            return new DataEstudiante(
+            DataEstudiante de = new DataEstudiante(
                 est.getNickname(),
                 est.getNombre(),
                 est.getApellido(),
@@ -355,9 +296,148 @@ public class UsuarioController implements IUsuario{
                 est.getFechaNac(),
                 est.getImagen(),
                 edicionesInsc);
+            de.setPassword(est.getPassword());
+            de.setSeguidos(obtenerSeguidos(nickname));
+            de.setSeguidores(obtenerSeguidores(nickname));
+            return de;
         }
 
         throw new ErrorNoExiste("El usuario con nickname " + nickname + " no existe.");
+    }
+
+    private Usuario buscarUsuarioMemoria(String nickname) {
+        Docente d = ManejadorDocente.getInstance().obtenerDocente(nickname);
+        if (d != null) return d;
+        return ManejadorEstudiantes.getInstance().obtenerEstudiante(nickname);
+    }
+
+    @Override
+    public void seguirUsuario(String seguidorNick, String seguidoNick) throws ErrorNoExiste {
+        if (seguidorNick == null || seguidoNick == null || seguidorNick.equalsIgnoreCase(seguidoNick)) {
+            return;
+        }
+        Usuario seguidor = buscarUsuarioMemoria(seguidorNick);
+        Usuario seguido = buscarUsuarioMemoria(seguidoNick);
+        if (seguidor == null) {
+            throw new ErrorNoExiste("No existe el usuario seguidor: " + seguidorNick);
+        }
+        if (seguido == null) {
+            throw new ErrorNoExiste("No existe el usuario a seguir: " + seguidoNick);
+        }
+
+        EntityManager em = UtensiliosJPA.getEntityManagerFactory().createEntityManager();
+        EntityTransaction et = em.getTransaction();
+        try {
+            et.begin();
+            // Insertar si no existe
+            List<?> existe = em.createNativeQuery(
+                "SELECT 1 FROM usuario_seguidos WHERE usuario_nick = :usr AND seguido_nick = :seg")
+                .setParameter("usr", seguidorNick)
+                .setParameter("seg", seguidoNick)
+                .getResultList();
+            if (existe.isEmpty()) {
+                em.createNativeQuery(
+                    "INSERT INTO usuario_seguidos (usuario_nick, seguido_nick) VALUES (:usr, :seg)")
+                    .setParameter("usr", seguidorNick)
+                    .setParameter("seg", seguidoNick)
+                    .executeUpdate();
+            }
+            et.commit();
+        } catch (Exception e) {
+            if (et.isActive()) et.rollback();
+            throw e;
+        } finally {
+            em.close();
+        }
+
+        seguidor.seguir(seguidoNick);
+    }
+
+    @Override
+    public void dejarDeSeguirUsuario(String seguidorNick, String seguidoNick) throws ErrorNoExiste {
+        if (seguidorNick == null || seguidoNick == null) {
+            return;
+        }
+        Usuario seguidor = buscarUsuarioMemoria(seguidorNick);
+        if (seguidor == null) {
+            throw new ErrorNoExiste("No existe el usuario seguidor: " + seguidorNick);
+        }
+
+        EntityManager em = UtensiliosJPA.getEntityManagerFactory().createEntityManager();
+        EntityTransaction et = em.getTransaction();
+        try {
+            et.begin();
+            em.createNativeQuery(
+                "DELETE FROM usuario_seguidos WHERE usuario_nick = :usr AND seguido_nick = :seg")
+                .setParameter("usr", seguidorNick)
+                .setParameter("seg", seguidoNick)
+                .executeUpdate();
+            et.commit();
+        } catch (Exception e) {
+            if (et.isActive()) et.rollback();
+            throw e;
+        } finally {
+            em.close();
+        }
+
+        seguidor.dejarDeSeguir(seguidoNick);
+    }
+
+    @Override
+    public Set<String> obtenerSeguidos(String nickname) throws ErrorNoExiste {
+        Usuario u = buscarUsuarioMemoria(nickname);
+        if (u == null) {
+            throw new ErrorNoExiste("No existe el usuario con nickname: " + nickname);
+        }
+
+        EntityManager em = UtensiliosJPA.getEntityManagerFactory().createEntityManager();
+        try {
+            @SuppressWarnings("unchecked")
+            List<String> res = em.createNativeQuery(
+                "SELECT seguido_nick FROM usuario_seguidos WHERE usuario_nick = :usr")
+                .setParameter("usr", nickname)
+                .getResultList();
+            Set<String> seguidos = new HashSet<>(res);
+            u.setSeguidos(seguidos);
+            return seguidos;
+        } catch (Exception e) {
+            return u.getSeguidos();
+        } finally {
+            em.close();
+        }
+    }
+
+    @Override
+    public Set<String> obtenerSeguidores(String nickname) throws ErrorNoExiste {
+        Usuario u = buscarUsuarioMemoria(nickname);
+        if (u == null) {
+            throw new ErrorNoExiste("No existe el usuario con nickname: " + nickname);
+        }
+
+        EntityManager em = UtensiliosJPA.getEntityManagerFactory().createEntityManager();
+        try {
+            @SuppressWarnings("unchecked")
+            List<String> res = em.createNativeQuery(
+                "SELECT usuario_nick FROM usuario_seguidos WHERE usuario_nick = :usr")
+                .setParameter("usr", nickname)
+                .getResultList();
+            return new HashSet<>(res);
+        } catch (Exception e) {
+            return new HashSet<>();
+        } finally {
+            em.close();
+        }
+    }
+
+    @Override
+    public boolean esSeguidor(String seguidorNick, String seguidoNick) {
+        if (seguidorNick == null || seguidoNick == null) return false;
+        try {
+            Set<String> seguidos = obtenerSeguidos(seguidorNick);
+            return seguidos != null && seguidos.contains(seguidoNick);
+        } catch (Exception e) {
+            return false;
+        }
     }
 }
     

@@ -8,10 +8,38 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Modificar Perfil - edEXT</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/styles.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.25rem;
+        }
+        .full-width {
+            grid-column: 1 / -1;
+        }
+        .form-grid input[type="text"],
+        .form-grid input[type="email"],
+        .form-grid input[type="date"],
+        .form-grid input[type="password"] {
+            width: 100%;
+            padding: 0.65rem 0.9rem;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 0.95rem;
+            outline: none;
+            box-sizing: border-box;
+        }
+        .form-grid input:focus {
+            border-color: var(--primary);
+        }
+        .form-grid input:disabled {
+            background-color: #f1f5f9;
+            color: #64748b;
+            cursor: not-allowed;
+        }
+    </style>
 </head>
-<body>
+<body data-context-path="${pageContext.request.contextPath}">
 
     <!-- Cabezal Fijo -->
     <jsp:include page="/webMiscelanea/header.jsp" />
@@ -22,80 +50,74 @@
 
         <!-- Contenido Principal -->
         <main class="main-content">
-            <div class="card shadow-sm border-0 rounded-3 p-4">
-                <h3 class="mb-4 text-primary">
-                    <i class="fas fa-user-edit me-2"></i>Modificar Mis Datos
-                </h3>
+            <div class="profile-container">
+                <h2 style="color: var(--primary); margin-bottom: 1.5rem;">Modificar Mis Datos</h2>
 
                 <c:if test="${not empty error}">
-                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                        <i class="fas fa-exclamation-circle me-2"></i><c:out value="${error}"/>
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
+                    <p class="error"><c:out value="${error}"/></p>
                 </c:if>
 
                 <form action="${pageContext.request.contextPath}/modificarUsuario" method="POST">
-                    <div class="row g-3">
+                    <div class="form-grid">
                         <!-- Campos No Editables -->
-                        <div class="col-md-6">
-                            <label class="form-label font-weight-bold text-muted">Nickname (No editable)</label>
-                            <input type="text" class="form-control bg-light" value="${usuario.nickname}" readonly disabled>
+                        <div>
+                            <label class="info-label">Nickname (No editable)</label>
+                            <input type="text" value="${usuario.nickname}" readonly disabled>
                         </div>
 
-                        <div class="col-md-6">
-                            <label class="form-label font-weight-bold text-muted">Correo Electrónico (No editable)</label>
-                            <input type="email" class="form-control bg-light" value="${usuario.email}" readonly disabled>
+                        <div>
+                            <label class="info-label">Correo Electrónico (No editable)</label>
+                            <input type="email" value="${usuario.email}" readonly disabled>
                         </div>
 
                         <!-- Campos Editables -->
-                        <div class="col-md-6">
-                            <label for="nombre" class="form-label font-weight-bold">Nombre</label>
-                            <input type="text" class="form-control" id="nombre" name="nombre" value="${usuario.nombre}" required>
+                        <div>
+                            <label class="info-label" for="nombre">Nombre</label>
+                            <input type="text" id="nombre" name="nombre" value="${usuario.nombre}" required>
                         </div>
 
-                        <div class="col-md-6">
-                            <label for="apellido" class="form-label font-weight-bold">Apellido</label>
-                            <input type="text" class="form-control" id="apellido" name="apellido" value="${usuario.apellido}" required>
+                        <div>
+                            <label class="info-label" for="apellido">Apellido</label>
+                            <input type="text" id="apellido" name="apellido" value="${usuario.apellido}" required>
                         </div>
 
-                        <div class="col-md-6">
-                            <label for="fechaNac" class="form-label font-weight-bold">Fecha de Nacimiento</label>
-                            <input type="date" class="form-control" id="fechaNac" name="fechaNac" value="${usuario.fechaNac}">
+                        <div>
+                            <label class="info-label" for="fechaNac">Fecha de Nacimiento</label>
+                            <input type="date" id="fechaNac" name="fechaNac" value="${usuario.fechaNac}">
                         </div>
 
-                        <div class="col-md-6">
-                            <label for="imagen" class="form-label font-weight-bold">Ruta o URL de Imagen de Perfil</label>
-                            <input type="text" class="form-control" id="imagen" name="imagen" value="${usuario.imagen}" placeholder="Ej: https://sitio.com/foto.jpg o C:\Ruta\Foto.jpg">
+                        <div>
+                            <label class="info-label" for="imagen">Ruta o URL de Imagen de Perfil</label>
+                            <input type="text" id="imagen" name="imagen" value="${usuario.imagen}" placeholder="Ej: https://sitio.com/foto.jpg o C:\Ruta\Foto.jpg">
                         </div>
 
                         <!-- Sección de Cambio de Contraseña -->
-                        <div class="col-12 mt-4">
-                            <hr>
-                            <h5 class="text-secondary mb-3"><i class="fas fa-key me-2"></i>Cambiar Contraseña (Opcional)</h5>
+                        <div class="full-width" style="margin-top: 1rem; border-top: 1px solid var(--border-color); padding-top: 1rem;">
+                            <h3 style="color: var(--text-primary); font-size: 1.1rem; margin-bottom: 0.5rem;">Cambiar Contraseña (Opcional)</h3>
+                            <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1rem;">Si deseas conservar tu contraseña actual, deja estos campos en blanco.</p>
                         </div>
 
-                        <div class="col-md-4">
-                            <label for="passActual" class="form-label font-weight-bold">Contraseña Actual</label>
-                            <input type="password" class="form-control" id="passActual" name="passActual" placeholder="Ingresa tu contraseña actual">
-                            <div class="form-text">Requerida sólo si vas a cambiar tu contraseña.</div>
+                        <div>
+                            <label class="info-label" for="passActual">Contraseña Actual</label>
+                            <input type="password" id="passActual" name="passActual" placeholder="Ingresa tu contraseña actual">
                         </div>
 
-                        <div class="col-md-4">
-                            <label for="passNueva" class="form-label font-weight-bold">Nueva Contraseña</label>
-                            <input type="password" class="form-control" id="passNueva" name="passNueva" placeholder="Nueva contraseña">
+                        <div>
+                            <label class="info-label" for="passNueva">Nueva Contraseña</label>
+                            <input type="password" id="passNueva" name="passNueva" placeholder="Nueva contraseña">
                         </div>
 
-                        <div class="col-md-4">
-                            <label for="passNuevaConfirm" class="form-label font-weight-bold">Confirmar Nueva Contraseña</label>
-                            <input type="password" class="form-control" id="passNuevaConfirm" name="passNuevaConfirm" placeholder="Repite la nueva contraseña">
+                        <div>
+                            <label class="info-label" for="passNuevaConfirm">Confirmar Nueva Contraseña</label>
+                            <input type="password" id="passNuevaConfirm" name="passNuevaConfirm" placeholder="Repite la nueva contraseña">
                         </div>
 
                         <!-- Botones de Acción -->
-                        <div class="col-12 d-flex gap-2 mt-4">
-                            <button type="submit" class="btn btn-primary btn-lg">
-                                <i class="fas fa-save me-2"></i>Guardar Cambios
+                        <div class="full-width" style="display: flex; gap: 1rem; margin-top: 1.5rem;">
+                            <button type="submit" class="btn btn-primary">
+                                Guardar Cambios
                             </button>
-                            <a href="${pageContext.request.contextPath}/perfil" class="btn btn-outline-secondary btn-lg">
+                            <a href="${pageContext.request.contextPath}/perfil" class="btn btn-outline">
                                 Cancelar
                             </a>
                         </div>
@@ -105,6 +127,5 @@
         </main>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
