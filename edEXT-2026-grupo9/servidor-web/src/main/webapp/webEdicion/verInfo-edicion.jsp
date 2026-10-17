@@ -66,7 +66,6 @@
                 </c:choose>
             </ol>
             </div>
-            <c:if test="${sessionScope.usuarioLogueado.tipo == 'Docente'}">
             <h2>Inscriptos</h2>
             <div class="table-container">
                 <table class="inscriptos-table">
@@ -116,9 +115,10 @@
                 </tbody>
                 </table>
             </div>
-            <div class="btn-der">
-                <button type="submit" class="btn btn-primary">Guardar selección</button>
-            </div>
+            <c:if test="${sessionScope.usuarioLogueado.tipo == 'Docente'}">
+                <div class="btn-der">
+                    <button type="submit" class="btn btn-primary">Guardar selección</button>
+                </div>
             </c:if>
         </main>
     </div>
