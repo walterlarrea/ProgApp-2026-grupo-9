@@ -21,13 +21,20 @@
                 <p role="alert"><c:out value="${errorCarga}"/></p>
             </c:if>
             <section class="hero-banner">
-                <h1>${edicion.nombreEdi}</h1>
-                <a class="corte-texto2" href="${pageContext.request.contextPath}/instituto?nombre=${edicion.cursoAsoc.instituto().nombreI()}">
-                    <h2>${edicion.cursoAsoc.instituto().nombreI()}</h2>
-                </a>
-                <a class="corte-texto2" href="${pageContext.request.contextPath}/curso?nombre=${edicion.cursoAsoc.nombreCurso()}">
-                    <h3>${edicion.cursoAsoc.nombreCurso()}</h3>
-                </a>
+                <div class="hero-imagen">
+                    <img src="${pageContext.request.contextPath}/imagenes/edicionCurso/${edicion.imagen}" alt="Imagen de la edición" 
+                        onerror="this.onerror=null; this.src='${pageContext.request.contextPath}/imagenes/edicionCurso/edicion-placeholder.jpg';">
+                </div>
+                
+                <div class="hero-contenido">
+                    <h1>${edicion.nombreEdi}</h1>
+                    <a class="corte-texto2" href="${pageContext.request.contextPath}/instituto?nombre=${edicion.cursoAsoc.instituto().nombreI()}">
+                        <h2>${edicion.cursoAsoc.instituto().nombreI()}</h2>
+                    </a>
+                    <a class="corte-texto2" href="${pageContext.request.contextPath}/curso?nombre=${edicion.cursoAsoc.nombreCurso()}">
+                        <h3>${edicion.cursoAsoc.nombreCurso()}</h3>
+                    </a>
+                </div>
             </section>
                 <div class="dato-space">
                     <h4>Fecha de inicio</h4> <p class="detalle">${edicion.fechaInicio}</p>
@@ -69,6 +76,7 @@
                 </c:choose>
             </ol>
             </div>
+            <c:if test="${sessionScope.usuarioLogueado.tipo == 'Docente'}">
             <h2>Inscriptos</h2>
             <div class="table-container">
                 <table class="inscriptos-table">
@@ -118,10 +126,6 @@
                 </tbody>
                 </table>
             </div>
-            <c:if test="${sessionScope.usuarioLogueado.tipo == 'Docente'}">
-                <div class="btn-der">
-                    <button type="submit" class="btn btn-primary">Guardar selección</button>
-                </div>
             </c:if>
         </main>
     </div>

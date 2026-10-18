@@ -118,7 +118,7 @@ public class EdicionCursoServlet extends HttpServlet {
         String cupoParam = request.getParameter("cupo");
         Part imagenPart = request.getPart("imagen");
         
-        String imagen = null;
+        String imagen = "edicion-placeholder.jpg";
         DataInstituto instituto = null;
         DataDocente[] docentes = null;
         Set<DataDocente> docentesSeleccionados = new HashSet<>();
@@ -158,7 +158,7 @@ public class EdicionCursoServlet extends HttpServlet {
         //procesar/guardar imagen
         if (imagenPart != null && imagenPart.getSize() > 0) {
             imagen = imagenPart.getSubmittedFileName();
-            String rutaUploads = getServletContext().getRealPath("/uploads/edicionCurso");
+            String rutaUploads = getServletContext().getRealPath("/imagenes/edicionCurso");
             File carpeta = new File(rutaUploads);
 
             if (!carpeta.exists()) {
@@ -192,14 +192,46 @@ public class EdicionCursoServlet extends HttpServlet {
         }
         
         try {
+            if (servidorCentral.existeEdicionCurso(nombreEdi)) {
+                throw new ErrorRepetidos("Ya existe una edición con ese nombre.");
+            }
             //registrar edición...
             DataEdicionCurso nuevaEdicion = new DataEdicionCurso(nombreEdi, dataCurso, fInicio, fFin, cupo, docentesSeleccionados, new HashSet<>(), fechaReg, imagen);
             servidorCentral.guardarEdicionCurso(nuevaEdicion);
+            request.getSession().setAttribute("mensajeExito","😎");
             //vuekvo al menú principal..
             response.sendRedirect(request.getContextPath() + "/home");
         }catch(ErrorRepetidos e){
             request.setAttribute("error", e.getMessage());
-            request.getRequestDispatcher("/webUsuario/alta-edicion.jsp").forward(request, response);
+            request.setAttribute("nombreEdi", nombreEdi);
+            request.setAttribute("cursoSeleccionado", nombreCurso);
+            request.setAttribute("institutoSeleccionado", nombreInst);
+            request.setAttribute("fInicio", request.getParameter("fInicio"));
+            request.setAttribute("fFin", request.getParameter("fFin"));
+            request.setAttribute("cupo", cupoParam);
+            request.setAttribute("docentesSeleccionados", docentesSeleccionados);
+            //cargo los datos de nuevo si tirar error, en caso de que el nombre ya exista
+            cargarDatosFormulario(request, nombreInst);
+            request.getRequestDispatcher("/webEdicion/alta-edicion.jsp").forward(request, response);
+        }
+    }
+    
+    private void cargarDatosFormulario( HttpServletRequest request, String nombreInst) throws ServletException {
+        try {
+            if (servidorCentral != null) {
+                institutos = servidorCentral.consultarTodosLosInstitutos();
+                request.setAttribute("institutos", institutos);
+
+                if (nombreInst != null && !nombreInst.isBlank()) {
+                    DataInstituto instituto = servidorCentral.buscarInstituto(nombreInst);
+
+                    request.setAttribute("docentes",servidorCentral.traerDocentes(instituto));
+
+                    request.setAttribute("cursos", servidorCentral.cursosPorInstituto(nombreInst));
+                }
+            }
+        } catch (Exception e) {
+            throw new ServletException("Error al recargar los datos del formulario.", e);
         }
     }
 }

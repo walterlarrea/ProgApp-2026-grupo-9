@@ -18,8 +18,10 @@
         <%@ include file="../webMiscelanea/sidebar.jsp" %>
         <main class="main-content">
             <section class="hero-banner">
-                <h1>Registrar nueva edición de curso</h1>
-                <p>Crea y agrega una edición a un curso existente</p>
+                <div class="hero-contenido">
+                    <h1>Registrar nueva edición de curso</h1>
+                    <p>Crea y agrega una edición a un curso existente</p>
+                </div>
             </section>
             
             <c:if test="${not empty error}">
@@ -67,7 +69,6 @@
                 </div>
                 <div class="dato-space2">
                     <label><br>Imagen representativa</br></label>
-                    <img src="${pageContext.request.contextPath}/uploads/edicionCurso/${curso.imagen()}">
                     <input type="file" name="imagen" accept="image/*">
                 </div>
                     
@@ -92,6 +93,6 @@
                 </div>
             </form>
         </main>
-    </div>
+    </div>             
 </body>
 </html>

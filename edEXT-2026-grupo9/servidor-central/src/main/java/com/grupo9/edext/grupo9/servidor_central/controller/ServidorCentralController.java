@@ -122,8 +122,7 @@ class ServidorCentralController implements IServidorCentral {
     }
 
     @Override
-    public void inscribirEstudianteEnPrograma(LocalDate fechaInsc, String nickname, String nombrePrograma)
-            throws ErrorRepetidos, ErrorNoExiste {
+    public void inscribirEstudianteEnPrograma(LocalDate fechaInsc, String nickname, String nombrePrograma) throws ErrorRepetidos, ErrorNoExiste {
         this.usuarioCtrl.inscribirEstudianteEnPrograma(fechaInsc, nickname, nombrePrograma);
     }
 
@@ -195,6 +194,11 @@ class ServidorCentralController implements IServidorCentral {
     @Override
     public Set<DataInscEdicion> buscarInscriptos(DataEdicionCurso edicion) {
         return this.edicionCursoCtrl.traerInscriptos(edicion);
+    }
+    
+    @Override
+    public Boolean existeEdicionCurso(String nombre) {
+        return this.edicionCursoCtrl.existeEdicion(nombre);
     }
 
     // Cursos
