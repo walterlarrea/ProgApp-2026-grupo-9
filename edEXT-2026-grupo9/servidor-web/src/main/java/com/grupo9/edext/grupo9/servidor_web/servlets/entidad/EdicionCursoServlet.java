@@ -92,6 +92,8 @@ public class EdicionCursoServlet extends HttpServlet {
             } 
         } catch (Exception e) {
             estadoDb = "Servidor Central activo (sin conexión a base de datos o vacía: " + e.getMessage() + ")";
+            getServletContext().log("No se pudo cargar la edición de curso: " + nombre, e);
+            request.setAttribute("errorCarga", "No fue posible cargar los datos de la edición solicitada.");
         }
                
         request.setAttribute("edicion", edicion);

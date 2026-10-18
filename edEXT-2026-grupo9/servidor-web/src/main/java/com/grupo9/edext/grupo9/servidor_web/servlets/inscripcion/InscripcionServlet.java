@@ -4,6 +4,7 @@ import com.grupo9.edext.grupo9.interfaces.IServidorCentral;
 import com.grupo9.edext.grupo9.miscelanea.Fabrica;
 import com.grupo9.edext.grupo9.servidor_central.controller.edicion_de_curso.EstadoInscripcion;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataCurso;
+import com.grupo9.edext.grupo9.servidor_central.dominio.DataEstudiante;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataUsuario;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataDocente;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataEdicionCurso;
@@ -19,6 +20,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.time.LocalDate;
 import java.io.IOException;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Set;
 
 @WebServlet(name = "InscripcionServlet", urlPatterns = {"/inscripcion"})
@@ -89,17 +91,62 @@ public class InscripcionServlet extends HttpServlet  {
             return;
         }
         
-            try {
-                if (servidorCentral != null) {
-                    institutos = servidorCentral.consultarTodosLosInstitutos();
-                    cursos = servidorCentral.consultarTodosLosCursos();
-                } 
-            } catch (Exception e) {
-                estadoDb = "Servidor Central activo (sin conexión a base de datos o vacía: " + e.getMessage() + ")";
+        HttpSession session = request.getSession(false);
+        Object usuarioEnSesion = session == null ? null : session.getAttribute("usuarioLogueado");
+        if (!(usuarioEnSesion instanceof DataUsuario usuarioLogueado)) {
+            response.sendRedirect(request.getContextPath() + "/login");
+            return;
+        }
+
+        Set<DataInscEdicion> inscripciones = new HashSet<>();
+        try {
+            if (servidorCentral == null) {
+                throw new IllegalStateException("No hay conexión con el Servidor Central.");
             }
-                  
-        request.setAttribute("institutos", institutos);
-        request.setAttribute("cursos", cursos);
+
+            DataUsuario usuarioActualizado = servidorCentral.consultarUsuario(usuarioLogueado.getNickname());
+            if (usuarioActualizado == null) {
+                throw new IllegalStateException("No se encontró el usuario autenticado.");
+            }
+            session.setAttribute("usuarioLogueado", usuarioActualizado);
+
+            if (usuarioActualizado instanceof DataEstudiante estudiante) {
+                Set<String> edicionesInscriptas = estudiante.getEdicionesInscriptas();
+                if (edicionesInscriptas != null) {
+                    for (String nombreEdicion : edicionesInscriptas) {
+                        if (nombreEdicion == null || nombreEdicion.isBlank()) {
+                            continue;
+                        }
+
+                        DataEdicionCurso edicionInscripta = servidorCentral.consultarUnaEdicionCurso(nombreEdicion);
+                        if (edicionInscripta == null) {
+                            continue;
+                        }
+
+                        Set<DataInscEdicion> inscriptosEdicion = servidorCentral.buscarInscriptos(edicionInscripta);
+                        if (inscriptosEdicion == null) {
+                            continue;
+                        }
+
+                        for (DataInscEdicion inscripcion : inscriptosEdicion) {
+                            if (inscripcion == null) {
+                                continue;
+                            }
+                            DataEstudiante estudianteInscripto = inscripcion.getEstudiante();
+                            if (estudianteInscripto != null
+                                    && usuarioActualizado.getNickname().equals(estudianteInscripto.getNickname())) {
+                                inscripciones.add(inscripcion);
+                            }
+                        }
+                    }
+                }
+            }
+        } catch (Exception e) {
+            inscripciones.clear();
+            request.setAttribute("error", "No se pudieron cargar tus inscripciones: " + e.getMessage());
+        }
+
+        request.setAttribute("inscripciones", inscripciones);
         
         request.getRequestDispatcher("/webEdicion/verRes-inscripcion.jsp").forward(request, response);
     }
@@ -134,5 +181,3 @@ public class InscripcionServlet extends HttpServlet  {
         }
     }
 }
-
-

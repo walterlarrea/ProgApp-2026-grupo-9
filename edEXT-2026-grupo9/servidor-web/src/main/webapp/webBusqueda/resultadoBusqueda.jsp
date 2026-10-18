@@ -1,5 +1,5 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@page import="java.util.Map, java.util.HashMap, java.util.ArrayList, com.grupo9.edext.grupo9.servidor_web.servlets.ResultadoBusquedaExtendida"%>
+<%@page import="java.util.Map, java.util.HashMap, java.util.ArrayList, com.grupo9.edext.grupo9.servidor_web.servlets.busqueda.ResultadoBusquedaExtendida"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <!DOCTYPE html>
 <html lang="es">

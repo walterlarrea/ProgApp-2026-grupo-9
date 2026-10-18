@@ -1,5 +1,8 @@
 package com.grupo9.edext.grupo9.servidor_central.controller.usuario;
 
+
+import jakarta.persistence.*;
+import java.io.Serializable;
 import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
@@ -10,7 +13,6 @@ import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Table;
-import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
@@ -101,11 +103,11 @@ public class Usuario implements Serializable {
     public void setFechaNac(LocalDate fechaNac) {
         this.fechaNac = fechaNac;
     }
-    
+
     public String getImagen() {
         return imagen;
     }
-    
+
     public String getRutaImagen() {
         return imagen;
     }

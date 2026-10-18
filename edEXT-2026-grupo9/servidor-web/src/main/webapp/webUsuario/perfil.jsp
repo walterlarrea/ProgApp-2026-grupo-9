@@ -176,6 +176,25 @@
                     </c:if>
                 </div>
 
+                <c:if test="${usuario.tipo == 'Estudiante'}">
+                    <section class="ediciones-section">
+                        <h3>Programas de formación</h3>
+                        <c:choose>
+                            <c:when test="${not empty inscripcionesProgramas}">
+                                <ul class="ediciones-list">
+                                    <c:forEach var="inscripcion" items="${inscripcionesProgramas}">
+                                        <li><a class="edicion-card" href="${pageContext.request.contextPath}/programa?nombre=${inscripcion.programaNombre}">
+                                            <span class="edicion-title"><c:out value="${inscripcion.programaNombre}"/></span>
+                                            <span><c:out value="${inscripcion.fechaInscP}"/></span>
+                                        </a></li>
+                                    </c:forEach>
+                                </ul>
+                            </c:when>
+                            <c:otherwise><p class="text-muted">No estás inscrito en programas de formación.</p></c:otherwise>
+                        </c:choose>
+                    </section>
+                </c:if>
+
                 <!-- Ediciones de Cursos -->
                 <div class="ediciones-section">
                     <h3>

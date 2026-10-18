@@ -2,12 +2,16 @@ package com.grupo9.edext.grupo9.servidor_central.controller;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
+import com.grupo9.edext.grupo9.servidor_central.controller.curso.Categoria;
 import com.grupo9.edext.grupo9.servidor_central.controller.curso.Curso;
 import com.grupo9.edext.grupo9.servidor_central.controller.instituto.Instituto;
+import com.grupo9.edext.grupo9.servidor_central.controller.programa_de_formacion.InscripcionPrograma;
 import com.grupo9.edext.grupo9.servidor_central.controller.programa_de_formacion.ProgramaDeFormacion;
 import com.grupo9.edext.grupo9.servidor_central.controller.usuario.Usuario;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataCurso;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataInstituto;
+import com.grupo9.edext.grupo9.servidor_central.dominio.DataInscPrograma;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataProgramaFormacion;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataUsuario;
 import com.grupo9.edext.grupo9.servidor_central.controller.edicion_de_curso.EdicionCurso;
@@ -20,15 +24,20 @@ import com.grupo9.edext.grupo9.servidor_central.dominio.DataEstudiante;
 import com.grupo9.edext.grupo9.servidor_central.controller.usuario.Estudiante;
 
 public class DtoMapper {
-    
-    //Cursos
-    public static Curso toEntity(DataCurso dataCurso){
-        if(dataCurso == null){
+
+    // Cursos
+    public static Curso toEntity(DataCurso dataCurso) {
+        if (dataCurso == null) {
             return null;
         }
+
+        Set<Curso> previas = dataCurso.previas() == null ? new HashSet<>()
+                : toEntityList(dataCurso.previas(), Curso.class);
+        Set<Categoria> categorias = dataCurso.categorias() == null ? new HashSet<>()
+                : dataCurso.categorias().stream()
+                        .map(Categoria::new)
+                        .collect(Collectors.toCollection(HashSet::new));
         
-        Set<Curso> previas = dataCurso.previas() == null ? new HashSet<>() : toEntityList(dataCurso.previas(), Curso.class);
-        // Set<ProgramaDeFormacion> programas = dataCurso.programas() == null ? new HashSet<>() : toEntityList(dataCurso.programas(), ProgramaDeFormacion.class);
         Curso curso = new Curso(
                 toEntity(dataCurso.instituto()),
                 dataCurso.nombreCurso(),
@@ -40,19 +49,23 @@ public class DtoMapper {
                 dataCurso.url(),
                 previas,
                 new HashSet<>(), // programas
-                dataCurso.imagen()
-        );
-        
+                dataCurso.imagen());
+        curso.setCategorias(categorias);
+
         return curso;
     }
 
-    public static DataCurso toData(Curso curso){
-        if(curso == null){
+    public static DataCurso toData(Curso curso) {
+        if (curso == null) {
             return null;
         }
-        
-        Set<DataCurso> dataPrevias = curso.getPrevias() == null ? new HashSet<>() : toDataList(curso.getPrevias(), DataCurso.class);
-        // Set<DataProgramaFormacion> programas = curso.getProgramas() == null ? new HashSet<>() : toDataList(curso.getProgramas(), DataProgramaFormacion.class);
+
+        Set<DataCurso> dataPrevias = curso.getPrevias() == null ? new HashSet<>()
+                : toDataList(curso.getPrevias(), DataCurso.class);
+        Set<String> categorias = curso.getCategorias() == null ? new HashSet<>()
+                : curso.getCategorias().stream()
+                        .map(Categoria::getNombreCategoria)
+                        .collect(Collectors.toCollection(HashSet::new));
         DataCurso dataCurso = new DataCurso(
                 toData(curso.getInstituto()),
                 curso.getNombreCurso(),
@@ -63,22 +76,24 @@ public class DtoMapper {
                 curso.getFechaReg(),
                 curso.getUrl(),
                 dataPrevias,
-                new HashSet<>(),  // programas
-                curso.getImagen()
-        );
-        
+                new HashSet<>(), // programas
+                categorias,
+                curso.getImagen());
+
         return dataCurso;
     }
-    
+
     // Programas de Formación
 
-    public static ProgramaDeFormacion toEntity(DataProgramaFormacion dataPrograma){
-        if(dataPrograma == null){
+    public static ProgramaDeFormacion toEntity(DataProgramaFormacion dataPrograma) {
+        if (dataPrograma == null) {
             return null;
         }
         Set<Curso> cursos = new HashSet<>();
-        for(DataCurso dataCurso : dataPrograma.cursos()) {
-            cursos.add(toEntity(dataCurso));
+        if (dataPrograma.cursos() != null) {
+            for (DataCurso dataCurso : dataPrograma.cursos()) {
+                cursos.add(toEntity(dataCurso));
+            }
         }
 
         ProgramaDeFormacion programa = new ProgramaDeFormacion(
@@ -87,21 +102,22 @@ public class DtoMapper {
                 cursos,
                 dataPrograma.fechaInicio(),
                 dataPrograma.fechaFin(),
-                dataPrograma.fechaDeCreacion()
-        );
-        
+                dataPrograma.fechaDeCreacion());
+        programa.setImagen(dataPrograma.imagen());
+
         return programa;
     }
 
-    public static DataProgramaFormacion toData(ProgramaDeFormacion programa){
-        if(programa == null){
+    public static DataProgramaFormacion toData(ProgramaDeFormacion programa) {
+        if (programa == null) {
             return null;
         }
-        
-        Set<DataCurso> cursos = new HashSet<>();
 
-        for(Curso curso : programa.getCursos()) {
-            cursos.add(toData(curso));
+        HashSet<DataCurso> cursos = new HashSet<>();
+        if (programa.getCursos() != null) {
+            for (Curso curso : programa.getCursos()) {
+                cursos.add(toData(curso));
+            }
         }
 
         DataProgramaFormacion dataPrograma = new DataProgramaFormacion(
@@ -110,41 +126,38 @@ public class DtoMapper {
                 cursos,
                 programa.getFechaInicio(),
                 programa.getFechaFin(),
-                programa.getFechaDeCreacion()
-        );
-        
+                programa.getFechaDeCreacion(),
+                programa.getImagen());
+
         return dataPrograma;
     }
-    
+
     // Institutos
-    
- 
-    public static Instituto toEntity(DataInstituto dataInstituto){
-        if(dataInstituto == null){
+
+    public static Instituto toEntity(DataInstituto dataInstituto) {
+        if (dataInstituto == null) {
             return null;
         }
 
         Instituto instituto = new Instituto(
-                dataInstituto.nombreI()
-        );
-        
+                dataInstituto.nombreI());
+
         return instituto;
     }
 
-    public static DataInstituto toData(Instituto instituto){
-        if(instituto == null){
+    public static DataInstituto toData(Instituto instituto) {
+        if (instituto == null) {
             return null;
         }
-        
+
         DataInstituto dataInstituto = new DataInstituto(
-                instituto.getNombreI()
-        );
-        
+                instituto.getNombreI());
+
         return dataInstituto;
     }
-    
-    public static Usuario toEntity(DataUsuario dataUsuario){
-        if(dataUsuario == null){
+
+    public static Usuario toEntity(DataUsuario dataUsuario) {
+        if (dataUsuario == null) {
             return null;
         }
 
@@ -159,68 +172,66 @@ public class DtoMapper {
         );
     }
 
-    public static DataUsuario toData(Usuario usuario){
-        if(usuario == null){
+    public static DataUsuario toData(Usuario usuario) {
+        if (usuario == null) {
             return null;
         }
-        
+
         return new DataUsuario(
                 usuario.getNickname(),
                 usuario.getNombre(),
                 usuario.getApellido(),
                 usuario.getEmail(),
                 usuario.getFechaNac(),
-                usuario.getRutaImagen()
-        );
+                usuario.getRutaImagen());
     }
-    
+
     // Ediciones de cursos
     public static EdicionCurso toEntity(DataEdicionCurso dataEdicion) {
         // Inscripciones, empieza vacía
         Set<InscEdicion> inscripciones = new HashSet<>();
-        
+
         return new EdicionCurso(
-            dataEdicion.getNombreEdi(),
-            toEntity(dataEdicion.getCursoAsoc()),
-            dataEdicion.getFechaInicio(),
-            dataEdicion.getFechaFin(),
-            dataEdicion.getCupo(),
-            toEntity(dataEdicion.getDocentes()),
-            inscripciones,
-            dataEdicion.getFechaPub(),
-            dataEdicion.getImagen()
-        );
+                dataEdicion.getNombreEdi(),
+                toEntity(dataEdicion.getCursoAsoc()),
+                dataEdicion.getFechaInicio(),
+                dataEdicion.getFechaFin(),
+                dataEdicion.getCupo(),
+                toEntity(dataEdicion.getDocentes()),
+                inscripciones,
+                dataEdicion.getFechaPub(),
+                dataEdicion.getImagen());
     }
-    
+
     public static DataEdicionCurso toData(EdicionCurso edicion) {
         // Inscripciones
         Set<DataInscEdicion> inscripciones = new HashSet<>();
-        for(InscEdicion insc : edicion.getInscripciones()) {
+        for (InscEdicion insc : edicion.getInscripciones()) {
             Estudiante estudiante = insc.getEstudiante();
             DataEstudiante dataEstudiante = new DataEstudiante(
-                estudiante.getNickname(),
-                estudiante.getNombre(),
-                estudiante.getApellido(),
-                estudiante.getEmail(),
-                estudiante.getFechaNac(),
-                null);
-            DataInscEdicion dataInsc = new DataInscEdicion(insc.getFechaInscE(), dataEstudiante, insc.getEdicion().getNombreEdi(), insc.getEstado());
+                    estudiante.getNickname(),
+                    estudiante.getNombre(),
+                    estudiante.getApellido(),
+                    estudiante.getEmail(),
+                    estudiante.getFechaNac(),
+                    null);
+            DataInscEdicion dataInsc = new DataInscEdicion(insc.getFechaInscE(), dataEstudiante,
+                    insc.getEdicion().getNombreEdi(), insc.getEstado());
             inscripciones.add(dataInsc);
         }
 
         return new DataEdicionCurso(
-            edicion.getNombreEdi(),
-            toData(edicion.getCursoAsoc()),
-            edicion.getFechaInicio(),
-            edicion.getFechaFin(),
-            edicion.getCupo(),
-            toData(edicion.getDocentes()),
-            inscripciones,
-            edicion.getFechaPub(),
-            edicion.getImagen()
-        );
+                edicion.getNombreEdi(),
+                toData(edicion.getCursoAsoc()),
+                edicion.getFechaInicio(),
+                edicion.getFechaFin(),
+                edicion.getCupo(),
+                toData(edicion.getDocentes()),
+                inscripciones,
+                edicion.getFechaPub(),
+                edicion.getImagen());
     }
-    
+
     public static Set<Docente> toEntity(Set<DataDocente> datos) {
         Set<Docente> docentes = new HashSet<>();
         if (datos != null) {
@@ -230,7 +241,7 @@ public class DtoMapper {
         }
         return docentes;
     }
-    
+
     public static Set<DataDocente> toData(Set<Docente> docentes) {
         Set<DataDocente> datos = new HashSet<>();
         if (docentes != null) {
@@ -241,7 +252,7 @@ public class DtoMapper {
 
         return datos;
     }
-    
+
     public static Docente toEntity(DataDocente dataDocente) {
         if (dataDocente == null) {
             return null;
@@ -256,32 +267,45 @@ public class DtoMapper {
             dataDocente.getNombreInst(),
             dataDocente.getPassword());
     }
-    
+
     public static DataDocente toData(Docente docente) {
         if (docente == null) {
             return null;
         }
         return new DataDocente(
-            docente.getNickname(),
-            docente.getNombre(),
-            docente.getApellido(),
-            docente.getEmail(),
-            docente.getFechaNac(),
-            docente.getRutaImagen(),
-            docente.getNombreInst());
+                docente.getNickname(),
+                docente.getNombre(),
+                docente.getApellido(),
+                docente.getEmail(),
+                docente.getFechaNac(),
+                docente.getRutaImagen(),
+                docente.getNombreInst());
     }
 
     public static DataEstudiante toData(Estudiante estudiante) {
         if (estudiante == null) {
             return null;
         }
-        return new DataEstudiante(
-            estudiante.getNickname(),
-            estudiante.getNombre(),
-            estudiante.getApellido(),
-            estudiante.getEmail(),
-            estudiante.getFechaNac(),
-            estudiante.getRutaImagen());
+        DataEstudiante dataEstudiante = new DataEstudiante(
+                estudiante.getNickname(),
+                estudiante.getNombre(),
+                estudiante.getApellido(),
+                estudiante.getEmail(),
+                estudiante.getFechaNac(),
+                estudiante.getRutaImagen());
+        if (estudiante.getInscripcionesProgramas() != null) {
+            Set<DataInscPrograma> inscripcionesProgramas = new HashSet<>();
+            for (InscripcionPrograma inscripcion : estudiante.getInscripcionesProgramas()) {
+                if (inscripcion != null && inscripcion.getPrograma() != null) {
+                    inscripcionesProgramas.add(new DataInscPrograma(
+                            estudiante.getNickname(),
+                            inscripcion.getPrograma().getNombre(),
+                            inscripcion.getFechaInscripcion()));
+                }
+            }
+            dataEstudiante.setInscripcionesProgramas(inscripcionesProgramas);
+        }
+        return dataEstudiante;
     }
 
     private static <Source, Target> HashSet<Target> convertList(
@@ -344,9 +368,22 @@ public class DtoMapper {
         if (targetType == DataDocente.class && source instanceof Docente docente) {
             return toData(docente);
         }
+        if (targetType == Estudiante.class && source instanceof DataEstudiante dataEstudiante) {
+            return new Estudiante(
+                    dataEstudiante.getNickname(),
+                    dataEstudiante.getNombre(),
+                    dataEstudiante.getApellido(),
+                    dataEstudiante.getEmail(),
+                    dataEstudiante.getFechaNac(),
+                    dataEstudiante.getImagen(),
+                    dataEstudiante.getPassword());
+        }
+        if (targetType == DataEstudiante.class && source instanceof Estudiante estudiante) {
+            return toData(estudiante);
+        }
 
         throw new IllegalArgumentException(
-            "Unsupported conversion from " + source.getClass().getName()
-                + " to " + targetType.getName());
+                "Unsupported conversion from " + source.getClass().getName()
+                        + " to " + targetType.getName());
     }
 }

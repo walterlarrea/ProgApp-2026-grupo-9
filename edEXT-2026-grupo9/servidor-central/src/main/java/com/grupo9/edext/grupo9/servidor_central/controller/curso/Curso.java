@@ -3,10 +3,11 @@ package com.grupo9.edext.grupo9.servidor_central.controller.curso;
 import com.grupo9.edext.grupo9.servidor_central.controller.edicion_de_curso.EdicionCurso;
 import com.grupo9.edext.grupo9.servidor_central.controller.instituto.Instituto;
 import com.grupo9.edext.grupo9.servidor_central.controller.programa_de_formacion.ProgramaDeFormacion;
+import com.grupo9.edext.grupo9.servidor_central.controller.curso.Categoria;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Set;
-import jakarta.persistence.*;       
+import jakarta.persistence.*;
 import java.util.HashSet;
 
 @Entity
@@ -27,24 +28,24 @@ public class Curso implements Serializable {
     @JoinColumn(name = "nombreI")
     private Instituto instituto;
     // Owning side: Defines the join table layout
-    @ManyToMany (fetch = FetchType.EAGER)
-    @JoinTable(
-        name = "cursos_previas",
-        joinColumns = @JoinColumn(name = "nombre_curso"),
-        inverseJoinColumns = @JoinColumn(name = "nombre_curso_previa")
-    )
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "cursos_previas", joinColumns = @JoinColumn(name = "nombre_curso"), inverseJoinColumns = @JoinColumn(name = "nombre_curso_previa"))
     private Set<Curso> previas = new HashSet<>();
     // Inverse side: Uses mappedBy to reference the owning side's field
     @ManyToMany(mappedBy = "previas")
     private Set<Curso> dependientes = new HashSet<>();
     @ManyToMany(mappedBy = "cursos")
     private Set<ProgramaDeFormacion> programas;
+    @ManyToMany
+    @JoinTable(name = "categorias_cursos", joinColumns = @JoinColumn(name = "curso_nombreCurso"), inverseJoinColumns = @JoinColumn(name = "categoria_nombreCategoria"))
+    private Set<Categoria> categorias = new HashSet<>();
     private String imagen;
-       
-    
-    public Curso(){}
 
-    public Curso(Instituto instituto, String nombreCurso, String descCurso, int duracion, int cantHoras, int cantCred, LocalDate fechaReg, String url, Set<Curso> previas, String imagen) {
+    public Curso() {
+    }
+
+    public Curso(Instituto instituto, String nombreCurso, String descCurso, int duracion, int cantHoras, int cantCred,
+            LocalDate fechaReg, String url, Set<Curso> previas, String imagen) {
         this.instituto = instituto;
         this.nombreCurso = nombreCurso;
         this.descCurso = descCurso;
@@ -57,7 +58,8 @@ public class Curso implements Serializable {
         this.imagen = imagen;
     }
 
-    public Curso(Instituto instituto, String nombreCurso, String descCurso, int duracion, int cantHoras, int cantCred, LocalDate fechaReg, String url, Set<Curso> previas, Set<ProgramaDeFormacion> programas, String imagen) {
+    public Curso(Instituto instituto, String nombreCurso, String descCurso, int duracion, int cantHoras, int cantCred,
+            LocalDate fechaReg, String url, Set<Curso> previas, Set<ProgramaDeFormacion> programas, String imagen) {
         this.instituto = instituto;
         this.nombreCurso = nombreCurso;
         this.descCurso = descCurso;
@@ -150,16 +152,24 @@ public class Curso implements Serializable {
     public void setDependientes(Set<Curso> dependientes) {
         this.dependientes = dependientes;
     }
-    
-    public Set<ProgramaDeFormacion> getProgramas(){
+
+    public Set<ProgramaDeFormacion> getProgramas() {
         return this.programas;
     }
-    
-    public String getImagen(){
+
+    public Set<Categoria> getCategorias() {
+        return categorias;
+    }
+
+    public void setCategorias(Set<Categoria> categorias) {
+        this.categorias = categorias;
+    }
+
+    public String getImagen() {
         return this.imagen;
     }
-    
-    public void setImagen(String imagen){
+
+    public void setImagen(String imagen) {
         this.imagen = imagen;
     }
 }

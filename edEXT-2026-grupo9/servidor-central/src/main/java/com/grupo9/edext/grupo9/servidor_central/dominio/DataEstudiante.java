@@ -6,21 +6,43 @@ import java.util.HashSet;
 
 public class DataEstudiante extends DataUsuario {
     private Set<DataInscEdicion> inscripciones = new HashSet<>();
+    private Set<DataInscPrograma> inscripcionesProgramas = new HashSet<>();
     private Set<String> edicionesInscriptas = new HashSet<>();
 
-    public DataEstudiante(String nickname, String nombreUs, String apellidoUs, String email, LocalDate fechaNac, String imagen) {
+    public DataEstudiante(String nickname, String nombreUs, String apellidoUs, String email, LocalDate fechaNac,
+            String imagen) {
         super(nickname, nombreUs, apellidoUs, email, fechaNac, imagen);
     }
 
-    public DataEstudiante(String nickname, String nombreUs, String apellidoUs, String email, LocalDate fechaNac, String imagen, Set<String> edicionesInscriptas) {
+    public DataEstudiante(String nickname, String nombreUs, String apellidoUs, String email, LocalDate fechaNac,
+            String imagen, Set<String> edicionesInscriptas) {
         super(nickname, nombreUs, apellidoUs, email, fechaNac, imagen);
         if (edicionesInscriptas != null) {
             this.edicionesInscriptas = edicionesInscriptas;
         }
     }
-    
-    public Set<DataInscEdicion> getInscripciones(){
+
+    public DataEstudiante(String nickname, String nombreUs, String apellidoUs, String email, LocalDate fechaNac,
+            String imagen, Set<String> edicionesInscriptas, Set<DataInscPrograma> inscripcionesProgramas) {
+        super(nickname, nombreUs, apellidoUs, email, fechaNac, imagen);
+        if (edicionesInscriptas != null) {
+            this.edicionesInscriptas = edicionesInscriptas;
+        }
+        if (inscripcionesProgramas != null) {
+            this.inscripcionesProgramas = inscripcionesProgramas;
+        }
+    }
+
+    public Set<DataInscEdicion> getInscripciones() {
         return inscripciones;
+    }
+
+    public Set<DataInscPrograma> getInscripcionesProgramas() {
+        return inscripcionesProgramas;
+    }
+
+    public void setInscripcionesProgramas(Set<DataInscPrograma> inscripcionesProgramas) {
+        this.inscripcionesProgramas = inscripcionesProgramas;
     }
 
     public Set<String> getEdicionesInscriptas() {
@@ -30,7 +52,7 @@ public class DataEstudiante extends DataUsuario {
     public void setEdicionesInscriptas(Set<String> edicionesInscriptas) {
         this.edicionesInscriptas = edicionesInscriptas;
     }
-    
+
     @Override
     public String getTipo() {
         return "Estudiante";

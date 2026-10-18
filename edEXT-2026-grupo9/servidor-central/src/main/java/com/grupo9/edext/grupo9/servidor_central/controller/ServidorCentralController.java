@@ -36,15 +36,14 @@ import java.util.Set;
 import java.util.List;
 
 class ServidorCentralController implements IServidorCentral {
-    
+
     private final IProgramaDeFormacion progDeFormacionCtrl = new ProgramaDeFormacionController();
     private final IEdicionCurso edicionCursoCtrl = new EdicionCursoController();
     private final ICurso cursoCtrl = new CursoController();
     private final IInstituto institutoCtrl = new InstitutoController();
     private final IUsuario usuarioCtrl = new UsuarioController();
     private final IBusqueda busquedaCtrl = new BusquedaController();
-    
-    
+
     // Step 1: Private constructor prevents instantiation from other classes
     private ServidorCentralController() {
         // Optional: Protect against reflection attacks
@@ -52,7 +51,9 @@ class ServidorCentralController implements IServidorCentral {
             throw new IllegalStateException("Instance already exists!");
         }
     }
-    // Step 2: Inner static helper class responsible for holding the singleton instance
+
+    // Step 2: Inner static helper class responsible for holding the singleton
+    // instance
     // It is loaded into memory only when getInstance() is called (Lazy Loading)
     private static class ServidorCentral {
         private static final ServidorCentralController INSTANCE = new ServidorCentralController();
@@ -62,9 +63,9 @@ class ServidorCentralController implements IServidorCentral {
     public static IServidorCentral getInstance() {
         return ServidorCentral.INSTANCE;
     }
-    
+
     @Override
-    public void logStatus(){
+    public void logStatus() {
         System.out.println("Server ACTIVE");
     }
 
@@ -91,41 +92,53 @@ class ServidorCentralController implements IServidorCentral {
 
     // Programas de Formación
     @Override
-    public DataProgramaFormacion guardarProgramaDeFormacion(DataProgramaFormacion nuevoPrograma){
+    public DataProgramaFormacion guardarProgramaDeFormacion(DataProgramaFormacion nuevoPrograma) {
         return this.progDeFormacionCtrl.guardarNuevoProgramaDeFormacion(nuevoPrograma);
     }
-    
+
     @Override
-    public HashSet<DataProgramaFormacion> consultarTodosLosProgramas(){
+    public HashSet<DataProgramaFormacion> consultarTodosLosProgramas() {
         return this.progDeFormacionCtrl.todosLosProgramas();
     }
 
     @Override
-    public Boolean existeProgramaDeFormacion(String nombre){
+    public Boolean existeProgramaDeFormacion(String nombre) {
         return this.progDeFormacionCtrl.existeProgramaDeFormacion(nombre);
     }
-    
+
     @Override
-    public DataProgramaFormacion traerPorNombreId(String nombreId){
+    public DataProgramaFormacion traerPorNombreId(String nombreId) {
         return this.progDeFormacionCtrl.traerPorNombreId(nombreId);
     }
 
     @Override
-    public HashSet<DataProgramaFormacion> programasPorCurso(String nombreCurso){
+    public HashSet<DataProgramaFormacion> programasPorCurso(String nombreCurso) {
         return this.progDeFormacionCtrl.programasPorCurso(nombreCurso);
     }
 
     @Override
-    public Boolean agregarCursoAProgramaDeFormacion(String nombreIdPrograma, String nombreIdCurso){
+    public Boolean agregarCursoAProgramaDeFormacion(String nombreIdPrograma, String nombreIdCurso) {
         return this.progDeFormacionCtrl.agregarCursoAProgramaDeFormacion(nombreIdPrograma, nombreIdCurso);
     }
-    
+
+    @Override
+    public void inscribirEstudianteEnPrograma(LocalDate fechaInsc, String nickname, String nombrePrograma)
+            throws ErrorRepetidos, ErrorNoExiste {
+        this.usuarioCtrl.inscribirEstudianteEnPrograma(fechaInsc, nickname, nombrePrograma);
+    }
+
+    @Override
+    public void inscribirseAPrograma(LocalDate fechaInsc, String nickname, String nombrePrograma)
+            throws ErrorRepetidos, ErrorNoExiste {
+        this.inscribirEstudianteEnPrograma(fechaInsc, nickname, nombrePrograma);
+    }
+
     // Ediciones de Cursos
     @Override
-    public DataEdicionCurso guardarEdicionCurso(DataEdicionCurso nuevaEdicion) throws ErrorRepetidos{
+    public DataEdicionCurso guardarEdicionCurso(DataEdicionCurso nuevaEdicion) throws ErrorRepetidos {
         return this.edicionCursoCtrl.guardarNuevaEdicionCurso(nuevaEdicion);
     }
-    
+
     @Override
     public DataDocente[] traerDocentes(DataInstituto dataInstituto) {
         Instituto instituto = DtoMapper.toEntity(dataInstituto);
@@ -136,9 +149,9 @@ class ServidorCentralController implements IServidorCentral {
         }
         return datos;
     }
-    
+
     @Override
-    public DataEstudiante[] traerEstudiantes(){
+    public DataEstudiante[] traerEstudiantes() {
         Estudiante[] entidades = this.edicionCursoCtrl.traerEstudiantes();
         DataEstudiante[] datos = new DataEstudiante[entidades.length];
         for (int i = 0; i < entidades.length; i++) {
@@ -146,19 +159,20 @@ class ServidorCentralController implements IServidorCentral {
         }
         return datos;
     }
-    
+
     @Override
-    public void inscribirEstudiante(LocalDate fechaInsc, String nickname, String nombreEdi, EstadoInscripcion estado)throws ErrorRepetidos, ErrorNoExiste {
+    public void inscribirEstudiante(LocalDate fechaInsc, String nickname, String nombreEdi, EstadoInscripcion estado)
+            throws ErrorRepetidos, ErrorNoExiste {
         this.edicionCursoCtrl.inscribirNuevoEstudiante(fechaInsc, nickname, nombreEdi, estado);
     }
-    
+
     @Override
-    public DataEdicionCurso consultarUnaEdicionCurso(String nEdi) throws ErrorNoExiste{
+    public DataEdicionCurso consultarUnaEdicionCurso(String nEdi) throws ErrorNoExiste {
         return this.edicionCursoCtrl.consultarEdicionCurso(nEdi);
     }
-    
+
     @Override
-    public DataEdicionCurso[] traerEdiciones(DataCurso dataCurso){
+    public DataEdicionCurso[] traerEdiciones(DataCurso dataCurso) {
         Curso curso = DtoMapper.toEntity(dataCurso);
         EdicionCurso[] entidades = this.edicionCursoCtrl.traerEdiciones(curso);
         DataEdicionCurso[] datos = new DataEdicionCurso[entidades.length];
@@ -167,73 +181,74 @@ class ServidorCentralController implements IServidorCentral {
         }
         return datos;
     }
-    
+
     @Override
-    public HashSet<DataEdicionCurso> traerEdiciones(DataCurso dataCurso, boolean asSet){
+    public HashSet<DataEdicionCurso> traerEdiciones(DataCurso dataCurso, boolean asSet) {
         return this.edicionCursoCtrl.traerEdiciones(dataCurso);
     }
-    
+
     @Override
-    public DataDocente[] buscarDocentes(DataEdicionCurso edicion){
+    public DataDocente[] buscarDocentes(DataEdicionCurso edicion) {
         return this.edicionCursoCtrl.traerDocentesEdicion(edicion);
     }
-    
+
     @Override
-    public Set<DataInscEdicion> buscarInscriptos(DataEdicionCurso edicion){
+    public Set<DataInscEdicion> buscarInscriptos(DataEdicionCurso edicion) {
         return this.edicionCursoCtrl.traerInscriptos(edicion);
-    }    
+    }
+
     // Cursos
     @Override
-    public DataCurso guardarCurso(DataCurso nuevoCurso) throws ErrorRepetidos{
+    public DataCurso guardarCurso(DataCurso nuevoCurso) throws ErrorRepetidos {
         return this.cursoCtrl.guardarNuevoCurso(nuevoCurso);
     }
-    
+
     @Override
-    public HashSet<DataCurso> consultarTodosLosCursos(){
+    public HashSet<DataCurso> consultarTodosLosCursos() {
         return this.cursoCtrl.todosLosCursos();
     }
 
     @Override
-    public HashSet<DataCurso> cursosPorInstituto(String nombreInstituto){
+    public HashSet<DataCurso> cursosPorInstituto(String nombreInstituto) {
         return this.cursoCtrl.cursosPorInstituto(nombreInstituto);
     }
 
     @Override
-    public Boolean existeCurso(String nombre){
+    public Boolean existeCurso(String nombre) {
         return this.cursoCtrl.existeCurso(nombre);
     }
-    
+
     @Override
-    public HashSet<DataCurso> cursosNoRelacionadosConUnProgDeFormacion(String idProgramaDeFormacion){
+    public HashSet<DataCurso> cursosNoRelacionadosConUnProgDeFormacion(String idProgramaDeFormacion) {
         return this.cursoCtrl.cursosNoRelacionadosConUnProgDeFormacion(idProgramaDeFormacion);
     }
-    
+
     @Override
-    public DataCurso buscarCurso(String nombre){
+    public DataCurso buscarCurso(String nombre) {
         return this.cursoCtrl.traerCurso(nombre);
     }
 
     // Institutos
     @Override
-    public DataInstituto guardarInstituto(DataInstituto nuevoInstituto){
+    public DataInstituto guardarInstituto(DataInstituto nuevoInstituto) {
         return this.institutoCtrl.guardarNuevoInstituto(nuevoInstituto);
     }
-    
+
     @Override
-    public HashSet<DataInstituto> consultarTodosLosInstitutos(){
+    public HashSet<DataInstituto> consultarTodosLosInstitutos() {
         return this.institutoCtrl.todosLosInstitutos();
     }
 
     @Override
-    public Boolean existeInstituto(String nombre){
+    public Boolean existeInstituto(String nombre) {
         return this.institutoCtrl.existeInstituto(nombre);
     }
-    
+
     @Override
-    public DataInstituto buscarInstituto(String nombre){
+    public DataInstituto buscarInstituto(String nombre) {
         return this.institutoCtrl.traerInstituto(nombre);
     }
-    
+
     // Usuarios
     @Override
     public String[] listarUsuarios() {
@@ -244,7 +259,12 @@ class ServidorCentralController implements IServidorCentral {
     public DataUsuario consultarUsuario(String nickname) throws ErrorNoExiste {
         return this.usuarioCtrl.consultarUsuario(nickname);
     }
-    
+
+    @Override
+    public void modificarUsuario(String nick, String nom, String ape, java.time.LocalDate fechaNac, String rutaImg) {
+        this.usuarioCtrl.modificarUsuario(nick, nom, ape, fechaNac, rutaImg);
+    }
+
     @Override
     public void modificarUsuario(String nick, String nom, String ape, LocalDate fechaNac, String rutaImg, String passActual, String passNueva) throws ErrorNoExiste {
         this.usuarioCtrl.modificarUsuario(nick, nom, ape, fechaNac, rutaImg, passActual, passNueva);
@@ -256,8 +276,36 @@ class ServidorCentralController implements IServidorCentral {
     }
 
     @Override
+    public void registrarEstudiante(String nickname, String nombre, String apellido, String email, LocalDate fechaNac,
+            String rutaImagen) throws ErrorRepetidos {
+        this.usuarioCtrl.registrarEstudiante(nickname, nombre, apellido, email, fechaNac, rutaImagen);
+    }
+
+    @Override
+
     public void registrarEstudiante(String nickname, String nombre, String apellido, String email, LocalDate fechaNac, String rutaImagen, String password) throws ErrorRepetidos {
         this.usuarioCtrl.registrarEstudiante(nickname, nombre, apellido, email, fechaNac, rutaImagen, password);
+    }
+
+    @Override
+    public void registrarDocente(String nickname, String nombre, String apellido, String email, LocalDate fechaNac,
+            String rutaImagen, String nombreInst) throws ErrorRepetidos {
+        this.usuarioCtrl.registrarDocente(nickname, nombre, apellido, email, fechaNac, rutaImagen, nombreInst);
+    }
+
+    @Override
+    public void seguirUsuario(String seguidorNick, String seguidoNick) throws ErrorNoExiste, ErrorRepetidos {
+        this.usuarioCtrl.seguirUsuario(seguidorNick, seguidoNick);
+    }
+
+    @Override
+    public void dejarDeSeguirUsuario(String seguidorNick, String seguidoNick) throws ErrorNoExiste {
+        this.usuarioCtrl.dejarDeSeguirUsuario(seguidorNick, seguidoNick);
+    }
+
+    @Override
+    public boolean estaSiguiendoUsuario(String seguidorNick, String seguidoNick) throws ErrorNoExiste {
+        return this.usuarioCtrl.estaSiguiendoUsuario(seguidorNick, seguidoNick);
     }
 
     @Override
@@ -268,16 +316,6 @@ class ServidorCentralController implements IServidorCentral {
     @Override
     public DataUsuario iniciarSesion(String nicknameOEmail, String password) throws ErrorNoExiste {
         return this.usuarioCtrl.iniciarSesion(nicknameOEmail, password);
-    }
-
-    @Override
-    public void seguirUsuario(String seguidorNick, String seguidoNick) throws ErrorNoExiste {
-        this.usuarioCtrl.seguirUsuario(seguidorNick, seguidoNick);
-    }
-
-    @Override
-    public void dejarDeSeguirUsuario(String seguidorNick, String seguidoNick) throws ErrorNoExiste {
-        this.usuarioCtrl.dejarDeSeguirUsuario(seguidorNick, seguidoNick);
     }
 
     @Override

@@ -57,6 +57,26 @@
             <artifactId>gson</artifactId>
             <version>2.14.0</version>
         </dependency>
+
+        <!-- Test dependencies -->
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>2.3.232</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>5.18.0</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-junit-jupiter</artifactId>
+            <version>5.18.0</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <build>
@@ -67,6 +87,17 @@
                 <version>3.4.0</version>
                 <configuration>
                     <failOnMissingWebXml>false</failOnMissingWebXml>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <systemPropertyVariables>
+                        <jakarta.persistence.jdbc.url>jdbc:h2:mem:edext_test;DB_CLOSE_DELAY=-1</jakarta.persistence.jdbc.url>
+                        <jakarta.persistence.jdbc.user>sa</jakarta.persistence.jdbc.user>
+                        <jakarta.persistence.jdbc.password>edext_test</jakarta.persistence.jdbc.password>
+                    </systemPropertyVariables>
                 </configuration>
             </plugin>
             <!-- Plugin Cargo para ejecutar Tomcat 10 directamente con: mvn cargo:run -->

@@ -21,7 +21,7 @@ import java.util.Set;
 import java.io.File;
 
 @MultipartConfig
-@WebServlet(name = "CursoServlet", urlPatterns = {"/curso"})
+@WebServlet(name = "CursoServlet", urlPatterns = { "/curso" })
 public class CursoServlet extends HttpServlet {
     Set<DataInstituto> institutos = Collections.emptySet();
     Set<DataCurso> cursos = Collections.emptySet();
@@ -29,26 +29,27 @@ public class CursoServlet extends HttpServlet {
     Set<DataCurso> previas = new HashSet<>();
     String estadoDb = "Conectado al Servidor Central";
     IServidorCentral servidorCentral = Fabrica.getInstance().getIServidorCentral();
-    
+
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException { 
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
         String nombre = request.getParameter("nombre");
         DataCurso curso = null;
         String accion = request.getParameter("accion");
         String nombreInst = request.getParameter("instituto");
 
-        if("alta".equals(accion)) {
+        if ("alta".equals(accion)) {
             try {
-                if(servidorCentral != null) {
+                if (servidorCentral != null) {
                     institutos = servidorCentral.consultarTodosLosInstitutos();
-                    if(nombreInst != null && !nombreInst.isBlank()){
+                    if (nombreInst != null && !nombreInst.isBlank()) {
                         previas = new HashSet<>(servidorCentral.cursosPorInstituto(nombreInst));
-            }else {
-                previas = new HashSet<>();
-            }
+                    } else {
+                        previas = new HashSet<>();
+                    }
                 }
             } catch (Exception e) {
-                estadoDb = "Servidor Central activo (sin conexión a base de datos o vacía: "+ e.getMessage() + ")";
+                estadoDb = "Servidor Central activo (sin conexión a base de datos o vacía: " + e.getMessage() + ")";
             }
 
             request.setAttribute("institutos", institutos);
@@ -57,36 +58,37 @@ public class CursoServlet extends HttpServlet {
             request.getRequestDispatcher("/webCurso/alta-curso.jsp").forward(request, response);
             return;
         }
-        
+
         try {
             if (servidorCentral != null) {
                 curso = servidorCentral.buscarCurso(nombre);
                 institutos = servidorCentral.consultarTodosLosInstitutos();
                 cursos = servidorCentral.consultarTodosLosCursos();
                 ediciones = servidorCentral.traerEdiciones(curso, true);
-                //recuperar las previas asociadas al curso consultado.
+                // recuperar las previas asociadas al curso consultado.
                 previas = curso.previas();
             }
         } catch (Exception e) {
             estadoDb = "Servidor Central activo (sin conexión a base de datos o vacía: " + e.getMessage() + ")";
         }
-        
+
         if (curso == null) {
             response.sendError(HttpServletResponse.SC_NOT_FOUND, "Curso no encontrado");
             return;
         }
-        
+
         request.setAttribute("curso", curso);
         request.setAttribute("institutos", institutos);
         request.setAttribute("cursos", cursos);
         request.setAttribute("ediciones", ediciones);
         request.setAttribute("previas", previas);
-        
+
         request.getRequestDispatcher("/webCurso/verInfo-curso.jsp").forward(request, response);
     }
-    
+
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
         String nombre = request.getParameter("nombre");
         String desc = request.getParameter("desc");
         String nombreInst = request.getParameter("instituto");
@@ -130,16 +132,17 @@ public class CursoServlet extends HttpServlet {
             }
             imagenPart.write(rutaUploads + File.separator + imagen);
         }
-        try{
-            //registro el curso..
-            DataCurso nuevoCurso = new DataCurso(instituto, nombre, desc, duracion, cantHoras, cantCred, fechaReg, url, previasSeleccionadas, new HashSet<>(), imagen);
+        try {
+            // registro el curso..
+            DataCurso nuevoCurso = new DataCurso(instituto, nombre, desc, duracion, cantHoras, cantCred, fechaReg, url,
+                    previasSeleccionadas, new HashSet<>(), new HashSet<>(), imagen);
             servidorCentral.guardarCurso(nuevoCurso);
-            //vuekvo al menú principal..
+            // vuekvo al menú principal..
             response.sendRedirect(request.getContextPath() + "/home");
-        }catch(ErrorRepetidos e){
+        } catch (ErrorRepetidos e) {
             request.setAttribute("error", e.getMessage());
             request.getRequestDispatcher("/webUsuario/alta-curso.jsp").forward(request, response);
         }
-        
+
     }
 }

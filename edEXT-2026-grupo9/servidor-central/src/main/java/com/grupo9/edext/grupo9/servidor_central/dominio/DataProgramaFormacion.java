@@ -1,18 +1,17 @@
 package com.grupo9.edext.grupo9.servidor_central.dominio;
 
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.Set;
-
 
 public record DataProgramaFormacion(
         String nombre,
         String descripcion,
-        Set<DataCurso> cursos,
+        HashSet<DataCurso> cursos,
         LocalDate fechaInicio,
         LocalDate fechaFin,
-        LocalDate fechaDeCreacion
-    ) {
-    
+        LocalDate fechaDeCreacion,
+        String imagen) {
     @Override
     public String toString() {
         return "DTOProgramaDeFormacion{" +
@@ -22,6 +21,7 @@ public record DataProgramaFormacion(
                 "fechaInicio=" + fechaInicio + "," +
                 "fechaFin=" + fechaFin +
                 "fechaDeCreacion=" + fechaDeCreacion +
+                "imagen=" + imagen +
                 '}';
     }
 }

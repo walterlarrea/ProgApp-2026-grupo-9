@@ -1,6 +1,7 @@
 package com.grupo9.edext.grupo9.servidor_central.controller.programa_de_formacion;
 
 import com.grupo9.edext.grupo9.servidor_central.controller.curso.Curso;
+import java.util.HashSet;
 import java.io.Serializable;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -13,27 +14,29 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import java.time.LocalDate;
 import java.util.Set;
+import jakarta.persistence.OneToMany;
 
 @Entity
 @Table(name = "programas_de_formacion")
-public class ProgramaDeFormacion implements Serializable{
+public class ProgramaDeFormacion implements Serializable {
     @Id
     private String nombre;
     private String descripcion;
     @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-        name = "programas_cursos",
-        joinColumns = @JoinColumn(name = "nombre_programa"),
-        inverseJoinColumns = @JoinColumn(name = "nombre_curso")
-    )
+    @JoinTable(name = "programas_cursos", joinColumns = @JoinColumn(name = "nombre_programa"), inverseJoinColumns = @JoinColumn(name = "nombre_curso"))
     private Set<Curso> cursos;
     private LocalDate fechaInicio;
     private LocalDate fechaFin;
     private LocalDate fechaDeCreacion;
-    
-    public ProgramaDeFormacion(){}
-    
-    public ProgramaDeFormacion (String nombre, String descripcion, Set<Curso> cursos, LocalDate fechaInicio, LocalDate fechaFin, LocalDate fechaDeCreacion){
+    private String imagen;
+    @OneToMany(mappedBy = "programa")
+    private Set<InscripcionPrograma> inscripciones = new HashSet<>();
+
+    public ProgramaDeFormacion() {
+    }
+
+    public ProgramaDeFormacion(String nombre, String descripcion, Set<Curso> cursos, LocalDate fechaInicio,
+            LocalDate fechaFin, LocalDate fechaDeCreacion) {
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.cursos = cursos;
@@ -41,31 +44,31 @@ public class ProgramaDeFormacion implements Serializable{
         this.fechaFin = fechaFin;
         this.fechaDeCreacion = fechaDeCreacion;
     }
-    
+
     public String getNombre() {
         return this.nombre;
     }
-    
+
     public void setNombre(String nombreForm) {
         this.nombre = nombreForm;
     }
-    
+
     public String getDescripcion() {
         return this.descripcion;
     }
-    
+
     public void setDescripcion(String descForm) {
         this.descripcion = descForm;
     }
-    
+
     public Set<Curso> getCursos() {
         return this.cursos;
     }
-    
+
     public void setCursos(Set<Curso> cursos) {
         this.cursos = cursos;
     }
-    
+
     public void agregarCurso(Curso curso) {
         this.cursos.add(curso);
     }
@@ -73,24 +76,40 @@ public class ProgramaDeFormacion implements Serializable{
     public LocalDate getFechaInicio() {
         return this.fechaInicio;
     }
-    
+
     public void setFechaInicio(LocalDate fechaInicio) {
         this.fechaInicio = fechaInicio;
     }
-    
+
     public LocalDate getFechaFin() {
         return this.fechaFin;
     }
-    
+
     public void setFechaFin(LocalDate fechaFin) {
         this.fechaFin = fechaFin;
     }
-    
+
     public LocalDate getFechaDeCreacion() {
         return this.fechaDeCreacion;
     }
-    
-    public void setFechaDeCreacion(LocalDate fechaDeCreacion){
+
+    public void setFechaDeCreacion(LocalDate fechaDeCreacion) {
         this.fechaDeCreacion = fechaDeCreacion;
+    }
+
+    public String getImagen() {
+        return imagen;
+    }
+
+    public void setImagen(String imagen) {
+        this.imagen = imagen;
+    }
+
+    public Set<InscripcionPrograma> getInscripciones() {
+        return inscripciones;
+    }
+
+    public void setInscripciones(Set<InscripcionPrograma> inscripciones) {
+        this.inscripciones = inscripciones;
     }
 }

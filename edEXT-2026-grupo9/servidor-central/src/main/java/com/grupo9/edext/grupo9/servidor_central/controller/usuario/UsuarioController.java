@@ -5,8 +5,11 @@ import com.grupo9.edext.grupo9.servidor_central.controller.edicion_de_curso.Insc
 import com.grupo9.edext.grupo9.servidor_central.controller.instituto.ManejadorInstituto;
 import com.grupo9.edext.grupo9.servidor_central.controller.edicion_de_curso.ManejadorEdiciones;
 import com.grupo9.edext.grupo9.servidor_central.controller.edicion_de_curso.EdicionCurso;
+import com.grupo9.edext.grupo9.servidor_central.controller.programa_de_formacion.InscripcionPrograma;
+import com.grupo9.edext.grupo9.servidor_central.controller.programa_de_formacion.ProgramaDeFormacion;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataDocente;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataEstudiante;
+import com.grupo9.edext.grupo9.servidor_central.dominio.DataInscPrograma;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataUsuario;
 import com.grupo9.edext.grupo9.mensajes.ErrorNoExiste;
 import com.grupo9.edext.grupo9.mensajes.ErrorRepetidos;
@@ -21,10 +24,54 @@ import java.util.Set;
 public class UsuarioController implements IUsuario {
 
     @Override
-    public void modificarUsuario(String nick, String nom, String ape, LocalDate fechaNac, String rutaImg, String passActual, String passNueva) throws ErrorNoExiste {
+    public void modificarUsuario(String nick, String nom, String ape, LocalDate fechaNac, String rutaImg) {
         ManejadorDocente md = ManejadorDocente.getInstance();
         Docente docMem = md.obtenerDocente(nick);
-        
+
+        ManejadorEstudiantes me = ManejadorEstudiantes.getInstance();
+        Estudiante estMem = me.obtenerEstudiante(nick);
+
+        EntityManager em = UtensiliosJPA.getEntityManagerFactory().createEntityManager();
+        EntityTransaction et = em.getTransaction();
+        try {
+            et.begin();
+            em.createNativeQuery(
+                    "UPDATE usuarios SET nombre = :nom, apellido = :ape, fechaNac = :fecha, imagen = :img WHERE nickname = :nick")
+                    .setParameter("nom", nom)
+                    .setParameter("ape", ape)
+                    .setParameter("fecha", fechaNac)
+                    .setParameter("img", rutaImg)
+                    .setParameter("nick", nick)
+                    .executeUpdate();
+            et.commit();
+        } catch (Exception e) {
+            if (et.isActive())
+                et.rollback();
+            e.printStackTrace();
+        } finally {
+            em.close();
+        }
+
+        if (docMem != null) {
+            docMem.setNombre(nom);
+            docMem.setApellido(ape);
+            docMem.setFechaNac(fechaNac);
+            docMem.setImagen(rutaImg);
+        }
+        if (estMem != null) {
+            estMem.setNombre(nom);
+            estMem.setApellido(ape);
+            estMem.setFechaNac(fechaNac);
+            estMem.setImagen(rutaImg);
+        }
+    }
+
+    @Override
+    public void modificarUsuario(String nick, String nom, String ape, LocalDate fechaNac, String rutaImg,
+            String passActual, String passNueva) throws ErrorNoExiste {
+        ManejadorDocente md = ManejadorDocente.getInstance();
+        Docente docMem = md.obtenerDocente(nick);
+
         ManejadorEstudiantes me = ManejadorEstudiantes.getInstance();
         Estudiante estMem = me.obtenerEstudiante(nick);
 
@@ -48,18 +95,20 @@ public class UsuarioController implements IUsuario {
         try {
             et.begin();
 
-            em.createNativeQuery("UPDATE usuarios SET nombre = :nom, apellido = :ape, fechaNac = :fecha, imagen = :img, password = :pass WHERE nickname = :nick")
-              .setParameter("nom", nom)
-              .setParameter("ape", ape)
-              .setParameter("fecha", fechaNac)
-              .setParameter("img", rutaImg)
-              .setParameter("pass", nuevaPassword)
-              .setParameter("nick", nick)
-              .executeUpdate();
+            em.createNativeQuery(
+                    "UPDATE usuarios SET nombre = :nom, apellido = :ape, fechaNac = :fecha, imagen = :img, password = :pass WHERE nickname = :nick")
+                    .setParameter("nom", nom)
+                    .setParameter("ape", ape)
+                    .setParameter("fecha", fechaNac)
+                    .setParameter("img", rutaImg)
+                    .setParameter("pass", nuevaPassword)
+                    .setParameter("nick", nick)
+                    .executeUpdate();
 
             et.commit();
         } catch (Exception e) {
-            if (et.isActive()) et.rollback();
+            if (et.isActive())
+                et.rollback();
             throw e;
         } finally {
             em.close();
@@ -83,10 +132,22 @@ public class UsuarioController implements IUsuario {
     }
 
     @Override
+    public void modificarUsuario(String nick, String nom, String ape, LocalDate fechaNac, String rutaImg,
+            String nombreInst) {
+        modificarUsuario(nick, nom, ape, fechaNac, rutaImg);
+    }
+
+    @Override
+    public void modificarUsuario(String nick, String nom, String ape, LocalDate fechaNac, String rutaImg,
+            String nombreInst, boolean esDocente) {
+        modificarUsuario(nick, nom, ape, fechaNac, rutaImg);
+    }
+
+    @Override
     public void eliminarUsuario(String nick) throws ErrorNoExiste {
         ManejadorDocente md = ManejadorDocente.getInstance();
         Docente doc = md.obtenerDocente(nick);
-        
+
         ManejadorEstudiantes me = ManejadorEstudiantes.getInstance();
         Estudiante est = me.obtenerEstudiante(nick);
 
@@ -106,15 +167,22 @@ public class UsuarioController implements IUsuario {
         EntityTransaction et = em.getTransaction();
         try {
             et.begin();
-            em.createNativeQuery("DELETE FROM inscripciones_a_ediciones WHERE estudiane_nickname = :nick").setParameter("nick", nick).executeUpdate();
-            em.createNativeQuery("DELETE FROM edicion_docente WHERE docente_nickname = :nick").setParameter("nick", nick).executeUpdate();
-            em.createNativeQuery("DELETE FROM docente_instituto WHERE docente_nickname = :nick").setParameter("nick", nick).executeUpdate();
-            em.createNativeQuery("DELETE FROM docentes WHERE nickname = :nick").setParameter("nick", nick).executeUpdate();
-            em.createNativeQuery("DELETE FROM estudiantes WHERE nickname = :nick").setParameter("nick", nick).executeUpdate();
-            em.createNativeQuery("DELETE FROM usuarios WHERE nickname = :nick").setParameter("nick", nick).executeUpdate();
+            em.createNativeQuery("DELETE FROM inscripciones_a_ediciones WHERE estudiane_nickname = :nick")
+                    .setParameter("nick", nick).executeUpdate();
+            em.createNativeQuery("DELETE FROM edicion_docente WHERE docente_nickname = :nick")
+                    .setParameter("nick", nick).executeUpdate();
+            em.createNativeQuery("DELETE FROM docente_instituto WHERE docente_nickname = :nick")
+                    .setParameter("nick", nick).executeUpdate();
+            em.createNativeQuery("DELETE FROM docentes WHERE nickname = :nick").setParameter("nick", nick)
+                    .executeUpdate();
+            em.createNativeQuery("DELETE FROM estudiantes WHERE nickname = :nick").setParameter("nick", nick)
+                    .executeUpdate();
+            em.createNativeQuery("DELETE FROM usuarios WHERE nickname = :nick").setParameter("nick", nick)
+                    .executeUpdate();
             et.commit();
         } catch (Exception e) {
-            if (et.isActive()) et.rollback();
+            if (et.isActive())
+                et.rollback();
             e.printStackTrace();
             throw e;
         } finally {
@@ -138,18 +206,25 @@ public class UsuarioController implements IUsuario {
 
         if (md.getDocente() != null) {
             for (Docente d : md.getDocente()) {
-                if (d.getEmail().equalsIgnoreCase(email)) return true;
+                if (d.getEmail().equalsIgnoreCase(email))
+                    return true;
             }
         }
         if (me.getEstudiante() != null) {
             for (Estudiante e : me.getEstudiante()) {
-                if (e.getEmail().equalsIgnoreCase(email)) return true;
+                if (e.getEmail().equalsIgnoreCase(email))
+                    return true;
             }
         }
         return false;
     }
 
     @Override
+    public void registrarEstudiante(String nickname, String nombre, String apellido, String email, LocalDate fechaNac,
+            String rutaImagen) throws ErrorRepetidos {
+        registrarEstudiante(nickname, nombre, apellido, email, fechaNac, rutaImagen, null);
+    }
+
     public void registrarEstudiante(String nickname, String nombre, String apellido, String email, LocalDate fechaNac, String rutaImagen, String password) throws ErrorRepetidos {
         ManejadorDocente mDocente = ManejadorDocente.getInstance();
         ManejadorEstudiantes mEstudiante = ManejadorEstudiantes.getInstance();
@@ -168,6 +243,11 @@ public class UsuarioController implements IUsuario {
     }
 
     @Override
+    public void registrarDocente(String nickname, String nombre, String apellido, String email, LocalDate fechaNac,
+            String rutaImagen, String nombreInst) throws ErrorRepetidos {
+        registrarDocente(nickname, nombre, apellido, email, fechaNac, rutaImagen, nombreInst, null);
+    }
+
     public void registrarDocente(String nickname, String nombre, String apellido, String email, LocalDate fechaNac, String rutaImagen, String nombreInst, String password) throws ErrorRepetidos {
         ManejadorDocente mDocente = ManejadorDocente.getInstance();
         ManejadorEstudiantes mEstudiante = ManejadorEstudiantes.getInstance();
@@ -181,7 +261,7 @@ public class UsuarioController implements IUsuario {
         }
 
         Docente doc = new Docente(nickname, nombre, apellido, email, fechaNac, rutaImagen, nombreInst, password);
-        
+
         Instituto instituto = ManejadorInstituto.getInstance().obtenerInstituto(nombreInst);
 
         if (instituto != null) {
@@ -190,6 +270,79 @@ public class UsuarioController implements IUsuario {
         }
 
         mDocente.addDocente(doc);
+    }
+
+    @Override
+    public void inscribirEstudianteEnPrograma(LocalDate fechaInsc, String nickname, String nombrePrograma)
+            throws ErrorRepetidos, ErrorNoExiste {
+        ManejadorEstudiantes manejadorEstudiantes = ManejadorEstudiantes.getInstance();
+        EntityManager em = UtensiliosJPA.getEntityManagerFactory().createEntityManager();
+        try {
+            Estudiante estudiante = em.find(Estudiante.class, nickname);
+            if (estudiante == null) {
+                throw new ErrorNoExiste("No existe el estudiante con nickname: " + nickname);
+            }
+            ProgramaDeFormacion programa = em.find(ProgramaDeFormacion.class, nombrePrograma);
+            if (programa == null) {
+                throw new ErrorNoExiste("No existe el programa de formación: " + nombrePrograma);
+            }
+
+            Long cantidadInscripciones = em.createQuery(
+                    "SELECT COUNT(i) FROM InscripcionPrograma i WHERE i.estudiante.nickname = :nickname AND i.programa.nombre = :programa",
+                    Long.class)
+                    .setParameter("nickname", nickname)
+                    .setParameter("programa", nombrePrograma)
+                    .getSingleResult();
+            if (cantidadInscripciones > 0) {
+                throw new ErrorRepetidos("El estudiante ya está inscrito en el programa: " + nombrePrograma);
+            }
+
+            InscripcionPrograma nuevaInscripcion = new InscripcionPrograma(estudiante, programa, fechaInsc);
+            EntityTransaction et = em.getTransaction();
+            try {
+                et.begin();
+                em.persist(nuevaInscripcion);
+                if (estudiante.getInscripcionesProgramas() == null) {
+                    estudiante.setInscripcionesProgramas(new HashSet<>());
+                }
+                estudiante.getInscripcionesProgramas().add(nuevaInscripcion);
+                if (programa.getInscripciones() == null) {
+                    programa.setInscripciones(new HashSet<>());
+                }
+                programa.getInscripciones().add(nuevaInscripcion);
+                et.commit();
+                estudiante.getInscripciones().size();
+                estudiante.getInscripcionesProgramas().size();
+                manejadorEstudiantes.addEstudianteDirect(estudiante);
+            } catch (Exception e) {
+                if (et.isActive()) {
+                    et.rollback();
+                }
+                if (e instanceof ErrorRepetidos) {
+                    throw (ErrorRepetidos) e;
+                }
+                throw e;
+            }
+        } finally {
+            em.close();
+        }
+    }
+
+    @Override
+    public boolean estaSiguiendoUsuario(String seguidorNick, String seguidoNick) throws ErrorNoExiste {
+        if (seguidorNick == null || seguidoNick == null) {
+            return false;
+        }
+        Usuario seguidor = buscarUsuarioMemoria(seguidorNick);
+        Usuario seguido = buscarUsuarioMemoria(seguidoNick);
+        if (seguidor == null) {
+            throw new ErrorNoExiste("No existe el usuario seguidor: " + seguidorNick);
+        }
+        if (seguido == null) {
+            throw new ErrorNoExiste("No existe el usuario a seguir: " + seguidoNick);
+        }
+        Set<String> seguidos = obtenerSeguidos(seguidorNick);
+        return seguidos != null && seguidos.contains(seguidoNick);
     }
 
     @Override
@@ -288,6 +441,18 @@ public class UsuarioController implements IUsuario {
                     }
                 }
             }
+            
+            Set<DataInscPrograma> inscripcionesProgramas = new HashSet<>();
+            if (est.getInscripcionesProgramas() != null) {
+                for (InscripcionPrograma inscripcion : est.getInscripcionesProgramas()) {
+                    if (inscripcion != null && inscripcion.getPrograma() != null) {
+                        inscripcionesProgramas.add(new DataInscPrograma(
+                                est.getNickname(),
+                                inscripcion.getPrograma().getNombre(),
+                                inscripcion.getFechaInscripcion()));
+                    }
+                }
+            }
             DataEstudiante de = new DataEstudiante(
                 est.getNickname(),
                 est.getNombre(),
@@ -295,7 +460,8 @@ public class UsuarioController implements IUsuario {
                 est.getEmail(),
                 est.getFechaNac(),
                 est.getImagen(),
-                edicionesInsc);
+                edicionesInsc,
+                inscripcionesProgramas);
             de.setPassword(est.getPassword());
             de.setSeguidos(obtenerSeguidos(nickname));
             de.setSeguidores(obtenerSeguidores(nickname));
@@ -312,7 +478,7 @@ public class UsuarioController implements IUsuario {
     }
 
     @Override
-    public void seguirUsuario(String seguidorNick, String seguidoNick) throws ErrorNoExiste {
+    public void seguirUsuario(String seguidorNick, String seguidoNick) throws ErrorNoExiste, ErrorRepetidos {
         if (seguidorNick == null || seguidoNick == null || seguidorNick.equalsIgnoreCase(seguidoNick)) {
             return;
         }
@@ -323,6 +489,9 @@ public class UsuarioController implements IUsuario {
         }
         if (seguido == null) {
             throw new ErrorNoExiste("No existe el usuario a seguir: " + seguidoNick);
+        }
+        if (seguidor.loSigue(seguidoNick)) {
+            throw new ErrorRepetidos("Ya sigues a este usuario.");
         }
 
         EntityManager em = UtensiliosJPA.getEntityManagerFactory().createEntityManager();
@@ -335,13 +504,14 @@ public class UsuarioController implements IUsuario {
                 .setParameter("usr", seguidorNick)
                 .setParameter("seg", seguidoNick)
                 .getResultList();
-            if (existe.isEmpty()) {
-                em.createNativeQuery(
-                    "INSERT INTO usuario_seguidos (usuario_nick, seguido_nick) VALUES (:usr, :seg)")
-                    .setParameter("usr", seguidorNick)
-                    .setParameter("seg", seguidoNick)
-                    .executeUpdate();
+            if (!existe.isEmpty()) {
+                throw new ErrorRepetidos("Ya sigues a este usuario.");
             }
+            em.createNativeQuery(
+                "INSERT INTO usuario_seguidos (usuario_nick, seguido_nick) VALUES (:usr, :seg)")
+                .setParameter("usr", seguidorNick)
+                .setParameter("seg", seguidoNick)
+                .executeUpdate();
             et.commit();
         } catch (Exception e) {
             if (et.isActive()) et.rollback();
@@ -418,7 +588,7 @@ public class UsuarioController implements IUsuario {
         try {
             @SuppressWarnings("unchecked")
             List<String> res = em.createNativeQuery(
-                "SELECT usuario_nick FROM usuario_seguidos WHERE usuario_nick = :usr")
+                "SELECT usuario_nick FROM usuario_seguidos WHERE seguido_nick = :usr")
                 .setParameter("usr", nickname)
                 .getResultList();
             return new HashSet<>(res);
@@ -440,7 +610,3 @@ public class UsuarioController implements IUsuario {
         }
     }
 }
-    
-
-
-

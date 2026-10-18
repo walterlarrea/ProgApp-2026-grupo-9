@@ -3,6 +3,7 @@ package com.grupo9.edext.grupo9.servidor_web.servlets.usuario;
 import com.grupo9.edext.grupo9.interfaces.IServidorCentral;
 import com.grupo9.edext.grupo9.miscelanea.Fabrica;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataCurso;
+import com.grupo9.edext.grupo9.servidor_central.dominio.DataEstudiante;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataInstituto;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataUsuario;
 import jakarta.servlet.ServletException;
@@ -68,6 +69,9 @@ public class PerfilServlet extends HttpServlet {
         request.setAttribute("institutos", institutos);
         request.setAttribute("cursos", cursos);
         request.setAttribute("estadoDb", estadoDb);
+        request.setAttribute("inscripcionesProgramas", usuarioActualizado instanceof DataEstudiante estudiante
+                ? estudiante.getInscripcionesProgramas()
+                : Collections.emptySet());
 
         request.getRequestDispatcher("/webUsuario/perfil.jsp").forward(request, response);
     }

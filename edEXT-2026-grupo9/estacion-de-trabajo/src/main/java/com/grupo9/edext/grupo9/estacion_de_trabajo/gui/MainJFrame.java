@@ -53,37 +53,39 @@ import javax.swing.UIManager;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 
-public class MainJFrame extends JFrame {
-    
-    private final UsuarioPres usuarioPres = new UsuarioPres();
-    private final InstitutoPres institutoPres = new InstitutoPres();
+public class MainJFrame extends javax.swing.JFrame {
+
+    private UsuarioPres usuarioPres;
+    private InstitutoPres institutoPres;
     private java.io.File archivoImagenSeleccionado = null;
     private final ArrayList<JPanel> allJPanels = new ArrayList<JPanel>();
     private Component jScrollPaneTablaConsultaUsuarios;
     private final ArrayList<JInternalFrame> allJInternalFrame = new ArrayList<JInternalFrame>();
-    
+
     public MainJFrame() {
         initComponents();
         setTitle("edEXT");
         setResizable(true);
         jComboBoxInstituto.setPrototypeDisplayValue("XXXXXXXXXXXXXXXXXXXXXXXX");
-        //alta usuario
-        jSpinnerFechaNac.setModel(new javax.swing.SpinnerDateModel(new java.util.Date(), null, null, java.util.Calendar.DAY_OF_MONTH));
+        // alta usuario
+        jSpinnerFechaNac.setModel(
+                new javax.swing.SpinnerDateModel(new java.util.Date(), null, null, java.util.Calendar.DAY_OF_MONTH));
         javax.swing.JSpinner.DateEditor editor = new javax.swing.JSpinner.DateEditor(jSpinnerFechaNac, "dd/MM/yyyy");
         jSpinnerFechaNac.setEditor(editor);
         jComboBoxInstituto.setEnabled(false);
-        //para que el panel azul ocupe hasta el borde
+        // para que el panel azul ocupe hasta el borde
         getContentPane().setLayout(new BorderLayout());
         getContentPane().add(jDesktopPane1, BorderLayout.CENTER);
 
-        jTableConsultarUsuarios.getSelectionModel().addListSelectionListener(new javax.swing.event.ListSelectionListener() {
-            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
-                if (!evt.getValueIsAdjusting()) {
-                    boolean haySeleccion = jTableConsultarUsuarios.getSelectedRow() != -1;
-                    jButton1.setEnabled(haySeleccion);
-                }
-            }
-        });
+        jTableConsultarUsuarios.getSelectionModel()
+                .addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+                    public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                        if (!evt.getValueIsAdjusting()) {
+                            boolean haySeleccion = jTableConsultarUsuarios.getSelectedRow() != -1;
+                            jButton1.setEnabled(haySeleccion);
+                        }
+                    }
+                });
 
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -99,34 +101,48 @@ public class MainJFrame extends JFrame {
             }
         });
     }
-    
-    //al aparecer uno se cierra el otro
+
+    private UsuarioPres getUsuarioPres() {
+        if (usuarioPres == null) {
+            usuarioPres = new UsuarioPres();
+        }
+        return usuarioPres;
+    }
+
+    private InstitutoPres getInstitutoPres() {
+        if (institutoPres == null) {
+            institutoPres = new InstitutoPres();
+        }
+        return institutoPres;
+    }
+
+    // al aparecer uno se cierra el otro
     public void mostrarInternalFrame(JInternalFrame frameToShow) {
         // cerrar todos los JPanel abiertos
         this.hideAllJPanels();
-        //cerrar cualquier InternalFrame abierto
+        // cerrar cualquier InternalFrame abierto
         JInternalFrame[] frames = jDesktopPane1.getAllFrames();
         for (JInternalFrame f : frames) {
             f.setVisible(false);
             f.dispose();
         }
 
-        //agregar el nuevo InternalFrame
+        // agregar el nuevo InternalFrame
         jDesktopPane1.add(frameToShow);
         allJInternalFrame.add(frameToShow);
 
-            frameToShow.setVisible(true);
-            jDesktopPane1.revalidate();
-            jDesktopPane1.repaint();
-            frameToShow.revalidate();
-            frameToShow.repaint();
+        frameToShow.setVisible(true);
+        jDesktopPane1.revalidate();
+        jDesktopPane1.repaint();
+        frameToShow.revalidate();
+        frameToShow.repaint();
         try {
             frameToShow.setSelected(true);
         } catch (PropertyVetoException e) {
             e.printStackTrace();
         }
     }
-    
+
     private void cerrarInternalFrames() {
         for (JInternalFrame frame : jDesktopPane1.getAllFrames()) {
             frame.setVisible(false);
@@ -135,29 +151,33 @@ public class MainJFrame extends JFrame {
         jDesktopPane1.revalidate();
         jDesktopPane1.repaint();
     }
-    
-    private void abrirSeleccionCursoAlta(){
-        SeleccionarCursoJInternalFrame seleccion = new SeleccionarCursoJInternalFrame(jDesktopPane1, OperacionCurso.ALTA_EDICION);
+
+    private void abrirSeleccionCursoAlta() {
+        SeleccionarCursoJInternalFrame seleccion = new SeleccionarCursoJInternalFrame(jDesktopPane1,
+                OperacionCurso.ALTA_EDICION);
         mostrarInternalFrame(seleccion);
     }
-    
-    private void abrirSeleccionCursoConsulta(){
-        SeleccionarCursoJInternalFrame seleccion = new SeleccionarCursoJInternalFrame(jDesktopPane1, OperacionCurso.CONSULTA_EDICION);
+
+    private void abrirSeleccionCursoConsulta() {
+        SeleccionarCursoJInternalFrame seleccion = new SeleccionarCursoJInternalFrame(jDesktopPane1,
+                OperacionCurso.CONSULTA_EDICION);
         mostrarInternalFrame(seleccion);
     }
-    
-    private void abrirSeleccionCursoInscripcion(){
-        SeleccionarCursoJInternalFrame seleccion = new SeleccionarCursoJInternalFrame(jDesktopPane1, OperacionCurso.INSCRIPCION_EDICION);
+
+    private void abrirSeleccionCursoInscripcion() {
+        SeleccionarCursoJInternalFrame seleccion = new SeleccionarCursoJInternalFrame(jDesktopPane1,
+                OperacionCurso.INSCRIPCION_EDICION);
         mostrarInternalFrame(seleccion);
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
      * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    // <editor-fold defaultstate="collapsed" desc="Generated
+    // Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
         buttonGroupEstYDoc = new javax.swing.ButtonGroup();
@@ -409,22 +429,22 @@ public class MainJFrame extends JFrame {
         jLabelConsultarUsuarios.setText("Consultar Usuarios");
 
         jTableConsultarUsuarios.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null}
-            },
-            new String [] {
-                "Tipo de usuario", "Nickname", "Nombre", "Apellido", "Email", "FechaNac", "Imagen"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                new Object[][] {
+                        { null, null, null, null, null, null, null },
+                        { null, null, null, null, null, null, null },
+                        { null, null, null, null, null, null, null },
+                        { null, null, null, null, null, null, null }
+                },
+                new String[] {
+                        "Tipo de usuario", "Nickname", "Nombre", "Apellido", "Email", "FechaNac", "Imagen"
+                }) {
+            Class[] types = new Class[] {
+                    java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class,
+                    java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
 
             public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
+                return types[columnIndex];
             }
 
             @Override
@@ -447,46 +467,47 @@ public class MainJFrame extends JFrame {
         javax.swing.GroupLayout JPanelConsultarUsuariosLayout = new javax.swing.GroupLayout(JPanelConsultarUsuarios);
         JPanelConsultarUsuarios.setLayout(JPanelConsultarUsuariosLayout);
         JPanelConsultarUsuariosLayout.setHorizontalGroup(
-            JPanelConsultarUsuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(JPanelConsultarUsuariosLayout.createSequentialGroup()
-                .addGroup(JPanelConsultarUsuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(JPanelConsultarUsuariosLayout.createSequentialGroup()
-                        .addGap(16, 16, 16)
-                        .addComponent(jLabelConsultarUsuarios)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton1)
-                        .addGap(18, 18, 18)
-                        .addComponent(jButtonConsUsRefresh))
-                    .addGroup(JPanelConsultarUsuariosLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jScrollPaneTablaConsultarUsuarios, javax.swing.GroupLayout.DEFAULT_SIZE, 806, Short.MAX_VALUE)))
-                .addContainerGap())
-        );
+                JPanelConsultarUsuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(JPanelConsultarUsuariosLayout.createSequentialGroup()
+                                .addGroup(JPanelConsultarUsuariosLayout
+                                        .createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(JPanelConsultarUsuariosLayout.createSequentialGroup()
+                                                .addGap(16, 16, 16)
+                                                .addComponent(jLabelConsultarUsuarios)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED,
+                                                        javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                .addComponent(jButton1)
+                                                .addGap(18, 18, 18)
+                                                .addComponent(jButtonConsUsRefresh))
+                                        .addGroup(JPanelConsultarUsuariosLayout.createSequentialGroup()
+                                                .addContainerGap()
+                                                .addComponent(jScrollPaneTablaConsultarUsuarios,
+                                                        javax.swing.GroupLayout.DEFAULT_SIZE, 806, Short.MAX_VALUE)))
+                                .addContainerGap()));
         JPanelConsultarUsuariosLayout.setVerticalGroup(
-            JPanelConsultarUsuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(JPanelConsultarUsuariosLayout.createSequentialGroup()
-                .addGap(16, 16, 16)
-                .addGroup(JPanelConsultarUsuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabelConsultarUsuarios)
-                    .addComponent(jButtonConsUsRefresh)
-                    .addComponent(jButton1))
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPaneTablaConsultarUsuarios, javax.swing.GroupLayout.DEFAULT_SIZE, 599, Short.MAX_VALUE)
-                .addContainerGap())
-        );
+                JPanelConsultarUsuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(JPanelConsultarUsuariosLayout.createSequentialGroup()
+                                .addGap(16, 16, 16)
+                                .addGroup(JPanelConsultarUsuariosLayout
+                                        .createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(jLabelConsultarUsuarios)
+                                        .addComponent(jButtonConsUsRefresh)
+                                        .addComponent(jButton1))
+                                .addGap(18, 18, 18)
+                                .addComponent(jScrollPaneTablaConsultarUsuarios, javax.swing.GroupLayout.DEFAULT_SIZE,
+                                        599, Short.MAX_VALUE)
+                                .addContainerGap()));
 
         jDesktopPane1.setPreferredSize(new java.awt.Dimension(403, 244));
 
         javax.swing.GroupLayout jDesktopPane1Layout = new javax.swing.GroupLayout(jDesktopPane1);
         jDesktopPane1.setLayout(jDesktopPane1Layout);
         jDesktopPane1Layout.setHorizontalGroup(
-            jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
+                jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(0, 0, Short.MAX_VALUE));
         jDesktopPane1Layout.setVerticalGroup(
-            jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
+                jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(0, 0, Short.MAX_VALUE));
 
         jMenuBar1.setToolTipText("");
         jMenuBar1.setAlignmentX(0.0F);
@@ -604,55 +625,59 @@ public class MainJFrame extends JFrame {
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 830, Short.MAX_VALUE)
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addContainerGap()
-                    .addComponent(JPanelAltaUsuario, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addContainerGap()))
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addContainerGap()
-                    .addComponent(JPanelConsultarUsuarios, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addContainerGap()))
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                    .addContainerGap(108, Short.MAX_VALUE)
-                    .addComponent(jDesktopPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 456, Short.MAX_VALUE)
-                    .addContainerGap(266, Short.MAX_VALUE)))
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGap(0, 802, Short.MAX_VALUE))
-        );
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(0, 830, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(layout.createSequentialGroup()
+                                        .addContainerGap()
+                                        .addComponent(JPanelAltaUsuario, javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addContainerGap()))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(layout.createSequentialGroup()
+                                        .addContainerGap()
+                                        .addComponent(JPanelConsultarUsuarios, javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addContainerGap()))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                        .addContainerGap(108, Short.MAX_VALUE)
+                                        .addComponent(jDesktopPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 456,
+                                                Short.MAX_VALUE)
+                                        .addContainerGap(266, Short.MAX_VALUE)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGap(0, 802, Short.MAX_VALUE)));
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 678, Short.MAX_VALUE)
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addContainerGap()
-                    .addComponent(JPanelAltaUsuario, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addContainerGap()))
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addContainerGap()
-                    .addComponent(JPanelConsultarUsuarios, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addContainerGap()))
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                    .addContainerGap(253, Short.MAX_VALUE)
-                    .addComponent(jDesktopPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 277, Short.MAX_VALUE)
-                    .addContainerGap(148, Short.MAX_VALUE)))
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGap(0, 634, Short.MAX_VALUE))
-        );
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(0, 678, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(layout.createSequentialGroup()
+                                        .addContainerGap()
+                                        .addComponent(JPanelAltaUsuario, javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addContainerGap()))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(layout.createSequentialGroup()
+                                        .addContainerGap()
+                                        .addComponent(JPanelConsultarUsuarios, javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addContainerGap()))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                        .addContainerGap(253, Short.MAX_VALUE)
+                                        .addComponent(jDesktopPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 277,
+                                                Short.MAX_VALUE)
+                                        .addContainerGap(148, Short.MAX_VALUE)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGap(0, 634, Short.MAX_VALUE)));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jMenuItemCrearUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemCrearUsuarioActionPerformed
+    private void jMenuItemCrearUsuarioActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jMenuItemCrearUsuarioActionPerformed
         cerrarInternalFrames();
         showOnePanelAndHideTheRest(this.JPanelAltaUsuario);
-        HashSet<DataInstituto> institutos = this.institutoPres.cargarInstitutos();
+        HashSet<DataInstituto> institutos = getInstitutoPres().cargarInstitutos();
         jComboBoxInstituto.removeAllItems();
         jComboBoxInstituto.addItem("Seleccione un Instituto...");
         if (institutos != null) {
@@ -661,48 +686,49 @@ public class MainJFrame extends JFrame {
             }
         }
         jComboBoxInstituto.setEnabled(jRadioButtonDocente.isSelected());
-    }//GEN-LAST:event_jMenuItemCrearUsuarioActionPerformed
+    }// GEN-LAST:event_jMenuItemCrearUsuarioActionPerformed
 
-    private void jMenuItemConsultarUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemConsultarUsuarioActionPerformed
+    private void jMenuItemConsultarUsuarioActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jMenuItemConsultarUsuarioActionPerformed
         cerrarInternalFrames();
         showOnePanelAndHideTheRest(this.JPanelConsultarUsuarios);
         refreshTablaUsuarios();
-    }//GEN-LAST:event_jMenuItemConsultarUsuarioActionPerformed
+    }// GEN-LAST:event_jMenuItemConsultarUsuarioActionPerformed
 
-    private void jMenuItemCrearCursoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemCrearCursoActionPerformed
+    private void jMenuItemCrearCursoActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jMenuItemCrearCursoActionPerformed
         mostrarInternalFrame(new CrearCursosJInternalFrame());
-    }//GEN-LAST:event_jMenuItemCrearCursoActionPerformed
+    }// GEN-LAST:event_jMenuItemCrearCursoActionPerformed
 
-    private void jMenuItemConsultarCursoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemConsultarCursoActionPerformed
+    private void jMenuItemConsultarCursoActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jMenuItemConsultarCursoActionPerformed
         mostrarInternalFrame(new ConsultarCursosJInternalFrame(this.jDesktopPane1));
-    }//GEN-LAST:event_jMenuItemConsultarCursoActionPerformed
+    }// GEN-LAST:event_jMenuItemConsultarCursoActionPerformed
 
-    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
-        // Walter: Agrega todos los paneles a una lista para que sea facil 
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {// GEN-FIRST:event_formWindowOpened
+        // Walter: Agrega todos los paneles a una lista para que sea facil
         // ocular todos los demas cuando queremos mostrar uno.
         this.allJPanels.add(JPanelAltaUsuario);
         this.allJPanels.add(JPanelConsultarUsuarios);
         this.hideAllJPanels();
         System.out.println("Window Opened");
-    }//GEN-LAST:event_formWindowOpened
+    }// GEN-LAST:event_formWindowOpened
 
-    private void jMenuItemCrearProgDeFormacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemCrearProgDeFormacionActionPerformed
+    private void jMenuItemCrearProgDeFormacionActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jMenuItemCrearProgDeFormacionActionPerformed
         mostrarInternalFrame(new CrearProgramasJInternalFrame());
-    }//GEN-LAST:event_jMenuItemCrearProgDeFormacionActionPerformed
+    }// GEN-LAST:event_jMenuItemCrearProgDeFormacionActionPerformed
 
-    private void jMenuItemConsultarProgDeFormacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemConsultarProgDeFormacionActionPerformed
+    private void jMenuItemConsultarProgDeFormacionActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jMenuItemConsultarProgDeFormacionActionPerformed
         mostrarInternalFrame(new ConsultarProgramasJInternalFrame());
-    }//GEN-LAST:event_jMenuItemConsultarProgDeFormacionActionPerformed
+    }// GEN-LAST:event_jMenuItemConsultarProgDeFormacionActionPerformed
 
-    private void jTextCrearProgramaNombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextCrearProgramaNombreActionPerformed
+    private void jTextCrearProgramaNombreActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jTextCrearProgramaNombreActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextCrearProgramaNombreActionPerformed
+    }// GEN-LAST:event_jTextCrearProgramaNombreActionPerformed
 
-    private void jLabelSeleccionarFotoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelSeleccionarFotoMouseClicked
+    private void jLabelSeleccionarFotoMouseClicked(java.awt.event.MouseEvent evt) {// GEN-FIRST:event_jLabelSeleccionarFotoMouseClicked
         javax.swing.JFileChooser fileChooser = new javax.swing.JFileChooser();
 
         // Filtrar para que solo permita elegir imágenes JPG o PNG
-        javax.swing.filechooser.FileNameExtensionFilter filtro = new javax.swing.filechooser.FileNameExtensionFilter("Imágenes JPG y PNG", "jpg", "png");
+        javax.swing.filechooser.FileNameExtensionFilter filtro = new javax.swing.filechooser.FileNameExtensionFilter(
+                "Imágenes JPG y PNG", "jpg", "png");
         fileChooser.setFileFilter(filtro);
 
         int resultado = fileChooser.showOpenDialog(this);
@@ -717,56 +743,55 @@ public class MainJFrame extends JFrame {
             int alto = jLabelImagen.getHeight() > 0 ? jLabelImagen.getHeight() : 160;
 
             java.awt.Image imagenEscalada = iconoOriginal.getImage().getScaledInstance(
-                ancho,
-                alto,
-                java.awt.Image.SCALE_SMOOTH
-            );
+                    ancho,
+                    alto,
+                    java.awt.Image.SCALE_SMOOTH);
 
             jLabelImagen.setIcon(new javax.swing.ImageIcon(imagenEscalada));
             jLabelImagen.setText(""); // Quita el texto "Imagen"
         }
-    }//GEN-LAST:event_jLabelSeleccionarFotoMouseClicked
+    }// GEN-LAST:event_jLabelSeleccionarFotoMouseClicked
 
-    private void jSpinnerFechaNacStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jSpinnerFechaNacStateChanged
+    private void jSpinnerFechaNacStateChanged(javax.swing.event.ChangeEvent evt) {// GEN-FIRST:event_jSpinnerFechaNacStateChanged
         // TODO add your handling code here:
-    }//GEN-LAST:event_jSpinnerFechaNacStateChanged
+    }// GEN-LAST:event_jSpinnerFechaNacStateChanged
 
-    private void jTextFieldEmailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldEmailActionPerformed
+    private void jTextFieldEmailActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jTextFieldEmailActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextFieldEmailActionPerformed
+    }// GEN-LAST:event_jTextFieldEmailActionPerformed
 
-    private void jTextFieldApellidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldApellidoActionPerformed
+    private void jTextFieldApellidoActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jTextFieldApellidoActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextFieldApellidoActionPerformed
+    }// GEN-LAST:event_jTextFieldApellidoActionPerformed
 
-    private void jTextFieldNombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldNombreActionPerformed
+    private void jTextFieldNombreActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jTextFieldNombreActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextFieldNombreActionPerformed
+    }// GEN-LAST:event_jTextFieldNombreActionPerformed
 
-    private void jTextFieldNicknameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldNicknameActionPerformed
+    private void jTextFieldNicknameActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jTextFieldNicknameActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextFieldNicknameActionPerformed
+    }// GEN-LAST:event_jTextFieldNicknameActionPerformed
 
-    private void jMenuItemGestionarInstitutosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemGestionarInstitutosActionPerformed
+    private void jMenuItemGestionarInstitutosActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jMenuItemGestionarInstitutosActionPerformed
         mostrarInternalFrame(new GestionarInstitutosJInternalFrame());
-    }//GEN-LAST:event_jMenuItemGestionarInstitutosActionPerformed
+    }// GEN-LAST:event_jMenuItemGestionarInstitutosActionPerformed
 
-    private void jMenuItemCrearEdicionCursoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemCrearEdicionCursoActionPerformed
+    private void jMenuItemCrearEdicionCursoActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jMenuItemCrearEdicionCursoActionPerformed
         hideAllJPanels();
         abrirSeleccionCursoAlta();
-    }//GEN-LAST:event_jMenuItemCrearEdicionCursoActionPerformed
+    }// GEN-LAST:event_jMenuItemCrearEdicionCursoActionPerformed
 
-    private void jMenuItemConsultarEdicionCursoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemConsultarEdicionCursoActionPerformed
+    private void jMenuItemConsultarEdicionCursoActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jMenuItemConsultarEdicionCursoActionPerformed
         hideAllJPanels();
         abrirSeleccionCursoConsulta();
-    }//GEN-LAST:event_jMenuItemConsultarEdicionCursoActionPerformed
+    }// GEN-LAST:event_jMenuItemConsultarEdicionCursoActionPerformed
 
-    private void jMenuItemInscripcionEdicionCursoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemInscripcionEdicionCursoActionPerformed
+    private void jMenuItemInscripcionEdicionCursoActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jMenuItemInscripcionEdicionCursoActionPerformed
         hideAllJPanels();
         abrirSeleccionCursoInscripcion();
-    }//GEN-LAST:event_jMenuItemInscripcionEdicionCursoActionPerformed
-    
-    private void jButtonAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAceptarActionPerformed
+    }// GEN-LAST:event_jMenuItemInscripcionEdicionCursoActionPerformed
+
+    private void jButtonAceptarActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jButtonAceptarActionPerformed
         String nick = jTextFieldNickname.getText().trim();
         String nombre = jTextFieldNombre.getText().trim();
         String apellido = jTextFieldApellido.getText().trim();
@@ -809,7 +834,7 @@ public class MainJFrame extends JFrame {
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Error al guardar: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
-    }//GEN-LAST:event_jButtonAceptarActionPerformed
+    }// GEN-LAST:event_jButtonAceptarActionPerformed
 
     public void refreshTablaUsuarios() {
         jButtonConsUsRefreshActionPerformed(null);
@@ -845,9 +870,9 @@ public class MainJFrame extends JFrame {
         }
     }
 
-    private void jButtonConsUsRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonConsUsRefreshActionPerformed
+    private void jButtonConsUsRefreshActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jButtonConsUsRefreshActionPerformed
         System.out.println("[GUI] Consultar todos los Usuarios");
-        String[] nicknames = usuarioPres.listarUsuarios();
+        String[] nicknames = getUsuarioPres().listarUsuarios();
 
         DefaultTableModel model = (DefaultTableModel) jTableConsultarUsuarios.getModel();
         model.setRowCount(0);
@@ -878,18 +903,18 @@ public class MainJFrame extends JFrame {
                 System.getLogger(MainJFrame.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
             }
         }
-    }//GEN-LAST:event_jButtonConsUsRefreshActionPerformed
+    }// GEN-LAST:event_jButtonConsUsRefreshActionPerformed
 
-    private void jRadioButtonDocente1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButtonDocente1ActionPerformed
+    private void jRadioButtonDocente1ActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jRadioButtonDocente1ActionPerformed
         jComboBoxInstituto.setEnabled(false);
         jComboBoxInstituto.setSelectedIndex(0);
-    }//GEN-LAST:event_jRadioButtonDocente1ActionPerformed
+    }// GEN-LAST:event_jRadioButtonDocente1ActionPerformed
 
-    private void jRadioButtonDocenteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButtonDocenteActionPerformed
+    private void jRadioButtonDocenteActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jRadioButtonDocenteActionPerformed
         jComboBoxInstituto.setEnabled(true);
-    }//GEN-LAST:event_jRadioButtonDocenteActionPerformed
+    }// GEN-LAST:event_jRadioButtonDocenteActionPerformed
 
-    private void jMenuItemModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemModificarActionPerformed
+    private void jMenuItemModificarActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jMenuItemModificarActionPerformed
         cerrarInternalFrames();
         showOnePanelAndHideTheRest(this.JPanelConsultarUsuarios);
         refreshTablaUsuarios();
@@ -899,11 +924,11 @@ public class MainJFrame extends JFrame {
         } else {
             JOptionPane.showMessageDialog(this, "Seleccione un usuario de la lista y presione 'Modificar Datos'.", "Modificar Usuario", JOptionPane.INFORMATION_MESSAGE);
         }
-    }//GEN-LAST:event_jMenuItemModificarActionPerformed
-    
+    }// GEN-LAST:event_jMenuItemModificarActionPerformed
+
     private void jButtonCancelarActionPerformed(java.awt.event.ActionEvent evt) {
-       limpiarFormularioAltaUsuario();
-       hideAllJPanels();
+        limpiarFormularioAltaUsuario();
+        hideAllJPanels();
     }
 
     private void limpiarFormularioAltaUsuario() {
@@ -931,25 +956,28 @@ public class MainJFrame extends JFrame {
         }
     }
 
-    
-    private void showOnePanelAndHideTheRest(JPanel panelToShow){
+    private void showOnePanelAndHideTheRest(JPanel panelToShow) {
         for (JPanel panel : this.allJPanels) {
-            if (panel == panelToShow ){
+            if (panel == panelToShow) {
                 panel.setVisible(true);
             } else {
                 panel.setVisible(false);
             }
         }
     }
-    
+
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+        // <editor-fold defaultstate="collapsed" desc=" Look and feel setting code
+        // (optional) ">
+        /*
+         * If Nimbus (introduced in Java SE 6) is not available, stay with the default
+         * look and feel.
+         * For details see
+         * http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
@@ -959,15 +987,19 @@ public class MainJFrame extends JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(MainJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MainJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null,
+                    ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(MainJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MainJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null,
+                    ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(MainJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MainJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null,
+                    ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(MainJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MainJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null,
+                    ex);
         }
-        //</editor-fold>
+        // </editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {

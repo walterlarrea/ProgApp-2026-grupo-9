@@ -47,6 +47,19 @@ public class ManejadorCurso {
 
         try {
             et.begin();
+            if (curso.getCategorias() != null && !curso.getCategorias().isEmpty()) {
+                Set<Categoria> managedCategorias = new HashSet<>();
+                for (Categoria cat : curso.getCategorias()) {
+                    Categoria existente = em.find(Categoria.class, cat.getNombreCategoria());
+                    if (existente == null) {
+                        em.persist(cat);
+                        managedCategorias.add(cat);
+                    } else {
+                        managedCategorias.add(existente);
+                    }
+                }
+                curso.setCategorias(managedCategorias);
+            }
             em.persist(curso);
             et.commit();
         } catch (Exception e) {
