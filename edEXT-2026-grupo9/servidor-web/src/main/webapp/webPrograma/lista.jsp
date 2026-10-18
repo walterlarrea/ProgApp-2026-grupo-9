@@ -18,11 +18,12 @@ prefix="c" uri="jakarta.tags.core" %>
         <section class="hero-banner">
           <h1>Programas de formación</h1>
           <p>Explora los programas y sus cursos asociados.</p>
-          <a
+          <!-- La opción de abajo queda deshabilitada ya que no es un requerimiento actualmente -->
+          <!-- <a
             class="btn btn-primary"
             href="${pageContext.request.contextPath}/programas?accion=alta"
             >Crear programa</a
-          >
+          > -->
         </section>
         <c:choose>
           <c:when test="${not empty programas}">
@@ -31,14 +32,14 @@ prefix="c" uri="jakarta.tags.core" %>
                 <article class="edicion-card">
                   <h2>
                     <a
-                      href="${pageContext.request.contextPath}/programa?nombre=${programa.nombre}"
-                      ><c:out value="${programa.nombre}"
+                      href="${pageContext.request.contextPath}/programa?nombre=${programa.nombre()}"
+                      ><c:out value="${programa.nombre()}"
                     /></a>
                   </h2>
-                  <p><c:out value="${programa.descripcion}" /></p>
+                  <p><c:out value="${programa.descripcion()}" /></p>
                   <p>
-                    <c:out value="${programa.fechaInicio}" /> -
-                    <c:out value="${programa.fechaFin}" />
+                    <c:out value="${programa.fechaInicio()}" /> -
+                    <c:out value="${programa.fechaFin()}" />
                   </p>
                 </article>
               </c:forEach>

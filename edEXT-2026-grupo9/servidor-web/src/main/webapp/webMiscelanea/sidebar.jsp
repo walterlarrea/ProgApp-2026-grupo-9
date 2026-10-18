@@ -25,7 +25,8 @@
                 <ul class="nav-list">
                     <li><a href="${pageContext.request.contextPath}/curso?accion=alta">Alta curso</a></li>
                     <li><a href="${pageContext.request.contextPath}/edicionCurso?accion=alta">Alta edici�n</a></li>
-                    <li><a href="${pageContext.request.contextPath}/programas">Alta programa</a></li>
+                    <!-- La opción de abajo queda deshabilitada ya que no es un requerimiento actualmente -->
+                    <!-- <li><a href="${pageContext.request.contextPath}/programas">Alta programa</a></li> -->
                     <li><a href="${pageContext.request.contextPath}/edicionCurso">Ver inscriptos</a></li>
                 </ul>
             </div>
