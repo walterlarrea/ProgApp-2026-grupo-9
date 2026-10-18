@@ -31,8 +31,6 @@ public class Usuario implements Serializable {
 
     private String fechaNac_str; // Optional helper if used
     private String password;
-    @ManyToMany(mappedBy = "seguidos")
-    private Set<Usuario> seguidores = new HashSet<>();
 
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "usuario_seguidos", joinColumns = @JoinColumn(name = "usuario_nick"))

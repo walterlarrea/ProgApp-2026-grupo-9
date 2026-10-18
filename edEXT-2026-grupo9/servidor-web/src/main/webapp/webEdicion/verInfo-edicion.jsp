@@ -17,6 +17,9 @@
         <!-- Sidebar / Menú Lateral -->
         <%@ include file="../webMiscelanea/sidebar.jsp" %>
         <main class="main-content">
+            <c:if test="${not empty errorCarga}">
+                <p role="alert"><c:out value="${errorCarga}"/></p>
+            </c:if>
             <section class="hero-banner">
                 <h1>${edicion.nombreEdi}</h1>
                 <a class="corte-texto2" href="${pageContext.request.contextPath}/instituto?nombre=${edicion.cursoAsoc.instituto().nombreI()}">

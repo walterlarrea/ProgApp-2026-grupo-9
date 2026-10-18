@@ -2,6 +2,7 @@ package com.grupo9.edext.grupo9.servidor_central.controller.edicion_de_curso;
 
 import com.grupo9.edext.grupo9.miscelanea.UtensiliosJPA;
 import com.grupo9.edext.grupo9.servidor_central.controller.curso.Curso;
+import com.grupo9.edext.grupo9.servidor_central.controller.usuario.Docente;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataDocente;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataEdicionCurso;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataInscEdicion;
@@ -9,10 +10,12 @@ import jakarta.persistence.criteria.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.List;
 import jakarta.persistence.*;
 import java.util.Set;
+import org.hibernate.Hibernate;
 
 
 public class ManejadorEdiciones {
@@ -30,22 +33,54 @@ public class ManejadorEdiciones {
     try {
         List<EdicionCurso> lista = em.createQuery("SELECT edc FROM EdicionCurso edc", EdicionCurso.class).getResultList();
         for (EdicionCurso edC : lista) {
-            //si necesitas asegurar que las inscripciones, previas y el docente vengan cargados en memoria:
-            if (edC.getInscripciones() != null) {
-                edC.getInscripciones().size();
-            }
-            if (edC.getDocentes() != null) {
-                edC.getDocentes().size(); //fuerza la carga si es un proxy de Hibernate
-            }
-            if (edC.getCursoAsoc() != null) {
-                edC.getCursoAsoc().getPrevias().size();
-            }
+            inicializarRelaciones(edC);
             edCurso.put(edC.getNombreEdi(), edC);
         }
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
             em.close();
+        }
+    }
+
+    void inicializarRelaciones(EdicionCurso edicion) {
+        if (edicion.getInscripciones() != null) {
+            for (InscEdicion inscripcion : edicion.getInscripciones()) {
+                if (inscripcion.getEstudiante() != null) {
+                    Hibernate.initialize(inscripcion.getEstudiante());
+                }
+            }
+        }
+
+        if (edicion.getDocentes() != null) {
+            for (Docente docente : edicion.getDocentes()) {
+                if (docente != null) {
+                    Hibernate.initialize(docente);
+                }
+            }
+        }
+
+        if (edicion.getCursoAsoc() != null) {
+            inicializarCurso(edicion.getCursoAsoc(), new HashSet<>());
+        }
+    }
+
+    private void inicializarCurso(Curso curso, Set<String> cursosVisitados) {
+        if (curso == null || !cursosVisitados.add(curso.getNombreCurso())) {
+            return;
+        }
+
+        if (curso.getInstituto() != null) {
+            Hibernate.initialize(curso.getInstituto());
+        }
+        if (curso.getCategorias() != null) {
+            Hibernate.initialize(curso.getCategorias());
+        }
+        if (curso.getPrevias() != null) {
+            Hibernate.initialize(curso.getPrevias());
+            for (Curso previa : curso.getPrevias()) {
+                inicializarCurso(previa, cursosVisitados);
+            }
         }
     }
     

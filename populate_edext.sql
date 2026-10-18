@@ -1,7 +1,4 @@
--- Test-data seed script for the edEXT database.
--- Test-data seed and supplemental schema for the edEXT database.
-
-USE edEXT;
+USE edext;
 
 START TRANSACTION;
 
@@ -107,7 +104,7 @@ VALUES
 	('Educativo', 'MicroBit'),
 	('Interdisciplinario', 'Flor del Ceibo');
 
-INSERT INTO `seguidores` (`seguidor_nickname`, `seguido_nickname`)
+INSERT INTO `usuario_seguidos` (`usuario_nick`, `seguido_nick`)
 VALUES
 	('eleven11', 'roro'), ('eleven11', 'heisenberg'), ('eleven11', 'waston'),
 	('costas', 'chechi'), ('costas', 'jeffw'), ('costas', 'benkenobi'), ('costas', 'danny'), ('costas', 'phils'),
@@ -315,7 +312,5 @@ VALUES
 	('chechi', 'EFI Robótica', '2026-08-15'),
 	('roro', 'EFI Robótica', '2026-08-22'),
 	('jeffw', 'EFI Robótica', '2026-08-30');
-
--- Las rutas de imagen son relativas a la carpeta local de imágenes del servidor.
 
 COMMIT;

@@ -7,6 +7,12 @@ import com.grupo9.edext.grupo9.servidor_central.controller.instituto.InstitutoCo
 import com.grupo9.edext.grupo9.servidor_central.controller.usuario.UsuarioController;
 import com.grupo9.edext.grupo9.servidor_central.dominio.*;
 import com.grupo9.edext.grupo9.servidor_central.controller.DtoMapper;
+import com.grupo9.edext.grupo9.miscelanea.UtensiliosJPA;
+import com.grupo9.edext.grupo9.servidor_central.controller.curso.Categoria;
+import com.grupo9.edext.grupo9.servidor_central.controller.curso.Curso;
+import com.grupo9.edext.grupo9.servidor_central.controller.instituto.Instituto;
+import com.grupo9.edext.grupo9.servidor_central.controller.usuario.Estudiante;
+import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -90,6 +96,50 @@ public class EdicionCursoControllerTest {
         assertThrows(ErrorNoExiste.class, () -> {
             edicionController.consultarEdicionCurso(edicionInexistente);
         });
+    }
+
+    @Test
+    public void testInicializarRelacionesAntesDeMapearEdicion() {
+        String sufijo = String.valueOf(System.currentTimeMillis());
+        String nombreEdicion = "EdicionLazy_" + sufijo;
+        EntityManager em = UtensiliosJPA.getEntityManagerFactory().createEntityManager();
+        EdicionCurso edicion;
+
+        try {
+            em.getTransaction().begin();
+            Instituto instituto = new Instituto("InstitutoLazy_" + sufijo);
+            Categoria categoria = new Categoria("CategoriaLazy_" + sufijo);
+            Curso curso = new Curso(instituto, "CursoLazy_" + sufijo, "Desc", 1, 1, 1,
+                    LocalDate.now(), null, new HashSet<>(), new HashSet<>(), null);
+            curso.getCategorias().add(categoria);
+            Estudiante estudiante = new Estudiante("EstudianteLazy_" + sufijo, "Nombre", "Apellido",
+                    "estudiante-lazy-" + sufijo + "@test.com", LocalDate.of(2000, 1, 1), null);
+            HashSet<InscEdicion> inscripciones = new HashSet<>();
+            edicion = new EdicionCurso(nombreEdicion, curso, LocalDate.now(), LocalDate.now().plusDays(1),
+                    10, new HashSet<>(), inscripciones, LocalDate.now(), null);
+            inscripciones.add(new InscEdicion(LocalDate.now(), estudiante, edicion));
+
+            em.persist(instituto);
+            em.persist(categoria);
+            em.persist(curso);
+            em.persist(estudiante);
+            em.persist(edicion);
+            for (InscEdicion inscripcion : inscripciones) {
+                em.persist(inscripcion);
+            }
+            em.getTransaction().commit();
+            em.clear();
+
+            edicion = em.find(EdicionCurso.class, nombreEdicion);
+            ManejadorEdiciones.getInstance().inicializarRelaciones(edicion);
+        } finally {
+            em.close();
+        }
+
+        DataEdicionCurso datos = DtoMapper.toData(edicion);
+        assertEquals("InstitutoLazy_" + sufijo, datos.getCursoAsoc().instituto().nombreI());
+        assertTrue(datos.getCursoAsoc().categorias().contains("CategoriaLazy_" + sufijo));
+        assertEquals("Nombre", datos.getInscripciones().iterator().next().getEstudiante().getNombre());
     }
 
     /*@Test

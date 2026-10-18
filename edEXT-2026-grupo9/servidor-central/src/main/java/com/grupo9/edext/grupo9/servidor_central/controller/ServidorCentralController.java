@@ -308,6 +308,7 @@ class ServidorCentralController implements IServidorCentral {
         return this.usuarioCtrl.estaSiguiendoUsuario(seguidorNick, seguidoNick);
     }
 
+    @Override
     public void registrarDocente(String nickname, String nombre, String apellido, String email, LocalDate fechaNac, String rutaImagen, String nombreInst, String password) throws ErrorRepetidos {
         this.usuarioCtrl.registrarDocente(nickname, nombre, apellido, email, fechaNac, rutaImagen, nombreInst, password);
     }

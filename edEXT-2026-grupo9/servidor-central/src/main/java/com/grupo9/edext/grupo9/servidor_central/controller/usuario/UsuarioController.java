@@ -330,17 +330,19 @@ public class UsuarioController implements IUsuario {
 
     @Override
     public boolean estaSiguiendoUsuario(String seguidorNick, String seguidoNick) throws ErrorNoExiste {
-        EntityManager em = UtensiliosJPA.getEntityManagerFactory().createEntityManager();
-        try {
-            Usuario seguidor = em.find(Usuario.class, seguidorNick);
-            Usuario seguido = em.find(Usuario.class, seguidoNick);
-            if (seguidor == null || seguido == null) {
-                throw new ErrorNoExiste("No existe el usuario seguidor o seguido.");
-            }
-            return seguidor.getSeguidos().contains(seguido);
-        } finally {
-            em.close();
+        if (seguidorNick == null || seguidoNick == null) {
+            return false;
         }
+        Usuario seguidor = buscarUsuarioMemoria(seguidorNick);
+        Usuario seguido = buscarUsuarioMemoria(seguidoNick);
+        if (seguidor == null) {
+            throw new ErrorNoExiste("No existe el usuario seguidor: " + seguidorNick);
+        }
+        if (seguido == null) {
+            throw new ErrorNoExiste("No existe el usuario a seguir: " + seguidoNick);
+        }
+        Set<String> seguidos = obtenerSeguidos(seguidorNick);
+        return seguidos != null && seguidos.contains(seguidoNick);
     }
 
     @Override
@@ -476,7 +478,7 @@ public class UsuarioController implements IUsuario {
     }
 
     @Override
-    public void seguirUsuario(String seguidorNick, String seguidoNick) throws ErrorNoExiste {
+    public void seguirUsuario(String seguidorNick, String seguidoNick) throws ErrorNoExiste, ErrorRepetidos {
         if (seguidorNick == null || seguidoNick == null || seguidorNick.equalsIgnoreCase(seguidoNick)) {
             return;
         }
@@ -487,6 +489,9 @@ public class UsuarioController implements IUsuario {
         }
         if (seguido == null) {
             throw new ErrorNoExiste("No existe el usuario a seguir: " + seguidoNick);
+        }
+        if (seguidor.loSigue(seguidoNick)) {
+            throw new ErrorRepetidos("Ya sigues a este usuario.");
         }
 
         EntityManager em = UtensiliosJPA.getEntityManagerFactory().createEntityManager();
@@ -499,13 +504,14 @@ public class UsuarioController implements IUsuario {
                 .setParameter("usr", seguidorNick)
                 .setParameter("seg", seguidoNick)
                 .getResultList();
-            if (existe.isEmpty()) {
-                em.createNativeQuery(
-                    "INSERT INTO usuario_seguidos (usuario_nick, seguido_nick) VALUES (:usr, :seg)")
-                    .setParameter("usr", seguidorNick)
-                    .setParameter("seg", seguidoNick)
-                    .executeUpdate();
+            if (!existe.isEmpty()) {
+                throw new ErrorRepetidos("Ya sigues a este usuario.");
             }
+            em.createNativeQuery(
+                "INSERT INTO usuario_seguidos (usuario_nick, seguido_nick) VALUES (:usr, :seg)")
+                .setParameter("usr", seguidorNick)
+                .setParameter("seg", seguidoNick)
+                .executeUpdate();
             et.commit();
         } catch (Exception e) {
             if (et.isActive()) et.rollback();
@@ -582,7 +588,7 @@ public class UsuarioController implements IUsuario {
         try {
             @SuppressWarnings("unchecked")
             List<String> res = em.createNativeQuery(
-                "SELECT usuario_nick FROM usuario_seguidos WHERE usuario_nick = :usr")
+                "SELECT usuario_nick FROM usuario_seguidos WHERE seguido_nick = :usr")
                 .setParameter("usr", nickname)
                 .getResultList();
             return new HashSet<>(res);

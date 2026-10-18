@@ -375,7 +375,8 @@ public class DtoMapper {
                     dataEstudiante.getApellido(),
                     dataEstudiante.getEmail(),
                     dataEstudiante.getFechaNac(),
-                    dataEstudiante.getImagen());
+                    dataEstudiante.getImagen(),
+                    dataEstudiante.getPassword());
         }
         if (targetType == DataEstudiante.class && source instanceof Estudiante estudiante) {
             return toData(estudiante);

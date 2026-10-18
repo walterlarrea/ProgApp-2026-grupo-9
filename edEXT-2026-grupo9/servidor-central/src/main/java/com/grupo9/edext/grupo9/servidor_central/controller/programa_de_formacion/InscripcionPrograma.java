@@ -2,25 +2,27 @@ package com.grupo9.edext.grupo9.servidor_central.controller.programa_de_formacio
 
 import com.grupo9.edext.grupo9.servidor_central.controller.usuario.Estudiante;
 import jakarta.persistence.Column;
+import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.IdClass;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.MapsId;
 import jakarta.persistence.Table;
 import java.time.LocalDate;
 
 @Entity
 @Table(name = "inscripciones_a_programas")
-@IdClass(InscripcionProgramaId.class)
 public class InscripcionPrograma {
-  @Id
+  @EmbeddedId
+  private InscripcionProgramaId id = new InscripcionProgramaId();
+
   @ManyToOne
+  @MapsId("estudiante")
   @JoinColumn(name = "estudiante_nickname")
   private Estudiante estudiante;
 
-  @Id
   @ManyToOne
+  @MapsId("programa")
   @JoinColumn(name = "programa_nombre")
   private ProgramaDeFormacion programa;
 
@@ -34,6 +36,17 @@ public class InscripcionPrograma {
     this.estudiante = estudiante;
     this.programa = programa;
     this.fechaInscripcion = fechaInscripcion;
+    if (estudiante != null && programa != null) {
+      this.id = new InscripcionProgramaId(estudiante.getNickname(), programa.getNombre());
+    }
+  }
+
+  public InscripcionProgramaId getId() {
+    return id;
+  }
+
+  public void setId(InscripcionProgramaId id) {
+    this.id = id;
   }
 
   public Estudiante getEstudiante() {
