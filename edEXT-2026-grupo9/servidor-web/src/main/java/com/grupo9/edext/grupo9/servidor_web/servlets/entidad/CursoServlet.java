@@ -31,8 +31,7 @@ public class CursoServlet extends HttpServlet {
     IServidorCentral servidorCentral = Fabrica.getInstance().getIServidorCentral();
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String nombre = request.getParameter("nombre");
         DataCurso curso = null;
         String accion = request.getParameter("accion");
@@ -87,8 +86,7 @@ public class CursoServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String nombre = request.getParameter("nombre");
         String desc = request.getParameter("desc");
         String nombreInst = request.getParameter("instituto");
@@ -99,7 +97,7 @@ public class CursoServlet extends HttpServlet {
         Part imagenPart = request.getPart("imagen");
         String[] nombresPrevias = request.getParameterValues("previas");
 
-        String imagen = null;
+        String imagen = "curso-placeholder.jpg";
         LocalDate fechaReg = LocalDate.now();
         DataInstituto instituto = null;
         Set<DataCurso> previasSeleccionadas = new HashSet<>();
@@ -124,7 +122,7 @@ public class CursoServlet extends HttpServlet {
         // Procesar y guardar imagen.
         if (imagenPart != null && imagenPart.getSize() > 0) {
             imagen = imagenPart.getSubmittedFileName();
-            String rutaUploads = getServletContext().getRealPath("/uploads/curso");
+            String rutaUploads = getServletContext().getRealPath("/imagenes/curso");
             File carpeta = new File(rutaUploads);
 
             if (!carpeta.exists() && !carpeta.mkdirs()) {
@@ -133,16 +131,37 @@ public class CursoServlet extends HttpServlet {
             imagenPart.write(rutaUploads + File.separator + imagen);
         }
         try {
+            if (servidorCentral.existeCurso(nombre)) {
+                    throw new ErrorRepetidos("Ya existe un curso con ese nombre.");
+                }
             // registro el curso..
-            DataCurso nuevoCurso = new DataCurso(instituto, nombre, desc, duracion, cantHoras, cantCred, fechaReg, url,
-                    previasSeleccionadas, new HashSet<>(), new HashSet<>(), imagen);
+            DataCurso nuevoCurso = new DataCurso(instituto, nombre, desc, duracion, cantHoras, cantCred, fechaReg, url, previasSeleccionadas, new HashSet<>(), new HashSet<>(), imagen);
             servidorCentral.guardarCurso(nuevoCurso);
+            request.getSession().setAttribute("mensajeExito","😎");
             // vuekvo al menú principal..
             response.sendRedirect(request.getContextPath() + "/home");
         } catch (ErrorRepetidos e) {
             request.setAttribute("error", e.getMessage());
-            request.getRequestDispatcher("/webUsuario/alta-curso.jsp").forward(request, response);
+            request.setAttribute("nombre", nombre);
+            request.setAttribute("desc", desc);
+            request.setAttribute("duracion", duracion);
+            request.setAttribute("cantHoras", cantHoras);
+            request.setAttribute("cantCred", cantCred);
+            request.setAttribute("institutoSeleccionado", instituto);
+            request.setAttribute("url", url);
+            request.setAttribute("previasSeleccionadas", previasSeleccionadas);
+            request.setAttribute("imagen", imagen);
+            //para cargar los institutos de nuevo si tira error..
+            cargarInstitutos(request);
+            request.getRequestDispatcher("/webCurso/alta-curso.jsp").forward(request, response);
         }
-
+    }
+    
+    private void cargarInstitutos(HttpServletRequest request)throws ServletException {
+        try {
+            request.setAttribute("institutos", servidorCentral.consultarTodosLosInstitutos());
+        } catch (Exception e) {
+            throw new ServletException("Error al cargar los institutos.", e);
+        }
     }
 }

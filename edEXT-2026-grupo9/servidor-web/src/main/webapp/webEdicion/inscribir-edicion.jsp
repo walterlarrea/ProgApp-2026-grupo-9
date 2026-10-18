@@ -18,8 +18,10 @@
         <%@ include file="../webMiscelanea/sidebar.jsp" %>
         <main class="main-content">
             <section class="hero-banner">
-                <h1>Inscripción</h1>
-                <p>Regístrate a una edición de curso</p>
+                <div class="hero-contenido">
+                    <h1>Inscripción</h1>
+                    <p>Regístrate a una edición de curso</p>
+                </div>
             </section>
             
             <c:if test="${not empty error}">
@@ -33,9 +35,9 @@
                 
                 <label for="instituto"><br>Instituto</br></label>
                 <select id="instituto" name="instituto" style="width: 30%" required>
-                <option value="" ${empty param.instituto ? 'selected' : ''}>Seleccione un instituto</option>
+                <option value="" ${empty institutoSeleccionado ? 'selected' : ''}>Seleccione un instituto</option>
                     <c:forEach var="instituto" items="${institutos}">
-                        <option value="${instituto.nombreI()}" ${param.instituto eq instituto.nombreI() ? 'selected' : ''}>
+                        <option value="${instituto.nombreI()}" ${institutoSeleccionado eq instituto.nombreI() ? 'selected' : ''}>
                             <c:out value="${instituto.nombreI()}"/>
                         </option>
                     </c:forEach>
@@ -47,7 +49,7 @@
                 <select id="curso" name="curso" style="width: 30%" required>
                     <option value="">Seleccione un curso</option>
                     <c:forEach var="curso" items="${cursos}">
-                        <option value="${curso.nombreCurso()}" ${param.curso eq curso.nombreCurso() ? 'selected' : ''}>
+                        <option value="${curso.nombreCurso()}" ${cursoSeleccionado eq curso.nombreCurso() ? 'selected' : ''}>
                             <c:out value="${curso.nombreCurso()}"/>
                         </option>
                     </c:forEach>
@@ -59,7 +61,7 @@
                 <select id="edicion" name="edicion" style="width: 30%" required>
                     <option value="">Seleccione una edición</option>
                         <c:forEach var="edi" items="${ediciones}">
-                            <option value="${edi.nombreEdi}" ${param.edicion eq edi.nombreEdi ? 'selected' : ''}>
+                            <option value="${edi.nombreEdi}" ${edicionSeleccionada eq edi.nombreEdi ? 'selected' : ''}>
                                 <c:out value="${edi.nombreEdi}"/>
                             </option>
                         </c:forEach>
@@ -120,5 +122,5 @@
             </form>   
         </main>
     </div>
-	</body>
+</body>
 </html>

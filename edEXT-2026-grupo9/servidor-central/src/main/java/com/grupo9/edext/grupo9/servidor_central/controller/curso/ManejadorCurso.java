@@ -112,8 +112,7 @@ public class ManejadorCurso {
             CriteriaQuery<Curso> cQuery = cBuilder.createQuery(Curso.class);
             Root<Curso> rootEntry = cQuery.from(Curso.class);
 
-            cQuery.select(rootEntry)
-                .where(cBuilder.equal(rootEntry.get("nombreCurso"), nombre));
+            cQuery.select(rootEntry).where(cBuilder.equal(rootEntry.get("nombreCurso"), nombre));
 
             TypedQuery<Curso> query = em.createQuery(cQuery);
             query.setMaxResults(1);

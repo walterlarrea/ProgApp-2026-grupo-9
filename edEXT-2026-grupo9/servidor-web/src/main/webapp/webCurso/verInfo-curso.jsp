@@ -18,8 +18,15 @@
         <%@ include file="../webMiscelanea/sidebar.jsp" %>
         <main class="main-content">
             <section class="hero-banner">
-                <h1>${curso.nombreCurso()}</h1>
-                <p>${curso.descCurso()}</p>
+                <div class="hero-imagen">
+                    <img src="${pageContext.request.contextPath}/imagenes/curso/${curso.imagen()}" alt="Imagen del curso"
+                        onerror="this.onerror=null; this.src='${pageContext.request.contextPath}/imagenes/curso/curso-placeholder.jpg';">
+                </div>
+
+                <div class="hero-contenido">
+                    <h1>${curso.nombreCurso()}</h1>
+                    <p>${curso.descCurso()}</p>
+                </div>
             </section>
                 <div class="dato-space">
                     <h4>Instituto</h4> 

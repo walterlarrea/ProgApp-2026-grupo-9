@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registro de Usuario - edEXT</title>
+    <title>edEXT - Registro de Usuario</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/styles.css">
     <style>
         .tipo-selector {
@@ -33,8 +33,10 @@
         
         <main class="main-content">
             <section class="hero-banner">
-                <h1>Registrarse en edEXT</h1>
-                <p>Crea tu cuenta de Estudiante o Docente para acceder a los cursos y ediciones</p>
+                <div class="hero-contenido">
+                    <h1>Registrarse en edEXT</h1>
+                    <p>Crea tu cuenta de Estudiante o Docente para acceder a los cursos y ediciones</p>
+                </div>
             </section>
 
             <c:if test="${not empty error}">
@@ -95,7 +97,7 @@
 
                     <div class="dato-space2">
                         <label for="fechaNac">Fecha de Nacimiento</label>
-                        <input type="date" id="fechaNac" name="fechaNac" value="${param.fechaNac}">
+                        <input type="date" id="fechaNac" name="fechaNac" required>
                     </div>
 
                     <div class="dato-space2">
