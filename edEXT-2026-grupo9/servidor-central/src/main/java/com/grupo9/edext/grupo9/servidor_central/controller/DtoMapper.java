@@ -167,7 +167,9 @@ public class DtoMapper {
                 dataUsuario.getApellido(),
                 dataUsuario.getEmail(),
                 dataUsuario.getFechaNac(),
-                dataUsuario.getImagen());
+                dataUsuario.getImagen(),
+                dataUsuario.getPassword()
+        );
     }
 
     public static DataUsuario toData(Usuario usuario) {
@@ -256,13 +258,14 @@ public class DtoMapper {
             return null;
         }
         return new Docente(
-                dataDocente.getNickname(),
-                dataDocente.getNombre(),
-                dataDocente.getApellido(),
-                dataDocente.getEmail(),
-                dataDocente.getFechaNac(),
-                dataDocente.getImagen(),
-                dataDocente.getNombreInst());
+            dataDocente.getNickname(),
+            dataDocente.getNombre(),
+            dataDocente.getApellido(),
+            dataDocente.getEmail(),
+            dataDocente.getFechaNac(),
+            dataDocente.getImagen(),
+            dataDocente.getNombreInst(),
+            dataDocente.getPassword());
     }
 
     public static DataDocente toData(Docente docente) {

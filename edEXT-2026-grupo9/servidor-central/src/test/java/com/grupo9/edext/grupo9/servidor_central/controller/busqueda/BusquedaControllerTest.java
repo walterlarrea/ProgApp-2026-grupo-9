@@ -74,7 +74,7 @@ class BusquedaControllerTest {
         String sufijo = UUID.randomUUID().toString();
         String nickname = "usuarioBusqueda" + sufijo;
         usuarioController.registrarEstudiante(nickname, "AnaBusqueda", "LopezBusqueda",
-                nickname + "@test.com", LocalDate.of(2000, 1, 1), null);
+                nickname + "@test.com", LocalDate.of(2000, 1, 1), null, "1234");
 
         HashSet<DataUsuario> resultados = busquedaController.buscarUsuarios(
                 "anabusqueda", "lopezbusqueda");
@@ -97,7 +97,7 @@ class BusquedaControllerTest {
                 "Programa" + termino, "Descripcion", new HashSet<>(), LocalDate.now(), LocalDate.now().plusMonths(1),
                 LocalDate.now(), null));
         usuarioController.registrarEstudiante("usuario" + termino, "Nombre" + termino, "Apellido" + termino,
-                "usuario" + termino + "@test.com", LocalDate.of(2000, 1, 1), null);
+            "usuario" + termino + "@test.com", LocalDate.of(2000, 1, 1), null, "1234");
 
         List<ResultadoBusqueda> resultados = busquedaController.busquedaPrincipal(termino);
 

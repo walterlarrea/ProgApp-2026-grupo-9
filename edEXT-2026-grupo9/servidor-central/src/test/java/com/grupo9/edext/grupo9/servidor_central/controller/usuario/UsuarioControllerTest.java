@@ -11,7 +11,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.time.LocalDate;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class UsuarioControllerTest {
 
@@ -30,13 +35,14 @@ public class UsuarioControllerTest {
         String email = "test_" + System.currentTimeMillis() + "@test.com";
 
         assertDoesNotThrow(() -> {
-            usuarioController.registrarEstudiante(nick, "Juan", "Pérez", email, LocalDate.of(2000, 1, 1), null);
+            usuarioController.registrarEstudiante(nick, "Juan", "Pérez", email, LocalDate.of(2000, 1, 1), null, "1234");
             DataUsuario data = usuarioController.consultarUsuario(nick);
             assertNotNull(data);
             assertTrue(data instanceof DataEstudiante);
             assertEquals(nick, data.getNickname());
             assertEquals("Juan", data.getNombre());
             assertEquals("Pérez", data.getApellido());
+            assertEquals("1234", data.getPassword());
         });
     }
 
@@ -49,14 +55,14 @@ public class UsuarioControllerTest {
         String email = "testdoc_" + System.currentTimeMillis() + "@test.com";
 
         assertDoesNotThrow(() -> {
-            usuarioController.registrarDocente(nick, "Maria", "Lopez", email, LocalDate.of(1985, 4, 4), "foto.png",
-                    instNombre);
+            usuarioController.registrarDocente(nick, "Maria", "Lopez", email, LocalDate.of(1985, 4, 4), "foto.png", instNombre, "passDoc123");
             DataUsuario data = usuarioController.consultarUsuario(nick);
             assertNotNull(data);
             assertTrue(data instanceof DataDocente);
             DataDocente docData = (DataDocente) data;
             assertEquals(nick, docData.getNickname());
             assertEquals(instNombre, docData.getNombreInst());
+            assertEquals("passDoc123", docData.getPassword());
         });
     }
 
@@ -66,7 +72,7 @@ public class UsuarioControllerTest {
         String email = "dup_" + System.currentTimeMillis() + "@test.com";
 
         assertDoesNotThrow(() -> {
-            usuarioController.registrarEstudiante(nick, "User", "One", email, LocalDate.of(2000, 1, 1), null);
+            usuarioController.registrarEstudiante(nick, "User", "One", email, LocalDate.of(2000, 1, 1), null, "1234");
         });
 
         assertThrows(ErrorRepetidos.class, () -> {
@@ -77,6 +83,11 @@ public class UsuarioControllerTest {
         assertThrows(ErrorRepetidos.class, () -> {
             usuarioController.registrarEstudiante("other_" + System.currentTimeMillis(), "User", "Three", email,
                     LocalDate.of(2000, 1, 1), null);
+            usuarioController.registrarEstudiante(nick, "User", "Two", "other_" + System.currentTimeMillis() + "@test.com", LocalDate.of(2000, 1, 1), null, "1234");
+        });
+
+        assertThrows(ErrorRepetidos.class, () -> {
+            usuarioController.registrarEstudiante("other_" + System.currentTimeMillis(), "User", "Three", email, LocalDate.of(2000, 1, 1), null, "1234");
         });
     }
 
@@ -86,21 +97,19 @@ public class UsuarioControllerTest {
         String email = "testmod_" + System.currentTimeMillis() + "@test.com";
 
         assertDoesNotThrow(() -> {
-            usuarioController.registrarEstudiante(nick, "NombreOriginal", "ApellidoOriginal", email,
-                    LocalDate.of(1995, 5, 5), null);
-            usuarioController.modificarUsuario(nick, "NombreNuevo", "ApellidoNuevo", LocalDate.of(1995, 5, 5),
-                    "path/img.png");
-
+            usuarioController.registrarEstudiante(nick, "NombreOriginal", "ApellidoOriginal", email, LocalDate.of(1995, 5, 5), null, "1234");
+            usuarioController.modificarUsuario(nick, "NombreNuevo", "ApellidoNuevo", LocalDate.of(1995, 5, 5), "path/img.png", null, null);
+            
             DataUsuario data = usuarioController.consultarUsuario(nick);
             assertEquals("NombreNuevo", data.getNombre());
             assertEquals("ApellidoNuevo", data.getApellido());
             assertEquals("path/img.png", data.getImagen());
+            assertEquals("1234", data.getPassword());
 
-            // Overloads
-            usuarioController.modificarUsuario(nick, "NombreNuevo", "ApellidoNuevo", LocalDate.of(1995, 5, 5),
-                    "path/img.png", "INCO");
-            usuarioController.modificarUsuario(nick, "NombreNuevo", "ApellidoNuevo", LocalDate.of(1995, 5, 5),
-                    "path/img.png", "INCO", true);
+            // Modificar contraseña
+            usuarioController.modificarUsuario(nick, "NombreNuevo", "ApellidoNuevo", LocalDate.of(1995, 5, 5), "path/img.png", "1234", "nuevaPass123");
+            DataUsuario dataMod = usuarioController.consultarUsuario(nick);
+            assertEquals("nuevaPass123", dataMod.getPassword());
         });
     }
 
@@ -149,7 +158,7 @@ public class UsuarioControllerTest {
         String email = "testdel_" + System.currentTimeMillis() + "@test.com";
 
         assertDoesNotThrow(() -> {
-            usuarioController.registrarEstudiante(nick, "AEliminar", "User", email, LocalDate.of(1998, 3, 3), null);
+            usuarioController.registrarEstudiante(nick, "AEliminar", "User", email, LocalDate.of(1998, 3, 3), null, "1234");
             usuarioController.eliminarUsuario(nick);
 
             assertThrows(ErrorNoExiste.class, () -> {

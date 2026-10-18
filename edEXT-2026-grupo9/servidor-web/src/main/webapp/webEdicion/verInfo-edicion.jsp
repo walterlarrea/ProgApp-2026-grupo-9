@@ -19,18 +19,22 @@
         <main class="main-content">
             <section class="hero-banner">
                 <h1>${edicion.nombreEdi}</h1>
-                <h2>${edicion.cursoAsoc.instituto().nombreI()}</h2>
-                <h3>${edicion.cursoAsoc.nombreCurso()}</h3>
+                <a class="corte-texto2" href="${pageContext.request.contextPath}/instituto?nombre=${edicion.cursoAsoc.instituto().nombreI()}">
+                    <h2>${edicion.cursoAsoc.instituto().nombreI()}</h2>
+                </a>
+                <a class="corte-texto2" href="${pageContext.request.contextPath}/curso?nombre=${edicion.cursoAsoc.nombreCurso()}">
+                    <h3>${edicion.cursoAsoc.nombreCurso()}</h3>
+                </a>
             </section>
                 <div class="dato-space">
-                    <h4>Fecha de inicio</h4> <p>${edicion.fechaInicio}</p>
+                    <h4>Fecha de inicio</h4> <p class="detalle">${edicion.fechaInicio}</p>
                 </div>      
                 <div class="dato-space">
-                    <h4>Fecha de finalización</h4> <p>${edicion.fechaFin}</p>
+                    <h4>Fecha de finalización</h4> <p class="detalle">${edicion.fechaFin}</p>
                 </div>
                 <div class="dato-space">
                     <h4>Cupo</h4>
-                    <p>
+                    <p class="detalle">
                         <c:choose>
                             <c:when test="${edicion.cupo == null}">
                                 Libre
@@ -110,7 +114,12 @@
                     </c:choose>
                 </tbody>
                 </table>
-            </div> 
+            </div>
+            <c:if test="${sessionScope.usuarioLogueado.tipo == 'Docente'}">
+                <div class="btn-der">
+                    <button type="submit" class="btn btn-primary">Guardar selección</button>
+                </div>
+            </c:if>
         </main>
     </div>
 </body>

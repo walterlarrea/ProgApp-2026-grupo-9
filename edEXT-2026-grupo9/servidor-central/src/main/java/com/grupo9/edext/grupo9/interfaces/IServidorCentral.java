@@ -97,28 +97,24 @@ public interface IServidorCentral {
 
     public void modificarUsuario(String nick, String nom, String ape, LocalDate fechaNac, String rutaImg);
 
-    public void modificarUsuario(String nick, String nom, String ape, LocalDate fechaNac, String rutaImg,
-            String passActual, String passNueva) throws ErrorNoExiste;
-
-    public void eliminarUsuario(String nick) throws ErrorNoExiste;
-
     public void registrarEstudiante(String nickname, String nombre, String apellido, String email, LocalDate fechaNac,
             String rutaImagen) throws ErrorRepetidos;
-
-    public void registrarEstudiante(String nickname, String nombre, String apellido, String email, LocalDate fechaNac,
-            String rutaImagen, String password) throws ErrorRepetidos;
 
     public void registrarDocente(String nickname, String nombre, String apellido, String email, LocalDate fechaNac,
             String rutaImagen, String nombreInst) throws ErrorRepetidos;
 
-    public void registrarDocente(String nickname, String nombre, String apellido, String email, LocalDate fechaNac,
-            String rutaImagen, String nombreInst, String password) throws ErrorRepetidos;
-
-    public void seguirUsuario(String seguidorNick, String seguidoNick) throws ErrorNoExiste, ErrorRepetidos;
-
-    public void dejarDeSeguirUsuario(String seguidorNick, String seguidoNick) throws ErrorNoExiste;
-
     public boolean estaSiguiendoUsuario(String seguidorNick, String seguidoNick) throws ErrorNoExiste;
 
+    public void modificarUsuario(String nick, String nom, String ape, LocalDate fechaNac, String rutaImg, String passActual, String passNueva) throws ErrorNoExiste;
+    public void eliminarUsuario(String nick) throws ErrorNoExiste;
+    public void registrarEstudiante(String nickname, String nombre, String apellido, String email, LocalDate fechaNac, String rutaImagen, String password) throws ErrorRepetidos;
+
     public DataUsuario iniciarSesion(String nicknameOEmail, String password) throws ErrorNoExiste;
+    
+    // Seguir usuarios
+    public void seguirUsuario(String seguidorNick, String seguidoNick) throws ErrorNoExiste;
+    public void dejarDeSeguirUsuario(String seguidorNick, String seguidoNick) throws ErrorNoExiste;
+    public Set<String> obtenerSeguidos(String nickname) throws ErrorNoExiste;
+    public Set<String> obtenerSeguidores(String nickname) throws ErrorNoExiste;
+    public boolean esSeguidor(String seguidorNick, String seguidoNick);
 }

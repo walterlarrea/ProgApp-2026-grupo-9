@@ -266,8 +266,7 @@ class ServidorCentralController implements IServidorCentral {
     }
 
     @Override
-    public void modificarUsuario(String nick, String nom, String ape, java.time.LocalDate fechaNac, String rutaImg,
-            String passActual, String passNueva) throws ErrorNoExiste {
+    public void modificarUsuario(String nick, String nom, String ape, LocalDate fechaNac, String rutaImg, String passActual, String passNueva) throws ErrorNoExiste {
         this.usuarioCtrl.modificarUsuario(nick, nom, ape, fechaNac, rutaImg, passActual, passNueva);
     }
 
@@ -283,8 +282,8 @@ class ServidorCentralController implements IServidorCentral {
     }
 
     @Override
-    public void registrarEstudiante(String nickname, String nombre, String apellido, String email, LocalDate fechaNac,
-            String rutaImagen, String password) throws ErrorRepetidos {
+
+    public void registrarEstudiante(String nickname, String nombre, String apellido, String email, LocalDate fechaNac, String rutaImagen, String password) throws ErrorRepetidos {
         this.usuarioCtrl.registrarEstudiante(nickname, nombre, apellido, email, fechaNac, rutaImagen, password);
     }
 
@@ -292,13 +291,6 @@ class ServidorCentralController implements IServidorCentral {
     public void registrarDocente(String nickname, String nombre, String apellido, String email, LocalDate fechaNac,
             String rutaImagen, String nombreInst) throws ErrorRepetidos {
         this.usuarioCtrl.registrarDocente(nickname, nombre, apellido, email, fechaNac, rutaImagen, nombreInst);
-    }
-
-    @Override
-    public void registrarDocente(String nickname, String nombre, String apellido, String email, LocalDate fechaNac,
-            String rutaImagen, String nombreInst, String password) throws ErrorRepetidos {
-        this.usuarioCtrl.registrarDocente(nickname, nombre, apellido, email, fechaNac, rutaImagen, nombreInst,
-                password);
     }
 
     @Override
@@ -316,8 +308,28 @@ class ServidorCentralController implements IServidorCentral {
         return this.usuarioCtrl.estaSiguiendoUsuario(seguidorNick, seguidoNick);
     }
 
+    public void registrarDocente(String nickname, String nombre, String apellido, String email, LocalDate fechaNac, String rutaImagen, String nombreInst, String password) throws ErrorRepetidos {
+        this.usuarioCtrl.registrarDocente(nickname, nombre, apellido, email, fechaNac, rutaImagen, nombreInst, password);
+    }
+
     @Override
     public DataUsuario iniciarSesion(String nicknameOEmail, String password) throws ErrorNoExiste {
         return this.usuarioCtrl.iniciarSesion(nicknameOEmail, password);
     }
+
+    @Override
+    public Set<String> obtenerSeguidos(String nickname) throws ErrorNoExiste {
+        return this.usuarioCtrl.obtenerSeguidos(nickname);
+    }
+
+    @Override
+    public Set<String> obtenerSeguidores(String nickname) throws ErrorNoExiste {
+        return this.usuarioCtrl.obtenerSeguidores(nickname);
+    }
+
+    @Override
+    public boolean esSeguidor(String seguidorNick, String seguidoNick) {
+        return this.usuarioCtrl.esSeguidor(seguidorNick, seguidoNick);
+    }
 }
+

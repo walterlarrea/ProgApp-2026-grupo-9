@@ -1,13 +1,19 @@
 package com.grupo9.edext.grupo9.servidor_central.controller.usuario;
 
-import java.time.LocalDate;
 
-/**
- *
- * @author Usuario
- */
 import jakarta.persistence.*;
 import java.io.Serializable;
+import jakarta.persistence.CollectionTable;
+import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.InheritanceType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.Table;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -25,14 +31,15 @@ public class Usuario implements Serializable {
 
     private String fechaNac_str; // Optional helper if used
     private String password;
-    @ManyToMany
-    @JoinTable(name = "seguidores", joinColumns = @JoinColumn(name = "seguidor_nickname"), inverseJoinColumns = @JoinColumn(name = "seguido_nickname"))
-    private Set<Usuario> seguidos = new HashSet<>();
     @ManyToMany(mappedBy = "seguidos")
     private Set<Usuario> seguidores = new HashSet<>();
 
-    public Usuario(String nickname, String nombre, String apellido, String email, LocalDate fechaNac, String rutaImagen,
-            String password) {
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "usuario_seguidos", joinColumns = @JoinColumn(name = "usuario_nick"))
+    @Column(name = "seguido_nick")
+    private Set<String> seguidos = new HashSet<>();
+
+    public Usuario(String nickname, String nombre, String apellido, String email, LocalDate fechaNac, String rutaImagen, String password) {
         this.nickname = nickname;
         this.nombre = nombre;
         this.apellido = apellido;
@@ -40,16 +47,7 @@ public class Usuario implements Serializable {
         this.fechaNac = fechaNac;
         this.imagen = rutaImagen;
         this.password = password;
-    }
-
-    public Usuario(String nickname, String nombre, String apellido, String email, LocalDate fechaNac,
-            String rutaImagen) {
-        this.nickname = nickname;
-        this.nombre = nombre;
-        this.apellido = apellido;
-        this.email = email;
-        this.fechaNac = fechaNac;
-        this.imagen = rutaImagen;
+        this.seguidos = new HashSet<>();
     }
 
     public Usuario() {
@@ -120,20 +118,26 @@ public class Usuario implements Serializable {
         this.imagen = imagen;
     }
 
-    public Set<Usuario> getSeguidos() {
+    public Set<String> getSeguidos() {
+        if (seguidos == null) {
+            seguidos = new HashSet<>();
+        }
         return seguidos;
     }
 
-    public void setSeguidos(Set<Usuario> seguidos) {
+    public void setSeguidos(Set<String> seguidos) {
         this.seguidos = seguidos;
     }
 
-    public Set<Usuario> getSeguidores() {
-        return seguidores;
+    public void seguir(String nick) {
+        getSeguidos().add(nick);
     }
 
-    public void setSeguidores(Set<Usuario> seguidores) {
-        this.seguidores = seguidores;
+    public void dejarDeSeguir(String nick) {
+        getSeguidos().remove(nick);
     }
 
+    public boolean loSigue(String nick) {
+        return getSeguidos().contains(nick);
+    }
 }

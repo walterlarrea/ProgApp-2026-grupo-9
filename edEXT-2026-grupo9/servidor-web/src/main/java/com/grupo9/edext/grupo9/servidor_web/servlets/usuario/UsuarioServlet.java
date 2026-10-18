@@ -1,9 +1,9 @@
 package com.grupo9.edext.grupo9.servidor_web.servlets.usuario;
 
 import com.grupo9.edext.grupo9.interfaces.IServidorCentral;
-import com.grupo9.edext.grupo9.mensajes.ErrorNoExiste;
-import com.grupo9.edext.grupo9.mensajes.ErrorRepetidos;
 import com.grupo9.edext.grupo9.miscelanea.Fabrica;
+import com.grupo9.edext.grupo9.servidor_central.dominio.DataCurso;
+import com.grupo9.edext.grupo9.servidor_central.dominio.DataInstituto;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataUsuario;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -12,76 +12,47 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
+import java.util.Collections;
+import java.util.Set;
 
 @WebServlet("/usuario")
 public class UsuarioServlet extends HttpServlet {
 
-  @Override
-  protected void doGet(HttpServletRequest request, HttpServletResponse response)
-      throws ServletException, IOException {
-    String nickname = request.getParameter("nombre");
-    if (nickname == null || nickname.isBlank()) {
-      response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Falta el nickname del usuario.");
-      return;
-    }
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        String nickname = request.getParameter("nickname");
 
-    try {
-      IServidorCentral servidor = Fabrica.getInstance().getIServidorCentral();
-      DataUsuario usuario = servidor.consultarUsuario(nickname);
-      HttpSession session = request.getSession(false);
-      DataUsuario usuarioLogueado = session == null ? null : (DataUsuario) session.getAttribute("usuarioLogueado");
-      boolean propio = usuarioLogueado != null && nickname.equals(usuarioLogueado.getNickname());
-      boolean siguiendo = usuarioLogueado != null && !propio
-          && servidor.estaSiguiendoUsuario(usuarioLogueado.getNickname(), nickname);
+        if (nickname == null || nickname.trim().isEmpty()) {
+            response.sendRedirect(request.getContextPath() + "/home");
+            return;
+        }
 
-      request.setAttribute("usuario", usuario);
-      request.setAttribute("propio", propio);
-      request.setAttribute("siguiendo", siguiendo);
-      request.getRequestDispatcher("/webUsuario/verInfo-usuario.jsp").forward(request, response);
-    } catch (ErrorNoExiste e) {
-      response.sendError(HttpServletResponse.SC_NOT_FOUND, e.getMessage());
-    } catch (Exception e) {
-      throw new ServletException("No se pudo consultar el usuario.", e);
-    }
-  }
+        IServidorCentral servidorCentral = Fabrica.getInstance().getIServidorCentral();
+        Set<DataInstituto> institutos = Collections.emptySet();
+        Set<DataCurso> cursos = Collections.emptySet();
 
-  @Override
-  protected void doPost(HttpServletRequest request, HttpServletResponse response)
-      throws ServletException, IOException {
-    HttpSession session = request.getSession(false);
-    DataUsuario seguidor = session == null ? null : (DataUsuario) session.getAttribute("usuarioLogueado");
-    if (seguidor == null) {
-      response.sendRedirect(request.getContextPath() + "/login");
-      return;
-    }
+        try {
+            if (servidorCentral != null) {
+                institutos = servidorCentral.consultarTodosLosInstitutos();
+                cursos = servidorCentral.consultarTodosLosCursos();
+                DataUsuario usuarioConsultado = servidorCentral.consultarUsuario(nickname.trim());
+                request.setAttribute("usuario", usuarioConsultado);
 
-    String seguido = request.getParameter("nickname");
-    String accion = request.getParameter("accion");
-    String destino = request.getContextPath() + "/usuario?nombre="
-        + URLEncoder.encode(seguido == null ? "" : seguido, StandardCharsets.UTF_8);
-    if (seguido == null || seguido.isBlank() || seguido.equals(seguidor.getNickname())) {
-      response.sendError(HttpServletResponse.SC_BAD_REQUEST, "No se puede seguir a este usuario.");
-      return;
-    }
+                HttpSession session = request.getSession(false);
+                DataUsuario usuarioLogueado = (session != null) ? (DataUsuario) session.getAttribute("usuarioLogueado") : null;
+                boolean loSigue = false;
+                if (usuarioLogueado != null) {
+                    loSigue = servidorCentral.esSeguidor(usuarioLogueado.getNickname(), nickname.trim());
+                }
+                request.setAttribute("loSigue", loSigue);
+            }
+        } catch (Exception e) {
+            request.setAttribute("error", "Error al consultar usuario: " + e.getMessage());
+        }
 
-    try {
-      IServidorCentral servidor = Fabrica.getInstance().getIServidorCentral();
-      if ("seguir".equals(accion)) {
-        servidor.seguirUsuario(seguidor.getNickname(), seguido);
-      } else if ("dejar".equals(accion)) {
-        servidor.dejarDeSeguirUsuario(seguidor.getNickname(), seguido);
-      } else {
-        response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Acción no válida.");
-        return;
-      }
-      response
-          .sendRedirect(destino + "&mensaje=" + URLEncoder.encode("Seguimiento actualizado.", StandardCharsets.UTF_8));
-    } catch (ErrorRepetidos | ErrorNoExiste e) {
-      response.sendRedirect(destino + "&error=" + URLEncoder.encode(e.getMessage(), StandardCharsets.UTF_8));
-    } catch (Exception e) {
-      throw new ServletException("No se pudo actualizar el seguimiento.", e);
+        request.setAttribute("institutos", institutos);
+        request.setAttribute("cursos", cursos);
+        request.getRequestDispatcher("/webUsuario/verInfo-usuario.jsp").forward(request, response);
     }
-  }
 }

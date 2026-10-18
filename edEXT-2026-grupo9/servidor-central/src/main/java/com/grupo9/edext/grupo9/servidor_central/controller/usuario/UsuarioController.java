@@ -11,12 +11,15 @@ import com.grupo9.edext.grupo9.servidor_central.dominio.DataDocente;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataEstudiante;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataInscPrograma;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataUsuario;
-import com.grupo9.edext.grupo9.mensajes.*;
+import com.grupo9.edext.grupo9.mensajes.ErrorNoExiste;
+import com.grupo9.edext.grupo9.mensajes.ErrorRepetidos;
 import com.grupo9.edext.grupo9.miscelanea.UtensiliosJPA;
-import jakarta.persistence.*;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityTransaction;
 import java.time.LocalDate;
-import java.util.Set;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public class UsuarioController implements IUsuario {
 
@@ -222,9 +225,7 @@ public class UsuarioController implements IUsuario {
         registrarEstudiante(nickname, nombre, apellido, email, fechaNac, rutaImagen, null);
     }
 
-    @Override
-    public void registrarEstudiante(String nickname, String nombre, String apellido, String email, LocalDate fechaNac,
-            String rutaImagen, String password) throws ErrorRepetidos {
+    public void registrarEstudiante(String nickname, String nombre, String apellido, String email, LocalDate fechaNac, String rutaImagen, String password) throws ErrorRepetidos {
         ManejadorDocente mDocente = ManejadorDocente.getInstance();
         ManejadorEstudiantes mEstudiante = ManejadorEstudiantes.getInstance();
 
@@ -247,9 +248,7 @@ public class UsuarioController implements IUsuario {
         registrarDocente(nickname, nombre, apellido, email, fechaNac, rutaImagen, nombreInst, null);
     }
 
-    @Override
-    public void registrarDocente(String nickname, String nombre, String apellido, String email, LocalDate fechaNac,
-            String rutaImagen, String nombreInst, String password) throws ErrorRepetidos {
+    public void registrarDocente(String nickname, String nombre, String apellido, String email, LocalDate fechaNac, String rutaImagen, String nombreInst, String password) throws ErrorRepetidos {
         ManejadorDocente mDocente = ManejadorDocente.getInstance();
         ManejadorEstudiantes mEstudiante = ManejadorEstudiantes.getInstance();
 
@@ -324,72 +323,6 @@ public class UsuarioController implements IUsuario {
                 }
                 throw e;
             }
-        } finally {
-            em.close();
-        }
-    }
-
-    @Override
-    public void seguirUsuario(String seguidorNick, String seguidoNick) throws ErrorNoExiste, ErrorRepetidos {
-        EntityManager em = UtensiliosJPA.getEntityManagerFactory().createEntityManager();
-        try {
-            Usuario seguidor = em.find(Usuario.class, seguidorNick);
-            Usuario seguido = em.find(Usuario.class, seguidoNick);
-            if (seguidor == null || seguido == null) {
-                throw new ErrorNoExiste("No existe el usuario seguidor o seguido.");
-            }
-            if (seguidor.getSeguidos() != null && seguidor.getSeguidos().contains(seguido)) {
-                throw new ErrorRepetidos("Ya sigues a este usuario.");
-            }
-
-            EntityTransaction et = em.getTransaction();
-            try {
-                et.begin();
-                if (seguidor.getSeguidos() == null) {
-                    seguidor.setSeguidos(new HashSet<>());
-                }
-                if (seguido.getSeguidores() == null) {
-                    seguido.setSeguidores(new HashSet<>());
-                }
-                seguidor.getSeguidos().add(seguido);
-                seguido.getSeguidores().add(seguidor);
-                em.merge(seguidor);
-                em.merge(seguido);
-                et.commit();
-            } catch (Exception e) {
-                if (et.isActive()) {
-                    et.rollback();
-                }
-                if (e instanceof ErrorRepetidos) {
-                    throw (ErrorRepetidos) e;
-                }
-                throw e;
-            }
-        } finally {
-            em.close();
-        }
-    }
-
-    @Override
-    public void dejarDeSeguirUsuario(String seguidorNick, String seguidoNick) throws ErrorNoExiste {
-        EntityManager em = UtensiliosJPA.getEntityManagerFactory().createEntityManager();
-        try {
-            Usuario seguidor = em.find(Usuario.class, seguidorNick);
-            Usuario seguido = em.find(Usuario.class, seguidoNick);
-            if (seguidor == null || seguido == null) {
-                throw new ErrorNoExiste("No existe el usuario seguidor o seguido.");
-            }
-            if (seguidor.getSeguidos() == null || !seguidor.getSeguidos().contains(seguido)) {
-                return;
-            }
-
-            EntityTransaction et = em.getTransaction();
-            et.begin();
-            seguidor.getSeguidos().remove(seguido);
-            seguido.getSeguidores().remove(seguidor);
-            em.merge(seguidor);
-            em.merge(seguido);
-            et.commit();
         } finally {
             em.close();
         }
@@ -480,17 +413,18 @@ public class UsuarioController implements IUsuario {
             }
             Set<String> cursos = new HashSet<>();
             DataDocente dd = new DataDocente(
-                    doc.getNickname(),
-                    doc.getNombre(),
-                    doc.getApellido(),
-                    doc.getEmail(),
-                    doc.getFechaNac(),
-                    doc.getImagen(),
-                    doc.getNombreInst());
-            if (ediciones != null)
-                dd.getEdiciones().addAll(ediciones);
-            if (cursos != null)
-                dd.getCursos().addAll(cursos);
+                doc.getNickname(),
+                doc.getNombre(),
+                doc.getApellido(),
+                doc.getEmail(),
+                doc.getFechaNac(),
+                doc.getImagen(),
+                doc.getNombreInst());
+            dd.setPassword(doc.getPassword());
+            if (ediciones != null) dd.getEdiciones().addAll(ediciones);
+            if (cursos != null) dd.getCursos().addAll(cursos);
+            dd.setSeguidos(obtenerSeguidos(nickname));
+            dd.setSeguidores(obtenerSeguidores(nickname));
             return dd;
         }
 
@@ -505,6 +439,7 @@ public class UsuarioController implements IUsuario {
                     }
                 }
             }
+            
             Set<DataInscPrograma> inscripcionesProgramas = new HashSet<>();
             if (est.getInscripcionesProgramas() != null) {
                 for (InscripcionPrograma inscripcion : est.getInscripcionesProgramas()) {
@@ -516,18 +451,156 @@ public class UsuarioController implements IUsuario {
                     }
                 }
             }
-            DataEstudiante dataEstudiante = new DataEstudiante(
-                    est.getNickname(),
-                    est.getNombre(),
-                    est.getApellido(),
-                    est.getEmail(),
-                    est.getFechaNac(),
-                    est.getImagen(),
-                    edicionesInsc,
-                    inscripcionesProgramas);
-            return dataEstudiante;
+            DataEstudiante de = new DataEstudiante(
+                est.getNickname(),
+                est.getNombre(),
+                est.getApellido(),
+                est.getEmail(),
+                est.getFechaNac(),
+                est.getImagen(),
+                edicionesInsc,
+                inscripcionesProgramas);
+            de.setPassword(est.getPassword());
+            de.setSeguidos(obtenerSeguidos(nickname));
+            de.setSeguidores(obtenerSeguidores(nickname));
+            return de;
         }
 
         throw new ErrorNoExiste("El usuario con nickname " + nickname + " no existe.");
+    }
+
+    private Usuario buscarUsuarioMemoria(String nickname) {
+        Docente d = ManejadorDocente.getInstance().obtenerDocente(nickname);
+        if (d != null) return d;
+        return ManejadorEstudiantes.getInstance().obtenerEstudiante(nickname);
+    }
+
+    @Override
+    public void seguirUsuario(String seguidorNick, String seguidoNick) throws ErrorNoExiste {
+        if (seguidorNick == null || seguidoNick == null || seguidorNick.equalsIgnoreCase(seguidoNick)) {
+            return;
+        }
+        Usuario seguidor = buscarUsuarioMemoria(seguidorNick);
+        Usuario seguido = buscarUsuarioMemoria(seguidoNick);
+        if (seguidor == null) {
+            throw new ErrorNoExiste("No existe el usuario seguidor: " + seguidorNick);
+        }
+        if (seguido == null) {
+            throw new ErrorNoExiste("No existe el usuario a seguir: " + seguidoNick);
+        }
+
+        EntityManager em = UtensiliosJPA.getEntityManagerFactory().createEntityManager();
+        EntityTransaction et = em.getTransaction();
+        try {
+            et.begin();
+            // Insertar si no existe
+            List<?> existe = em.createNativeQuery(
+                "SELECT 1 FROM usuario_seguidos WHERE usuario_nick = :usr AND seguido_nick = :seg")
+                .setParameter("usr", seguidorNick)
+                .setParameter("seg", seguidoNick)
+                .getResultList();
+            if (existe.isEmpty()) {
+                em.createNativeQuery(
+                    "INSERT INTO usuario_seguidos (usuario_nick, seguido_nick) VALUES (:usr, :seg)")
+                    .setParameter("usr", seguidorNick)
+                    .setParameter("seg", seguidoNick)
+                    .executeUpdate();
+            }
+            et.commit();
+        } catch (Exception e) {
+            if (et.isActive()) et.rollback();
+            throw e;
+        } finally {
+            em.close();
+        }
+
+        seguidor.seguir(seguidoNick);
+    }
+
+    @Override
+    public void dejarDeSeguirUsuario(String seguidorNick, String seguidoNick) throws ErrorNoExiste {
+        if (seguidorNick == null || seguidoNick == null) {
+            return;
+        }
+        Usuario seguidor = buscarUsuarioMemoria(seguidorNick);
+        if (seguidor == null) {
+            throw new ErrorNoExiste("No existe el usuario seguidor: " + seguidorNick);
+        }
+
+        EntityManager em = UtensiliosJPA.getEntityManagerFactory().createEntityManager();
+        EntityTransaction et = em.getTransaction();
+        try {
+            et.begin();
+            em.createNativeQuery(
+                "DELETE FROM usuario_seguidos WHERE usuario_nick = :usr AND seguido_nick = :seg")
+                .setParameter("usr", seguidorNick)
+                .setParameter("seg", seguidoNick)
+                .executeUpdate();
+            et.commit();
+        } catch (Exception e) {
+            if (et.isActive()) et.rollback();
+            throw e;
+        } finally {
+            em.close();
+        }
+
+        seguidor.dejarDeSeguir(seguidoNick);
+    }
+
+    @Override
+    public Set<String> obtenerSeguidos(String nickname) throws ErrorNoExiste {
+        Usuario u = buscarUsuarioMemoria(nickname);
+        if (u == null) {
+            throw new ErrorNoExiste("No existe el usuario con nickname: " + nickname);
+        }
+
+        EntityManager em = UtensiliosJPA.getEntityManagerFactory().createEntityManager();
+        try {
+            @SuppressWarnings("unchecked")
+            List<String> res = em.createNativeQuery(
+                "SELECT seguido_nick FROM usuario_seguidos WHERE usuario_nick = :usr")
+                .setParameter("usr", nickname)
+                .getResultList();
+            Set<String> seguidos = new HashSet<>(res);
+            u.setSeguidos(seguidos);
+            return seguidos;
+        } catch (Exception e) {
+            return u.getSeguidos();
+        } finally {
+            em.close();
+        }
+    }
+
+    @Override
+    public Set<String> obtenerSeguidores(String nickname) throws ErrorNoExiste {
+        Usuario u = buscarUsuarioMemoria(nickname);
+        if (u == null) {
+            throw new ErrorNoExiste("No existe el usuario con nickname: " + nickname);
+        }
+
+        EntityManager em = UtensiliosJPA.getEntityManagerFactory().createEntityManager();
+        try {
+            @SuppressWarnings("unchecked")
+            List<String> res = em.createNativeQuery(
+                "SELECT usuario_nick FROM usuario_seguidos WHERE usuario_nick = :usr")
+                .setParameter("usr", nickname)
+                .getResultList();
+            return new HashSet<>(res);
+        } catch (Exception e) {
+            return new HashSet<>();
+        } finally {
+            em.close();
+        }
+    }
+
+    @Override
+    public boolean esSeguidor(String seguidorNick, String seguidoNick) {
+        if (seguidorNick == null || seguidoNick == null) return false;
+        try {
+            Set<String> seguidos = obtenerSeguidos(seguidorNick);
+            return seguidos != null && seguidos.contains(seguidoNick);
+        } catch (Exception e) {
+            return false;
+        }
     }
 }
