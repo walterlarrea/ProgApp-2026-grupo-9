@@ -21,7 +21,7 @@
                 <h1>Tus inscripciones</h1>
                 <p>Aquí podrás ver el estado de tus inscripciones</p>
             </section>
-             
+
             <div class="table-container">
                 <table class="inscriptos-table">
                     <thead>
@@ -33,12 +33,19 @@
                     </thead>
                 <tbody>
                     <c:choose>
+                        <c:when test="${not empty error}">
+                            <tr>
+                                <td colspan="3" class="empty-table" role="alert">
+                                    <c:out value="${error}"/>
+                                </td>
+                            </tr>
+                        </c:when>
                         <c:when test="${not empty inscripciones}">
                             <c:forEach var="insc" items="${inscripciones}">
                                 <tr>
                                     <td class="nav-list">
-                                        <a href="${pageContext.request.contextPath}/edicionCurso?nombre=${insc.nombreEdi}">
-                                            <c:out value="${insc.nombreEdi}"/>
+                                        <a href="${pageContext.request.contextPath}/edicionCurso?nombre=${insc.edicion}">
+                                            <c:out value="${insc.edicion}"/>
                                         </a>
                                     </td>
                                     <td>

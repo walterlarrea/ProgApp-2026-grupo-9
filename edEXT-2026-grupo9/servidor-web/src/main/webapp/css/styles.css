@@ -441,7 +441,8 @@ body {
 	width: 100%;
 	table-layout: fixed;
 	border-collapse: separate;
-	border-spacing: 20px 0;
+	/* border-spacing: 20px 0; */
+	border-spacing: unset;
 	background: white;
 	border-radius: 10px;
 	overflow: hidden;
