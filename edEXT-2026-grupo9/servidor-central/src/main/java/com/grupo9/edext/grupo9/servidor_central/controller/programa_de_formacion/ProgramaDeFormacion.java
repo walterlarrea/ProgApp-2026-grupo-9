@@ -108,4 +108,8 @@ public class ProgramaDeFormacion implements Serializable {
     public Set<InscripcionPrograma> getInscripciones() {
         return inscripciones;
     }
+
+    public void setInscripciones(Set<InscripcionPrograma> inscripciones) {
+        this.inscripciones = inscripciones;
+    }
 }

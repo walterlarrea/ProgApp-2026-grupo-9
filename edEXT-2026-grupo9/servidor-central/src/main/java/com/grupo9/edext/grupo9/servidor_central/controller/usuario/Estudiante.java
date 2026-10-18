@@ -37,7 +37,15 @@ public class Estudiante extends Usuario implements Serializable {
         return inscripciones;
     }
 
+    public void setInscripciones(Set<InscEdicion> inscripciones) {
+        this.inscripciones = inscripciones;
+    }
+
     public Set<InscripcionPrograma> getInscripcionesProgramas() {
         return inscripcionesProgramas;
+    }
+
+    public void setInscripcionesProgramas(Set<InscripcionPrograma> inscripcionesProgramas) {
+        this.inscripcionesProgramas = inscripcionesProgramas;
     }
 }

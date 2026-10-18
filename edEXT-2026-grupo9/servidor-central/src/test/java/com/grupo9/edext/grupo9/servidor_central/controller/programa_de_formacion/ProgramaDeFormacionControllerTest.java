@@ -31,8 +31,7 @@ public class ProgramaDeFormacionControllerTest {
         String nombreProg = "ProgramaTest_" + System.currentTimeMillis();
         DataProgramaFormacion nuevoProg = new DataProgramaFormacion(
                 nombreProg, "Descripción programa test", new HashSet<>(),
-                LocalDate.of(2024, 1, 1), LocalDate.of(2024, 12, 31), LocalDate.now()
-        );
+                LocalDate.of(2024, 1, 1), LocalDate.of(2024, 12, 31), LocalDate.now(), null);
 
         assertDoesNotThrow(() -> {
             DataProgramaFormacion res = programaController.guardarNuevoProgramaDeFormacion(nuevoProg);
@@ -49,8 +48,7 @@ public class ProgramaDeFormacionControllerTest {
         String nombreProg = "ProgTraer_" + System.currentTimeMillis();
         DataProgramaFormacion nuevoProg = new DataProgramaFormacion(
                 nombreProg, "Desc", new HashSet<>(),
-                LocalDate.of(2024, 1, 1), LocalDate.of(2024, 12, 31), LocalDate.now()
-        );
+                LocalDate.of(2024, 1, 1), LocalDate.of(2024, 12, 31), LocalDate.now(), null);
 
         assertDoesNotThrow(() -> {
             programaController.guardarNuevoProgramaDeFormacion(nuevoProg);
@@ -65,21 +63,22 @@ public class ProgramaDeFormacionControllerTest {
         });
     }
 
-    /*@Test
+    @Test
     public void testAgregarCursoAProgramaDeFormacionYProgramasPorCurso() {
         String nombreInst = "InstProg_" + System.currentTimeMillis();
         DataInstituto inst = institutoController.guardarNuevoInstituto(new DataInstituto(nombreInst));
 
         String nombreCurso = "CursoProg_" + System.currentTimeMillis();
-        DataCurso curso = cursoController.guardarNuevoCurso(new DataCurso(
-                inst, nombreCurso, "Desc", 4, 20, 2, LocalDate.now(), "http://test.com", new HashSet<>(), new HashSet<>(), null
-        ));
+        assertDoesNotThrow(() -> {
+            cursoController.guardarNuevoCurso(new DataCurso(
+                    inst, nombreCurso, "Desc", 4, 20, 2, LocalDate.now(), "http://test.com",
+                    new HashSet<>(), new HashSet<>(), new HashSet<>(), null));
+        });
 
         String nombreProg = "ProgConCurso_" + System.currentTimeMillis();
         programaController.guardarNuevoProgramaDeFormacion(new DataProgramaFormacion(
                 nombreProg, "Desc", new HashSet<>(),
-                LocalDate.of(2024, 1, 1), LocalDate.of(2024, 12, 31), LocalDate.now()
-        ));
+                LocalDate.of(2024, 1, 1), LocalDate.of(2024, 12, 31), LocalDate.now(), null));
 
         assertDoesNotThrow(() -> {
             Boolean agregado = programaController.agregarCursoAProgramaDeFormacion(nombreProg, nombreCurso);
@@ -89,7 +88,7 @@ public class ProgramaDeFormacionControllerTest {
             assertNotNull(progsPorCurso);
             assertTrue(progsPorCurso.stream().anyMatch(p -> p.nombre().equals(nombreProg)));
         });
-    }*/
+    }
 
     @Test
     public void testExisteProgramaInexistente() {

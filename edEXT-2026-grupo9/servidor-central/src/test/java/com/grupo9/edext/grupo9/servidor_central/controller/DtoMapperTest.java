@@ -3,8 +3,10 @@ package com.grupo9.edext.grupo9.servidor_central.controller;
 import com.grupo9.edext.grupo9.servidor_central.controller.curso.Curso;
 import com.grupo9.edext.grupo9.servidor_central.controller.edicion_de_curso.EdicionCurso;
 import com.grupo9.edext.grupo9.servidor_central.controller.instituto.Instituto;
+import com.grupo9.edext.grupo9.servidor_central.controller.programa_de_formacion.InscripcionPrograma;
 import com.grupo9.edext.grupo9.servidor_central.controller.programa_de_formacion.ProgramaDeFormacion;
 import com.grupo9.edext.grupo9.servidor_central.controller.usuario.Docente;
+import com.grupo9.edext.grupo9.servidor_central.controller.usuario.Estudiante;
 import com.grupo9.edext.grupo9.servidor_central.controller.usuario.Usuario;
 import com.grupo9.edext.grupo9.servidor_central.dominio.*;
 import org.junit.jupiter.api.Test;
@@ -35,7 +37,8 @@ public class DtoMapperTest {
 
     @Test
     public void testUsuarioMapper() {
-        DataUsuario dataUsr = new DataUsuario("userTest", "Juan", "Pérez", "juan@test.com", LocalDate.of(1990, 1, 1), null);
+        DataUsuario dataUsr = new DataUsuario("userTest", "Juan", "Pérez", "juan@test.com", LocalDate.of(1990, 1, 1),
+                null);
         Usuario usr = DtoMapper.toEntity(dataUsr);
 
         assertNotNull(usr);
@@ -51,7 +54,8 @@ public class DtoMapperTest {
 
     @Test
     public void testDocenteMapper() {
-        DataDocente dataDoc = new DataDocente("docente1", "Carlos", "Gómez", "carlos@test.com", LocalDate.of(1985, 3, 10), "path/foto.png", "Instituto Test");
+        DataDocente dataDoc = new DataDocente("docente1", "Carlos", "Gómez", "carlos@test.com",
+                LocalDate.of(1985, 3, 10), "path/foto.png", "Instituto Test");
 
         Docente doc = DtoMapper.toEntity(dataDoc);
 
@@ -69,10 +73,14 @@ public class DtoMapperTest {
     @Test
     public void testCursoMapper() {
         DataInstituto dataInst = new DataInstituto("Instituto FING");
+        HashSet<String> categorias = new HashSet<>();
+        categorias.add("Social");
+        categorias.add("Educativo");
+
         DataCurso dataCurso = new DataCurso(
                 dataInst, "Curso 101", "Descripción del curso", 10, 60, 5,
-                LocalDate.of(2024, 1, 1), "http://curso101.com", new HashSet<>(), new HashSet<>(), null
-        );
+                LocalDate.of(2024, 1, 1), "http://curso101.com", new HashSet<>(), new HashSet<>(), categorias,
+                "img/curso101.png");
 
         Curso curso = DtoMapper.toEntity(dataCurso);
         assertNotNull(curso);
@@ -81,22 +89,45 @@ public class DtoMapperTest {
         assertEquals(10, curso.getDuracion());
         assertEquals(60, curso.getCantHoras());
         assertEquals(5, curso.getCantCred());
+        assertEquals("img/curso101.png", curso.getImagen());
+//        assertNotNull(curso.getCategorias());
+//        assertEquals(2, curso.getCategorias().size());
 
         DataCurso dataCursoConverted = DtoMapper.toData(curso);
         assertNotNull(dataCursoConverted);
         assertEquals("Curso 101", dataCursoConverted.nombreCurso());
         assertEquals("http://curso101.com", dataCursoConverted.url());
+        assertEquals("img/curso101.png", dataCursoConverted.imagen());
+        assertEquals(categorias, dataCursoConverted.categorias());
 
         assertNull(DtoMapper.toEntity((DataCurso) null));
         assertNull(DtoMapper.toData((Curso) null));
     }
 
     @Test
+    public void testEstudianteConInscripcionesMapper() {
+        Estudiante est = new Estudiante("student1", "Nombre", "Apellido", "student@test.com", LocalDate.of(2000, 1, 1), "img/usr.png");
+        ProgramaDeFormacion prog = new ProgramaDeFormacion("ProgX", "DescX", new HashSet<>(), LocalDate.now(), LocalDate.now().plusMonths(2), LocalDate.now());
+        InscripcionPrograma insc = new InscripcionPrograma(est, prog, LocalDate.of(2026, 3, 1));
+        Set<InscripcionPrograma> inscripciones = new HashSet<>();
+        inscripciones.add(insc);
+        est.setInscripcionesProgramas(inscripciones);
+
+        DataEstudiante dataEst = DtoMapper.toData(est);
+        assertNotNull(dataEst);
+        assertEquals("student1", dataEst.getNickname());
+        assertNotNull(dataEst.getInscripcionesProgramas());
+        assertEquals(1, dataEst.getInscripcionesProgramas().size());
+        DataInscPrograma dataInsc = dataEst.getInscripcionesProgramas().iterator().next();
+        assertEquals("ProgX", dataInsc.getProgramaNombre());
+        assertEquals(LocalDate.of(2026, 3, 1), dataInsc.getFechaInscP());
+    }
+
+    @Test
     public void testProgramaDeFormacionMapper() {
         DataProgramaFormacion dataProg = new DataProgramaFormacion(
                 "Programa Bachiller", "Programa de prueba", new HashSet<>(),
-                LocalDate.of(2024, 1, 1), LocalDate.of(2024, 12, 31), LocalDate.of(2024, 1, 1)
-        );
+                LocalDate.of(2024, 1, 1), LocalDate.of(2024, 12, 31), LocalDate.of(2024, 1, 1), null);
 
         ProgramaDeFormacion prog = DtoMapper.toEntity(dataProg);
         assertNotNull(prog);
@@ -116,13 +147,11 @@ public class DtoMapperTest {
         DataInstituto dataInst = new DataInstituto("Instituto FING");
         DataCurso dataCurso = new DataCurso(
                 dataInst, "Curso Base", "Desc", 4, 30, 3,
-                LocalDate.now(), "http://base.com", new HashSet<>(), new HashSet<>(), null
-        );
+                LocalDate.now(), "http://base.com", new HashSet<>(), new HashSet<>(), new HashSet<>(), null);
 
         DataEdicionCurso dataEd = new DataEdicionCurso(
                 "Edición 2024", dataCurso, LocalDate.of(2024, 3, 1), LocalDate.of(2024, 7, 1),
-                30, new HashSet<>(), new HashSet<>(), LocalDate.now(), null
-        );
+                30, new HashSet<>(), new HashSet<>(), LocalDate.now(), null);
 
         EdicionCurso ed = DtoMapper.toEntity(dataEd);
         assertNotNull(ed);

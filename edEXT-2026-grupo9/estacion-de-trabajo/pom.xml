@@ -27,6 +27,13 @@
             <version>${project.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>2.3.232</version>
+            <scope>test</scope>
+        </dependency>
+
         <!-- NetBeans GUI builder layout -->
         <dependency>
             <groupId>org.netbeans.external</groupId>
@@ -45,6 +52,17 @@
 
     <build>
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <systemPropertyVariables>
+                        <jakarta.persistence.jdbc.url>jdbc:h2:mem:edext_test;DB_CLOSE_DELAY=-1</jakarta.persistence.jdbc.url>
+                        <jakarta.persistence.jdbc.user>sa</jakarta.persistence.jdbc.user>
+                        <jakarta.persistence.jdbc.password>edext_test</jakarta.persistence.jdbc.password>
+                    </systemPropertyVariables>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>

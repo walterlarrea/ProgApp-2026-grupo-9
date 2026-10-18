@@ -49,7 +49,8 @@ public class UsuarioControllerTest {
         String email = "testdoc_" + System.currentTimeMillis() + "@test.com";
 
         assertDoesNotThrow(() -> {
-            usuarioController.registrarDocente(nick, "Maria", "Lopez", email, LocalDate.of(1985, 4, 4), "foto.png", instNombre);
+            usuarioController.registrarDocente(nick, "Maria", "Lopez", email, LocalDate.of(1985, 4, 4), "foto.png",
+                    instNombre);
             DataUsuario data = usuarioController.consultarUsuario(nick);
             assertNotNull(data);
             assertTrue(data instanceof DataDocente);
@@ -69,11 +70,13 @@ public class UsuarioControllerTest {
         });
 
         assertThrows(ErrorRepetidos.class, () -> {
-            usuarioController.registrarEstudiante(nick, "User", "Two", "other_" + System.currentTimeMillis() + "@test.com", LocalDate.of(2000, 1, 1), null);
+            usuarioController.registrarEstudiante(nick, "User", "Two",
+                    "other_" + System.currentTimeMillis() + "@test.com", LocalDate.of(2000, 1, 1), null);
         });
 
         assertThrows(ErrorRepetidos.class, () -> {
-            usuarioController.registrarEstudiante("other_" + System.currentTimeMillis(), "User", "Three", email, LocalDate.of(2000, 1, 1), null);
+            usuarioController.registrarEstudiante("other_" + System.currentTimeMillis(), "User", "Three", email,
+                    LocalDate.of(2000, 1, 1), null);
         });
     }
 
@@ -83,17 +86,21 @@ public class UsuarioControllerTest {
         String email = "testmod_" + System.currentTimeMillis() + "@test.com";
 
         assertDoesNotThrow(() -> {
-            usuarioController.registrarEstudiante(nick, "NombreOriginal", "ApellidoOriginal", email, LocalDate.of(1995, 5, 5), null);
-            usuarioController.modificarUsuario(nick, "NombreNuevo", "ApellidoNuevo", LocalDate.of(1995, 5, 5), "path/img.png");
-            
+            usuarioController.registrarEstudiante(nick, "NombreOriginal", "ApellidoOriginal", email,
+                    LocalDate.of(1995, 5, 5), null);
+            usuarioController.modificarUsuario(nick, "NombreNuevo", "ApellidoNuevo", LocalDate.of(1995, 5, 5),
+                    "path/img.png");
+
             DataUsuario data = usuarioController.consultarUsuario(nick);
             assertEquals("NombreNuevo", data.getNombre());
             assertEquals("ApellidoNuevo", data.getApellido());
             assertEquals("path/img.png", data.getImagen());
 
             // Overloads
-            usuarioController.modificarUsuario(nick, "NombreNuevo", "ApellidoNuevo", LocalDate.of(1995, 5, 5), "path/img.png", "INCO");
-            usuarioController.modificarUsuario(nick, "NombreNuevo", "ApellidoNuevo", LocalDate.of(1995, 5, 5), "path/img.png", "INCO", true);
+            usuarioController.modificarUsuario(nick, "NombreNuevo", "ApellidoNuevo", LocalDate.of(1995, 5, 5),
+                    "path/img.png", "INCO");
+            usuarioController.modificarUsuario(nick, "NombreNuevo", "ApellidoNuevo", LocalDate.of(1995, 5, 5),
+                    "path/img.png", "INCO", true);
         });
     }
 
@@ -106,6 +113,37 @@ public class UsuarioControllerTest {
     }
 
     @Test
+    public void testInscripcionProgramaYSeguimiento() throws Exception {
+        String sufijo = Long.toString(System.currentTimeMillis());
+        String estudianteNick = "estudianteRel_" + sufijo;
+        String otroNick = "usuarioRel_" + sufijo;
+        String nombrePrograma = "programaRel_" + sufijo;
+
+        usuarioController.registrarEstudiante(estudianteNick, "Estudiante", "Uno", estudianteNick + "@test.com",
+                LocalDate.of(2000, 1, 1), null);
+        usuarioController.registrarEstudiante(otroNick, "Estudiante", "Dos", otroNick + "@test.com",
+                LocalDate.of(2000, 1, 1), null);
+        new com.grupo9.edext.grupo9.servidor_central.controller.programa_de_formacion.ProgramaDeFormacionController()
+                .guardarNuevoProgramaDeFormacion(
+                        new com.grupo9.edext.grupo9.servidor_central.dominio.DataProgramaFormacion(
+                                nombrePrograma, "Programa de prueba", new java.util.HashSet<>(), LocalDate.now(),
+                                LocalDate.now().plusDays(1), LocalDate.now(), null));
+
+        usuarioController.inscribirEstudianteEnPrograma(LocalDate.now(), estudianteNick, nombrePrograma);
+        DataEstudiante estudianteData = (DataEstudiante) usuarioController.consultarUsuario(estudianteNick);
+        assertTrue(estudianteData.getInscripcionesProgramas().stream()
+                .anyMatch(inscripcion -> nombrePrograma.equals(inscripcion.getProgramaNombre())));
+        assertThrows(ErrorRepetidos.class,
+                () -> usuarioController.inscribirEstudianteEnPrograma(LocalDate.now(), estudianteNick, nombrePrograma));
+
+        usuarioController.seguirUsuario(estudianteNick, otroNick);
+        assertTrue(usuarioController.estaSiguiendoUsuario(estudianteNick, otroNick));
+        assertThrows(ErrorRepetidos.class, () -> usuarioController.seguirUsuario(estudianteNick, otroNick));
+        usuarioController.dejarDeSeguirUsuario(estudianteNick, otroNick);
+        assertFalse(usuarioController.estaSiguiendoUsuario(estudianteNick, otroNick));
+    }
+
+    @Test
     public void testEliminarUsuario() {
         String nick = "testDel_" + System.currentTimeMillis();
         String email = "testdel_" + System.currentTimeMillis() + "@test.com";
@@ -113,7 +151,7 @@ public class UsuarioControllerTest {
         assertDoesNotThrow(() -> {
             usuarioController.registrarEstudiante(nick, "AEliminar", "User", email, LocalDate.of(1998, 3, 3), null);
             usuarioController.eliminarUsuario(nick);
-            
+
             assertThrows(ErrorNoExiste.class, () -> {
                 usuarioController.consultarUsuario(nick);
             });

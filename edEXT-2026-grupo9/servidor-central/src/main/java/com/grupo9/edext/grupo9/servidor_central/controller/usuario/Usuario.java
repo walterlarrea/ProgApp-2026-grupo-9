@@ -132,4 +132,8 @@ public class Usuario implements Serializable {
         return seguidores;
     }
 
+    public void setSeguidores(Set<Usuario> seguidores) {
+        this.seguidores = seguidores;
+    }
+
 }

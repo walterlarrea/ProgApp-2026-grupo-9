@@ -30,8 +30,7 @@ public class CursoControllerTest {
         String nombreCurso = "CursoTest_" + System.currentTimeMillis();
         DataCurso nuevoCurso = new DataCurso(
                 inst, nombreCurso, "Descripción de prueba", 12, 100, 10,
-                LocalDate.now(), "http://test.com", new HashSet<>(), new HashSet<>(), null
-        );
+                LocalDate.now(), "http://test.com", new HashSet<>(), new HashSet<>(), new HashSet<>(), null);
 
         assertDoesNotThrow(() -> {
             DataCurso res = cursoController.guardarNuevoCurso(nuevoCurso);
@@ -51,8 +50,7 @@ public class CursoControllerTest {
         String nombreCurso = "CursoPorInst_" + System.currentTimeMillis();
         DataCurso nuevoCurso = new DataCurso(
                 inst, nombreCurso, "Desc", 8, 40, 5,
-                LocalDate.now(), "http://test.com", new HashSet<>(), new HashSet<>(), null
-        );
+                LocalDate.now(), "http://test.com", new HashSet<>(), new HashSet<>(), new HashSet<>(), null);
 
         assertDoesNotThrow(() -> {
             cursoController.guardarNuevoCurso(nuevoCurso);
@@ -70,8 +68,36 @@ public class CursoControllerTest {
     @Test
     public void testCursosNoRelacionadosConUnProgDeFormacion() {
         assertDoesNotThrow(() -> {
-            HashSet<DataCurso> sinProg = cursoController.cursosNoRelacionadosConUnProgDeFormacion("ProgramaInexistente_" + System.currentTimeMillis());
+            HashSet<DataCurso> sinProg = cursoController
+                    .cursosNoRelacionadosConUnProgDeFormacion("ProgramaInexistente_" + System.currentTimeMillis());
             assertNotNull(sinProg);
+        });
+    }
+
+    @Test
+    public void testGuardarYConsultarCursoConCategorias() {
+        String nombreInst = "InstCat_" + System.currentTimeMillis();
+        DataInstituto inst = institutoController.guardarNuevoInstituto(new DataInstituto(nombreInst));
+
+        String nombreCurso = "CursoCat_" + System.currentTimeMillis();
+        HashSet<String> cats = new HashSet<>();
+        cats.add("Social");
+        cats.add("Educativo");
+
+        DataCurso nuevoCurso = new DataCurso(
+                inst, nombreCurso, "Curso con categorias", 10, 50, 4,
+                LocalDate.now(), "http://cat.com", new HashSet<>(), new HashSet<>(), cats, "img/cat.png");
+
+        assertDoesNotThrow(() -> {
+            cursoController.guardarNuevoCurso(nuevoCurso);
+
+            DataCurso cursoObtenido = cursoController.traerCurso(nombreCurso);
+            assertNotNull(cursoObtenido);
+            assertEquals(nombreCurso, cursoObtenido.nombreCurso());
+            assertNotNull(cursoObtenido.categorias());
+            assertTrue(cursoObtenido.categorias().contains("Social"));
+            assertTrue(cursoObtenido.categorias().contains("Educativo"));
+            assertEquals("img/cat.png", cursoObtenido.imagen());
         });
     }
 
