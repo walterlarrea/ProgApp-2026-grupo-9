@@ -75,16 +75,16 @@ class InscriptosDocenteServletTest {
         servlet.doGet(request, response);
 
         ArgumentCaptor<Object> captor = ArgumentCaptor.forClass(Object.class);
-        verify(request).setAttribute(eq("inscriptos"), captor.capture());
+        verify(request).setAttribute(eq("inscriptosDoc"), captor.capture());
         assertEquals(Set.of(aceptada), captor.getValue());
         ArgumentCaptor<Object> institutosCaptor = ArgumentCaptor.forClass(Object.class);
-        verify(request).setAttribute(eq("institutos"), institutosCaptor.capture());
+        verify(request).setAttribute(eq("institutosDoc"), institutosCaptor.capture());
         assertEquals(java.util.List.of(new DataInstituto("Instituto docente")),
                 new ArrayList<>((Collection<?>) institutosCaptor.getValue()));
         ArgumentCaptor<Object> cursosCaptor = ArgumentCaptor.forClass(Object.class);
-        verify(request).setAttribute(eq("cursos"), cursosCaptor.capture());
+        verify(request).setAttribute(eq("cursosDoc"), cursosCaptor.capture());
         assertEquals(java.util.List.of(curso), cursosCaptor.getValue());
-        verify(request).setAttribute("edicionSeleccionada", edicionDocente);
+        verify(request).setAttribute("edicionSeleccionadaDoc", edicionDocente);
         verify(servidor).consultarUnaEdicionCurso("edicion-docente");
         verify(servidor, never()).consultarUnaEdicionCurso("otra-edicion");
         verify(servidor, never()).consultarTodosLosInstitutos();
@@ -114,9 +114,9 @@ class InscriptosDocenteServletTest {
         servlet.doGet(request, response);
 
         verify(servidor, never()).buscarInscriptos(any());
-        verify(request).setAttribute(eq("cursos"), eq(java.util.Collections.emptyList()));
-        verify(request).setAttribute(eq("ediciones"), eq(java.util.Collections.emptySet()));
-        verify(request).setAttribute("edicionSeleccionada", null);
+        verify(request).setAttribute(eq("cursosDoc"), eq(java.util.Collections.emptyList()));
+        verify(request).setAttribute(eq("edicionesDoc"), eq(java.util.Collections.emptySet()));
+        verify(request).setAttribute("edicionSeleccionadaDoc", null);
     }
 
     @Test
@@ -143,16 +143,16 @@ class InscriptosDocenteServletTest {
         servlet.doGet(request, response);
 
         ArgumentCaptor<Object> institutosCaptor = ArgumentCaptor.forClass(Object.class);
-        verify(request).setAttribute(eq("institutos"), institutosCaptor.capture());
+        verify(request).setAttribute(eq("institutosDoc"), institutosCaptor.capture());
         assertEquals(Set.of(new DataInstituto("Instituto A"), new DataInstituto("Instituto B")),
                 new HashSet<>((java.util.Collection<?>) institutosCaptor.getValue()));
         ArgumentCaptor<Object> cursosCaptor = ArgumentCaptor.forClass(Object.class);
-        verify(request).setAttribute(eq("cursos"), cursosCaptor.capture());
+        verify(request).setAttribute(eq("cursosDoc"), cursosCaptor.capture());
         assertEquals(java.util.List.of(cursoA), cursosCaptor.getValue());
         ArgumentCaptor<Object> edicionesCaptor = ArgumentCaptor.forClass(Object.class);
-        verify(request).setAttribute(eq("ediciones"), edicionesCaptor.capture());
+        verify(request).setAttribute(eq("edicionesDoc"), edicionesCaptor.capture());
         assertEquals(Set.of(edicionA), edicionesCaptor.getValue());
-        verify(request).setAttribute("edicionSeleccionada", null);
+        verify(request).setAttribute("edicionSeleccionadaDoc", null);
     }
 
     @Test

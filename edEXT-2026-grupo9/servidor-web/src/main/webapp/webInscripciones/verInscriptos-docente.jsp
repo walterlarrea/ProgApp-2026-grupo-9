@@ -33,7 +33,7 @@
                     <select id="instituto" name="instituto" style="width: 30%"
                         onchange="var curso = this.form.elements.namedItem('curso'); var edicion = this.form.elements.namedItem('edicion'); if (curso) curso.value = ''; if (edicion) edicion.value = ''; this.form.submit()">
                         <option value="">Seleccione un instituto</option>
-                        <c:forEach var="instituto" items="${institutos}">
+                        <c:forEach var="instituto" items="${institutosDoc}">
                             <option value="${fn:escapeXml(instituto.nombreI())}"
                                 ${param.instituto eq instituto.nombreI() ? 'selected' : ''}>
                                 <c:out value="${instituto.nombreI()}"/>
@@ -49,7 +49,7 @@
                         <select id="curso" name="curso" style="width: 30%"
                             onchange="var edicion = this.form.elements.namedItem('edicion'); if (edicion) edicion.value = ''; this.form.submit()">
                             <option value="">Seleccione un curso</option>
-                            <c:forEach var="curso" items="${cursos}">
+                            <c:forEach var="curso" items="${cursosDoc}">
                                 <option value="${fn:escapeXml(curso.nombreCurso())}"
                                     ${param.curso eq curso.nombreCurso() ? 'selected' : ''}>
                                     <c:out value="${curso.nombreCurso()}"/>
@@ -65,7 +65,7 @@
                         <br>
                         <select id="edicion" name="edicion" onchange="this.form.submit()"  style="width: 30%">
                             <option value="">Seleccione una edición</option>
-                            <c:forEach var="edicion" items="${ediciones}">
+                            <c:forEach var="edicion" items="${edicionesDoc}">
                                 <option value="${fn:escapeXml(edicion.nombreEdi)}"
                                     ${param.edicion eq edicion.nombreEdi ? 'selected' : ''}>
                                     <c:out value="${edicion.nombreEdi}"/> -
@@ -78,13 +78,13 @@
                 </c:if>
             </form>
 
-            <c:if test="${not empty edicionSeleccionada}">
+            <c:if test="${not empty edicionSeleccionadaDoc}">
                 <section class="dato-space">
-                    <h2 style="margin-bottom: 1rem">Edición seleccionada: <c:out value="${edicionSeleccionada.nombreEdi}"/></h2>
-                    <p><b>Curso:</b> <c:out value="${edicionSeleccionada.cursoAsoc.nombreCurso()}"/></p>
-                    <p><b>Fecha de inicio:</b> <c:out value="${edicionSeleccionada.fechaInicio}"/></p>
-                    <p><b>Fecha de finalización:</b> <c:out value="${edicionSeleccionada.fechaFin}"/></p>
-                    <p><b>Cupo:</b> <c:out value="${edicionSeleccionada.cupo}"/></p>
+                    <h2 style="margin-bottom: 1rem">Edición seleccionada: <c:out value="${edicionSeleccionadaDoc.nombreEdi}"/></h2>
+                    <p><b>Curso:</b> <c:out value="${edicionSeleccionadaDoc.cursoAsoc.nombreCurso()}"/></p>
+                    <p><b>Fecha de inicio:</b> <c:out value="${edicionSeleccionadaDoc.fechaInicio}"/></p>
+                    <p><b>Fecha de finalización:</b> <c:out value="${edicionSeleccionadaDoc.fechaFin}"/></p>
+                    <p><b>Cupo:</b> <c:out value="${edicionSeleccionadaDoc.cupo}"/></p>
                 </section>
 
                 <div class="table-container">
@@ -98,8 +98,8 @@
                         </thead>
                         <tbody>
                             <c:choose>
-                                <c:when test="${not empty inscriptos}">
-                                    <c:forEach var="insc" items="${inscriptos}">
+                                <c:when test="${not empty inscriptosDoc}">
+                                    <c:forEach var="insc" items="${inscriptosDoc}">
                                         <tr>
                                             <td class="nav-list">
                                                 <a href="${pageContext.request.contextPath}/usuario?nickname=${insc.estudiante.nickname}">
