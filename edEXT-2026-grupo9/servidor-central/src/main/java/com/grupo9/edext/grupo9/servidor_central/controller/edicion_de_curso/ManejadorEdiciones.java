@@ -195,15 +195,20 @@ public class ManejadorEdiciones {
     }
     
     public Boolean existeEdicion(String nombre) {
-        CriteriaBuilder cBuilder = em.getCriteriaBuilder();
-        CriteriaQuery<EdicionCurso> cQuery = cBuilder.createQuery(EdicionCurso.class);
-        Root<EdicionCurso> rootEntry = cQuery.from(EdicionCurso.class);
+        EntityManager emConsulta = UtensiliosJPA.getEntityManagerFactory().createEntityManager();
 
-        cQuery.select(rootEntry).where(cBuilder.equal(rootEntry.get("nombreEdi"), nombre));
+        try {
+            CriteriaBuilder cBuilder = emConsulta.getCriteriaBuilder();
+            CriteriaQuery<EdicionCurso> cQuery = cBuilder.createQuery(EdicionCurso.class);
+            Root<EdicionCurso> rootEntry = cQuery.from(EdicionCurso.class);
 
-        TypedQuery<EdicionCurso> query = em.createQuery(cQuery);
-        query.setMaxResults(1);
+            cQuery.select(rootEntry).where(cBuilder.equal(rootEntry.get("nombreEdi"), nombre));
 
-        return !query.getResultList().isEmpty();
+            TypedQuery<EdicionCurso> query = emConsulta.createQuery(cQuery);
+            query.setMaxResults(1);
+            return !query.getResultList().isEmpty();
+        } finally {
+            emConsulta.close();
+        }
     }
 }

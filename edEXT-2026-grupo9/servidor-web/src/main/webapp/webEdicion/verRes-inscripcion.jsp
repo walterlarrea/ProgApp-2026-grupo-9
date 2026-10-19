@@ -18,8 +18,10 @@
         <%@ include file="../webMiscelanea/sidebar.jsp" %>
         <main class="main-content">
             <section class="hero-banner">
-                <h1>Tus inscripciones</h1>
-                <p>Aquí podrás ver el estado de tus inscripciones</p>
+                <div class="hero-contenido">
+                    <h1>Tus inscripciones</h1>
+                    <p>Aquí podrás ver el estado de tus inscripciones</p>
+                </div>
             </section>
 
             <div class="table-container">

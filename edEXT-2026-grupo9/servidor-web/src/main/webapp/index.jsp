@@ -18,8 +18,10 @@
         <!-- Contenido Central Dinámico -->
         <main class="main-content">
             <section class="hero-banner">
-                <h1>Bienvenido a edEXT</h1>
-                <p>Plataforma universitaria para la gestión de cursos, programas y ediciones de extensión académica.</p>
+                <div class="hero-contenido">
+                    <h1>Bienvenido a edEXT</h1>
+                    <p>Plataforma universitaria para la gestión de cursos, programas y ediciones de extensión académica.</p>
+                </div>
             </section>
 
             <section class="section">
@@ -57,6 +59,6 @@
             </section>
         </main>
     </div>
-
+    <%@ include file="webMiscelanea/popup-mensaje.jsp" %>
 </body>
 </html>

@@ -53,8 +53,7 @@ public interface IServidorCentral {
 
     public DataEstudiante[] traerEstudiantes();
 
-    public void inscribirEstudiante(LocalDate fechaInsc, String nickname, String nombreEdi, EstadoInscripcion estado)
-            throws ErrorRepetidos, ErrorNoExiste;
+    public void inscribirEstudiante(LocalDate fechaInsc, String nickname, String nombreEdi, EstadoInscripcion estado) throws ErrorRepetidos, ErrorNoExiste;
 
     public DataDocente[] buscarDocentes(DataEdicionCurso edicion);
 
@@ -62,6 +61,8 @@ public interface IServidorCentral {
     
     public void cambiarEstadoInscripcion(String nombreEdicion, String nicknameEstudiante, EstadoInscripcion nuevoEstado)
             throws ErrorNoExiste, ErrorEstadoInvalido;
+
+    public Boolean existeEdicionCurso(String nombre);
 
     // Cursos
     public DataCurso guardarCurso(DataCurso nuevoCurso) throws ErrorRepetidos;

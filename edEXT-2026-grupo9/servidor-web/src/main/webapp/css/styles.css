@@ -230,6 +230,9 @@ body {
 }
 
 .hero-banner {
+	display: flex;
+	align-items: center;
+	gap: 2rem;
 	background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
 	color: white;
 	padding: 2.5rem;
@@ -244,7 +247,38 @@ body {
 
 .hero-banner p {
 	font-size: 1.1rem;
+	line-height: 1.6;
 	opacity: 0.9;
+	margin: 0;
+}
+
+.hero-imagen {
+	flex: 0 0 30%;
+	height: 220px;
+	overflow: hidden;
+	border-radius: 8px;
+}
+
+.hero-imagen img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	display: block;
+}
+
+.hero-contenido {
+	flex: 1;
+	min-width: 0;
+	overflow-wrap: anywhere;
+	word-wrap: break-word;
+}
+
+.hero-contenido h1,
+.hero-contenido p {
+	max-width: 100%;
+	overflow-wrap: anywhere;
+	word-wrap: break-word;
+	white-space: normal;
 }
 
 .programa-hero {
@@ -345,6 +379,8 @@ body {
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
+	min-width: 0;
+	overflow-wrap: anywhere;
 	transition:
 		transform 0.2s,
 		box-shadow 0.2s;
@@ -355,8 +391,18 @@ body {
 	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
+.card-header,
+.card-body,
+.card-footer {
+	min-width: 0;
+	max-width: 100%;
+	overflow-wrap: anywhere;
+}
+
 .card-header .tag {
 	display: inline-block;
+	max-width: 100%;
+	box-sizing: border-box;
 	background-color: #e0e7ff;
 	color: #3730a3;
 	font-size: 0.75rem;
@@ -364,18 +410,25 @@ body {
 	border-radius: 4px;
 	margin-bottom: 0.5rem;
 	font-weight: 600;
+	white-space: normal;
 }
 
 .card-header h3 {
 	font-size: 1.15rem;
 	color: var(--text-primary);
 	margin-bottom: 0.5rem;
+	max-width: 100%;
+	overflow-wrap: anywhere;
+	white-space: normal;
 }
 
 .card-body p {
 	color: var(--text-secondary);
 	font-size: 0.9rem;
 	margin-bottom: 1rem;
+	max-width: 100%;
+	overflow-wrap: anywhere;
+	white-space: normal;
 }
 
 .meta-info {
@@ -872,6 +925,10 @@ a.corte-texto2:hover {
 	padding: 0rem 0.75rem;
 }
 
+.btn-cambios-inscripcion {
+	margin-top: 20px;
+	text-align-last: right;
+}
 textarea {
 	width: 30%;
 	min-height: 120px;
@@ -882,7 +939,60 @@ textarea {
 	resize: vertical;
 }
 
-.btn-cambios-inscripcion {
-	margin-top: 20px;
-	text-align-last: right;
+.popup-overlay {
+	position: fixed;
+	inset: 0;
+	background: rgba(0, 0, 0, 0.55);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	z-index: 9999;
+	padding: 20px;
+}
+
+.popup-contenido {
+	background: white;
+	color: #1f2937;
+	width: 100%;
+	max-width: 420px;
+	padding: 2rem;
+	border-radius: 14px;
+	text-align: center;
+	box-shadow: 0 10px 35px rgba(0, 0, 0, 0.25);
+	animation: aparecerPopup 0.25s ease-out;
+}
+
+.popup-icono {
+	width: 60px;
+	height: 60px;
+	margin: 0 auto 1rem;
+	border-radius: 50%;
+	background: #dcfce7;
+	color: #15803d;
+	font-size: 2.3rem;
+	font-weight: bold;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.popup-contenido h2 {
+	margin-bottom: 0.75rem;
+}
+
+.popup-contenido p {
+	margin-bottom: 1.5rem;
+	animation: aparecerPopup 7s ease-out;
+}
+
+@keyframes aparecerPopup {
+	from {
+		opacity: 0;
+		transform: scale(0.9);
+	}
+
+	to {
+		opacity: 1;
+		transform: scale(1);
+	}
 }

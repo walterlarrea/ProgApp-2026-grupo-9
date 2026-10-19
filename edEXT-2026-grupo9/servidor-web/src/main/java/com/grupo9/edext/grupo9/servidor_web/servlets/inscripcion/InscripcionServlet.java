@@ -86,6 +86,10 @@ public class InscripcionServlet extends HttpServlet  {
             request.setAttribute("ediciones", ediciones);
             request.setAttribute("edicion", edicion);
             request.setAttribute("docentes", docentes);
+            
+            request.setAttribute("institutoSeleccionado", nombreInst);
+            request.setAttribute("cursoSeleccionado", nombreCurso);
+            request.setAttribute("edicionSeleccionada", nombre);
 
             request.getRequestDispatcher("/webEdicion/inscribir-edicion.jsp").forward(request, response);
             return;
@@ -133,8 +137,7 @@ public class InscripcionServlet extends HttpServlet  {
                                 continue;
                             }
                             DataEstudiante estudianteInscripto = inscripcion.getEstudiante();
-                            if (estudianteInscripto != null
-                                    && usuarioActualizado.getNickname().equals(estudianteInscripto.getNickname())) {
+                            if (estudianteInscripto != null && usuarioActualizado.getNickname().equals(estudianteInscripto.getNickname())) {
                                 inscripciones.add(inscripcion);
                             }
                         }
@@ -156,7 +159,10 @@ public class InscripcionServlet extends HttpServlet  {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession(false);
+        String nombreInst = request.getParameter("instituto");
+        String nombreCurso = request.getParameter("curso");
         String nombreEdi = request.getParameter("edicion");
+
 
         if (session == null || session.getAttribute("usuarioLogueado") == null) {
             response.sendRedirect(request.getContextPath() + "/login");
@@ -169,15 +175,60 @@ public class InscripcionServlet extends HttpServlet  {
         try {
             //registrar estudiante.
             servidorCentral.inscribirEstudiante(fechaReg, nickname, nombreEdi, EstadoInscripcion.INSCRIPTO);
+            request.getSession().setAttribute("mensajeExito","😎");
             //vuelvo al menú principal..   
             response.sendRedirect(request.getContextPath() + "/home");
-        } catch (ErrorRepetidos e) {
+        } catch (ErrorRepetidos | ErrorNoExiste e) {
             request.setAttribute("error", e.getMessage());
+            cargarDatosFormulario(request, nombreInst, nombreCurso, nombreEdi);
             request.getRequestDispatcher("/webEdicion/inscribir-edicion.jsp").forward(request, response);
+        }
+    }
+    
+    
+   private void cargarDatosFormulario(HttpServletRequest request, String nombreInst, String nombreCurso, String nombreEdi) throws ServletException {
+        try {
+            Set<DataInstituto> institutosDisponibles = Collections.emptySet();
+            Set<DataCurso> cursosDisponibles = Collections.emptySet();
+            Set<DataEdicionCurso> edicionesDisponibles = Collections.emptySet();
+            DataEdicionCurso edicionSeleccionada = null;
+            DataDocente[] docentesDisponibles = new DataDocente[0];
 
-        } catch (ErrorNoExiste e) {
-            request.setAttribute("error", e.getMessage());
-            request.getRequestDispatcher("/webEdicion/inscribir-edicion.jsp").forward(request, response);
+            if (servidorCentral != null) {
+                institutosDisponibles = servidorCentral.consultarTodosLosInstitutos();
+                if (nombreInst != null && !nombreInst.isBlank()) {
+                    DataInstituto instituto = servidorCentral.buscarInstituto(nombreInst);
+                    if (instituto != null) {
+                        cursosDisponibles = servidorCentral.cursosPorInstituto(nombreInst);
+                        if (nombreCurso != null && !nombreCurso.isBlank()) {
+                            DataCurso curso = servidorCentral.buscarCurso(nombreCurso);
+                            if (curso != null) {
+                                edicionesDisponibles = servidorCentral.traerEdiciones(curso, true);
+                                if (nombreEdi != null && !nombreEdi.isBlank()) {
+                                    edicionSeleccionada =servidorCentral.consultarUnaEdicionCurso(nombreEdi);
+                                    if (edicionSeleccionada != null) { 
+                                        docentesDisponibles = servidorCentral.buscarDocentes(edicionSeleccionada);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }   
+
+            request.setAttribute("institutos", institutosDisponibles);
+            request.setAttribute("cursos", cursosDisponibles);
+            request.setAttribute("ediciones", edicionesDisponibles);
+            request.setAttribute("edicion", edicionSeleccionada);
+            request.setAttribute("docentes", docentesDisponibles);
+
+            //selecciones previas al error
+            request.setAttribute("institutoSeleccionado", nombreInst);
+            request.setAttribute("cursoSeleccionado", nombreCurso);
+            request.setAttribute("edicionSeleccionada", nombreEdi);
+
+            } catch (Exception e) {
+                throw new ServletException("Error al recargar los datos del formulario.", e);
         }
     }
 }
