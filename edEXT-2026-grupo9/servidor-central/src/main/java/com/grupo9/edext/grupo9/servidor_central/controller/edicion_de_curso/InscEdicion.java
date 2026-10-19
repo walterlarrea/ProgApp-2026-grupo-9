@@ -30,6 +30,10 @@ public class InscEdicion {
         this.estado = EstadoInscripcion.INSCRIPTO;
     }
 
+    public Long getId() {
+        return id;
+    }
+
     public LocalDate getFechaInscE() {
         return fechaInscE;
     }
@@ -51,10 +55,6 @@ public class InscEdicion {
     }
     
     public void cambiarEstado(EstadoInscripcion nuevoEstado) throws ErrorEstadoInvalido {
-        if (estado != EstadoInscripcion.INSCRIPTO) {
-            throw new ErrorEstadoInvalido("La inscripción ya fue procesada.");
-        }
-
         if (nuevoEstado != EstadoInscripcion.ACEPTADA && nuevoEstado != EstadoInscripcion.RECHAZADA) {
             throw new ErrorEstadoInvalido("Estado de destino no válido.");
         }

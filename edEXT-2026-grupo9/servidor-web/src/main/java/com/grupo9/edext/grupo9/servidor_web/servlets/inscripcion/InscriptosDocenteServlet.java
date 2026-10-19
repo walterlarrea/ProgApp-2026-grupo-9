@@ -162,11 +162,11 @@ public class InscriptosDocenteServlet extends HttpServlet {
         
         request.setAttribute("manejarInscripciones", manejarInscripciones);
         
-        request.setAttribute("institutos", institutosPorNombre.values());
-        request.setAttribute("cursos", cursos);
-        request.setAttribute("ediciones", ediciones);
-        request.setAttribute("edicionSeleccionada", edicionSeleccionada);
-        request.setAttribute("inscriptos", inscriptos);
+        request.setAttribute("institutosDoc", institutosPorNombre.values());
+        request.setAttribute("cursosDoc", cursos);
+        request.setAttribute("edicionesDoc", ediciones);
+        request.setAttribute("edicionSeleccionadaDoc", edicionSeleccionada);
+        request.setAttribute("inscriptosDoc", inscriptos);
         request.getRequestDispatcher("/webInscripciones/verInscriptos-docente.jsp").forward(request, response);
     }
     
