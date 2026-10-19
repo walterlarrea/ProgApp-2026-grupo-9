@@ -137,6 +137,22 @@ public class ManejadorEdiciones {
         em.close();
     }
 
+    public void actualizarInscripcion(InscEdicion ie){
+        em = UtensiliosJPA.getEntityManagerFactory().createEntityManager();
+        EntityTransaction et = em.getTransaction();
+        try{
+            et.begin();
+            em.merge(ie);
+            et.commit();  
+        }catch(Exception e){
+            if (et.isActive()) et.rollback();
+            e.printStackTrace();
+            throw e;
+        }finally{
+            em.close();
+        }
+    }
+
     public void removerInscripcionesDeEstudiante(String nickname) {
         if (nickname == null || edCurso == null) return;
         for (EdicionCurso ed : edCurso.values()) {

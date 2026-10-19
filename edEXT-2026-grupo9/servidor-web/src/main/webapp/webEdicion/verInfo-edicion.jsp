@@ -84,8 +84,8 @@
                         <tr>
                             <th>Estudiante</th>
                             <th>Fecha <br>inscripción</th>
-                            <th>Inscripto</th>
-                            <th>Estado</th>
+                            <!-- <th>Inscripto</th>
+                            <th>Estado</th> -->
                         </tr>
                     </thead>
                 <tbody>
@@ -103,7 +103,7 @@
                                         <c:out value="${insc.fechaInscE}"/>
                                     </td>
 
-                                    <td class="checkbox-cell">
+                                    <!-- <td class="checkbox-cell">
                                         <input type="checkbox" checked disabled>
                                     </td>
 
@@ -111,7 +111,7 @@
                                         <span class="estado-badge">
                                             <c:out value="${insc.estado}"/>
                                         </span>
-                                    </td>
+                                    </td> -->
                                 </tr>
                             </c:forEach>
                         </c:when>
