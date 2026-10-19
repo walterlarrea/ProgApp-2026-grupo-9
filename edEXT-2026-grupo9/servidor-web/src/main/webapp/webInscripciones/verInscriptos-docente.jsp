@@ -16,8 +16,10 @@
         <%@ include file="../webMiscelanea/sidebar.jsp" %>
         <main class="main-content">
             <section class="hero-banner">
-                <h1>Inscripciones aceptadas</h1>
-                <p>Consulta las inscripciones aceptadas en las ediciones de tus cursos</p>
+                <div class="hero-contenido">                
+                    <h1>Inscripciones ${manejarInscripciones ? '' : 'aceptadas'}</h1>
+                    <p>Consulta las inscripciones ${manejarInscripciones ? '' : 'aceptadas'} en las ediciones de tus cursos</p>
+                </div>
             </section>
             
             <c:if test="${not empty errorCarga}">
@@ -27,7 +29,8 @@
             <form action="${pageContext.request.contextPath}${manejarInscripciones ? '/inscripcionesDocente' : '/inscriptosDocente'}" method="get">
                 <div class="dato-space">
                     <label for="instituto">Instituto</label>
-                    <select id="instituto" name="instituto"
+                    <br>
+                    <select id="instituto" name="instituto" style="width: 30%"
                         onchange="var curso = this.form.elements.namedItem('curso'); var edicion = this.form.elements.namedItem('edicion'); if (curso) curso.value = ''; if (edicion) edicion.value = ''; this.form.submit()">
                         <option value="">Seleccione un instituto</option>
                         <c:forEach var="instituto" items="${institutos}">
@@ -42,7 +45,8 @@
                 <c:if test="${not empty param.instituto}">
                     <div class="dato-space">
                         <label for="curso">Curso</label>
-                        <select id="curso" name="curso"
+                        <br>
+                        <select id="curso" name="curso" style="width: 30%"
                             onchange="var edicion = this.form.elements.namedItem('edicion'); if (edicion) edicion.value = ''; this.form.submit()">
                             <option value="">Seleccione un curso</option>
                             <c:forEach var="curso" items="${cursos}">
@@ -58,7 +62,8 @@
                 <c:if test="${not empty param.curso}">
                     <div class="dato-space">
                         <label for="edicion">Edición del curso</label>
-                        <select id="edicion" name="edicion" onchange="this.form.submit()">
+                        <br>
+                        <select id="edicion" name="edicion" onchange="this.form.submit()"  style="width: 30%">
                             <option value="">Seleccione una edición</option>
                             <c:forEach var="edicion" items="${ediciones}">
                                 <option value="${fn:escapeXml(edicion.nombreEdi)}"
@@ -75,11 +80,11 @@
 
             <c:if test="${not empty edicionSeleccionada}">
                 <section class="dato-space">
-                    <h2>Edición seleccionada: <c:out value="${edicionSeleccionada.nombreEdi}"/></h2>
-                    <p>Curso: <c:out value="${edicionSeleccionada.cursoAsoc.nombreCurso()}"/></p>
-                    <p>Fecha de inicio: <c:out value="${edicionSeleccionada.fechaInicio}"/></p>
-                    <p>Fecha de finalización: <c:out value="${edicionSeleccionada.fechaFin}"/></p>
-                    <p>Cupo: <c:out value="${edicionSeleccionada.cupo}"/></p>
+                    <h2 style="margin-bottom: 1rem">Edición seleccionada: <c:out value="${edicionSeleccionada.nombreEdi}"/></h2>
+                    <p><b>Curso:</b> <c:out value="${edicionSeleccionada.cursoAsoc.nombreCurso()}"/></p>
+                    <p><b>Fecha de inicio:</b> <c:out value="${edicionSeleccionada.fechaInicio}"/></p>
+                    <p><b>Fecha de finalización:</b> <c:out value="${edicionSeleccionada.fechaFin}"/></p>
+                    <p><b>Cupo:</b> <c:out value="${edicionSeleccionada.cupo}"/></p>
                 </section>
 
                 <div class="table-container">
