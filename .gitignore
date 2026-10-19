@@ -58,3 +58,11 @@ Desktop.ini
 .env
 .env.*
 !.env.example
+
+# ====================================================================
+# Build Automation Tools (Keep configs, ignore build artifacts)
+# ====================================================================
+
+.vscode/
+.cargo/
+**/target/

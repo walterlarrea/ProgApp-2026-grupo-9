@@ -1,0 +1,346 @@
+package com.grupo9.edext.grupo9.servidor_central.controller;
+
+import com.grupo9.edext.grupo9.interfaces.IServidorCentral;
+import com.grupo9.edext.grupo9.servidor_central.controller.busqueda.IBusqueda;
+import com.grupo9.edext.grupo9.servidor_central.controller.busqueda.BusquedaController;
+import com.grupo9.edext.grupo9.servidor_central.controller.programa_de_formacion.IProgramaDeFormacion;
+import com.grupo9.edext.grupo9.servidor_central.controller.programa_de_formacion.ProgramaDeFormacionController;
+import com.grupo9.edext.grupo9.servidor_central.controller.edicion_de_curso.IEdicionCurso;
+import com.grupo9.edext.grupo9.servidor_central.controller.edicion_de_curso.EdicionCursoController;
+import com.grupo9.edext.grupo9.servidor_central.controller.curso.ICurso;
+import com.grupo9.edext.grupo9.servidor_central.controller.curso.CursoController;
+import com.grupo9.edext.grupo9.servidor_central.controller.instituto.IInstituto;
+import com.grupo9.edext.grupo9.servidor_central.controller.instituto.InstitutoController;
+import com.grupo9.edext.grupo9.servidor_central.controller.usuario.IUsuario;
+import com.grupo9.edext.grupo9.servidor_central.controller.usuario.UsuarioController;
+import com.grupo9.edext.grupo9.servidor_central.dominio.DataCurso;
+import com.grupo9.edext.grupo9.servidor_central.dominio.DataInstituto;
+import com.grupo9.edext.grupo9.servidor_central.dominio.DataProgramaFormacion;
+import com.grupo9.edext.grupo9.servidor_central.dominio.DataUsuario;
+import com.grupo9.edext.grupo9.servidor_central.dominio.DataEdicionCurso;
+import com.grupo9.edext.grupo9.servidor_central.dominio.DataDocente;
+import com.grupo9.edext.grupo9.servidor_central.dominio.DataEstudiante;
+import com.grupo9.edext.grupo9.servidor_central.dominio.DataInscEdicion;
+import com.grupo9.edext.grupo9.servidor_central.dominio.ResultadoBusqueda;
+import com.grupo9.edext.grupo9.servidor_central.controller.instituto.Instituto;
+import com.grupo9.edext.grupo9.servidor_central.controller.usuario.Docente;
+import com.grupo9.edext.grupo9.servidor_central.controller.edicion_de_curso.EdicionCurso;
+import com.grupo9.edext.grupo9.mensajes.ErrorNoExiste;
+import com.grupo9.edext.grupo9.mensajes.ErrorRepetidos;
+import com.grupo9.edext.grupo9.servidor_central.controller.curso.Curso;
+import com.grupo9.edext.grupo9.servidor_central.controller.edicion_de_curso.EstadoInscripcion;
+import com.grupo9.edext.grupo9.servidor_central.controller.usuario.Estudiante;
+import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.List;
+
+class ServidorCentralController implements IServidorCentral {
+
+    private final IProgramaDeFormacion progDeFormacionCtrl = new ProgramaDeFormacionController();
+    private final IEdicionCurso edicionCursoCtrl = new EdicionCursoController();
+    private final ICurso cursoCtrl = new CursoController();
+    private final IInstituto institutoCtrl = new InstitutoController();
+    private final IUsuario usuarioCtrl = new UsuarioController();
+    private final IBusqueda busquedaCtrl = new BusquedaController();
+
+    // Step 1: Private constructor prevents instantiation from other classes
+    private ServidorCentralController() {
+        // Optional: Protect against reflection attacks
+        if (ServidorCentral.INSTANCE != null) {
+            throw new IllegalStateException("Instance already exists!");
+        }
+    }
+
+    // Step 2: Inner static helper class responsible for holding the singleton
+    // instance
+    // It is loaded into memory only when getInstance() is called (Lazy Loading)
+    private static class ServidorCentral {
+        private static final ServidorCentralController INSTANCE = new ServidorCentralController();
+    }
+
+    // Step 3: Public static method provides global access to the instance
+    public static IServidorCentral getInstance() {
+        return ServidorCentral.INSTANCE;
+    }
+
+    @Override
+    public void logStatus() {
+        System.out.println("Server ACTIVE");
+    }
+
+    // Busqueda
+    @Override
+    public HashSet<DataCurso> buscarCursos(String query) {
+        return this.busquedaCtrl.buscarCursos(query);
+    }
+
+    @Override
+    public HashSet<DataProgramaFormacion> buscarProgramas(String query) {
+        return this.busquedaCtrl.buscarProgramas(query);
+    }
+
+    @Override
+    public HashSet<DataUsuario> buscarUsuarios(String nombre, String apellido) {
+        return this.busquedaCtrl.buscarUsuarios(nombre, apellido);
+    }
+
+    @Override
+    public List<ResultadoBusqueda> busquedaPrincipal(String query) {
+        return this.busquedaCtrl.busquedaPrincipal(query);
+    }
+
+    // Programas de Formación
+    @Override
+    public DataProgramaFormacion guardarProgramaDeFormacion(DataProgramaFormacion nuevoPrograma) {
+        return this.progDeFormacionCtrl.guardarNuevoProgramaDeFormacion(nuevoPrograma);
+    }
+
+    @Override
+    public HashSet<DataProgramaFormacion> consultarTodosLosProgramas() {
+        return this.progDeFormacionCtrl.todosLosProgramas();
+    }
+
+    @Override
+    public Boolean existeProgramaDeFormacion(String nombre) {
+        return this.progDeFormacionCtrl.existeProgramaDeFormacion(nombre);
+    }
+
+    @Override
+    public DataProgramaFormacion traerPorNombreId(String nombreId) {
+        return this.progDeFormacionCtrl.traerPorNombreId(nombreId);
+    }
+
+    @Override
+    public HashSet<DataProgramaFormacion> programasPorCurso(String nombreCurso) {
+        return this.progDeFormacionCtrl.programasPorCurso(nombreCurso);
+    }
+
+    @Override
+    public Boolean agregarCursoAProgramaDeFormacion(String nombreIdPrograma, String nombreIdCurso) {
+        return this.progDeFormacionCtrl.agregarCursoAProgramaDeFormacion(nombreIdPrograma, nombreIdCurso);
+    }
+
+    @Override
+    public void inscribirEstudianteEnPrograma(LocalDate fechaInsc, String nickname, String nombrePrograma) throws ErrorRepetidos, ErrorNoExiste {
+        this.usuarioCtrl.inscribirEstudianteEnPrograma(fechaInsc, nickname, nombrePrograma);
+    }
+
+    @Override
+    public void inscribirseAPrograma(LocalDate fechaInsc, String nickname, String nombrePrograma)
+            throws ErrorRepetidos, ErrorNoExiste {
+        this.inscribirEstudianteEnPrograma(fechaInsc, nickname, nombrePrograma);
+    }
+
+    // Ediciones de Cursos
+    @Override
+    public DataEdicionCurso guardarEdicionCurso(DataEdicionCurso nuevaEdicion) throws ErrorRepetidos {
+        return this.edicionCursoCtrl.guardarNuevaEdicionCurso(nuevaEdicion);
+    }
+
+    @Override
+    public DataDocente[] traerDocentes(DataInstituto dataInstituto) {
+        Instituto instituto = DtoMapper.toEntity(dataInstituto);
+        Docente[] entidades = this.edicionCursoCtrl.traerDocentes(instituto);
+        DataDocente[] datos = new DataDocente[entidades.length];
+        for (int i = 0; i < entidades.length; i++) {
+            datos[i] = DtoMapper.toData(entidades[i]);
+        }
+        return datos;
+    }
+
+    @Override
+    public DataEstudiante[] traerEstudiantes() {
+        Estudiante[] entidades = this.edicionCursoCtrl.traerEstudiantes();
+        DataEstudiante[] datos = new DataEstudiante[entidades.length];
+        for (int i = 0; i < entidades.length; i++) {
+            datos[i] = DtoMapper.toData(entidades[i]);
+        }
+        return datos;
+    }
+
+    @Override
+    public void inscribirEstudiante(LocalDate fechaInsc, String nickname, String nombreEdi, EstadoInscripcion estado)
+            throws ErrorRepetidos, ErrorNoExiste {
+        this.edicionCursoCtrl.inscribirNuevoEstudiante(fechaInsc, nickname, nombreEdi, estado);
+    }
+
+    @Override
+    public DataEdicionCurso consultarUnaEdicionCurso(String nEdi) throws ErrorNoExiste {
+        return this.edicionCursoCtrl.consultarEdicionCurso(nEdi);
+    }
+
+    @Override
+    public DataEdicionCurso[] traerEdiciones(DataCurso dataCurso) {
+        Curso curso = DtoMapper.toEntity(dataCurso);
+        EdicionCurso[] entidades = this.edicionCursoCtrl.traerEdiciones(curso);
+        DataEdicionCurso[] datos = new DataEdicionCurso[entidades.length];
+        for (int i = 0; i < entidades.length; i++) {
+            datos[i] = DtoMapper.toData(entidades[i]);
+        }
+        return datos;
+    }
+
+    @Override
+    public HashSet<DataEdicionCurso> traerEdiciones(DataCurso dataCurso, boolean asSet) {
+        return this.edicionCursoCtrl.traerEdiciones(dataCurso);
+    }
+
+    @Override
+    public DataDocente[] buscarDocentes(DataEdicionCurso edicion) {
+        return this.edicionCursoCtrl.traerDocentesEdicion(edicion);
+    }
+
+    @Override
+    public Set<DataInscEdicion> buscarInscriptos(DataEdicionCurso edicion) {
+        return this.edicionCursoCtrl.traerInscriptos(edicion);
+    }
+    
+    @Override
+    public Boolean existeEdicionCurso(String nombre) {
+        return this.edicionCursoCtrl.existeEdicion(nombre);
+    }
+
+    @Override
+    public void cambiarEstadoInscripcion(String nombreEdicion, String nicknameEstudiante, EstadoInscripcion nuevoEstado)
+            throws ErrorNoExiste, com.grupo9.edext.grupo9.mensajes.ErrorEstadoInvalido {
+        this.edicionCursoCtrl.cambiarEstadoInscripcion(nombreEdicion, nicknameEstudiante, nuevoEstado);
+    }
+
+    // Cursos
+    @Override
+    public DataCurso guardarCurso(DataCurso nuevoCurso) throws ErrorRepetidos {
+        return this.cursoCtrl.guardarNuevoCurso(nuevoCurso);
+    }
+
+    @Override
+    public HashSet<DataCurso> consultarTodosLosCursos() {
+        return this.cursoCtrl.todosLosCursos();
+    }
+
+    @Override
+    public HashSet<DataCurso> cursosPorInstituto(String nombreInstituto) {
+        return this.cursoCtrl.cursosPorInstituto(nombreInstituto);
+    }
+
+    @Override
+    public Boolean existeCurso(String nombre) {
+        return this.cursoCtrl.existeCurso(nombre);
+    }
+
+    @Override
+    public HashSet<DataCurso> cursosNoRelacionadosConUnProgDeFormacion(String idProgramaDeFormacion) {
+        return this.cursoCtrl.cursosNoRelacionadosConUnProgDeFormacion(idProgramaDeFormacion);
+    }
+
+    @Override
+    public DataCurso buscarCurso(String nombre) {
+        return this.cursoCtrl.traerCurso(nombre);
+    }
+
+    // Institutos
+    @Override
+    public DataInstituto guardarInstituto(DataInstituto nuevoInstituto) {
+        return this.institutoCtrl.guardarNuevoInstituto(nuevoInstituto);
+    }
+
+    @Override
+    public HashSet<DataInstituto> consultarTodosLosInstitutos() {
+        return this.institutoCtrl.todosLosInstitutos();
+    }
+
+    @Override
+    public Boolean existeInstituto(String nombre) {
+        return this.institutoCtrl.existeInstituto(nombre);
+    }
+
+    @Override
+    public DataInstituto buscarInstituto(String nombre) {
+        return this.institutoCtrl.traerInstituto(nombre);
+    }
+
+    // Usuarios
+    @Override
+    public String[] listarUsuarios() {
+        return this.usuarioCtrl.listarUsuarios();
+    }
+
+    @Override
+    public DataUsuario consultarUsuario(String nickname) throws ErrorNoExiste {
+        return this.usuarioCtrl.consultarUsuario(nickname);
+    }
+
+    @Override
+    public void modificarUsuario(String nick, String nom, String ape, java.time.LocalDate fechaNac, String rutaImg) {
+        this.usuarioCtrl.modificarUsuario(nick, nom, ape, fechaNac, rutaImg);
+    }
+
+    @Override
+    public void modificarUsuario(String nick, String nom, String ape, LocalDate fechaNac, String rutaImg, String passActual, String passNueva) throws ErrorNoExiste {
+        this.usuarioCtrl.modificarUsuario(nick, nom, ape, fechaNac, rutaImg, passActual, passNueva);
+    }
+
+    @Override
+    public void eliminarUsuario(String nick) throws ErrorNoExiste {
+        this.usuarioCtrl.eliminarUsuario(nick);
+    }
+
+    @Override
+    public void registrarEstudiante(String nickname, String nombre, String apellido, String email, LocalDate fechaNac,
+            String rutaImagen) throws ErrorRepetidos {
+        this.usuarioCtrl.registrarEstudiante(nickname, nombre, apellido, email, fechaNac, rutaImagen);
+    }
+
+    @Override
+
+    public void registrarEstudiante(String nickname, String nombre, String apellido, String email, LocalDate fechaNac, String rutaImagen, String password) throws ErrorRepetidos {
+        this.usuarioCtrl.registrarEstudiante(nickname, nombre, apellido, email, fechaNac, rutaImagen, password);
+    }
+
+    @Override
+    public void registrarDocente(String nickname, String nombre, String apellido, String email, LocalDate fechaNac,
+            String rutaImagen, String nombreInst) throws ErrorRepetidos {
+        this.usuarioCtrl.registrarDocente(nickname, nombre, apellido, email, fechaNac, rutaImagen, nombreInst);
+    }
+
+    @Override
+    public void seguirUsuario(String seguidorNick, String seguidoNick) throws ErrorNoExiste, ErrorRepetidos {
+        this.usuarioCtrl.seguirUsuario(seguidorNick, seguidoNick);
+    }
+
+    @Override
+    public void dejarDeSeguirUsuario(String seguidorNick, String seguidoNick) throws ErrorNoExiste {
+        this.usuarioCtrl.dejarDeSeguirUsuario(seguidorNick, seguidoNick);
+    }
+
+    @Override
+    public boolean estaSiguiendoUsuario(String seguidorNick, String seguidoNick) throws ErrorNoExiste {
+        return this.usuarioCtrl.estaSiguiendoUsuario(seguidorNick, seguidoNick);
+    }
+
+    @Override
+    public void registrarDocente(String nickname, String nombre, String apellido, String email, LocalDate fechaNac, String rutaImagen, String nombreInst, String password) throws ErrorRepetidos {
+        this.usuarioCtrl.registrarDocente(nickname, nombre, apellido, email, fechaNac, rutaImagen, nombreInst, password);
+    }
+
+    @Override
+    public DataUsuario iniciarSesion(String nicknameOEmail, String password) throws ErrorNoExiste {
+        return this.usuarioCtrl.iniciarSesion(nicknameOEmail, password);
+    }
+
+    @Override
+    public Set<String> obtenerSeguidos(String nickname) throws ErrorNoExiste {
+        return this.usuarioCtrl.obtenerSeguidos(nickname);
+    }
+
+    @Override
+    public Set<String> obtenerSeguidores(String nickname) throws ErrorNoExiste {
+        return this.usuarioCtrl.obtenerSeguidores(nickname);
+    }
+
+    @Override
+    public boolean esSeguidor(String seguidorNick, String seguidoNick) {
+        return this.usuarioCtrl.esSeguidor(seguidorNick, seguidoNick);
+    }
+}
+

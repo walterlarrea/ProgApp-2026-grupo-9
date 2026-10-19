@@ -1,0 +1,98 @@
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>edEXT - Edición de curso</title>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/styles.css">
+</head>
+
+<body data-context-path="${pageContext.request.contextPath}">
+    <!-- cabezal fijo -->
+    <%@ include file="../webMiscelanea/header.jsp" %>
+    <!-- Layout Principal: Contenido Dinámico -->
+    <div class="layout-container">
+        <!-- Sidebar / Menú Lateral -->
+        <%@ include file="../webMiscelanea/sidebar.jsp" %>
+        <main class="main-content">
+            <section class="hero-banner">
+                <div class="hero-contenido">
+                    <h1>Registrar nueva edición de curso</h1>
+                    <p>Crea y agrega una edición a un curso existente</p>
+                </div>
+            </section>
+            
+            <c:if test="${not empty error}">
+                <p class="error">
+                    <c:out value="${error}"/>
+                </p>
+            </c:if>
+            
+            <form id="formularioEdicion" action="${pageContext.request.contextPath}/edicionCurso" method="post" enctype="multipart/form-data">
+                <h2>Datos</h2>
+                
+                <label for="instituto"><br>Instituto</br></label>
+                <select id="instituto" name="instituto" style="width: 30%" required>
+                <option value="" ${empty param.instituto ? 'selected' : ''}>Seleccione un instituto</option>
+                    <c:forEach var="instituto" items="${institutos}">
+                        <option value="${instituto.nombreI()}" ${param.instituto eq instituto.nombreI() ? 'selected' : ''}>
+                            <c:out value="${instituto.nombreI()}"/>
+                        </option>
+                    </c:forEach>
+                </select>
+                <script src="${pageContext.request.contextPath}/js/cargarInstitutos.js"></script>
+                
+                <br>
+                <label for="curso"><br>Curso perteneciente</br></label>
+                <select id="curso" name="curso" style="width: 30%" required>
+                    <option value="">Seleccione un curso</option>
+                    <c:forEach var="curso" items="${cursos}">
+                        <option value="${curso.nombreCurso()}">
+                            ${curso.nombreCurso()}
+                        </option>
+                    </c:forEach>
+                </select>
+                </br>  
+
+ 
+                <label><br>Nombre</br></label> <input type="text" name="nombreEdi" style="width: 30%" required>
+                <div class="dato-space2">
+                    <label><br>Fecha de inicio</br></label> <input type="date" name="fInicio" style="width: 10%" required>
+                </div>
+                <div class="dato-space2">
+                    <label><br>Fecha de finalización</br></label> <input type="date" name="fFin" style="width: 10%" required>
+                </div>
+                <div class="dato-space2">
+                    <label><br>Cupo</br></label> <input type="number" id="cupo" name="cupo" min="1" max="5000" style="width: 10%">
+                </div>
+                <div class="dato-space2">
+                    <label><br>Imagen representativa</br></label>
+                    <input type="file" name="imagen" accept="image/*">
+                </div>
+                    
+                <label><br>Docente(s)</br></label>
+                <div class="lista-checkbox">
+                    <c:forEach var="docente" items="${docentes}">
+                        <label class="alta-checkbox ">
+                            <input type="checkbox" name="docentes" value="${docente.nickname}">
+                                <c:out value="${docente.nombre}"/>
+                                <c:out value="${docente.apellido}"/>
+                        </label>
+                    </c:forEach>
+
+                    <c:if test="${empty docentes}">
+                        <p>No hay docentes disponibles.</p>
+                    </c:if>
+                </div>
+                <script src="${pageContext.request.contextPath}/js/docObligatorio.js"></script>
+                
+                <div class="btn-der">
+                    <button type="submit" class="btn btn-primary">Guardar edición</button>
+                </div>
+            </form>
+        </main>
+    </div>             
+</body>
+</html>
