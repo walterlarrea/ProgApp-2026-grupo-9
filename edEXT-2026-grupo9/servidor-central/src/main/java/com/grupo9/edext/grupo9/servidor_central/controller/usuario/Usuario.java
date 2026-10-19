@@ -28,8 +28,7 @@ public class Usuario implements Serializable {
     private String email;
     private LocalDate fechaNac;
     private String imagen;
-
-    private String fechaNac_str; // Optional helper if used
+    
     private String password;
 
     @ElementCollection(fetch = FetchType.EAGER)

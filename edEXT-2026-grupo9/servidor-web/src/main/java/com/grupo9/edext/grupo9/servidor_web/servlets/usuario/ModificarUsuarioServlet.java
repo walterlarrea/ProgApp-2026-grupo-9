@@ -7,17 +7,25 @@ import com.grupo9.edext.grupo9.servidor_central.dominio.DataInstituto;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataUsuario;
 
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.http.Part;
+import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.Set;
 
 @WebServlet("/modificarUsuario")
+@MultipartConfig(
+        fileSizeThreshold = 1024 * 1024,
+        maxFileSize = 1024 * 1024 * 10,
+        maxRequestSize = 1024 * 1024 * 20
+)
 public class ModificarUsuarioServlet extends HttpServlet {
 
     @Override
@@ -64,13 +72,20 @@ public class ModificarUsuarioServlet extends HttpServlet {
             return;
         }
 
-        String nombre = request.getParameter("nombre");
-        String apellido = request.getParameter("apellido");
-        String fechaNacStr = request.getParameter("fechaNac");
-        String imagen = request.getParameter("imagen");
-        String passActual = request.getParameter("passActual");
-        String passNueva = request.getParameter("passNueva");
-        String passNuevaConfirm = request.getParameter("passNuevaConfirm");
+        String nombre = obtenerParametro(request, "nombre");
+        String apellido = obtenerParametro(request, "apellido");
+        String fechaNacStr = obtenerParametro(request, "fechaNac");
+        String passActual = obtenerParametro(request, "passActual");
+        String passNueva = obtenerParametro(request, "passNueva");
+        String passNuevaConfirm = obtenerParametro(request, "passNuevaConfirm");
+
+        // Fallback a los datos actuales si vienen nulos o en blanco
+        if (nombre == null || nombre.trim().isEmpty()) {
+            nombre = usuarioLogueado.getNombre();
+        }
+        if (apellido == null || apellido.trim().isEmpty()) {
+            apellido = usuarioLogueado.getApellido();
+        }
 
         if (passNueva != null && !passNueva.trim().isEmpty()) {
             if (!passNueva.equals(passNuevaConfirm)) {
@@ -89,6 +104,32 @@ public class ModificarUsuarioServlet extends HttpServlet {
             }
         }
 
+        String rutaImagen = usuarioLogueado.getImagen();
+        try {
+            Part filePart = request.getPart("imagenArchivo");
+            if (filePart != null && filePart.getSize() > 0) {
+                String submittedName = filePart.getSubmittedFileName();
+                if (submittedName != null && !submittedName.trim().isEmpty()) {
+                    String ext = "";
+                    int dotIdx = submittedName.lastIndexOf('.');
+                    if (dotIdx >= 0) {
+                        ext = submittedName.substring(dotIdx);
+                    }
+                    String fileName = "avatar_" + usuarioLogueado.getNickname() + "_" + System.currentTimeMillis() + ext;
+                    String uploadDirPath = getServletContext().getRealPath("/uploads/usuarios");
+                    File uploadDir = new File(uploadDirPath);
+                    if (!uploadDir.exists()) {
+                        uploadDir.mkdirs();
+                    }
+                    String fullPath = uploadDirPath + File.separator + fileName;
+                    filePart.write(fullPath);
+                    rutaImagen = fullPath;
+                }
+            }
+        } catch (Exception e) {
+            // Si no se pudo procesar la nueva imagen, conservar la imagen previa
+        }
+
         IServidorCentral servidorCentral = Fabrica.getInstance().getIServidorCentral();
         try {
             servidorCentral.modificarUsuario(
@@ -96,7 +137,7 @@ public class ModificarUsuarioServlet extends HttpServlet {
                 nombre != null ? nombre.trim() : "",
                 apellido != null ? apellido.trim() : "",
                 fechaNac,
-                imagen != null ? imagen.trim() : "",
+                rutaImagen != null ? rutaImagen.trim() : "",
                 passActual,
                 passNueva
             );
@@ -112,5 +153,22 @@ public class ModificarUsuarioServlet extends HttpServlet {
             request.setAttribute("error", "Error al actualizar perfil: " + e.getMessage());
             doGet(request, response);
         }
+    }
+
+    private String obtenerParametro(HttpServletRequest request, String nombre) {
+        String valor = request.getParameter(nombre);
+        if (valor != null) {
+            return valor;
+        }
+        try {
+            Part part = request.getPart(nombre);
+            if (part != null) {
+                try (java.io.InputStream is = part.getInputStream()) {
+                    return new String(is.readAllBytes(), java.nio.charset.StandardCharsets.UTF_8).trim();
+                }
+            }
+        } catch (Exception ignored) {
+        }
+        return null;
     }
 }
