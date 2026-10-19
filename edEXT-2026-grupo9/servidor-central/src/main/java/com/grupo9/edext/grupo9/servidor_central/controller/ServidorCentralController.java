@@ -201,6 +201,12 @@ class ServidorCentralController implements IServidorCentral {
         return this.edicionCursoCtrl.existeEdicion(nombre);
     }
 
+    @Override
+    public void cambiarEstadoInscripcion(String nombreEdicion, String nicknameEstudiante, EstadoInscripcion nuevoEstado)
+            throws ErrorNoExiste, com.grupo9.edext.grupo9.mensajes.ErrorEstadoInvalido {
+        this.edicionCursoCtrl.cambiarEstadoInscripcion(nombreEdicion, nicknameEstudiante, nuevoEstado);
+    }
+
     // Cursos
     @Override
     public DataCurso guardarCurso(DataCurso nuevoCurso) throws ErrorRepetidos {

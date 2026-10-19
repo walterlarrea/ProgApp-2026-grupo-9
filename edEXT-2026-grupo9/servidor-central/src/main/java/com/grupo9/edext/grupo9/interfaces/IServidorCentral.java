@@ -10,6 +10,7 @@ import com.grupo9.edext.grupo9.servidor_central.dominio.DataEstudiante;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataInscEdicion;
 import com.grupo9.edext.grupo9.servidor_central.dominio.ResultadoBusqueda;
 import com.grupo9.edext.grupo9.servidor_central.controller.edicion_de_curso.EstadoInscripcion;
+import com.grupo9.edext.grupo9.mensajes.ErrorEstadoInvalido;
 import com.grupo9.edext.grupo9.mensajes.ErrorNoExiste;
 import com.grupo9.edext.grupo9.mensajes.ErrorRepetidos;
 import java.util.HashSet;
@@ -58,6 +59,9 @@ public interface IServidorCentral {
 
     public Set<DataInscEdicion> buscarInscriptos(DataEdicionCurso edicion);
     
+    public void cambiarEstadoInscripcion(String nombreEdicion, String nicknameEstudiante, EstadoInscripcion nuevoEstado)
+            throws ErrorNoExiste, ErrorEstadoInvalido;
+
     public Boolean existeEdicionCurso(String nombre);
 
     // Cursos
