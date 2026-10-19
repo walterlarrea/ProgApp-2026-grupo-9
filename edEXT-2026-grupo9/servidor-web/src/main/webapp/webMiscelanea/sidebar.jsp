@@ -27,7 +27,8 @@
                     <li><a href="${pageContext.request.contextPath}/edicionCurso?accion=alta">Alta edici�n</a></li>
                     <!-- La opción de abajo queda deshabilitada ya que no es un requerimiento actualmente -->
                     <!-- <li><a href="${pageContext.request.contextPath}/programas">Alta programa</a></li> -->
-                    <li><a href="${pageContext.request.contextPath}/edicionCurso">Ver inscriptos</a></li>
+                    <li><a href="${pageContext.request.contextPath}/inscriptosDocente">Ver inscriptos</a></li>
+                    <li><a href="${pageContext.request.contextPath}/inscripcionesDocente">Ver inscripciones pendientes</a></li>
                 </ul>
             </div>
             </c:if>
@@ -71,4 +72,3 @@
                 <span class="badge badge-success"><c:out value="${estadoDb}"/></span>
             </div> -->
 </aside>
-

@@ -200,6 +200,7 @@ public class EdicionCursoController implements IEdicionCurso {
         for (InscEdicion inscripcion : edicion.getInscripciones()) {
             if (inscripcion.getEstudiante().getNickname().equals(nicknameEstudiante)) {
                 inscripcion.cambiarEstado(nuevoEstado);
+                me.actualizarInscripcion(inscripcion);
                 return;
             }
         }
