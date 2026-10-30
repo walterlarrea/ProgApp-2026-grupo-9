@@ -1,22 +1,25 @@
 package com.grupo9.edext.grupo9.servidor_web.servlets.usuario;
 
-import com.grupo9.edext.grupo9.interfaces.IServidorCentral;
-import com.grupo9.edext.grupo9.miscelanea.Fabrica;
-import com.grupo9.edext.grupo9.servidor_central.dominio.DataCurso;
-import com.grupo9.edext.grupo9.servidor_central.dominio.DataEstudiante;
-import com.grupo9.edext.grupo9.servidor_central.dominio.DataInstituto;
-import com.grupo9.edext.grupo9.servidor_central.dominio.DataUsuario;
+import com.grupo9.edext.grupo9.servidor_web.soap.SoapClientFactory;
+import com.grupo9.edext.grupo9.servidor_web.web_service_client.curso.CursoWebService;
+import com.grupo9.edext.grupo9.servidor_web.web_service_client.curso.DataCursoDTO;
+import com.grupo9.edext.grupo9.servidor_web.web_service_client.instituto.DataInstitutoDTO;
+import com.grupo9.edext.grupo9.servidor_web.web_service_client.instituto.InstitutoWebService;
+import com.grupo9.edext.grupo9.servidor_web.web_service_client.usuario.DataEstudianteDTO;
+import com.grupo9.edext.grupo9.servidor_web.web_service_client.usuario.DataUsuarioDTO;
+import com.grupo9.edext.grupo9.servidor_web.web_service_client.usuario.UsuarioWebService;
+
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Set;
 
 @WebServlet("/perfil")
 public class PerfilServlet extends HttpServlet {
@@ -25,40 +28,46 @@ public class PerfilServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession(false);
-        DataUsuario usuarioLogueado = (session != null) ? (DataUsuario) session.getAttribute("usuarioLogueado") : null;
+        DataUsuarioDTO usuarioLogueado = (session != null) ? (DataUsuarioDTO) session.getAttribute("usuarioLogueado") : null;
 
         if (usuarioLogueado == null) {
             response.sendRedirect(request.getContextPath() + "/login");
             return;
         }
 
-        IServidorCentral servidorCentral = Fabrica.getInstance().getIServidorCentral();
-        Set<DataInstituto> institutos = Collections.emptySet();
-        Set<DataCurso> cursos = Collections.emptySet();
+        UsuarioWebService usuarioPort = SoapClientFactory.getInstance().getUsuarioPort();
+        InstitutoWebService instPort = SoapClientFactory.getInstance().getInstitutoPort();
+        CursoWebService cursoPort = SoapClientFactory.getInstance().getCursoPort();
+
+        List<DataInstitutoDTO> institutos = Collections.emptyList();
+        List<DataCursoDTO> cursos = Collections.emptyList();
         String estadoDb = "Conectado al Servidor Central";
-        DataUsuario usuarioActualizado = usuarioLogueado;
-        List<DataUsuario> usuariosSeguidos = new ArrayList<>();
+        DataUsuarioDTO usuarioActualizado = usuarioLogueado;
+        List<DataUsuarioDTO> usuariosSeguidos = new ArrayList<>();
 
         try {
-            if (servidorCentral != null) {
-                usuarioActualizado = servidorCentral.consultarUsuario(usuarioLogueado.getNickname());
+            if (usuarioPort != null) {
+                usuarioActualizado = usuarioPort.consultarUsuario(usuarioLogueado.getNickname());
                 session.setAttribute("usuarioLogueado", usuarioActualizado);
-                institutos = servidorCentral.consultarTodosLosInstitutos();
-                cursos = servidorCentral.consultarTodosLosCursos();
 
-                Set<String> seguidosNicks = servidorCentral.obtenerSeguidos(usuarioLogueado.getNickname());
+                List<String> seguidosNicks = usuarioPort.obtenerSeguidos(usuarioLogueado.getNickname());
                 if (seguidosNicks != null) {
                     for (String segNick : seguidosNicks) {
                         try {
-                            DataUsuario segUser = servidorCentral.consultarUsuario(segNick);
+                            DataUsuarioDTO segUser = usuarioPort.consultarUsuario(segNick);
                             if (segUser != null) {
                                 usuariosSeguidos.add(segUser);
                             }
-                        } catch (Exception ex) {
-                            // Si no se encuentra el usuario seguido, continuar
+                        } catch (Exception ignored) {
                         }
                     }
                 }
+            }
+            if (instPort != null) {
+                institutos = instPort.consultarTodosLosInstitutos();
+            }
+            if (cursoPort != null) {
+                cursos = cursoPort.consultarTodosLosCursos();
             }
         } catch (Exception e) {
             estadoDb = "Servidor Central activo (" + e.getMessage() + ")";
@@ -69,9 +78,9 @@ public class PerfilServlet extends HttpServlet {
         request.setAttribute("institutos", institutos);
         request.setAttribute("cursos", cursos);
         request.setAttribute("estadoDb", estadoDb);
-        request.setAttribute("inscripcionesProgramas", usuarioActualizado instanceof DataEstudiante estudiante
+        request.setAttribute("inscripcionesProgramas", usuarioActualizado instanceof DataEstudianteDTO estudiante
                 ? estudiante.getInscripcionesProgramas()
-                : Collections.emptySet());
+                : Collections.emptyList());
 
         request.getRequestDispatcher("/webUsuario/perfil.jsp").forward(request, response);
     }

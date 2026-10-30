@@ -1,4 +1,4 @@
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+﻿<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <%@ taglib prefix="fn" uri="jakarta.tags.functions" %>
 <!DOCTYPE html>
@@ -34,9 +34,9 @@
                         onchange="var curso = this.form.elements.namedItem('curso'); var edicion = this.form.elements.namedItem('edicion'); if (curso) curso.value = ''; if (edicion) edicion.value = ''; this.form.submit()">
                         <option value="">Seleccione un instituto</option>
                         <c:forEach var="instituto" items="${institutosDoc}">
-                            <option value="${fn:escapeXml(instituto.nombreI())}"
-                                ${param.instituto eq instituto.nombreI() ? 'selected' : ''}>
-                                <c:out value="${instituto.nombreI()}"/>
+                            <option value="${fn:escapeXml(instituto.nombreI)}"
+                                ${param.instituto eq instituto.nombreI ? 'selected' : ''}>
+                                <c:out value="${instituto.nombreI}"/>
                             </option>
                         </c:forEach>
                     </select>
@@ -50,9 +50,9 @@
                             onchange="var edicion = this.form.elements.namedItem('edicion'); if (edicion) edicion.value = ''; this.form.submit()">
                             <option value="">Seleccione un curso</option>
                             <c:forEach var="curso" items="${cursosDoc}">
-                                <option value="${fn:escapeXml(curso.nombreCurso())}"
-                                    ${param.curso eq curso.nombreCurso() ? 'selected' : ''}>
-                                    <c:out value="${curso.nombreCurso()}"/>
+                                <option value="${fn:escapeXml(curso.nombreCurso)}"
+                                    ${param.curso eq curso.nombreCurso ? 'selected' : ''}>
+                                    <c:out value="${curso.nombreCurso}"/>
                                 </option>
                             </c:forEach>
                         </select>
@@ -81,7 +81,7 @@
             <c:if test="${not empty edicionSeleccionadaDoc}">
                 <section class="dato-space">
                     <h2 style="margin-bottom: 1rem">Edición seleccionada: <c:out value="${edicionSeleccionadaDoc.nombreEdi}"/></h2>
-                    <p><b>Curso:</b> <c:out value="${edicionSeleccionadaDoc.cursoAsoc.nombreCurso()}"/></p>
+                    <p><b>Curso:</b> <c:out value="${edicionSeleccionadaDoc.cursoAsoc.nombreCurso}"/></p>
                     <p><b>Fecha de inicio:</b> <c:out value="${edicionSeleccionadaDoc.fechaInicio}"/></p>
                     <p><b>Fecha de finalización:</b> <c:out value="${edicionSeleccionadaDoc.fechaFin}"/></p>
                     <p><b>Cupo:</b> <c:out value="${edicionSeleccionadaDoc.cupo}"/></p>

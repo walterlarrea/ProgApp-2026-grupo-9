@@ -1,78 +1,69 @@
 package com.grupo9.edext.grupo9.servidor_web.servlets.busqueda;
 
 import com.google.gson.Gson;
-import com.grupo9.edext.grupo9.interfaces.IServidorCentral;
-import com.grupo9.edext.grupo9.miscelanea.Fabrica;
-import com.grupo9.edext.grupo9.servidor_central.dominio.DataCurso;
-import com.grupo9.edext.grupo9.servidor_central.dominio.DataProgramaFormacion;
-import com.grupo9.edext.grupo9.servidor_central.dominio.DataUsuario;
-import com.grupo9.edext.grupo9.servidor_central.dominio.ResultadoBusqueda;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
+import com.grupo9.edext.grupo9.servidor_web.soap.SoapClientFactory;
+import com.grupo9.edext.grupo9.servidor_web.web_service_client.busqueda.BusquedaWebService;
+import com.grupo9.edext.grupo9.servidor_web.web_service_client.busqueda.DataCursoDTO;
+import com.grupo9.edext.grupo9.servidor_web.web_service_client.busqueda.DataProgramaFormacionDTO;
+import com.grupo9.edext.grupo9.servidor_web.web_service_client.busqueda.DataUsuarioDTO;
+import com.grupo9.edext.grupo9.servidor_web.web_service_client.busqueda.ResultadoBusquedaDTO;
+
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.time.format.DateTimeFormatter;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
-
 @WebServlet(name = "BusquedaServlet", urlPatterns = {"/buscar"})
 public class BusquedaServlet extends HttpServlet {
-    IServidorCentral servidorCentral = Fabrica.getInstance().getIServidorCentral();
 
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String query = request.getParameter("q");
         String formatResponse = request.getParameter("format");
-        List<ResultadoBusqueda> resultados = Collections.emptyList();
+        List<ResultadoBusquedaDTO> resultados = Collections.emptyList();
         HashMap<String, String> filtros = new HashMap<>();
-        
+
         ArrayList<ResultadoBusquedaExtendida> listaResultados = new ArrayList<>();
-        
+
         try {
-            if (servidorCentral != null){
-                resultados = servidorCentral.busquedaPrincipal(query);
+            BusquedaWebService busquedaPort = SoapClientFactory.getInstance().getBusquedaPort();
+            if (busquedaPort != null && query != null) {
+                resultados = busquedaPort.busquedaPrincipal(query);
             }
         } catch (Exception e) {
-            System.out.println("[ERROR] com.grupo9.edext.grupo9.servidor_web.servlets.BusquedaServlet.doGet()");
+            System.out.println("[ERROR] BusquedaServlet.doGet(): " + e.getMessage());
         }
-        
-        for (ResultadoBusqueda res : resultados) {
-            ResultadoBusquedaExtendida resEnriquecido = enriquecerResultado(res, request.getContextPath(), query);
-            listaResultados.add(resEnriquecido);
-            filtros.put(resEnriquecido.tipoCss(), resEnriquecido.tipoVisible());
+
+        if (resultados != null) {
+            for (ResultadoBusquedaDTO res : resultados) {
+                ResultadoBusquedaExtendida resEnriquecido = enriquecerResultado(res, request.getContextPath(), query);
+                listaResultados.add(resEnriquecido);
+                filtros.put(resEnriquecido.tipoCss(), resEnriquecido.tipoVisible());
+            }
         }
-        
+
         if (formatResponse == null || !formatResponse.equals("json")) {
             request.setAttribute("listaResultados", listaResultados);
             request.setAttribute("filtros", filtros);
             request.setAttribute("query-param", query);
-            //        processRequest(request, response);
             request.getRequestDispatcher("/webBusqueda/resultadoBusqueda.jsp").forward(request, response);
         } else {
             Gson gson = new Gson();
             String jsonArray = gson.toJson(listaResultados);
 
             response.setContentType("application/json");
-            // Get the printwriter object from response to write the required json object to the output stream      
             PrintWriter out = response.getWriter();
-            // Assuming your json object is **jsonObject**, perform the following, it will return your json object  
             out.print(jsonArray);
             out.flush();
         }
@@ -86,7 +77,7 @@ public class BusquedaServlet extends HttpServlet {
         return text.replaceAll("(?i)" + escapedQuery, "<b>$0</b>");
     }
 
-    private ResultadoBusquedaExtendida enriquecerResultado(ResultadoBusqueda resultado, String contextPath, String query) {
+    private ResultadoBusquedaExtendida enriquecerResultado(ResultadoBusquedaDTO resultado, String contextPath, String query) {
         String tipoVisible;
         String nombreVisible;
         String nombreVisibleHighlighted;
@@ -95,89 +86,56 @@ public class BusquedaServlet extends HttpServlet {
         String parametro;
         String href;
         String fechaCreacion;
+        Object data;
 
-        switch (resultado.tipo()) {
+        switch (resultado.getTipo()) {
             case CURSO -> {
-                DataCurso curso = (DataCurso) resultado.data();
+                DataCursoDTO curso = resultado.getCurso();
+                data = curso;
                 tipoVisible = "Curso";
-                nombreVisible = curso.nombreCurso();
+                nombreVisible = curso != null ? curso.getNombreCurso() : "";
                 nombreVisibleHighlighted = highlightQueryInText(nombreVisible, query);
-                descVisibleHighlighted = highlightQueryInText(curso.descCurso(), query);
+                descVisibleHighlighted = highlightQueryInText(curso != null ? curso.getDescCurso() : "", query);
 
                 ruta = "/curso";
-                parametro = curso.nombreCurso();
+                parametro = nombreVisible;
                 href = contextPath + ruta + "?nombre="
                         + URLEncoder.encode(parametro, StandardCharsets.UTF_8);
-                fechaCreacion = curso.fechaReg().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+                fechaCreacion = curso != null && curso.getFechaReg() != null ? curso.getFechaReg() : "-";
             }
             case USUARIO -> {
-                DataUsuario usuario = (DataUsuario) resultado.data();
+                DataUsuarioDTO usuario = resultado.getUsuario();
+                data = usuario;
                 tipoVisible = "Usuario";
-                nombreVisible = usuario.getNombre() + " " + usuario.getApellido();
+                nombreVisible = (usuario != null ? usuario.getNombre() : "") + " " + (usuario != null ? usuario.getApellido() : "");
                 nombreVisibleHighlighted = highlightQueryInText(nombreVisible, query);
                 descVisibleHighlighted = "";
 
                 ruta = "/usuario";
-                parametro = usuario.getNickname();
+                parametro = usuario != null ? usuario.getNickname() : "";
                 href = contextPath + ruta + "?nombre="
                         + URLEncoder.encode(parametro, StandardCharsets.UTF_8);
                 fechaCreacion = "-";
             }
             case PROGRAMA_FORMACION -> {
-                DataProgramaFormacion programa = (DataProgramaFormacion) resultado.data();
+                DataProgramaFormacionDTO programa = resultado.getPrograma();
+                data = programa;
                 tipoVisible = "Programa";
-                nombreVisible = programa.nombre();
+                nombreVisible = programa != null ? programa.getNombre() : "";
                 nombreVisibleHighlighted = highlightQueryInText(nombreVisible, query);
-                descVisibleHighlighted = highlightQueryInText(programa.descripcion(), query);
+                descVisibleHighlighted = highlightQueryInText(programa != null ? programa.getDescripcion() : "", query);
 
                 ruta = "/programa";
-                parametro = programa.nombre();
+                parametro = nombreVisible;
                 href = contextPath + ruta + "?nombre="
                         + URLEncoder.encode(parametro, StandardCharsets.UTF_8);
-                fechaCreacion = programa.fechaDeCreacion().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+                fechaCreacion = programa != null && programa.getFechaDeCreacion() != null ? programa.getFechaDeCreacion() : "-";
             }
-            default -> throw new IllegalArgumentException("Tipo de búsqueda no soportado: " + resultado.tipo());
+            default -> throw new IllegalArgumentException("Tipo de búsqueda no soportado: " + resultado.getTipo());
         }
 
-        String tipoCss = resultado.tipo().name().toLowerCase(java.util.Locale.ROOT);
+        String tipoCss = resultado.getTipo().name().toLowerCase(java.util.Locale.ROOT);
         return new ResultadoBusquedaExtendida(
-                resultado.tipo(), resultado.data(), tipoVisible, nombreVisible, nombreVisibleHighlighted, descVisibleHighlighted, href, tipoCss, fechaCreacion);
+                resultado.getTipo(), data, tipoVisible, nombreVisible, nombreVisibleHighlighted, descVisibleHighlighted, href, tipoCss, fechaCreacion);
     }
-
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet BusquedaServlet</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet BusquedaServlet at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        }
-    }
-
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
-    @Override
-    public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
-
 }

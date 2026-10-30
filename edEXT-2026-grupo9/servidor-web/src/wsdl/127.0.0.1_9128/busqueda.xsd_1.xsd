@@ -1,0 +1,164 @@
+﻿<?xml version="1.0" encoding="UTF-8"?><!-- Published by XML-WS Runtime (https://github.com/eclipse-ee4j/metro-jax-ws). Runtime's version is XML-WS Runtime 4.0.3 git-revision#a57c222. --><xs:schema xmlns:tns="http://web_service.grupo9.edext.grupo9.com/" xmlns:xs="http://www.w3.org/2001/XMLSchema" version="1.0" targetNamespace="http://web_service.grupo9.edext.grupo9.com/">
+
+<xs:element name="buscarCursos" type="tns:buscarCursos"></xs:element>
+
+<xs:element name="buscarCursosResponse" type="tns:buscarCursosResponse"></xs:element>
+
+<xs:element name="buscarProgramas" type="tns:buscarProgramas"></xs:element>
+
+<xs:element name="buscarProgramasResponse" type="tns:buscarProgramasResponse"></xs:element>
+
+<xs:element name="buscarUsuarios" type="tns:buscarUsuarios"></xs:element>
+
+<xs:element name="buscarUsuariosResponse" type="tns:buscarUsuariosResponse"></xs:element>
+
+<xs:element name="busquedaPrincipal" type="tns:busquedaPrincipal"></xs:element>
+
+<xs:element name="busquedaPrincipalResponse" type="tns:busquedaPrincipalResponse"></xs:element>
+
+<xs:complexType name="buscarCursos">
+<xs:sequence>
+<xs:element name="query" type="xs:string" minOccurs="0"></xs:element>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="buscarCursosResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:DataCursoDTO" minOccurs="0" maxOccurs="unbounded"></xs:element>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="DataCursoDTO">
+<xs:sequence>
+<xs:element name="instituto" type="tns:DataInstitutoDTO" minOccurs="0"></xs:element>
+<xs:element name="nombreCurso" type="xs:string" minOccurs="0"></xs:element>
+<xs:element name="descCurso" type="xs:string" minOccurs="0"></xs:element>
+<xs:element name="duracion" type="xs:int"></xs:element>
+<xs:element name="cantHoras" type="xs:int"></xs:element>
+<xs:element name="cantCred" type="xs:int"></xs:element>
+<xs:element name="fechaReg" type="xs:string" minOccurs="0"></xs:element>
+<xs:element name="url" type="xs:string" minOccurs="0"></xs:element>
+<xs:element name="previas" type="xs:string" nillable="true" minOccurs="0" maxOccurs="unbounded"></xs:element>
+<xs:element name="programas" type="xs:string" nillable="true" minOccurs="0" maxOccurs="unbounded"></xs:element>
+<xs:element name="categorias" type="xs:string" nillable="true" minOccurs="0" maxOccurs="unbounded"></xs:element>
+<xs:element name="imagen" type="xs:string" minOccurs="0"></xs:element>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="DataInstitutoDTO">
+<xs:sequence>
+<xs:element name="nombreI" type="xs:string" minOccurs="0"></xs:element>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="buscarUsuarios">
+<xs:sequence>
+<xs:element name="nombre" type="xs:string" minOccurs="0"></xs:element>
+<xs:element name="apellido" type="xs:string" minOccurs="0"></xs:element>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="buscarUsuariosResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:DataUsuarioDTO" minOccurs="0" maxOccurs="unbounded"></xs:element>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="DataUsuarioDTO">
+<xs:sequence>
+<xs:element name="nickname" type="xs:string" minOccurs="0"></xs:element>
+<xs:element name="nombre" type="xs:string" minOccurs="0"></xs:element>
+<xs:element name="apellido" type="xs:string" minOccurs="0"></xs:element>
+<xs:element name="email" type="xs:string" minOccurs="0"></xs:element>
+<xs:element name="fechaNac" type="xs:string" minOccurs="0"></xs:element>
+<xs:element name="imagen" type="xs:string" minOccurs="0"></xs:element>
+<xs:element name="tipo" type="xs:string" minOccurs="0"></xs:element>
+<xs:element name="seguidos" type="xs:string" nillable="true" minOccurs="0" maxOccurs="unbounded"></xs:element>
+<xs:element name="seguidores" type="xs:string" nillable="true" minOccurs="0" maxOccurs="unbounded"></xs:element>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="DataEstudianteDTO">
+<xs:complexContent>
+<xs:extension base="tns:DataUsuarioDTO">
+<xs:sequence>
+<xs:element name="edicionesInscriptas" type="xs:string" nillable="true" minOccurs="0" maxOccurs="unbounded"></xs:element>
+<xs:element name="inscripcionesProgramas" type="tns:DataInscProgramaDTO" nillable="true" minOccurs="0" maxOccurs="unbounded"></xs:element>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="DataInscProgramaDTO">
+<xs:sequence>
+<xs:element name="estudianteNickname" type="xs:string" minOccurs="0"></xs:element>
+<xs:element name="programaNombre" type="xs:string" minOccurs="0"></xs:element>
+<xs:element name="fechaInscP" type="xs:string" minOccurs="0"></xs:element>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="DataDocenteDTO">
+<xs:complexContent>
+<xs:extension base="tns:DataUsuarioDTO">
+<xs:sequence>
+<xs:element name="nombreInst" type="xs:string" minOccurs="0"></xs:element>
+<xs:element name="ediciones" type="xs:string" nillable="true" minOccurs="0" maxOccurs="unbounded"></xs:element>
+<xs:element name="cursos" type="xs:string" nillable="true" minOccurs="0" maxOccurs="unbounded"></xs:element>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="buscarProgramas">
+<xs:sequence>
+<xs:element name="query" type="xs:string" minOccurs="0"></xs:element>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="buscarProgramasResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:DataProgramaFormacionDTO" minOccurs="0" maxOccurs="unbounded"></xs:element>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="DataProgramaFormacionDTO">
+<xs:sequence>
+<xs:element name="nombre" type="xs:string" minOccurs="0"></xs:element>
+<xs:element name="descripcion" type="xs:string" minOccurs="0"></xs:element>
+<xs:element name="cursos" type="tns:DataCursoDTO" nillable="true" minOccurs="0" maxOccurs="unbounded"></xs:element>
+<xs:element name="fechaInicio" type="xs:string" minOccurs="0"></xs:element>
+<xs:element name="fechaFin" type="xs:string" minOccurs="0"></xs:element>
+<xs:element name="fechaDeCreacion" type="xs:string" minOccurs="0"></xs:element>
+<xs:element name="imagen" type="xs:string" minOccurs="0"></xs:element>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="busquedaPrincipal">
+<xs:sequence>
+<xs:element name="query" type="xs:string" minOccurs="0"></xs:element>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="busquedaPrincipalResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:ResultadoBusquedaDTO" minOccurs="0" maxOccurs="unbounded"></xs:element>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="ResultadoBusquedaDTO">
+<xs:sequence>
+<xs:element name="tipo" type="tns:tipoBusqueda" minOccurs="0"></xs:element>
+<xs:element name="curso" type="tns:DataCursoDTO" minOccurs="0"></xs:element>
+<xs:element name="programa" type="tns:DataProgramaFormacionDTO" minOccurs="0"></xs:element>
+<xs:element name="usuario" type="tns:DataUsuarioDTO" minOccurs="0"></xs:element>
+</xs:sequence>
+</xs:complexType>
+
+<xs:simpleType name="tipoBusqueda">
+<xs:restriction base="xs:string">
+<xs:enumeration value="CURSO"></xs:enumeration>
+<xs:enumeration value="PROGRAMA_FORMACION"></xs:enumeration>
+<xs:enumeration value="USUARIO"></xs:enumeration>
+</xs:restriction>
+</xs:simpleType>
+</xs:schema>

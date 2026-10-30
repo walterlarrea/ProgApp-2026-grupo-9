@@ -14,7 +14,7 @@ public class DataProgramaFormacionDTO implements Serializable {
 
     private String nombre;
     private String descripcion;
-    private List<String> cursos;
+    private List<DataCursoDTO> cursos;
     private String fechaInicio;
     private String fechaFin;
     private String fechaDeCreacion;
@@ -24,7 +24,7 @@ public class DataProgramaFormacionDTO implements Serializable {
         this.cursos = new ArrayList<>();
     }
 
-    public DataProgramaFormacionDTO(String nombre, String descripcion, List<String> cursos,
+    public DataProgramaFormacionDTO(String nombre, String descripcion, List<DataCursoDTO> cursos,
                                    String fechaInicio, String fechaFin, String fechaDeCreacion, String imagen) {
         this.nombre = nombre;
         this.descripcion = descripcion;
@@ -51,11 +51,11 @@ public class DataProgramaFormacionDTO implements Serializable {
         this.descripcion = descripcion;
     }
 
-    public List<String> getCursos() {
+    public List<DataCursoDTO> getCursos() {
         return cursos;
     }
 
-    public void setCursos(List<String> cursos) {
+    public void setCursos(List<DataCursoDTO> cursos) {
         this.cursos = cursos;
     }
 

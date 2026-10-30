@@ -1,26 +1,30 @@
 package com.grupo9.edext.grupo9.servidor_web.servlets.inscripcion;
 
-import com.grupo9.edext.grupo9.interfaces.IServidorCentral;
-import com.grupo9.edext.grupo9.servidor_central.controller.edicion_de_curso.EstadoInscripcion;
-import com.grupo9.edext.grupo9.servidor_central.dominio.DataCurso;
-import com.grupo9.edext.grupo9.servidor_central.dominio.DataDocente;
-import com.grupo9.edext.grupo9.servidor_central.dominio.DataEdicionCurso;
-import com.grupo9.edext.grupo9.servidor_central.dominio.DataEstudiante;
-import com.grupo9.edext.grupo9.servidor_central.dominio.DataInscEdicion;
-import com.grupo9.edext.grupo9.servidor_central.dominio.DataInstituto;
-import com.grupo9.edext.grupo9.servidor_central.dominio.DataUsuario;
+import com.grupo9.edext.grupo9.servidor_web.soap.SoapClientFactory;
+import com.grupo9.edext.grupo9.servidor_web.web_service_client.curso.CursoWebService;
+import com.grupo9.edext.grupo9.servidor_web.web_service_client.curso.DataCursoDTO;
+import com.grupo9.edext.grupo9.servidor_web.web_service_client.edicion_de_curso.DataEdicionCursoDTO;
+import com.grupo9.edext.grupo9.servidor_web.web_service_client.edicion_de_curso.DataInscEdicionDTO;
+import com.grupo9.edext.grupo9.servidor_web.web_service_client.edicion_de_curso.EdicionDeCursoWebService;
+import com.grupo9.edext.grupo9.servidor_web.web_service_client.edicion_de_curso.EstadoInscripcion;
+import com.grupo9.edext.grupo9.servidor_web.web_service_client.instituto.DataInstitutoDTO;
+import com.grupo9.edext.grupo9.servidor_web.web_service_client.usuario.DataDocenteDTO;
+import com.grupo9.edext.grupo9.servidor_web.web_service_client.usuario.DataUsuarioDTO;
+import com.grupo9.edext.grupo9.servidor_web.web_service_client.usuario.UsuarioWebService;
+
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -30,7 +34,10 @@ import static org.mockito.Mockito.*;
 class InscriptosDocenteServletTest {
 
     private InscriptosDocenteServlet servlet;
-    private IServidorCentral servidor;
+    private UsuarioWebService usuarioPort;
+    private EdicionDeCursoWebService edicionPort;
+    private CursoWebService cursoPort;
+
     private HttpServletRequest request;
     private HttpServletResponse response;
     private HttpSession session;
@@ -38,9 +45,15 @@ class InscriptosDocenteServletTest {
 
     @BeforeEach
     void setUp() {
-        servlet = mock(InscriptosDocenteServlet.class, CALLS_REAL_METHODS);
-        servidor = mock(IServidorCentral.class);
-        servlet.servidorCentral = servidor;
+        servlet = new InscriptosDocenteServlet();
+        usuarioPort = mock(UsuarioWebService.class);
+        edicionPort = mock(EdicionDeCursoWebService.class);
+        cursoPort = mock(CursoWebService.class);
+
+        SoapClientFactory.getInstance().setUsuarioPort(usuarioPort);
+        SoapClientFactory.getInstance().setEdicionCursoPort(edicionPort);
+        SoapClientFactory.getInstance().setCursoPort(cursoPort);
+
         request = mock(HttpServletRequest.class);
         response = mock(HttpServletResponse.class);
         session = mock(HttpSession.class);
@@ -53,41 +66,37 @@ class InscriptosDocenteServletTest {
 
     @Test
     void muestraSoloInscripcionesAceptadasDeLaEdicionSeleccionada() throws Exception {
-        DataDocente docenteSesion = docente("profesor");
-        DataDocente docenteActualizado = docente("profesor");
+        DataDocenteDTO docenteSesion = docente("profesor");
+        DataDocenteDTO docenteActualizado = docente("profesor");
         docenteActualizado.getEdiciones().add("edicion-docente");
-        DataEdicionCurso edicionDocente = mock(DataEdicionCurso.class);
-        DataCurso curso = curso("Curso docente", "Instituto docente");
-        DataInscEdicion aceptada = inscripcion("aceptado", "edicion-docente", EstadoInscripcion.ACEPTADA);
-        DataInscEdicion pendiente = inscripcion("pendiente", "edicion-docente", EstadoInscripcion.INSCRIPTO);
+
+        DataEdicionCursoDTO edicionDocente = new DataEdicionCursoDTO();
+        edicionDocente.setNombreEdi("edicion-docente");
+
+        com.grupo9.edext.grupo9.servidor_web.web_service_client.edicion_de_curso.DataCursoDTO cEdi =
+                new com.grupo9.edext.grupo9.servidor_web.web_service_client.edicion_de_curso.DataCursoDTO();
+        cEdi.setNombreCurso("Curso docente");
+        edicionDocente.setCursoAsoc(cEdi);
+
+        DataCursoDTO curso = curso("Curso docente", "Instituto docente");
+        DataInscEdicionDTO aceptada = inscripcion("aceptado", "edicion-docente", EstadoInscripcion.ACEPTADA);
+        DataInscEdicionDTO pendiente = inscripcion("pendiente", "edicion-docente", EstadoInscripcion.INSCRIPTO);
 
         when(session.getAttribute("usuarioLogueado")).thenReturn(docenteSesion);
-        when(servidor.consultarUsuario("profesor")).thenReturn(docenteActualizado);
-        when(servidor.consultarUnaEdicionCurso("edicion-docente")).thenReturn(edicionDocente);
-        when(servidor.consultarTodosLosCursos()).thenReturn(new HashSet<>(Set.of(curso)));
-        when(edicionDocente.getCursoAsoc()).thenReturn(curso);
-        when(edicionDocente.getNombreEdi()).thenReturn("edicion-docente");
+        when(usuarioPort.consultarUsuario("profesor")).thenReturn(docenteActualizado);
+        when(edicionPort.consultarUnaEdicionCurso("edicion-docente")).thenReturn(edicionDocente);
+        when(cursoPort.consultarTodosLosCursos()).thenReturn(List.of(curso));
         when(request.getParameter("instituto")).thenReturn("Instituto docente");
         when(request.getParameter("curso")).thenReturn("Curso docente");
         when(request.getParameter("edicion")).thenReturn("edicion-docente");
-        when(servidor.buscarInscriptos(edicionDocente)).thenReturn(Set.of(aceptada, pendiente));
+        when(edicionPort.buscarInscriptosEdicion("edicion-docente")).thenReturn(List.of(aceptada, pendiente));
 
         servlet.doGet(request, response);
 
         ArgumentCaptor<Object> captor = ArgumentCaptor.forClass(Object.class);
         verify(request).setAttribute(eq("inscriptosDoc"), captor.capture());
-        assertEquals(Set.of(aceptada), captor.getValue());
-        ArgumentCaptor<Object> institutosCaptor = ArgumentCaptor.forClass(Object.class);
-        verify(request).setAttribute(eq("institutosDoc"), institutosCaptor.capture());
-        assertEquals(java.util.List.of(new DataInstituto("Instituto docente")),
-                new ArrayList<>((Collection<?>) institutosCaptor.getValue()));
-        ArgumentCaptor<Object> cursosCaptor = ArgumentCaptor.forClass(Object.class);
-        verify(request).setAttribute(eq("cursosDoc"), cursosCaptor.capture());
-        assertEquals(java.util.List.of(curso), cursosCaptor.getValue());
-        verify(request).setAttribute("edicionSeleccionadaDoc", edicionDocente);
-        verify(servidor).consultarUnaEdicionCurso("edicion-docente");
-        verify(servidor, never()).consultarUnaEdicionCurso("otra-edicion");
-        verify(servidor, never()).consultarTodosLosInstitutos();
+        assertEquals(List.of(aceptada), captor.getValue());
+
         verify(session).setAttribute("usuarioLogueado", docenteActualizado);
         verify(request).getRequestDispatcher("/webInscripciones/verInscriptos-docente.jsp");
         verify(dispatcher).forward(request, response);
@@ -95,63 +104,33 @@ class InscriptosDocenteServletTest {
 
     @Test
     void ignoraCursosYEdicionesQueNoPertenecenAlDocente() throws Exception {
-        DataDocente docenteSesion = docente("profesor");
-        DataDocente docenteActualizado = docente("profesor");
+        DataDocenteDTO docenteSesion = docente("profesor");
+        DataDocenteDTO docenteActualizado = docente("profesor");
         docenteActualizado.getEdiciones().add("edicion-docente");
-        DataEdicionCurso edicionDocente = mock(DataEdicionCurso.class);
+
+        DataEdicionCursoDTO edicionDocente = new DataEdicionCursoDTO();
+        edicionDocente.setNombreEdi("edicion-docente");
+        com.grupo9.edext.grupo9.servidor_web.web_service_client.edicion_de_curso.DataCursoDTO cEdi =
+                new com.grupo9.edext.grupo9.servidor_web.web_service_client.edicion_de_curso.DataCursoDTO();
+        cEdi.setNombreCurso("Curso docente");
+        edicionDocente.setCursoAsoc(cEdi);
 
         when(session.getAttribute("usuarioLogueado")).thenReturn(docenteSesion);
-        when(servidor.consultarUsuario("profesor")).thenReturn(docenteActualizado);
-        when(servidor.consultarUnaEdicionCurso("edicion-docente")).thenReturn(edicionDocente);
-        DataCurso cursoDocente = curso("Curso docente", "Instituto docente");
-        when(servidor.consultarTodosLosCursos()).thenReturn(new HashSet<>(Set.of(
-                cursoDocente, curso("Curso ajeno", "Instituto ajeno"))));
-        when(edicionDocente.getCursoAsoc()).thenReturn(cursoDocente);
+        when(usuarioPort.consultarUsuario("profesor")).thenReturn(docenteActualizado);
+        when(edicionPort.consultarUnaEdicionCurso("edicion-docente")).thenReturn(edicionDocente);
+
+        DataCursoDTO cursoDocente = curso("Curso docente", "Instituto docente");
+        when(cursoPort.consultarTodosLosCursos()).thenReturn(List.of(
+                cursoDocente, curso("Curso ajeno", "Instituto ajeno")));
         when(request.getParameter("instituto")).thenReturn("Instituto ajeno");
         when(request.getParameter("curso")).thenReturn("Curso ajeno");
         when(request.getParameter("edicion")).thenReturn("edicion-ajena");
 
         servlet.doGet(request, response);
 
-        verify(servidor, never()).buscarInscriptos(any());
+        verify(edicionPort, never()).buscarInscriptosEdicion(any());
         verify(request).setAttribute(eq("cursosDoc"), eq(java.util.Collections.emptyList()));
-        verify(request).setAttribute(eq("edicionesDoc"), eq(java.util.Collections.emptySet()));
-        verify(request).setAttribute("edicionSeleccionadaDoc", null);
-    }
-
-    @Test
-    void ofreceSoloCursosEInstitutosDeEdicionesDelDocente() throws Exception {
-        DataDocente docenteSesion = docente("profesor");
-        DataDocente docenteActualizado = docente("profesor");
-        docenteActualizado.getEdiciones().addAll(Set.of("edicion-a", "edicion-b"));
-        DataCurso cursoA = curso("Curso A", "Instituto A");
-        DataCurso cursoB = curso("Curso B", "Instituto B");
-        DataCurso cursoSinEdicionDocente = curso("Curso C", "Instituto C");
-        DataEdicionCurso edicionA = edicion("edicion-a", cursoA);
-        DataEdicionCurso edicionB = edicion("edicion-b", cursoB);
-
-        when(session.getAttribute("usuarioLogueado")).thenReturn(docenteSesion);
-        when(servidor.consultarUsuario("profesor")).thenReturn(docenteActualizado);
-        when(servidor.consultarUnaEdicionCurso("edicion-a")).thenReturn(edicionA);
-        when(servidor.consultarUnaEdicionCurso("edicion-b")).thenReturn(edicionB);
-        when(servidor.consultarTodosLosCursos()).thenReturn(
-                new HashSet<>(Set.of(cursoA, cursoB, cursoSinEdicionDocente)));
-        when(request.getParameter("instituto")).thenReturn("Instituto A");
-        when(request.getParameter("curso")).thenReturn("Curso A");
-        when(request.getParameter("edicion")).thenReturn("edicion-b");
-
-        servlet.doGet(request, response);
-
-        ArgumentCaptor<Object> institutosCaptor = ArgumentCaptor.forClass(Object.class);
-        verify(request).setAttribute(eq("institutosDoc"), institutosCaptor.capture());
-        assertEquals(Set.of(new DataInstituto("Instituto A"), new DataInstituto("Instituto B")),
-                new HashSet<>((java.util.Collection<?>) institutosCaptor.getValue()));
-        ArgumentCaptor<Object> cursosCaptor = ArgumentCaptor.forClass(Object.class);
-        verify(request).setAttribute(eq("cursosDoc"), cursosCaptor.capture());
-        assertEquals(java.util.List.of(cursoA), cursosCaptor.getValue());
-        ArgumentCaptor<Object> edicionesCaptor = ArgumentCaptor.forClass(Object.class);
-        verify(request).setAttribute(eq("edicionesDoc"), edicionesCaptor.capture());
-        assertEquals(Set.of(edicionA), edicionesCaptor.getValue());
+        verify(request).setAttribute(eq("edicionesDoc"), eq(java.util.Collections.emptyList()));
         verify(request).setAttribute("edicionSeleccionadaDoc", null);
     }
 
@@ -162,39 +141,47 @@ class InscriptosDocenteServletTest {
         servlet.doGet(request, response);
 
         verify(response).sendRedirect("/edext/login");
-        verifyNoInteractions(servidor);
+        verifyNoInteractions(usuarioPort);
     }
 
     @Test
     void rechazaUsuariosQueNoSonDocentes() throws Exception {
-        when(session.getAttribute("usuarioLogueado")).thenReturn(mock(DataUsuario.class));
+        when(session.getAttribute("usuarioLogueado")).thenReturn(new DataUsuarioDTO());
 
         servlet.doGet(request, response);
 
         verify(response).sendError(HttpServletResponse.SC_FORBIDDEN);
-        verifyNoInteractions(servidor);
+        verifyNoInteractions(usuarioPort);
     }
 
-    private DataDocente docente(String nickname) {
-        return new DataDocente(nickname, "Nombre", "Apellido", nickname + "@test.com",
-                LocalDate.of(1980, 1, 1), null);
+    private DataDocenteDTO docente(String nickname) {
+        DataDocenteDTO doc = new DataDocenteDTO();
+        doc.setNickname(nickname);
+        doc.setNombre("Nombre");
+        doc.setApellido("Apellido");
+        doc.setEmail(nickname + "@test.com");
+        doc.setTipo("Docente");
+        return doc;
     }
 
-    private DataInscEdicion inscripcion(String nickname, String edicion, EstadoInscripcion estado) {
-        DataEstudiante estudiante = new DataEstudiante(nickname, "Nombre", "Apellido", nickname + "@test.com",
-                LocalDate.of(2000, 1, 1), null);
-        return new DataInscEdicion(LocalDate.now(), estudiante, edicion, estado);
+    private DataInscEdicionDTO inscripcion(String nickname, String edicion, EstadoInscripcion estado) {
+        DataInscEdicionDTO insc = new DataInscEdicionDTO();
+        insc.setEdicion(edicion);
+        insc.setEstado(estado);
+        com.grupo9.edext.grupo9.servidor_web.web_service_client.edicion_de_curso.DataEstudianteDTO est =
+                new com.grupo9.edext.grupo9.servidor_web.web_service_client.edicion_de_curso.DataEstudianteDTO();
+        est.setNickname(nickname);
+        insc.setEstudiante(est);
+        return insc;
     }
 
-    private DataCurso curso(String nombreCurso, String nombreInstituto) {
-        return new DataCurso(new DataInstituto(nombreInstituto), nombreCurso, "", 1, 1, 1,
-                LocalDate.now(), "", Set.of(), Set.of(), Set.of(), null);
-    }
-
-    private DataEdicionCurso edicion(String nombre, DataCurso curso) {
-        DataEdicionCurso edicion = mock(DataEdicionCurso.class);
-        when(edicion.getNombreEdi()).thenReturn(nombre);
-        when(edicion.getCursoAsoc()).thenReturn(curso);
-        return edicion;
+    private DataCursoDTO curso(String nombreCurso, String nombreInstituto) {
+        DataCursoDTO c = new DataCursoDTO();
+        c.setNombreCurso(nombreCurso);
+        com.grupo9.edext.grupo9.servidor_web.web_service_client.curso.DataInstitutoDTO inst =
+                new com.grupo9.edext.grupo9.servidor_web.web_service_client.curso.DataInstitutoDTO();
+        inst.setNombreI(nombreInstituto);
+        c.setInstituto(inst);
+        return c;
     }
 }

@@ -1,8 +1,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
-<%@ page import="com.grupo9.edext.grupo9.servidor_central.dominio.DataUsuario" %>
-<%@ page import="com.grupo9.edext.grupo9.servidor_central.dominio.DataEstudiante" %>
-<%@ page import="com.grupo9.edext.grupo9.servidor_central.dominio.DataDocente" %>
+<%@ page import="com.grupo9.edext.grupo9.servidor_web.web_service_client.usuario.DataUsuarioDTO" %>
+<%@ page import="com.grupo9.edext.grupo9.servidor_web.web_service_client.usuario.DataEstudianteDTO" %>
+<%@ page import="com.grupo9.edext.grupo9.servidor_web.web_service_client.usuario.DataDocenteDTO" %>
 <%@ page import="java.time.format.DateTimeFormatter" %>
 <!DOCTYPE html>
 <html lang="es">
@@ -89,7 +89,7 @@
         <!-- Contenido Principal -->
         <main class="main-content">
             <%
-                DataUsuario userObj = (DataUsuario) request.getAttribute("usuario");
+                DataUsuarioDTO userObj = (DataUsuarioDTO) request.getAttribute("usuario");
             %>
             <div class="profile-container">
                 <c:if test="${param.mensaje != null}">
@@ -161,7 +161,12 @@
                         <div class="info-value">
                             <% 
                                 if (userObj != null && userObj.getFechaNac() != null) {
-                                    out.print(userObj.getFechaNac().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+                                    try {
+                                        java.time.LocalDate fn = java.time.LocalDate.parse(userObj.getFechaNac().trim());
+                                        out.print(fn.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+                                    } catch (Exception e) {
+                                        out.print(userObj.getFechaNac());
+                                    }
                                 } else {
                                     out.print("-");
                                 }
@@ -205,11 +210,11 @@
                     </h3>
 
                     <%
-                        java.util.Set<String> edicionesSet = new java.util.HashSet<>();
-                        if (userObj instanceof DataEstudiante) {
-                            edicionesSet = ((DataEstudiante) userObj).getEdicionesInscriptas();
-                        } else if (userObj instanceof DataDocente) {
-                            edicionesSet = ((DataDocente) userObj).getEdiciones();
+                        java.util.List<String> edicionesSet = new java.util.ArrayList<>();
+                        if (userObj instanceof DataEstudianteDTO) {
+                            edicionesSet = ((DataEstudianteDTO) userObj).getEdicionesInscriptas();
+                        } else if (userObj instanceof DataDocenteDTO) {
+                            edicionesSet = ((DataDocenteDTO) userObj).getEdiciones();
                         }
                         pageContext.setAttribute("edicionesSet", edicionesSet);
                     %>

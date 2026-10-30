@@ -1,4 +1,4 @@
-<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+﻿<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <!DOCTYPE html>
 <html lang="es">
@@ -32,18 +32,18 @@
                             <c:forEach var="curso" items="${cursos}">
                                 <div class="card">
                                     <div class="card-header">
-                                        <span class="tag"><c:out value="${curso.instituto().nombreI()}"/></span>
-                                        <h3><c:out value="${curso.nombreCurso()}"/></h3>
+                                        <span class="tag"><c:out value="${curso.instituto.nombreI}"/></span>
+                                        <h3><c:out value="${curso.nombreCurso}"/></h3>
                                     </div>
                                     <div class="card-body">
-                                        <p><c:out value="${curso.descCurso()}"/></p>
+                                        <p><c:out value="${curso.descCurso}"/></p>
                                         <div class="meta-info">
-                                            <span><strong>Créditos:</strong> <c:out value="${curso.cantCred()}"/></span>
-                                            <span><strong>Duración:</strong> <c:out value="${curso.duracion()}"/> semanas</span>
+                                            <span><strong>Créditos:</strong> <c:out value="${curso.cantCred}"/></span>
+                                            <span><strong>Duración:</strong> <c:out value="${curso.duracion}"/> semanas</span>
                                         </div>
                                     </div>
                                     <div class="card-footer">
-                                        <a href="${pageContext.request.contextPath}/curso?nombre=${curso.nombreCurso()}" class="btn btn-sm">Ver Detalle</a>
+                                        <a href="${pageContext.request.contextPath}/curso?nombre=${curso.nombreCurso}" class="btn btn-sm">Ver Detalle</a>
                                     </div>
                                 </div>
                             </c:forEach>

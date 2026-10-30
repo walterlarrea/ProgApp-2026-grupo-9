@@ -1,4 +1,4 @@
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+﻿<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <!DOCTYPE html>
 <html lang="es">
@@ -18,7 +18,7 @@
         <%@ include file="../webMiscelanea/sidebar.jsp" %>
         <main class="main-content">
             <section class="hero-banner">
-                <h1>${instituto.nombreI()}</h1>
+                <h1>${instituto.nombreI}</h1>
             </section>
             <h2>Cursos de este instituto</h2>
             <ol class="nav-list">
@@ -26,8 +26,8 @@
                     <c:when test="${not empty cursosInstituto}">
                         <c:forEach var="curso" items="${cursosInstituto}">
                             <li>
-                                <a href="${pageContext.request.contextPath}/curso?nombre=${curso.nombreCurso()}">
-                                    <c:out value="${curso.nombreCurso()}"/>
+                                <a href="${pageContext.request.contextPath}/curso?nombre=${curso.nombreCurso}">
+                                    <c:out value="${curso.nombreCurso}"/>
                                 </a>
                             </li>
                         </c:forEach>

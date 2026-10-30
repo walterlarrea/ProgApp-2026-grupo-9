@@ -1,17 +1,20 @@
 package com.grupo9.edext.grupo9.servidor_web.servlets.usuario;
 
-import com.grupo9.edext.grupo9.interfaces.IServidorCentral;
-import com.grupo9.edext.grupo9.miscelanea.Fabrica;
-import com.grupo9.edext.grupo9.servidor_central.dominio.DataEstudiante;
-import com.grupo9.edext.grupo9.servidor_central.dominio.DataUsuario;
+import com.grupo9.edext.grupo9.servidor_web.soap.SoapClientFactory;
+import com.grupo9.edext.grupo9.servidor_web.web_service_client.curso.CursoWebService;
+import com.grupo9.edext.grupo9.servidor_web.web_service_client.instituto.InstitutoWebService;
+import com.grupo9.edext.grupo9.servidor_web.web_service_client.usuario.DataUsuarioDTO;
+import com.grupo9.edext.grupo9.servidor_web.web_service_client.usuario.ErrorNoExiste_Exception;
+import com.grupo9.edext.grupo9.servidor_web.web_service_client.usuario.ErrorRepetidos_Exception;
+import com.grupo9.edext.grupo9.servidor_web.web_service_client.usuario.UsuarioWebService;
+
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -19,7 +22,10 @@ import static org.mockito.Mockito.*;
 public class UsuarioServletTest {
 
     private UsuarioServlet servlet;
-    private IServidorCentral servidor;
+    private UsuarioWebService usuarioPort;
+    private InstitutoWebService instPort;
+    private CursoWebService cursoPort;
+
     private HttpServletRequest request;
     private HttpServletResponse response;
     private HttpSession session;
@@ -28,7 +34,14 @@ public class UsuarioServletTest {
     @BeforeEach
     public void setUp() {
         servlet = new UsuarioServlet();
-        servidor = Fabrica.getInstance().getIServidorCentral();
+        usuarioPort = mock(UsuarioWebService.class);
+        instPort = mock(InstitutoWebService.class);
+        cursoPort = mock(CursoWebService.class);
+
+        SoapClientFactory.getInstance().setUsuarioPort(usuarioPort);
+        SoapClientFactory.getInstance().setInstitutoPort(instPort);
+        SoapClientFactory.getInstance().setCursoPort(cursoPort);
+
         request = mock(HttpServletRequest.class);
         response = mock(HttpServletResponse.class);
         session = mock(HttpSession.class);
@@ -41,6 +54,7 @@ public class UsuarioServletTest {
     @Test
     public void testDoGetFaltaNombre() throws Exception {
         when(request.getParameter("nombre")).thenReturn(null);
+        when(request.getParameter("nickname")).thenReturn(null);
 
         servlet.doGet(request, response);
 
@@ -49,7 +63,8 @@ public class UsuarioServletTest {
 
     @Test
     public void testDoGetNoExiste() throws Exception {
-        when(request.getParameter("nombre")).thenReturn("userInexistente_" + System.currentTimeMillis());
+        when(request.getParameter("nombre")).thenReturn("userInexistente");
+        when(usuarioPort.consultarUsuario("userInexistente")).thenThrow(new ErrorNoExiste_Exception("No existe", null));
 
         servlet.doGet(request, response);
 
@@ -58,11 +73,11 @@ public class UsuarioServletTest {
 
     @Test
     public void testDoGetPerfilPropio() throws Exception {
-        String sufijo = Long.toString(System.currentTimeMillis());
-        String userA = "usrPropio_" + sufijo;
-        servidor.registrarEstudiante(userA, "User", "Propio", userA + "@test.com", LocalDate.of(2000, 1, 1), null);
+        String userA = "usrPropio";
+        DataUsuarioDTO dataA = new DataUsuarioDTO();
+        dataA.setNickname(userA);
 
-        DataUsuario dataA = servidor.consultarUsuario(userA);
+        when(usuarioPort.consultarUsuario(userA)).thenReturn(dataA);
         when(request.getSession(false)).thenReturn(session);
         when(session.getAttribute("usuarioLogueado")).thenReturn(dataA);
 
@@ -77,14 +92,16 @@ public class UsuarioServletTest {
 
     @Test
     public void testDoGetPerfilAjenoNoSiguiendo() throws Exception {
-        String sufijo = Long.toString(System.currentTimeMillis());
-        String userA = "usrA2_" + sufijo;
-        String userB = "usrB2_" + sufijo;
+        String userA = "usrA2";
+        String userB = "usrB2";
+        DataUsuarioDTO dataA = new DataUsuarioDTO();
+        dataA.setNickname(userA);
+        DataUsuarioDTO dataB = new DataUsuarioDTO();
+        dataB.setNickname(userB);
 
-        servidor.registrarEstudiante(userA, "User", "A2", userA + "@test.com", LocalDate.of(2000, 1, 1), null);
-        servidor.registrarEstudiante(userB, "User", "B2", userB + "@test.com", LocalDate.of(2000, 2, 2), null);
+        when(usuarioPort.consultarUsuario(userB)).thenReturn(dataB);
+        when(usuarioPort.estaSiguiendoUsuario(userA, userB)).thenReturn(false);
 
-        DataUsuario dataA = servidor.consultarUsuario(userA);
         when(request.getSession(false)).thenReturn(session);
         when(session.getAttribute("usuarioLogueado")).thenReturn(dataA);
 
@@ -97,16 +114,16 @@ public class UsuarioServletTest {
 
     @Test
     public void testDoGetPerfilAjenoSiguiendo() throws Exception {
-        String sufijo = Long.toString(System.currentTimeMillis());
-        String userA = "usrA3_" + sufijo;
-        String userB = "usrB3_" + sufijo;
+        String userA = "usrA3";
+        String userB = "usrB3";
+        DataUsuarioDTO dataA = new DataUsuarioDTO();
+        dataA.setNickname(userA);
+        DataUsuarioDTO dataB = new DataUsuarioDTO();
+        dataB.setNickname(userB);
 
-        servidor.registrarEstudiante(userA, "User", "A3", userA + "@test.com", LocalDate.of(2000, 1, 1), null);
-        servidor.registrarEstudiante(userB, "User", "B3", userB + "@test.com", LocalDate.of(2000, 2, 2), null);
+        when(usuarioPort.consultarUsuario(userB)).thenReturn(dataB);
+        when(usuarioPort.estaSiguiendoUsuario(userA, userB)).thenReturn(true);
 
-        servidor.seguirUsuario(userA, userB);
-
-        DataUsuario dataA = servidor.consultarUsuario(userA);
         when(request.getSession(false)).thenReturn(session);
         when(session.getAttribute("usuarioLogueado")).thenReturn(dataA);
 
@@ -119,12 +136,11 @@ public class UsuarioServletTest {
 
     @Test
     public void testDoPostSeguimientoCompleto() throws Exception {
-        String sufijo = Long.toString(System.currentTimeMillis());
-        String seguidorNick = "segWeb_" + sufijo;
-        String seguidoNick = "targetWeb_" + sufijo;
+        String seguidorNick = "segWeb";
+        String seguidoNick = "targetWeb";
 
-        servidor.registrarEstudiante(seguidorNick, "Seg", "Web", seguidorNick + "@test.com", LocalDate.of(2000, 1, 1), null);
-        servidor.registrarEstudiante(seguidoNick, "Tgt", "Web", seguidoNick + "@test.com", LocalDate.of(2000, 2, 2), null);
+        DataUsuarioDTO seguidorData = new DataUsuarioDTO();
+        seguidorData.setNickname(seguidorNick);
 
         when(request.getParameter("nickname")).thenReturn(seguidoNick);
 
@@ -136,7 +152,6 @@ public class UsuarioServletTest {
 
         // 2. Con sesión pero intentar seguirse a sí mismo -> 400
         when(request.getSession(false)).thenReturn(session);
-        DataUsuario seguidorData = servidor.consultarUsuario(seguidorNick);
         when(session.getAttribute("usuarioLogueado")).thenReturn(seguidorData);
         when(request.getParameter("nickname")).thenReturn(seguidorNick);
         servlet.doPost(request, response);
@@ -146,17 +161,18 @@ public class UsuarioServletTest {
         when(request.getParameter("nickname")).thenReturn(seguidoNick);
         when(request.getParameter("accion")).thenReturn("seguir");
         servlet.doPost(request, response);
+        verify(usuarioPort).seguirUsuario(seguidorNick, seguidoNick);
         verify(response).sendRedirect(contains("mensaje=Seguimiento+actualizado."));
-        assertTrue(servidor.estaSiguiendoUsuario(seguidorNick, seguidoNick));
 
         // 4. Seguir nuevamente (duplicado) -> redirect con error
+        doThrow(new ErrorRepetidos_Exception("Ya lo sigue", null)).when(usuarioPort).seguirUsuario(seguidorNick, seguidoNick);
         servlet.doPost(request, response);
         verify(response).sendRedirect(contains("error="));
 
         // 5. Dejar de seguir -> redirect con mensaje
         when(request.getParameter("accion")).thenReturn("dejar");
         servlet.doPost(request, response);
-        assertFalse(servidor.estaSiguiendoUsuario(seguidorNick, seguidoNick));
+        verify(usuarioPort).dejarDeSeguirUsuario(seguidorNick, seguidoNick);
 
         // 6. Acción inválida -> 400
         when(request.getParameter("accion")).thenReturn("otraCosa");

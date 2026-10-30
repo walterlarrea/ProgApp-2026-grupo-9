@@ -1,10 +1,13 @@
 package com.grupo9.edext.grupo9.servidor_web.servlets.usuario;
 
-import com.grupo9.edext.grupo9.interfaces.IServidorCentral;
-import com.grupo9.edext.grupo9.mensajes.ErrorRepetidos;
-import com.grupo9.edext.grupo9.miscelanea.Fabrica;
-import com.grupo9.edext.grupo9.servidor_central.dominio.DataCurso;
-import com.grupo9.edext.grupo9.servidor_central.dominio.DataInstituto;
+import com.grupo9.edext.grupo9.servidor_web.soap.SoapClientFactory;
+import com.grupo9.edext.grupo9.servidor_web.web_service_client.curso.CursoWebService;
+import com.grupo9.edext.grupo9.servidor_web.web_service_client.curso.DataCursoDTO;
+import com.grupo9.edext.grupo9.servidor_web.web_service_client.instituto.DataInstitutoDTO;
+import com.grupo9.edext.grupo9.servidor_web.web_service_client.instituto.InstitutoWebService;
+import com.grupo9.edext.grupo9.servidor_web.web_service_client.usuario.ErrorRepetidos_Exception;
+import com.grupo9.edext.grupo9.servidor_web.web_service_client.usuario.UsuarioWebService;
+
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
@@ -12,11 +15,11 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
+
 import java.io.File;
 import java.io.IOException;
-import java.time.LocalDate;
 import java.util.Collections;
-import java.util.Set;
+import java.util.List;
 
 @WebServlet("/alta-usuario")
 @MultipartConfig(
@@ -29,17 +32,20 @@ public class AltaUsuarioServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        IServidorCentral servidorCentral = Fabrica.getInstance().getIServidorCentral();
-        Set<DataInstituto> institutos = Collections.emptySet();
-        Set<DataCurso> cursos = Collections.emptySet();
+        InstitutoWebService instPort = SoapClientFactory.getInstance().getInstitutoPort();
+        CursoWebService cursoPort = SoapClientFactory.getInstance().getCursoPort();
+
+        List<DataInstitutoDTO> institutos = Collections.emptyList();
+        List<DataCursoDTO> cursos = Collections.emptyList();
 
         try {
-            if (servidorCentral != null) {
-                institutos = servidorCentral.consultarTodosLosInstitutos();
-                cursos = servidorCentral.consultarTodosLosCursos();
+            if (instPort != null) {
+                institutos = instPort.consultarTodosLosInstitutos();
             }
-        } catch (Exception e) {
-            // Ignorar error de carga de menú
+            if (cursoPort != null) {
+                cursos = cursoPort.consultarTodosLosCursos();
+            }
+        } catch (Exception ignored) {
         }
 
         request.setAttribute("institutos", institutos);
@@ -77,17 +83,6 @@ public class AltaUsuarioServlet extends HttpServlet {
             return;
         }
 
-        LocalDate fechaNac = null;
-        if (fechaNacStr != null && !fechaNacStr.trim().isEmpty()) {
-            try {
-                fechaNac = LocalDate.parse(fechaNacStr.trim());
-            } catch (Exception e) {
-                request.setAttribute("error", "El formato de fecha de nacimiento es inválido.");
-                doGet(request, response);
-                return;
-            }
-        }
-
         if ("Docente".equalsIgnoreCase(tipo) && (nombreInst == null || nombreInst.trim().isEmpty())) {
             request.setAttribute("error", "Debe seleccionar un instituto para el docente.");
             doGet(request, response);
@@ -116,37 +111,39 @@ public class AltaUsuarioServlet extends HttpServlet {
                     rutaImagen = fullPath;
                 }
             }
-        } catch (Exception e) {
-            // Si falla la subida de foto, no detener el registro
+        } catch (Exception ignored) {
         }
 
-        IServidorCentral servidorCentral = Fabrica.getInstance().getIServidorCentral();
+        UsuarioWebService usuarioPort = SoapClientFactory.getInstance().getUsuarioPort();
         try {
+            if (usuarioPort == null) {
+                throw new ServletException("Servicio de usuarios no disponible");
+            }
             if ("Docente".equalsIgnoreCase(tipo)) {
-                servidorCentral.registrarDocente(
+                usuarioPort.registrarDocente(
                     nickname.trim(),
                     nombre.trim(),
                     apellido.trim(),
                     email.trim(),
-                    fechaNac,
+                    fechaNacStr != null ? fechaNacStr.trim() : null,
                     rutaImagen,
                     nombreInst.trim(),
                     password
                 );
             } else {
-                servidorCentral.registrarEstudiante(
+                usuarioPort.registrarEstudiante(
                     nickname.trim(),
                     nombre.trim(),
                     apellido.trim(),
                     email.trim(),
-                    fechaNac,
+                    fechaNacStr != null ? fechaNacStr.trim() : null,
                     rutaImagen,
                     password
                 );
             }
 
             response.sendRedirect(request.getContextPath() + "/login?mensaje=Usuario+registrado+con+exito.+Inicie+sesion.");
-        } catch (ErrorRepetidos e) {
+        } catch (ErrorRepetidos_Exception e) {
             request.setAttribute("error", e.getMessage());
             doGet(request, response);
         } catch (Exception e) {
