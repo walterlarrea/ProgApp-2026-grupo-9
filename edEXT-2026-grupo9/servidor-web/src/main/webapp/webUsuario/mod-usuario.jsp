@@ -1,6 +1,6 @@
-﻿<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
-<%@ page import="com.grupo9.edext.grupo9.servidor_web.web_service_client.usuario.DataUsuarioDTODTO" %>
+<%@ page import="com.grupo9.edext.grupo9.servidor_web.web_service_client.usuario.DataUsuarioDTO" %>
 <!DOCTYPE html>
 <html lang="es">
     <head>

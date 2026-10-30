@@ -1,4 +1,4 @@
-﻿<%@ page import="com.grupo9.edext.grupo9.servidor_web.web_service_client.usuario.DataUsuarioDTODTO" %>
+<%@ page import="com.grupo9.edext.grupo9.servidor_web.web_service_client.usuario.DataUsuarioDTO" %>
 <%
     DataUsuarioDTO usuarioLogueado = (DataUsuarioDTO) session.getAttribute("usuarioLogueado");
     String userImgSrc = "";

@@ -1,8 +1,8 @@
-﻿<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
-<%@ page import="com.grupo9.edext.grupo9.servidor_web.web_service_client.usuario.DataUsuarioDTODTO" %>
-<%@ page import="com.grupo9.edext.grupo9.servidor_web.web_service_client.usuario.DataEstudianteDTODTO" %>
-<%@ page import="com.grupo9.edext.grupo9.servidor_web.web_service_client.usuario.DataDocenteDTODTO" %>
+<%@ page import="com.grupo9.edext.grupo9.servidor_web.web_service_client.usuario.DataUsuarioDTO" %>
+<%@ page import="com.grupo9.edext.grupo9.servidor_web.web_service_client.usuario.DataEstudianteDTO" %>
+<%@ page import="com.grupo9.edext.grupo9.servidor_web.web_service_client.usuario.DataDocenteDTO" %>
 <%@ page import="java.time.format.DateTimeFormatter" %>
 <!DOCTYPE html>
 <html lang="es">
@@ -161,7 +161,12 @@
                         <div class="info-value">
                             <% 
                                 if (userObj != null && userObj.getFechaNac() != null) {
-                                    out.print(userObj.getFechaNac().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+                                    try {
+                                        java.time.LocalDate fn = java.time.LocalDate.parse(userObj.getFechaNac().trim());
+                                        out.print(fn.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+                                    } catch (Exception e) {
+                                        out.print(userObj.getFechaNac());
+                                    }
                                 } else {
                                     out.print("-");
                                 }
@@ -205,7 +210,7 @@
                     </h3>
 
                     <%
-                        java.util.Set<String> edicionesSet = new java.util.HashSet<>();
+                        java.util.List<String> edicionesSet = new java.util.ArrayList<>();
                         if (userObj instanceof DataEstudianteDTO) {
                             edicionesSet = ((DataEstudianteDTO) userObj).getEdicionesInscriptas();
                         } else if (userObj instanceof DataDocenteDTO) {
