@@ -11,7 +11,7 @@ import com.grupo9.edext.grupo9.servidor_central.dominio.DataEdicionCurso;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataInscEdicion;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataDocente;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataEstudiante;
-import com.grupo9.edext.grupo9.servidor_central.controller.DtoMapper;
+import com.grupo9.edext.grupo9.servidor_central.controller.DataRecordMapper;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataCurso;
 import com.grupo9.edext.grupo9.miscelanea.UtensiliosJPA;
 import jakarta.persistence.*;
@@ -29,14 +29,13 @@ public class EdicionCursoController implements IEdicionCurso {
     @Override
     public DataEdicionCurso guardarNuevaEdicionCurso(DataEdicionCurso nuevaEdicion) throws ErrorRepetidos{
         Set<InscEdicion> inscripciones = new HashSet<>();
-        altaEdicionCurso(
-            nuevaEdicion.getNombreEdi(),
-            DtoMapper.toEntity(nuevaEdicion.getCursoAsoc()),
+        altaEdicionCurso(nuevaEdicion.getNombreEdi(),
+            DataRecordMapper.toEntity(nuevaEdicion.getCursoAsoc()),
             nuevaEdicion.getFechaInicio(),
             nuevaEdicion.getFechaFin(),
             nuevaEdicion.getCupo(),
             inscripciones,
-            DtoMapper.toEntity(nuevaEdicion.getDocentes()),
+            DataRecordMapper.toEntity(nuevaEdicion.getDocentes()),
             nuevaEdicion.getImagen()
         );
         return nuevaEdicion; 
@@ -80,8 +79,8 @@ public class EdicionCursoController implements IEdicionCurso {
             }
             
             //docentes
-            Set<DataDocente> datosDocentes = DtoMapper.toData(ed.getDocentes());
-            return new DataEdicionCurso(ed.getNombreEdi(), DtoMapper.toData(ed.getCursoAsoc()), ed.getFechaInicio(), ed.getFechaFin(), ed.getCupo(), datosDocentes, datosInscriptos, ed.getFechaPub(), ed.getImagen()); 
+            Set<DataDocente> datosDocentes = DataRecordMapper.toData(ed.getDocentes());
+            return new DataEdicionCurso(ed.getNombreEdi(), DataRecordMapper.toData(ed.getCursoAsoc()), ed.getFechaInicio(), ed.getFechaFin(), ed.getCupo(), datosDocentes, datosInscriptos, ed.getFechaPub(), ed.getImagen()); 
         }else{
             throw new ErrorNoExiste("La Edición " + nEdi + " no está registrada.");
         }
@@ -95,10 +94,10 @@ public class EdicionCursoController implements IEdicionCurso {
     @Override
     public HashSet<DataEdicionCurso> traerEdiciones(DataCurso dataCurso){
         HashSet<DataEdicionCurso> ediciones = new HashSet<>();
-        EdicionCurso[] edicionesList = ManejadorEdiciones.getInstance().getEdiciones(DtoMapper.toEntity(dataCurso));
+        EdicionCurso[] edicionesList = ManejadorEdiciones.getInstance().getEdiciones(DataRecordMapper.toEntity(dataCurso));
         
         for (EdicionCurso edicion: edicionesList){
-            ediciones.add(DtoMapper.toData(edicion));
+            ediciones.add(DataRecordMapper.toData(edicion));
         }
         return ediciones;
     } 

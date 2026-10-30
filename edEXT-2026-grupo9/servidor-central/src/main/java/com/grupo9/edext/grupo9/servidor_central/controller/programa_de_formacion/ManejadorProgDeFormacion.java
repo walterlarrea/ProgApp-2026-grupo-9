@@ -1,7 +1,7 @@
 package com.grupo9.edext.grupo9.servidor_central.controller.programa_de_formacion;
 
 import com.grupo9.edext.grupo9.miscelanea.UtensiliosJPA;
-import com.grupo9.edext.grupo9.servidor_central.controller.DtoMapper;
+import com.grupo9.edext.grupo9.servidor_central.controller.DataRecordMapper;
 import com.grupo9.edext.grupo9.servidor_central.controller.curso.Curso;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataProgramaFormacion;
 import jakarta.persistence.EntityManager;
@@ -58,7 +58,7 @@ public class ManejadorProgDeFormacion {
 
             TypedQuery<ProgramaDeFormacion> queryTodo = em.createQuery(todo);
             
-            HashSet<DataProgramaFormacion> programas = DtoMapper.toDataList(new HashSet<>(queryTodo.getResultList()), DataProgramaFormacion.class);
+            HashSet<DataProgramaFormacion> programas = DataRecordMapper.toDataList(new HashSet<>(queryTodo.getResultList()), DataProgramaFormacion.class);
             
             return programas;
         }catch(Exception e){
@@ -80,7 +80,7 @@ public class ManejadorProgDeFormacion {
             TypedQuery<ProgramaDeFormacion> queryTodo = em.createQuery(todo);
             
             ProgramaDeFormacion programa = queryTodo.getResultList().getFirst();
-            return DtoMapper.toData(programa);
+            return DataRecordMapper.toData(programa);
         }catch(Exception e){
             throw e;
         }
@@ -98,7 +98,7 @@ public class ManejadorProgDeFormacion {
                     .distinct(true);
 
             TypedQuery<ProgramaDeFormacion> query = em.createQuery(cQuery);
-            return DtoMapper.toDataList(new HashSet<>(query.getResultList()), DataProgramaFormacion.class);
+            return DataRecordMapper.toDataList(new HashSet<>(query.getResultList()), DataProgramaFormacion.class);
         } catch (Exception e) {
             throw e;
         }

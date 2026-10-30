@@ -17,39 +17,39 @@ import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class DtoMapperTest {
+public class DataRecordMapperTest {
 
     @Test
     public void testInstitutoMapper() {
         DataInstituto dataInst = new DataInstituto("Instituto Test");
-        Instituto inst = DtoMapper.toEntity(dataInst);
+        Instituto inst = DataRecordMapper.toEntity(dataInst);
 
         assertNotNull(inst);
         assertEquals("Instituto Test", inst.getNombreI());
 
-        DataInstituto dataInstConverted = DtoMapper.toData(inst);
+        DataInstituto dataInstConverted = DataRecordMapper.toData(inst);
         assertNotNull(dataInstConverted);
         assertEquals("Instituto Test", dataInstConverted.nombreI());
 
-        assertNull(DtoMapper.toEntity((DataInstituto) null));
-        assertNull(DtoMapper.toData((Instituto) null));
+        assertNull(DataRecordMapper.toEntity((DataInstituto) null));
+        assertNull(DataRecordMapper.toData((Instituto) null));
     }
 
     @Test
     public void testUsuarioMapper() {
         DataUsuario dataUsr = new DataUsuario("userTest", "Juan", "Pérez", "juan@test.com", LocalDate.of(1990, 1, 1),
                 null);
-        Usuario usr = DtoMapper.toEntity(dataUsr);
+        Usuario usr = DataRecordMapper.toEntity(dataUsr);
 
         assertNotNull(usr);
         assertEquals("userTest", usr.getNickname());
 
-        DataUsuario dataUsrConverted = DtoMapper.toData(usr);
+        DataUsuario dataUsrConverted = DataRecordMapper.toData(usr);
         assertNotNull(dataUsrConverted);
         assertEquals("userTest", dataUsrConverted.getNickname());
 
-        assertNull(DtoMapper.toEntity((DataUsuario) null));
-        assertNull(DtoMapper.toData((Usuario) null));
+        assertNull(DataRecordMapper.toEntity((DataUsuario) null));
+        assertNull(DataRecordMapper.toData((Usuario) null));
     }
 
     @Test
@@ -57,14 +57,14 @@ public class DtoMapperTest {
         DataDocente dataDoc = new DataDocente("docente1", "Carlos", "Gómez", "carlos@test.com",
                 LocalDate.of(1985, 3, 10), "path/foto.png", "Instituto Test");
 
-        Docente doc = DtoMapper.toEntity(dataDoc);
+        Docente doc = DataRecordMapper.toEntity(dataDoc);
 
         assertNotNull(doc);
         assertEquals("docente1", doc.getNickname());
         assertEquals("Carlos", doc.getNombre());
         assertEquals("Instituto Test", doc.getNombreInst());
 
-        DataDocente dataDocConverted = DtoMapper.toData(doc);
+        DataDocente dataDocConverted = DataRecordMapper.toData(doc);
         assertNotNull(dataDocConverted);
         assertEquals("docente1", dataDocConverted.getNickname());
         assertEquals("Instituto Test", dataDocConverted.getNombreInst());
@@ -82,7 +82,7 @@ public class DtoMapperTest {
                 LocalDate.of(2024, 1, 1), "http://curso101.com", new HashSet<>(), new HashSet<>(), categorias,
                 "img/curso101.png");
 
-        Curso curso = DtoMapper.toEntity(dataCurso);
+        Curso curso = DataRecordMapper.toEntity(dataCurso);
         assertNotNull(curso);
         assertEquals("Curso 101", curso.getNombreCurso());
         assertEquals("Descripción del curso", curso.getDescCurso());
@@ -93,15 +93,15 @@ public class DtoMapperTest {
 //        assertNotNull(curso.getCategorias());
 //        assertEquals(2, curso.getCategorias().size());
 
-        DataCurso dataCursoConverted = DtoMapper.toData(curso);
+        DataCurso dataCursoConverted = DataRecordMapper.toData(curso);
         assertNotNull(dataCursoConverted);
         assertEquals("Curso 101", dataCursoConverted.nombreCurso());
         assertEquals("http://curso101.com", dataCursoConverted.url());
         assertEquals("img/curso101.png", dataCursoConverted.imagen());
         assertEquals(categorias, dataCursoConverted.categorias());
 
-        assertNull(DtoMapper.toEntity((DataCurso) null));
-        assertNull(DtoMapper.toData((Curso) null));
+        assertNull(DataRecordMapper.toEntity((DataCurso) null));
+        assertNull(DataRecordMapper.toData((Curso) null));
     }
 
     @Test
@@ -113,7 +113,7 @@ public class DtoMapperTest {
         inscripciones.add(insc);
         est.setInscripcionesProgramas(inscripciones);
 
-        DataEstudiante dataEst = DtoMapper.toData(est);
+        DataEstudiante dataEst = DataRecordMapper.toData(est);
         assertNotNull(dataEst);
         assertEquals("student1", dataEst.getNickname());
         assertNotNull(dataEst.getInscripcionesProgramas());
@@ -129,17 +129,17 @@ public class DtoMapperTest {
                 "Programa Bachiller", "Programa de prueba", new HashSet<>(),
                 LocalDate.of(2024, 1, 1), LocalDate.of(2024, 12, 31), LocalDate.of(2024, 1, 1), null);
 
-        ProgramaDeFormacion prog = DtoMapper.toEntity(dataProg);
+        ProgramaDeFormacion prog = DataRecordMapper.toEntity(dataProg);
         assertNotNull(prog);
         assertEquals("Programa Bachiller", prog.getNombre());
         assertEquals("Programa de prueba", prog.getDescripcion());
 
-        DataProgramaFormacion dataProgConverted = DtoMapper.toData(prog);
+        DataProgramaFormacion dataProgConverted = DataRecordMapper.toData(prog);
         assertNotNull(dataProgConverted);
         assertEquals("Programa Bachiller", dataProgConverted.nombre());
 
-        assertNull(DtoMapper.toEntity((DataProgramaFormacion) null));
-        assertNull(DtoMapper.toData((ProgramaDeFormacion) null));
+        assertNull(DataRecordMapper.toEntity((DataProgramaFormacion) null));
+        assertNull(DataRecordMapper.toData((ProgramaDeFormacion) null));
     }
 
     @Test
@@ -153,12 +153,12 @@ public class DtoMapperTest {
                 "Edición 2024", dataCurso, LocalDate.of(2024, 3, 1), LocalDate.of(2024, 7, 1),
                 30, new HashSet<>(), new HashSet<>(), LocalDate.now(), null);
 
-        EdicionCurso ed = DtoMapper.toEntity(dataEd);
+        EdicionCurso ed = DataRecordMapper.toEntity(dataEd);
         assertNotNull(ed);
         assertEquals("Edición 2024", ed.getNombreEdi());
         assertEquals(30, ed.getCupo());
 
-        DataEdicionCurso dataEdConverted = DtoMapper.toData(ed);
+        DataEdicionCurso dataEdConverted = DataRecordMapper.toData(ed);
         assertNotNull(dataEdConverted);
         assertEquals("Edición 2024", dataEdConverted.getNombreEdi());
     }
@@ -169,15 +169,15 @@ public class DtoMapperTest {
         DataDocente d = new DataDocente("doc1", "Ana", "Lopez", "ana@test.com", LocalDate.of(1980, 5, 5), null, "INCO");
         dataDocentes.add(d);
 
-        Set<Docente> docentes = DtoMapper.toEntity(dataDocentes);
+        Set<Docente> docentes = DataRecordMapper.toEntity(dataDocentes);
         assertNotNull(docentes);
         assertEquals(1, docentes.size());
 
-        Set<DataDocente> dataDocentesConverted = DtoMapper.toData(docentes);
+        Set<DataDocente> dataDocentesConverted = DataRecordMapper.toData(docentes);
         assertNotNull(dataDocentesConverted);
         assertEquals(1, dataDocentesConverted.size());
 
-        assertTrue(DtoMapper.toEntity((Set<DataDocente>) null).isEmpty());
-        assertTrue(DtoMapper.toData((Set<Docente>) null).isEmpty());
+        assertTrue(DataRecordMapper.toEntity((Set<DataDocente>) null).isEmpty());
+        assertTrue(DataRecordMapper.toData((Set<Docente>) null).isEmpty());
     }
 }

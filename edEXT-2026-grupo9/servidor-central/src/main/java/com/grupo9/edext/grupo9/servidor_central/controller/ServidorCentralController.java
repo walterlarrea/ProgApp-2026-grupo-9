@@ -140,11 +140,11 @@ class ServidorCentralController implements IServidorCentral {
 
     @Override
     public DataDocente[] traerDocentes(DataInstituto dataInstituto) {
-        Instituto instituto = DtoMapper.toEntity(dataInstituto);
+        Instituto instituto = DataRecordMapper.toEntity(dataInstituto);
         Docente[] entidades = this.edicionCursoCtrl.traerDocentes(instituto);
         DataDocente[] datos = new DataDocente[entidades.length];
         for (int i = 0; i < entidades.length; i++) {
-            datos[i] = DtoMapper.toData(entidades[i]);
+            datos[i] = DataRecordMapper.toData(entidades[i]);
         }
         return datos;
     }
@@ -154,7 +154,7 @@ class ServidorCentralController implements IServidorCentral {
         Estudiante[] entidades = this.edicionCursoCtrl.traerEstudiantes();
         DataEstudiante[] datos = new DataEstudiante[entidades.length];
         for (int i = 0; i < entidades.length; i++) {
-            datos[i] = DtoMapper.toData(entidades[i]);
+            datos[i] = DataRecordMapper.toData(entidades[i]);
         }
         return datos;
     }
@@ -172,11 +172,11 @@ class ServidorCentralController implements IServidorCentral {
 
     @Override
     public DataEdicionCurso[] traerEdiciones(DataCurso dataCurso) {
-        Curso curso = DtoMapper.toEntity(dataCurso);
+        Curso curso = DataRecordMapper.toEntity(dataCurso);
         EdicionCurso[] entidades = this.edicionCursoCtrl.traerEdiciones(curso);
         DataEdicionCurso[] datos = new DataEdicionCurso[entidades.length];
         for (int i = 0; i < entidades.length; i++) {
-            datos[i] = DtoMapper.toData(entidades[i]);
+            datos[i] = DataRecordMapper.toData(entidades[i]);
         }
         return datos;
     }

@@ -23,7 +23,7 @@ import com.grupo9.edext.grupo9.servidor_central.controller.usuario.Docente;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataEstudiante;
 import com.grupo9.edext.grupo9.servidor_central.controller.usuario.Estudiante;
 
-public class DtoMapper {
+public class DataRecordMapper {
 
     // Cursos
     public static Curso toEntity(DataCurso dataCurso) {

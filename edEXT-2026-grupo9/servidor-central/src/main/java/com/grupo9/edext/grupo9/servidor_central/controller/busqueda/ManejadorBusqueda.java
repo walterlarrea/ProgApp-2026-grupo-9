@@ -1,6 +1,6 @@
 package com.grupo9.edext.grupo9.servidor_central.controller.busqueda;
 
-import com.grupo9.edext.grupo9.servidor_central.controller.DtoMapper;
+import com.grupo9.edext.grupo9.servidor_central.controller.DataRecordMapper;
 import com.grupo9.edext.grupo9.servidor_central.controller.curso.Curso;
 import com.grupo9.edext.grupo9.servidor_central.controller.programa_de_formacion.ProgramaDeFormacion;
 import com.grupo9.edext.grupo9.servidor_central.controller.usuario.Usuario;
@@ -43,7 +43,7 @@ public class ManejadorBusqueda {
             .setParameter("query", patron(query))
             .getResultList();
         HashSet<DataCurso> resultados = new HashSet<>();
-        cursos.forEach(curso -> resultados.add(DtoMapper.toData(curso)));
+        cursos.forEach(curso -> resultados.add(DataRecordMapper.toData(curso)));
         return resultados;
     }
 
@@ -57,7 +57,7 @@ public class ManejadorBusqueda {
             .setParameter("query", patron(query))
             .getResultList();
         HashSet<DataProgramaFormacion> resultados = new HashSet<>();
-        programas.forEach(programa -> resultados.add(DtoMapper.toData(programa)));
+        programas.forEach(programa -> resultados.add(DataRecordMapper.toData(programa)));
         return resultados;
     }
 
@@ -73,7 +73,7 @@ public class ManejadorBusqueda {
             .setParameter("apellido", tieneTexto(apellido) ? patron(apellido) : "%")
             .getResultList();
         HashSet<DataUsuario> resultados = new HashSet<>();
-        usuarios.forEach(usuario -> resultados.add(DtoMapper.toData(usuario)));
+        usuarios.forEach(usuario -> resultados.add(DataRecordMapper.toData(usuario)));
         return resultados;
     }
 
@@ -92,8 +92,7 @@ public class ManejadorBusqueda {
                 + "OR LOWER(CONCAT(CONCAT(u.nombre, ' '), u.apellido)) LIKE :query", Usuario.class)
             .setParameter("query", patron(query))
             .getResultList();
-        usuarios.forEach(usuario -> resultados.add(
-                new ResultadoBusqueda(TipoBusqueda.USUARIO, DtoMapper.toData(usuario))));
+        usuarios.forEach(usuario -> resultados.add(new ResultadoBusqueda(TipoBusqueda.USUARIO, DataRecordMapper.toData(usuario))));
 
         buscarProgramas(query).forEach(programa ->
                 resultados.add(new ResultadoBusqueda(TipoBusqueda.PROGRAMA_FORMACION, programa)));

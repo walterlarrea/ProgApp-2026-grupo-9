@@ -6,7 +6,7 @@ import com.grupo9.edext.grupo9.servidor_central.controller.curso.CursoController
 import com.grupo9.edext.grupo9.servidor_central.controller.instituto.InstitutoController;
 import com.grupo9.edext.grupo9.servidor_central.controller.usuario.UsuarioController;
 import com.grupo9.edext.grupo9.servidor_central.dominio.*;
-import com.grupo9.edext.grupo9.servidor_central.controller.DtoMapper;
+import com.grupo9.edext.grupo9.servidor_central.controller.DataRecordMapper;
 import com.grupo9.edext.grupo9.miscelanea.UtensiliosJPA;
 import com.grupo9.edext.grupo9.servidor_central.controller.curso.Categoria;
 import com.grupo9.edext.grupo9.servidor_central.controller.curso.Curso;
@@ -136,7 +136,7 @@ public class EdicionCursoControllerTest {
             em.close();
         }
 
-        DataEdicionCurso datos = DtoMapper.toData(edicion);
+        DataEdicionCurso datos = DataRecordMapper.toData(edicion);
         assertEquals("InstitutoLazy_" + sufijo, datos.getCursoAsoc().instituto().nombreI());
         assertTrue(datos.getCursoAsoc().categorias().contains("CategoriaLazy_" + sufijo));
         assertEquals("Nombre", datos.getInscripciones().iterator().next().getEstudiante().getNombre());
@@ -175,7 +175,7 @@ public class EdicionCursoControllerTest {
         assertDoesNotThrow(() -> {
             assertNotNull(edicionController.traerEstudiantes());
             DataInstituto dataInst = institutoController.guardarNuevoInstituto(new DataInstituto("InstDocentes_" + System.currentTimeMillis()));
-            assertNotNull(edicionController.traerDocentes(DtoMapper.toEntity(dataInst)));
+            assertNotNull(edicionController.traerDocentes(DataRecordMapper.toEntity(dataInst)));
         });
     }
 }

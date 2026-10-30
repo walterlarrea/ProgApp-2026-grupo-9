@@ -1,7 +1,7 @@
 package com.grupo9.edext.grupo9.servidor_central.controller.instituto;
 
 import com.grupo9.edext.grupo9.miscelanea.UtensiliosJPA;
-import com.grupo9.edext.grupo9.servidor_central.controller.DtoMapper;
+import com.grupo9.edext.grupo9.servidor_central.controller.DataRecordMapper;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataInstituto;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
@@ -70,7 +70,7 @@ public class ManejadorInstituto {
             
             HashSet<DataInstituto> institutos = new HashSet();
             for(Instituto instituto: queryTodo.getResultList()){
-                institutos.add(DtoMapper.toData(instituto));
+                institutos.add(DataRecordMapper.toData(instituto));
             }
             return institutos;
         }catch(Exception e){
@@ -108,7 +108,7 @@ public class ManejadorInstituto {
                 return null;
             }
             Instituto inst = query.getSingleResult();
-            return DtoMapper.toDataList(new HashSet<>(Set.of(inst)), DataInstituto.class).iterator().next();
+            return DataRecordMapper.toDataList(new HashSet<>(Set.of(inst)), DataInstituto.class).iterator().next();
         } catch (Exception e) {
             throw e;
         }

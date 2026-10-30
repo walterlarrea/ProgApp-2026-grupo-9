@@ -15,7 +15,24 @@
 
     <name>edEXT :: Servidor Central</name>
 
+    <properties>
+        <exec.mainClass>com.grupo9.edext.grupo9.EdEXT2026Grupo9</exec.mainClass>
+    </properties>
+
     <dependencies>
+        <!-- Jakarta XML Web Services (JAX-WS) & JAXB -->
+        <dependency>
+            <groupId>jakarta.xml.ws</groupId>
+            <artifactId>jakarta.xml.ws-api</artifactId>
+            <version>4.0.2</version>
+        </dependency>
+        <dependency>
+            <groupId>com.sun.xml.ws</groupId>
+            <artifactId>jaxws-rt</artifactId>
+            <version>4.0.3</version>
+            <scope>runtime</scope>
+        </dependency>
+
         <!-- JPA -->
         <dependency>
             <groupId>jakarta.persistence</groupId>
@@ -60,6 +77,29 @@
                         <jakarta.persistence.jdbc.password>edext_test</jakarta.persistence.jdbc.password>
                     </systemPropertyVariables>
                 </configuration>
+            </plugin>
+            <!-- Empaquetado ejecutable (Fat JAR) -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.6.0</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <createDependencyReducedPom>false</createDependencyReducedPom>
+                            <transformers>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                    <mainClass>${exec.mainClass}</mainClass>
+                                </transformer>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
+                            </transformers>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>

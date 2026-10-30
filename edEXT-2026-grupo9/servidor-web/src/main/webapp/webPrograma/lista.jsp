@@ -32,14 +32,14 @@ prefix="c" uri="jakarta.tags.core" %>
                 <article class="edicion-card">
                   <h2>
                     <a
-                      href="${pageContext.request.contextPath}/programa?nombre=${programa.nombre()}"
-                      ><c:out value="${programa.nombre()}"
+                      href="${pageContext.request.contextPath}/programa?nombre=${programa.nombre}"
+                      ><c:out value="${programa.nombre}"
                     /></a>
                   </h2>
-                  <p><c:out value="${programa.descripcion()}" /></p>
+                  <p><c:out value="${programa.descripcion}" /></p>
                   <p>
-                    <c:out value="${programa.fechaInicio()}" /> -
-                    <c:out value="${programa.fechaFin()}" />
+                    <c:out value="${programa.fechaInicio}" /> -
+                    <c:out value="${programa.fechaFin}" />
                   </p>
                 </article>
               </c:forEach>
@@ -51,3 +51,4 @@ prefix="c" uri="jakarta.tags.core" %>
     </div>
   </body>
 </html>
+

@@ -2,7 +2,7 @@
 package com.grupo9.edext.grupo9.servidor_central.controller.curso;
 
 import com.grupo9.edext.grupo9.miscelanea.UtensiliosJPA;
-import com.grupo9.edext.grupo9.servidor_central.controller.DtoMapper;
+import com.grupo9.edext.grupo9.servidor_central.controller.DataRecordMapper;
 import com.grupo9.edext.grupo9.servidor_central.controller.instituto.Instituto;
 import com.grupo9.edext.grupo9.servidor_central.controller.programa_de_formacion.ProgramaDeFormacion;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataCurso;
@@ -98,7 +98,7 @@ public class ManejadorCurso {
 
             TypedQuery<Curso> queryTodo = em.createQuery(todo);
                         
-            HashSet<DataCurso> cursos = DtoMapper.toDataList(new HashSet<>(queryTodo.getResultList()), DataCurso.class);
+            HashSet<DataCurso> cursos = DataRecordMapper.toDataList(new HashSet<>(queryTodo.getResultList()), DataCurso.class);
             
             return cursos;
         }catch(Exception e){
@@ -132,7 +132,7 @@ public class ManejadorCurso {
             cQuery.select(rootEntry).where(cBuilder.equal(instituto.get("nombreI"), nombreInstituto));
 
             TypedQuery<Curso> query = em.createQuery(cQuery);
-            return DtoMapper.toDataList(new HashSet<>(query.getResultList()), DataCurso.class);
+            return DataRecordMapper.toDataList(new HashSet<>(query.getResultList()), DataCurso.class);
         } catch (Exception e) {
             throw e;
         }
@@ -154,7 +154,7 @@ public class ManejadorCurso {
 
             TypedQuery<Curso> queryTodo = em.createQuery(todo);
                         
-            HashSet<DataCurso> cursos = DtoMapper.toDataList(new HashSet<>(queryTodo.getResultList()), DataCurso.class);
+            HashSet<DataCurso> cursos = DataRecordMapper.toDataList(new HashSet<>(queryTodo.getResultList()), DataCurso.class);
             
             return cursos;
         }catch(Exception e){
@@ -193,7 +193,7 @@ public class ManejadorCurso {
                 return null;
             }
             Curso curso = query.getSingleResult();
-            return DtoMapper.toDataList(new HashSet<>(Set.of(curso)), DataCurso.class).iterator().next();
+            return DataRecordMapper.toDataList(new HashSet<>(Set.of(curso)), DataCurso.class).iterator().next();
         } catch (Exception e) {
             throw e;
         }
