@@ -1,6 +1,6 @@
 package com.grupo9.edext.grupo9.servidor_central.controller.curso;
 
-import com.grupo9.edext.grupo9.servidor_central.controller.DtoMapper;
+import com.grupo9.edext.grupo9.servidor_central.controller.DataRecordMapper;
 import com.grupo9.edext.grupo9.servidor_central.controller.curso.Categoria;
 import com.grupo9.edext.grupo9.servidor_central.controller.instituto.Instituto;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataCurso;
@@ -21,8 +21,8 @@ public class CursoController implements ICurso {
         System.out.println("[SERVIDOR] Persistencia de un nuevo Curso: " + curso.nombreCurso());
         LocalDate fechaDeCreacion = LocalDate.now();
 
-        Instituto instituto = DtoMapper.toEntity(curso.instituto());
-        Set<Curso> previas = DtoMapper.toEntityList(curso.previas(), Curso.class);
+        Instituto instituto = DataRecordMapper.toEntity(curso.instituto());
+        Set<Curso> previas = DataRecordMapper.toEntityList(curso.previas(), Curso.class);
         Set<Categoria> categorias = new HashSet<>();
         if (curso.categorias() != null) {
             for (String categoriaNombre : curso.categorias()) {
