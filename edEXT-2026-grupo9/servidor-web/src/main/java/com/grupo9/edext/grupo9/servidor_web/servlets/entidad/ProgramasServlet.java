@@ -1,14 +1,15 @@
 package com.grupo9.edext.grupo9.servidor_web.servlets.entidad;
 
-import com.grupo9.edext.grupo9.interfaces.IServidorCentral;
-import com.grupo9.edext.grupo9.mensajes.ErrorNoExiste;
-import com.grupo9.edext.grupo9.mensajes.ErrorRepetidos;
-import com.grupo9.edext.grupo9.miscelanea.Fabrica;
-import com.grupo9.edext.grupo9.servidor_central.dominio.DataCurso;
-import com.grupo9.edext.grupo9.servidor_central.dominio.DataEstudiante;
-import com.grupo9.edext.grupo9.servidor_central.dominio.DataProgramaFormacion;
-import com.grupo9.edext.grupo9.servidor_central.dominio.DataUsuario;
-import com.grupo9.edext.grupo9.servidor_web.web_service_client.*;
+import com.grupo9.edext.grupo9.servidor_web.soap.SoapClientFactory;
+import com.grupo9.edext.grupo9.servidor_web.web_service_client.curso.CursoWebService;
+import com.grupo9.edext.grupo9.servidor_web.web_service_client.curso.DataCursoDTO;
+import com.grupo9.edext.grupo9.servidor_web.web_service_client.programa_de_formacion.DataProgramaFormacionDTO;
+import com.grupo9.edext.grupo9.servidor_web.web_service_client.programa_de_formacion.ErrorNoExiste_Exception;
+import com.grupo9.edext.grupo9.servidor_web.web_service_client.programa_de_formacion.ErrorRepetidos_Exception;
+import com.grupo9.edext.grupo9.servidor_web.web_service_client.programa_de_formacion.ProgramaDeFormacionWebService;
+import com.grupo9.edext.grupo9.servidor_web.web_service_client.usuario.DataEstudianteDTO;
+import com.grupo9.edext.grupo9.servidor_web.web_service_client.usuario.DataUsuarioDTO;
+
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
@@ -17,6 +18,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.http.Part;
+
 import java.io.File;
 import java.io.IOException;
 import java.net.URLEncoder;
@@ -24,9 +26,7 @@ import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.UUID;
 
 @MultipartConfig(maxFileSize = 5 * 1024 * 1024)
@@ -36,25 +36,26 @@ public class ProgramasServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        IServidorCentral servidorCentral = Fabrica.getInstance().getIServidorCentral();
+        ProgramaDeFormacionWebService progPort = SoapClientFactory.getInstance().getProgramaPort();
+        CursoWebService cursoPort = SoapClientFactory.getInstance().getCursoPort();
+
         if ("/programas".equals(request.getServletPath())) {
             if ("alta".equals(request.getParameter("accion"))) {
                 if (!esDocente(request)) {
                     response.sendError(HttpServletResponse.SC_FORBIDDEN, "Solo docentes pueden crear programas.");
                     return;
                 }
-                request.setAttribute("cursos", safeCourses(servidorCentral));
+                request.setAttribute("cursos", safeCourses(cursoPort));
                 request.getRequestDispatcher("/webPrograma/alta.jsp").forward(request, response);
                 return;
             }
 
             List<DataProgramaFormacionDTO> programas = new ArrayList<>();
             try {
-                ServidorCentralWebService_Service servicioWeb = new ServidorCentralWebService_Service();
-                ServidorCentralWebService port = servicioWeb.getServidorCentralWebServicePort();
-                programas = port.consultarTodosLosProgramas();
-            } catch (Exception | NoClassDefFoundError | NoSuchFieldError e) {
-                // Si el servicio web no está disponible durante tests o inicio
+                if (progPort != null) {
+                    programas = progPort.consultarTodosLosProgramas();
+                }
+            } catch (Exception ignored) {
             }
 
             request.setAttribute("programas", programas);
@@ -67,21 +68,27 @@ public class ProgramasServlet extends HttpServlet {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Falta el nombre del programa.");
             return;
         }
-        DataProgramaFormacion programa = servidorCentral.traerPorNombreId(nombre);
+        DataProgramaFormacionDTO programa = null;
+        if (progPort != null) {
+            programa = progPort.traerPorNombreId(nombre);
+        }
         if (programa == null) {
             response.sendError(HttpServletResponse.SC_NOT_FOUND, "Programa no encontrado.");
             return;
         }
 
         HttpSession session = request.getSession(false);
-        DataUsuario usuario = session == null ? null : (DataUsuario) session.getAttribute("usuarioLogueado");
-        boolean inscripto = usuario instanceof DataEstudiante estudiante
-                && estudiante.getInscripcionesProgramas().stream()
-                        .anyMatch(inscripcion -> nombre.equals(inscripcion.getProgramaNombre()));
+        DataUsuarioDTO usuario = session == null ? null : (DataUsuarioDTO) session.getAttribute("usuarioLogueado");
+        boolean inscripto = false;
+        if (usuario instanceof DataEstudianteDTO estudiante && estudiante.getInscripcionesProgramas() != null) {
+            inscripto = estudiante.getInscripcionesProgramas().stream()
+                    .anyMatch(insc -> nombre.equals(insc.getProgramaNombre()));
+        }
+
         request.setAttribute("programa", programa);
         request.setAttribute("inscripto", inscripto);
-        request.setAttribute("puedeGestionar", usuario != null && "Docente".equals(usuario.getTipo()));
-        request.setAttribute("cursosDisponibles", safeUnrelatedCourses(servidorCentral, nombre));
+        request.setAttribute("puedeGestionar", usuario != null && "Docente".equalsIgnoreCase(usuario.getTipo()));
+        request.setAttribute("cursosDisponibles", safeUnrelatedCourses(cursoPort, nombre));
         request.getRequestDispatcher("/webPrograma/detalle.jsp").forward(request, response);
     }
 
@@ -101,35 +108,40 @@ public class ProgramasServlet extends HttpServlet {
             response.sendError(HttpServletResponse.SC_FORBIDDEN, "Solo docentes pueden crear programas.");
             return;
         }
-        IServidorCentral servidor = Fabrica.getInstance().getIServidorCentral();
+        ProgramaDeFormacionWebService progPort = SoapClientFactory.getInstance().getProgramaPort();
+        CursoWebService cursoPort = SoapClientFactory.getInstance().getCursoPort();
+
         String nombre = request.getParameter("nombre");
         String descripcion = request.getParameter("descripcion");
         String fechaInicioTexto = request.getParameter("fechaInicio");
         String fechaFinTexto = request.getParameter("fechaFin");
+
         if (nombre == null || nombre.isBlank() || descripcion == null || descripcion.isBlank()
                 || fechaInicioTexto == null || fechaFinTexto == null) {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Completa los datos obligatorios.");
             return;
         }
         nombre = nombre.trim();
-        if (servidor.existeProgramaDeFormacion(nombre)) {
+        if (progPort != null && progPort.existeProgramaDeFormacion(nombre)) {
             request.setAttribute("error", "Ya existe un programa con ese nombre.");
-            request.setAttribute("cursos", safeCourses(servidor));
+            request.setAttribute("cursos", safeCourses(cursoPort));
             request.getRequestDispatcher("/webPrograma/alta.jsp").forward(request, response);
             return;
         }
 
         String imagen = guardarImagen(request.getPart("imagen"));
-        DataProgramaFormacion nuevo = new DataProgramaFormacion(nombre, descripcion.trim(), new HashSet<>(),
-                LocalDate.parse(fechaInicioTexto), LocalDate.parse(fechaFinTexto), LocalDate.now(), imagen);
-        DataProgramaFormacion guardado = servidor.guardarProgramaDeFormacion(nuevo);
+        DataProgramaFormacionDTO guardado = null;
+        if (progPort != null) {
+            guardado = progPort.guardarProgramaDeFormacion(nombre, descripcion.trim(), fechaInicioTexto, fechaFinTexto, imagen);
+        }
         if (guardado == null) {
             throw new ServletException("No se pudo guardar el programa.");
         }
+
         String[] cursos = request.getParameterValues("cursos");
-        if (cursos != null) {
+        if (cursos != null && progPort != null) {
             for (String curso : cursos) {
-                servidor.agregarCursoAProgramaDeFormacion(nombre, curso);
+                progPort.agregarCursoAProgramaDeFormacion(nombre, curso);
             }
         }
         response.sendRedirect(request.getContextPath() + "/programa?nombre="
@@ -143,28 +155,31 @@ public class ProgramasServlet extends HttpServlet {
         String destino = request.getContextPath() + "/programa?nombre="
                 + URLEncoder.encode(nombre == null ? "" : nombre, StandardCharsets.UTF_8);
         HttpSession session = request.getSession(false);
-        DataUsuario usuario = session == null ? null : (DataUsuario) session.getAttribute("usuarioLogueado");
+        DataUsuarioDTO usuario = session == null ? null : (DataUsuarioDTO) session.getAttribute("usuarioLogueado");
         if (usuario == null) {
             response.sendRedirect(request.getContextPath() + "/login");
             return;
         }
 
-        IServidorCentral servidor = Fabrica.getInstance().getIServidorCentral();
+        ProgramaDeFormacionWebService progPort = SoapClientFactory.getInstance().getProgramaPort();
         try {
             if ("inscribir".equals(accion)) {
-                if (!(usuario instanceof DataEstudiante)) {
+                if (!(usuario instanceof DataEstudianteDTO)) {
                     response.sendError(HttpServletResponse.SC_FORBIDDEN, "Solo estudiantes pueden inscribirse.");
                     return;
                 }
-                servidor.inscribirEstudianteEnPrograma(LocalDate.now(), usuario.getNickname(), nombre);
+                if (progPort != null) {
+                    progPort.inscribirEstudianteEnPrograma(LocalDate.now().toString(), usuario.getNickname(), nombre);
+                }
             } else if ("agregarCurso".equals(accion)) {
-                if (!"Docente".equals(usuario.getTipo())) {
+                if (!"Docente".equalsIgnoreCase(usuario.getTipo())) {
                     response.sendError(HttpServletResponse.SC_FORBIDDEN, "Solo docentes pueden gestionar cursos.");
                     return;
                 }
                 String nombreCurso = request.getParameter("curso");
                 if (nombreCurso == null || nombreCurso.isBlank()
-                        || !Boolean.TRUE.equals(servidor.agregarCursoAProgramaDeFormacion(nombre, nombreCurso))) {
+                        || progPort == null
+                        || !progPort.agregarCursoAProgramaDeFormacion(nombre, nombreCurso)) {
                     response.sendError(HttpServletResponse.SC_BAD_REQUEST, "No se pudo asociar el curso.");
                     return;
                 }
@@ -174,25 +189,35 @@ public class ProgramasServlet extends HttpServlet {
             }
             response.sendRedirect(
                     destino + "&mensaje=" + URLEncoder.encode("Cambios guardados.", StandardCharsets.UTF_8));
-        } catch (ErrorRepetidos | ErrorNoExiste e) {
+        } catch (ErrorRepetidos_Exception | ErrorNoExiste_Exception e) {
             response.sendRedirect(destino + "&error=" + URLEncoder.encode(e.getMessage(), StandardCharsets.UTF_8));
         }
     }
 
-    private Set<DataCurso> safeCourses(IServidorCentral servidor) {
-        Set<DataCurso> cursos = servidor.consultarTodosLosCursos();
-        return cursos == null ? Collections.emptySet() : cursos;
+    private List<DataCursoDTO> safeCourses(CursoWebService cursoPort) {
+        if (cursoPort == null) return Collections.emptyList();
+        try {
+            List<DataCursoDTO> cursos = cursoPort.consultarTodosLosCursos();
+            return cursos == null ? Collections.emptyList() : cursos;
+        } catch (Exception e) {
+            return Collections.emptyList();
+        }
     }
 
     private boolean esDocente(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
-        DataUsuario usuario = session == null ? null : (DataUsuario) session.getAttribute("usuarioLogueado");
-        return usuario != null && "Docente".equals(usuario.getTipo());
+        DataUsuarioDTO usuario = session == null ? null : (DataUsuarioDTO) session.getAttribute("usuarioLogueado");
+        return usuario != null && "Docente".equalsIgnoreCase(usuario.getTipo());
     }
 
-    private Set<DataCurso> safeUnrelatedCourses(IServidorCentral servidor, String nombrePrograma) {
-        Set<DataCurso> cursos = servidor.cursosNoRelacionadosConUnProgDeFormacion(nombrePrograma);
-        return cursos == null ? Collections.emptySet() : cursos;
+    private List<DataCursoDTO> safeUnrelatedCourses(CursoWebService cursoPort, String nombrePrograma) {
+        if (cursoPort == null) return Collections.emptyList();
+        try {
+            List<DataCursoDTO> cursos = cursoPort.cursosNoRelacionadosConUnProgDeFormacion(nombrePrograma);
+            return cursos == null ? Collections.emptyList() : cursos;
+        } catch (Exception e) {
+            return Collections.emptyList();
+        }
     }
 
     private String guardarImagen(Part imagen) throws IOException {

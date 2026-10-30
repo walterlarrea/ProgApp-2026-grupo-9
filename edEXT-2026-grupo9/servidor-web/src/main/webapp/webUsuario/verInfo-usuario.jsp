@@ -1,8 +1,8 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+﻿<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
-<%@ page import="com.grupo9.edext.grupo9.servidor_central.dominio.DataUsuario" %>
-<%@ page import="com.grupo9.edext.grupo9.servidor_central.dominio.DataEstudiante" %>
-<%@ page import="com.grupo9.edext.grupo9.servidor_central.dominio.DataDocente" %>
+<%@ page import="com.grupo9.edext.grupo9.servidor_web.web_service_client.usuario.DataUsuarioDTODTO" %>
+<%@ page import="com.grupo9.edext.grupo9.servidor_web.web_service_client.usuario.DataEstudianteDTODTO" %>
+<%@ page import="com.grupo9.edext.grupo9.servidor_web.web_service_client.usuario.DataDocenteDTODTO" %>
 <%@ page import="java.time.format.DateTimeFormatter" %>
 <!DOCTYPE html>
 <html lang="es">
@@ -29,7 +29,7 @@
 
             <c:if test="${not empty usuario}">
                 <%
-                    DataUsuario uObj = (DataUsuario) request.getAttribute("usuario");
+                    DataUsuarioDTO uObj = (DataUsuarioDTO) request.getAttribute("usuario");
                 %>
                 <div class="profile-container">
                     <div class="profile-header">
@@ -138,10 +138,10 @@
 
                         <%
                             java.util.Set<String> edicionesSet = new java.util.HashSet<>();
-                            if (uObj instanceof DataEstudiante) {
-                                edicionesSet = ((DataEstudiante) uObj).getEdicionesInscriptas();
-                            } else if (uObj instanceof DataDocente) {
-                                edicionesSet = ((DataDocente) uObj).getEdiciones();
+                            if (uObj instanceof DataEstudianteDTO) {
+                                edicionesSet = ((DataEstudianteDTO) uObj).getEdicionesInscriptas();
+                            } else if (uObj instanceof DataDocenteDTO) {
+                                edicionesSet = ((DataDocenteDTO) uObj).getEdiciones();
                             }
                             pageContext.setAttribute("edicionesSet", edicionesSet);
                         %>

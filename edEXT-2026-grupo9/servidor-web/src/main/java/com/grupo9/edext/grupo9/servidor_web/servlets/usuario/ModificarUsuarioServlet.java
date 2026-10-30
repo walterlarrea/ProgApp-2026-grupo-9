@@ -1,10 +1,12 @@
 package com.grupo9.edext.grupo9.servidor_web.servlets.usuario;
 
-import com.grupo9.edext.grupo9.interfaces.IServidorCentral;
-import com.grupo9.edext.grupo9.miscelanea.Fabrica;
-import com.grupo9.edext.grupo9.servidor_central.dominio.DataCurso;
-import com.grupo9.edext.grupo9.servidor_central.dominio.DataInstituto;
-import com.grupo9.edext.grupo9.servidor_central.dominio.DataUsuario;
+import com.grupo9.edext.grupo9.servidor_web.soap.SoapClientFactory;
+import com.grupo9.edext.grupo9.servidor_web.web_service_client.curso.CursoWebService;
+import com.grupo9.edext.grupo9.servidor_web.web_service_client.curso.DataCursoDTO;
+import com.grupo9.edext.grupo9.servidor_web.web_service_client.instituto.DataInstitutoDTO;
+import com.grupo9.edext.grupo9.servidor_web.web_service_client.instituto.InstitutoWebService;
+import com.grupo9.edext.grupo9.servidor_web.web_service_client.usuario.DataUsuarioDTO;
+import com.grupo9.edext.grupo9.servidor_web.web_service_client.usuario.UsuarioWebService;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
@@ -14,11 +16,11 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.http.Part;
+
 import java.io.File;
 import java.io.IOException;
-import java.time.LocalDate;
 import java.util.Collections;
-import java.util.Set;
+import java.util.List;
 
 @WebServlet("/modificarUsuario")
 @MultipartConfig(
@@ -32,22 +34,26 @@ public class ModificarUsuarioServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession(false);
-        DataUsuario usuarioLogueado = (session != null) ? (DataUsuario) session.getAttribute("usuarioLogueado") : null;
+        DataUsuarioDTO usuarioLogueado = (session != null) ? (DataUsuarioDTO) session.getAttribute("usuarioLogueado") : null;
 
         if (usuarioLogueado == null) {
             response.sendRedirect(request.getContextPath() + "/login");
             return;
         }
 
-        IServidorCentral servidorCentral = Fabrica.getInstance().getIServidorCentral();
-        Set<DataInstituto> institutos = Collections.emptySet();
-        Set<DataCurso> cursos = Collections.emptySet();
+        InstitutoWebService instPort = SoapClientFactory.getInstance().getInstitutoPort();
+        CursoWebService cursoPort = SoapClientFactory.getInstance().getCursoPort();
+
+        List<DataInstitutoDTO> institutos = Collections.emptyList();
+        List<DataCursoDTO> cursos = Collections.emptyList();
         String estadoDb = "Conectado al Servidor Central";
 
         try {
-            if (servidorCentral != null) {
-                institutos = servidorCentral.consultarTodosLosInstitutos();
-                cursos = servidorCentral.consultarTodosLosCursos();
+            if (instPort != null) {
+                institutos = instPort.consultarTodosLosInstitutos();
+            }
+            if (cursoPort != null) {
+                cursos = cursoPort.consultarTodosLosCursos();
             }
         } catch (Exception e) {
             estadoDb = "Servidor Central activo (" + e.getMessage() + ")";
@@ -65,7 +71,7 @@ public class ModificarUsuarioServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession(false);
-        DataUsuario usuarioLogueado = (session != null) ? (DataUsuario) session.getAttribute("usuarioLogueado") : null;
+        DataUsuarioDTO usuarioLogueado = (session != null) ? (DataUsuarioDTO) session.getAttribute("usuarioLogueado") : null;
 
         if (usuarioLogueado == null) {
             response.sendRedirect(request.getContextPath() + "/login");
@@ -79,7 +85,6 @@ public class ModificarUsuarioServlet extends HttpServlet {
         String passNueva = obtenerParametro(request, "passNueva");
         String passNuevaConfirm = obtenerParametro(request, "passNuevaConfirm");
 
-        // Fallback a los datos actuales si vienen nulos o en blanco
         if (nombre == null || nombre.trim().isEmpty()) {
             nombre = usuarioLogueado.getNombre();
         }
@@ -95,13 +100,8 @@ public class ModificarUsuarioServlet extends HttpServlet {
             }
         }
 
-        LocalDate fechaNac = usuarioLogueado.getFechaNac();
-        if (fechaNacStr != null && !fechaNacStr.trim().isEmpty()) {
-            try {
-                fechaNac = LocalDate.parse(fechaNacStr.trim());
-            } catch (Exception e) {
-                // conservar fecha anterior si formato inválido
-            }
+        if (fechaNacStr == null || fechaNacStr.trim().isEmpty()) {
+            fechaNacStr = usuarioLogueado.getFechaNac();
         }
 
         String rutaImagen = usuarioLogueado.getImagen();
@@ -126,29 +126,29 @@ public class ModificarUsuarioServlet extends HttpServlet {
                     rutaImagen = fullPath;
                 }
             }
-        } catch (Exception e) {
-            // Si no se pudo procesar la nueva imagen, conservar la imagen previa
+        } catch (Exception ignored) {
         }
 
-        IServidorCentral servidorCentral = Fabrica.getInstance().getIServidorCentral();
+        UsuarioWebService usuarioPort = SoapClientFactory.getInstance().getUsuarioPort();
         try {
-            servidorCentral.modificarUsuario(
+            if (usuarioPort == null) {
+                throw new ServletException("Servicio de usuarios no disponible");
+            }
+
+            usuarioPort.modificarUsuario(
                 usuarioLogueado.getNickname(),
                 nombre != null ? nombre.trim() : "",
                 apellido != null ? apellido.trim() : "",
-                fechaNac,
+                fechaNacStr != null ? fechaNacStr.trim() : null,
                 rutaImagen != null ? rutaImagen.trim() : "",
                 passActual,
                 passNueva
             );
 
-            DataUsuario usuarioActualizado = servidorCentral.consultarUsuario(usuarioLogueado.getNickname());
+            DataUsuarioDTO usuarioActualizado = usuarioPort.consultarUsuario(usuarioLogueado.getNickname());
             session.setAttribute("usuarioLogueado", usuarioActualizado);
 
             response.sendRedirect(request.getContextPath() + "/perfil?mensaje=Perfil+actualizado+correctamente");
-        } catch (IllegalArgumentException e) {
-            request.setAttribute("error", e.getMessage());
-            doGet(request, response);
         } catch (Exception e) {
             request.setAttribute("error", "Error al actualizar perfil: " + e.getMessage());
             doGet(request, response);

@@ -1,29 +1,35 @@
 package com.grupo9.edext.grupo9.servidor_web.servlets.entidad;
 
-import com.grupo9.edext.grupo9.interfaces.IServidorCentral;
-import com.grupo9.edext.grupo9.miscelanea.Fabrica;
-import com.grupo9.edext.grupo9.servidor_central.dominio.*;
+import com.grupo9.edext.grupo9.servidor_web.soap.SoapClientFactory;
+import com.grupo9.edext.grupo9.servidor_web.web_service_client.curso.CursoWebService;
+import com.grupo9.edext.grupo9.servidor_web.web_service_client.programa_de_formacion.DataProgramaFormacionDTO;
+import com.grupo9.edext.grupo9.servidor_web.web_service_client.programa_de_formacion.ErrorRepetidos_Exception;
+import com.grupo9.edext.grupo9.servidor_web.web_service_client.programa_de_formacion.ProgramaDeFormacionWebService;
+import com.grupo9.edext.grupo9.servidor_web.web_service_client.usuario.DataDocenteDTO;
+import com.grupo9.edext.grupo9.servidor_web.web_service_client.usuario.DataEstudianteDTO;
+
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import jakarta.servlet.http.Part;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
 
-import java.io.IOException;
-import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
 public class ProgramasServletTest {
 
     private ProgramasServlet servlet;
-    private IServidorCentral servidor;
+    private ProgramaDeFormacionWebService progPort;
+    private CursoWebService cursoPort;
+
     private HttpServletRequest request;
     private HttpServletResponse response;
     private HttpSession session;
@@ -32,7 +38,12 @@ public class ProgramasServletTest {
     @BeforeEach
     public void setUp() {
         servlet = new ProgramasServlet();
-        servidor = Fabrica.getInstance().getIServidorCentral();
+        progPort = mock(ProgramaDeFormacionWebService.class);
+        cursoPort = mock(CursoWebService.class);
+
+        SoapClientFactory.getInstance().setProgramaPort(progPort);
+        SoapClientFactory.getInstance().setCursoPort(cursoPort);
+
         request = mock(HttpServletRequest.class);
         response = mock(HttpServletResponse.class);
         session = mock(HttpSession.class);
@@ -60,7 +71,9 @@ public class ProgramasServletTest {
         when(request.getParameter("accion")).thenReturn("alta");
         when(request.getSession(false)).thenReturn(session);
 
-        DataDocente docente = new DataDocente("docenteTest", "Doc", "Test", "doc@test.com", LocalDate.of(1980, 1, 1), null, "INCO");
+        DataDocenteDTO docente = new DataDocenteDTO();
+        docente.setNickname("docenteTest");
+        docente.setTipo("Docente");
         when(session.getAttribute("usuarioLogueado")).thenReturn(docente);
 
         servlet.doGet(request, response);
@@ -76,7 +89,9 @@ public class ProgramasServletTest {
         when(request.getParameter("accion")).thenReturn("alta");
         when(request.getSession(false)).thenReturn(session);
 
-        DataEstudiante estudiante = new DataEstudiante("estTest", "Est", "Test", "est@test.com", LocalDate.of(2000, 1, 1), null);
+        DataEstudianteDTO estudiante = new DataEstudianteDTO();
+        estudiante.setNickname("estTest");
+        estudiante.setTipo("Estudiante");
         when(session.getAttribute("usuarioLogueado")).thenReturn(estudiante);
 
         servlet.doGet(request, response);
@@ -97,7 +112,8 @@ public class ProgramasServletTest {
     @Test
     public void testDoGetDetalleNoExiste() throws Exception {
         when(request.getServletPath()).thenReturn("/programa");
-        when(request.getParameter("nombre")).thenReturn("ProgNoExiste_" + System.currentTimeMillis());
+        when(request.getParameter("nombre")).thenReturn("ProgNoExiste");
+        when(progPort.traerPorNombreId("ProgNoExiste")).thenReturn(null);
 
         servlet.doGet(request, response);
 
@@ -106,11 +122,11 @@ public class ProgramasServletTest {
 
     @Test
     public void testDoGetDetalleExiste() throws Exception {
-        String sufijo = Long.toString(System.currentTimeMillis());
-        String progNombre = "ProgDetalle_" + sufijo;
-        servidor.guardarProgramaDeFormacion(new DataProgramaFormacion(
-                progNombre, "Desc", new HashSet<DataCurso>(), LocalDate.now(), LocalDate.now().plusMonths(1), LocalDate.now(), null));
+        String progNombre = "ProgDetalle";
+        DataProgramaFormacionDTO dto = new DataProgramaFormacionDTO();
+        dto.setNombre(progNombre);
 
+        when(progPort.traerPorNombreId(progNombre)).thenReturn(dto);
         when(request.getServletPath()).thenReturn("/programa");
         when(request.getParameter("nombre")).thenReturn(progNombre);
         when(request.getSession(false)).thenReturn(null);
@@ -126,13 +142,14 @@ public class ProgramasServletTest {
 
     @Test
     public void testDoPostCrearProgramaDocente() throws Exception {
-        String sufijo = Long.toString(System.currentTimeMillis());
-        String progNombre = "ProgCreadoWeb_" + sufijo;
+        String progNombre = "ProgCreadoWeb";
 
         when(request.getServletPath()).thenReturn("/programas");
         when(request.getSession(false)).thenReturn(session);
 
-        DataDocente docente = new DataDocente("docenteWeb", "Doc", "Web", "docw@test.com", LocalDate.of(1980, 1, 1), null, "INCO");
+        DataDocenteDTO docente = new DataDocenteDTO();
+        docente.setNickname("docenteWeb");
+        docente.setTipo("Docente");
         when(session.getAttribute("usuarioLogueado")).thenReturn(docente);
 
         when(request.getParameter("nombre")).thenReturn(progNombre);
@@ -141,31 +158,34 @@ public class ProgramasServletTest {
         when(request.getParameter("fechaFin")).thenReturn("2026-10-31");
         when(request.getParameterValues("cursos")).thenReturn(null);
         when(request.getPart("imagen")).thenReturn(null);
+        when(progPort.existeProgramaDeFormacion(progNombre)).thenReturn(false);
+
+        DataProgramaFormacionDTO guardado = new DataProgramaFormacionDTO();
+        guardado.setNombre(progNombre);
+        when(progPort.guardarProgramaDeFormacion(any(), any(), any(), any(), any())).thenReturn(guardado);
 
         servlet.doPost(request, response);
 
         verify(response).sendRedirect(contains("/programa?nombre="));
-        assertTrue(servidor.existeProgramaDeFormacion(progNombre));
     }
 
     @Test
     public void testDoPostCrearProgramaDuplicado() throws Exception {
-        String sufijo = Long.toString(System.currentTimeMillis());
-        String progNombre = "ProgDupWeb_" + sufijo;
-
-        servidor.guardarProgramaDeFormacion(new DataProgramaFormacion(
-                progNombre, "Desc", new HashSet<>(), LocalDate.now(), LocalDate.now().plusMonths(1), LocalDate.now(), null));
+        String progNombre = "ProgDupWeb";
 
         when(request.getServletPath()).thenReturn("/programas");
         when(request.getSession(false)).thenReturn(session);
 
-        DataDocente docente = new DataDocente("docenteDup", "Doc", "Dup", "docd@test.com", LocalDate.of(1980, 1, 1), null, "INCO");
+        DataDocenteDTO docente = new DataDocenteDTO();
+        docente.setNickname("docenteDup");
+        docente.setTipo("Docente");
         when(session.getAttribute("usuarioLogueado")).thenReturn(docente);
 
         when(request.getParameter("nombre")).thenReturn(progNombre);
         when(request.getParameter("descripcion")).thenReturn("Descripcion prog web");
         when(request.getParameter("fechaInicio")).thenReturn("2026-04-01");
         when(request.getParameter("fechaFin")).thenReturn("2026-10-31");
+        when(progPort.existeProgramaDeFormacion(progNombre)).thenReturn(true);
 
         servlet.doPost(request, response);
 
@@ -176,13 +196,7 @@ public class ProgramasServletTest {
 
     @Test
     public void testDoPostInscribirEstudianteYSesionAusente() throws Exception {
-        String sufijo = Long.toString(System.currentTimeMillis());
-        String progNombre = "ProgInscWeb_" + sufijo;
-        String estNick = "estWeb_" + sufijo;
-
-        servidor.guardarProgramaDeFormacion(new DataProgramaFormacion(
-                progNombre, "Desc", new HashSet<>(), LocalDate.now(), LocalDate.now().plusMonths(1), LocalDate.now(), null));
-        servidor.registrarEstudiante(estNick, "Est", "Web", estNick + "@test.com", LocalDate.of(2001, 1, 1), null);
+        String progNombre = "ProgInscWeb";
 
         when(request.getServletPath()).thenReturn("/programa");
         when(request.getParameter("nombre")).thenReturn(progNombre);
@@ -195,36 +209,32 @@ public class ProgramasServletTest {
 
         // 2. Caso con sesión de docente -> 403 forbidden
         when(request.getSession(false)).thenReturn(session);
-        DataDocente docente = new DataDocente("docInsc", "D", "I", "docinsc@test.com", LocalDate.of(1980, 1, 1), null, "INCO");
+        DataDocenteDTO docente = new DataDocenteDTO();
+        docente.setNickname("docInsc");
+        docente.setTipo("Docente");
         when(session.getAttribute("usuarioLogueado")).thenReturn(docente);
         servlet.doPost(request, response);
         verify(response).sendError(HttpServletResponse.SC_FORBIDDEN, "Solo estudiantes pueden inscribirse.");
 
         // 3. Caso estudiante válido -> redirect con mensaje
-        DataEstudiante estudiante = (DataEstudiante) servidor.consultarUsuario(estNick);
+        DataEstudianteDTO estudiante = new DataEstudianteDTO();
+        estudiante.setNickname("estWeb");
+        estudiante.setTipo("Estudiante");
         when(session.getAttribute("usuarioLogueado")).thenReturn(estudiante);
         servlet.doPost(request, response);
         verify(response).sendRedirect(contains("mensaje=Cambios+guardados."));
 
         // 4. Caso duplicado -> redirect con error
+        doThrow(new ErrorRepetidos_Exception("Ya inscripto", null)).when(progPort)
+                .inscribirEstudianteEnPrograma(any(), eq("estWeb"), eq(progNombre));
         servlet.doPost(request, response);
         verify(response).sendRedirect(contains("error="));
     }
 
     @Test
     public void testDoPostAgregarCursoAPrograma() throws Exception {
-        String sufijo = Long.toString(System.currentTimeMillis());
-        String instNombre = "InstAgregCurso_" + sufijo;
-        DataInstituto inst = servidor.guardarInstituto(new DataInstituto(instNombre));
-
-        String cursoNombre = "CursoParaAsocWeb_" + sufijo;
-        servidor.guardarCurso(new DataCurso(
-                inst, cursoNombre, "Desc", 4, 20, 2, LocalDate.now(), "http://c.com",
-                new HashSet<>(), new HashSet<>(), new HashSet<>(), null));
-
-        String progNombre = "ProgAgregCursoWeb_" + sufijo;
-        servidor.guardarProgramaDeFormacion(new DataProgramaFormacion(
-                progNombre, "Desc", new HashSet<>(), LocalDate.now(), LocalDate.now().plusMonths(2), LocalDate.now(), null));
+        String cursoNombre = "CursoParaAsocWeb";
+        String progNombre = "ProgAgregCursoWeb";
 
         when(request.getServletPath()).thenReturn("/programa");
         when(request.getParameter("nombre")).thenReturn(progNombre);
@@ -232,8 +242,11 @@ public class ProgramasServletTest {
         when(request.getParameter("curso")).thenReturn(cursoNombre);
         when(request.getSession(false)).thenReturn(session);
 
-        DataDocente docente = new DataDocente("docAgreg", "D", "A", "docagreg@test.com", LocalDate.of(1980, 1, 1), null, "INCO");
+        DataDocenteDTO docente = new DataDocenteDTO();
+        docente.setNickname("docAgreg");
+        docente.setTipo("Docente");
         when(session.getAttribute("usuarioLogueado")).thenReturn(docente);
+        when(progPort.agregarCursoAProgramaDeFormacion(progNombre, cursoNombre)).thenReturn(true);
 
         servlet.doPost(request, response);
 
@@ -247,7 +260,9 @@ public class ProgramasServletTest {
         when(request.getParameter("accion")).thenReturn("accionInexistente");
         when(request.getSession(false)).thenReturn(session);
 
-        DataDocente docente = new DataDocente("docInvalido", "D", "I", "doci@test.com", LocalDate.of(1980, 1, 1), null, "INCO");
+        DataDocenteDTO docente = new DataDocenteDTO();
+        docente.setNickname("docInvalido");
+        docente.setTipo("Docente");
         when(session.getAttribute("usuarioLogueado")).thenReturn(docente);
 
         servlet.doPost(request, response);

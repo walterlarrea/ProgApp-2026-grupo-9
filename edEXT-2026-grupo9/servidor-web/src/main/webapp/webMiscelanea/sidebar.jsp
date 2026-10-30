@@ -40,8 +40,8 @@
                     <c:when test="${not empty institutos}">
                         <c:forEach var="inst" items="${institutos}">
                             <li>
-                                <a class="corte-texto" href="${pageContext.request.contextPath}/instituto?nombre=${inst.nombreI()}">
-                                    <c:out value="${inst.nombreI()}"/>
+                                <a class="corte-texto" href="${pageContext.request.contextPath}/instituto?nombre=${inst.nombreI}">
+                                    <c:out value="${inst.nombreI}"/>
                                 </a>
                             </li>
                         </c:forEach>

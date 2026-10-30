@@ -1,4 +1,4 @@
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+﻿<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <!DOCTYPE html>
 <html lang="es">
@@ -68,8 +68,8 @@
                         <select id="instituto" name="instituto">
                             <option value="">Seleccione un instituto</option>
                             <c:forEach var="inst" items="${institutos}">
-                                <option value="${inst.nombreI()}" ${param.instituto eq inst.nombreI() ? 'selected' : ''}>
-                                    <c:out value="${inst.nombreI()}"/>
+                                <option value="${inst.nombreI}" ${param.instituto eq inst.nombreI ? 'selected' : ''}>
+                                    <c:out value="${inst.nombreI}"/>
                                 </option>
                             </c:forEach>
                         </select>

@@ -1,6 +1,6 @@
-<%@ page import="com.grupo9.edext.grupo9.servidor_central.dominio.DataUsuario" %>
+﻿<%@ page import="com.grupo9.edext.grupo9.servidor_web.web_service_client.usuario.DataUsuarioDTODTO" %>
 <%
-    DataUsuario usuarioLogueado = (DataUsuario) session.getAttribute("usuarioLogueado");
+    DataUsuarioDTO usuarioLogueado = (DataUsuarioDTO) session.getAttribute("usuarioLogueado");
     String userImgSrc = "";
     if (usuarioLogueado != null && usuarioLogueado.getImagen() != null && !usuarioLogueado.getImagen().trim().isEmpty()) {
         String img = usuarioLogueado.getImagen().trim();

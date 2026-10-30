@@ -1,0 +1,136 @@
+﻿<?xml version="1.0" encoding="UTF-8"?><!-- Published by XML-WS Runtime (https://github.com/eclipse-ee4j/metro-jax-ws). Runtime's version is XML-WS Runtime 4.0.3 git-revision#a57c222. --><xs:schema xmlns:tns="http://web_service.grupo9.edext.grupo9.com/" xmlns:xs="http://www.w3.org/2001/XMLSchema" version="1.0" targetNamespace="http://web_service.grupo9.edext.grupo9.com/">
+
+<xs:element name="ErrorRepetidos" type="tns:ErrorRepetidos"></xs:element>
+
+<xs:element name="buscarCurso" type="tns:buscarCurso"></xs:element>
+
+<xs:element name="buscarCursoResponse" type="tns:buscarCursoResponse"></xs:element>
+
+<xs:element name="consultarTodosLosCursos" type="tns:consultarTodosLosCursos"></xs:element>
+
+<xs:element name="consultarTodosLosCursosResponse" type="tns:consultarTodosLosCursosResponse"></xs:element>
+
+<xs:element name="cursosNoRelacionadosConUnProgDeFormacion" type="tns:cursosNoRelacionadosConUnProgDeFormacion"></xs:element>
+
+<xs:element name="cursosNoRelacionadosConUnProgDeFormacionResponse" type="tns:cursosNoRelacionadosConUnProgDeFormacionResponse"></xs:element>
+
+<xs:element name="cursosPorInstituto" type="tns:cursosPorInstituto"></xs:element>
+
+<xs:element name="cursosPorInstitutoResponse" type="tns:cursosPorInstitutoResponse"></xs:element>
+
+<xs:element name="existeCurso" type="tns:existeCurso"></xs:element>
+
+<xs:element name="existeCursoResponse" type="tns:existeCursoResponse"></xs:element>
+
+<xs:element name="guardarCurso" type="tns:guardarCurso"></xs:element>
+
+<xs:element name="guardarCursoResponse" type="tns:guardarCursoResponse"></xs:element>
+
+<xs:complexType name="buscarCurso">
+<xs:sequence>
+<xs:element name="nombre" type="xs:string" minOccurs="0"></xs:element>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="buscarCursoResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:DataCursoDTO" minOccurs="0"></xs:element>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="DataCursoDTO">
+<xs:sequence>
+<xs:element name="instituto" type="tns:DataInstitutoDTO" minOccurs="0"></xs:element>
+<xs:element name="nombreCurso" type="xs:string" minOccurs="0"></xs:element>
+<xs:element name="descCurso" type="xs:string" minOccurs="0"></xs:element>
+<xs:element name="duracion" type="xs:int"></xs:element>
+<xs:element name="cantHoras" type="xs:int"></xs:element>
+<xs:element name="cantCred" type="xs:int"></xs:element>
+<xs:element name="fechaReg" type="xs:string" minOccurs="0"></xs:element>
+<xs:element name="url" type="xs:string" minOccurs="0"></xs:element>
+<xs:element name="previas" type="xs:string" nillable="true" minOccurs="0" maxOccurs="unbounded"></xs:element>
+<xs:element name="programas" type="xs:string" nillable="true" minOccurs="0" maxOccurs="unbounded"></xs:element>
+<xs:element name="categorias" type="xs:string" nillable="true" minOccurs="0" maxOccurs="unbounded"></xs:element>
+<xs:element name="imagen" type="xs:string" minOccurs="0"></xs:element>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="DataInstitutoDTO">
+<xs:sequence>
+<xs:element name="nombreI" type="xs:string" minOccurs="0"></xs:element>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="consultarTodosLosCursos">
+<xs:sequence></xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="consultarTodosLosCursosResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:DataCursoDTO" minOccurs="0" maxOccurs="unbounded"></xs:element>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="guardarCurso">
+<xs:sequence>
+<xs:element name="nombreInst" type="xs:string" minOccurs="0"></xs:element>
+<xs:element name="nombre" type="xs:string" minOccurs="0"></xs:element>
+<xs:element name="desc" type="xs:string" minOccurs="0"></xs:element>
+<xs:element name="duracion" type="xs:int"></xs:element>
+<xs:element name="cantHoras" type="xs:int"></xs:element>
+<xs:element name="cantCred" type="xs:int"></xs:element>
+<xs:element name="fechaReg" type="xs:string" minOccurs="0"></xs:element>
+<xs:element name="url" type="xs:string" minOccurs="0"></xs:element>
+<xs:element name="previas" type="xs:string" minOccurs="0" maxOccurs="unbounded"></xs:element>
+<xs:element name="imagen" type="xs:string" minOccurs="0"></xs:element>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="guardarCursoResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:DataCursoDTO" minOccurs="0"></xs:element>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="ErrorRepetidos">
+<xs:sequence>
+<xs:element name="message" type="xs:string" minOccurs="0"></xs:element>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="cursosNoRelacionadosConUnProgDeFormacion">
+<xs:sequence>
+<xs:element name="idProgramaDeFormacion" type="xs:string" minOccurs="0"></xs:element>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="cursosNoRelacionadosConUnProgDeFormacionResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:DataCursoDTO" minOccurs="0" maxOccurs="unbounded"></xs:element>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="existeCurso">
+<xs:sequence>
+<xs:element name="nombre" type="xs:string" minOccurs="0"></xs:element>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="existeCursoResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:boolean"></xs:element>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="cursosPorInstituto">
+<xs:sequence>
+<xs:element name="nombreInstituto" type="xs:string" minOccurs="0"></xs:element>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="cursosPorInstitutoResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:DataCursoDTO" minOccurs="0" maxOccurs="unbounded"></xs:element>
+</xs:sequence>
+</xs:complexType>
+</xs:schema>

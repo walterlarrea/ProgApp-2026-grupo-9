@@ -1,4 +1,4 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+﻿<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <!DOCTYPE html>
 <html lang="es">
@@ -29,7 +29,7 @@
                 <fieldset>
                     <legend>Cursos del programa</legend>
                     <c:forEach var="curso" items="${cursos}">
-                        <label class="alta-checkbox"><input type="checkbox" name="cursos" value="${curso.nombreCurso()}"> <c:out value="${curso.nombreCurso()}"/></label>
+                        <label class="alta-checkbox"><input type="checkbox" name="cursos" value="${curso.nombreCurso}"> <c:out value="${curso.nombreCurso}"/></label>
                     </c:forEach>
                     <c:if test="${empty cursos}"><p>No hay cursos disponibles.</p></c:if>
                 </fieldset>

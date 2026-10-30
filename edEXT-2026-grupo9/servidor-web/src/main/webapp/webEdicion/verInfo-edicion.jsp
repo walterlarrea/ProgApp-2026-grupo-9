@@ -1,4 +1,4 @@
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+﻿<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <!DOCTYPE html>
 <html lang="es">
@@ -28,11 +28,11 @@
                 
                 <div class="hero-contenido">
                     <h1>${edicion.nombreEdi}</h1>
-                    <a class="corte-texto2" href="${pageContext.request.contextPath}/instituto?nombre=${edicion.cursoAsoc.instituto().nombreI()}">
-                        <h2>${edicion.cursoAsoc.instituto().nombreI()}</h2>
+                    <a class="corte-texto2" href="${pageContext.request.contextPath}/instituto?nombre=${edicion.cursoAsoc.instituto.nombreI}">
+                        <h2>${edicion.cursoAsoc.instituto.nombreI}</h2>
                     </a>
-                    <a class="corte-texto2" href="${pageContext.request.contextPath}/curso?nombre=${edicion.cursoAsoc.nombreCurso()}">
-                        <h3>${edicion.cursoAsoc.nombreCurso()}</h3>
+                    <a class="corte-texto2" href="${pageContext.request.contextPath}/curso?nombre=${edicion.cursoAsoc.nombreCurso}">
+                        <h3>${edicion.cursoAsoc.nombreCurso}</h3>
                     </a>
                 </div>
             </section>

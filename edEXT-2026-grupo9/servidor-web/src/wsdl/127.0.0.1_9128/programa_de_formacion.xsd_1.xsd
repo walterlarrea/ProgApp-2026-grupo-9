@@ -1,0 +1,152 @@
+﻿<?xml version="1.0" encoding="UTF-8"?><!-- Published by XML-WS Runtime (https://github.com/eclipse-ee4j/metro-jax-ws). Runtime's version is XML-WS Runtime 4.0.3 git-revision#a57c222. --><xs:schema xmlns:tns="http://web_service.grupo9.edext.grupo9.com/" xmlns:xs="http://www.w3.org/2001/XMLSchema" version="1.0" targetNamespace="http://web_service.grupo9.edext.grupo9.com/">
+
+<xs:element name="ErrorNoExiste" type="tns:ErrorNoExiste"></xs:element>
+
+<xs:element name="ErrorRepetidos" type="tns:ErrorRepetidos"></xs:element>
+
+<xs:element name="agregarCursoAProgramaDeFormacion" type="tns:agregarCursoAProgramaDeFormacion"></xs:element>
+
+<xs:element name="agregarCursoAProgramaDeFormacionResponse" type="tns:agregarCursoAProgramaDeFormacionResponse"></xs:element>
+
+<xs:element name="consultarTodosLosProgramas" type="tns:consultarTodosLosProgramas"></xs:element>
+
+<xs:element name="consultarTodosLosProgramasResponse" type="tns:consultarTodosLosProgramasResponse"></xs:element>
+
+<xs:element name="existeProgramaDeFormacion" type="tns:existeProgramaDeFormacion"></xs:element>
+
+<xs:element name="existeProgramaDeFormacionResponse" type="tns:existeProgramaDeFormacionResponse"></xs:element>
+
+<xs:element name="guardarProgramaDeFormacion" type="tns:guardarProgramaDeFormacion"></xs:element>
+
+<xs:element name="guardarProgramaDeFormacionResponse" type="tns:guardarProgramaDeFormacionResponse"></xs:element>
+
+<xs:element name="inscribirEstudianteEnPrograma" type="tns:inscribirEstudianteEnPrograma"></xs:element>
+
+<xs:element name="inscribirEstudianteEnProgramaResponse" type="tns:inscribirEstudianteEnProgramaResponse"></xs:element>
+
+<xs:element name="traerPorNombreId" type="tns:traerPorNombreId"></xs:element>
+
+<xs:element name="traerPorNombreIdResponse" type="tns:traerPorNombreIdResponse"></xs:element>
+
+<xs:complexType name="inscribirEstudianteEnPrograma">
+<xs:sequence>
+<xs:element name="fechaInsc" type="xs:string" minOccurs="0"></xs:element>
+<xs:element name="nickname" type="xs:string" minOccurs="0"></xs:element>
+<xs:element name="nombrePrograma" type="xs:string" minOccurs="0"></xs:element>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="inscribirEstudianteEnProgramaResponse">
+<xs:sequence></xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="ErrorRepetidos">
+<xs:sequence>
+<xs:element name="message" type="xs:string" minOccurs="0"></xs:element>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="ErrorNoExiste">
+<xs:sequence>
+<xs:element name="message" type="xs:string" minOccurs="0"></xs:element>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="agregarCursoAProgramaDeFormacion">
+<xs:sequence>
+<xs:element name="nombreIdPrograma" type="xs:string" minOccurs="0"></xs:element>
+<xs:element name="nombreIdCurso" type="xs:string" minOccurs="0"></xs:element>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="agregarCursoAProgramaDeFormacionResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:boolean"></xs:element>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="traerPorNombreId">
+<xs:sequence>
+<xs:element name="nombreId" type="xs:string" minOccurs="0"></xs:element>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="traerPorNombreIdResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:DataProgramaFormacionDTO" minOccurs="0"></xs:element>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="DataProgramaFormacionDTO">
+<xs:sequence>
+<xs:element name="nombre" type="xs:string" minOccurs="0"></xs:element>
+<xs:element name="descripcion" type="xs:string" minOccurs="0"></xs:element>
+<xs:element name="cursos" type="tns:DataCursoDTO" nillable="true" minOccurs="0" maxOccurs="unbounded"></xs:element>
+<xs:element name="fechaInicio" type="xs:string" minOccurs="0"></xs:element>
+<xs:element name="fechaFin" type="xs:string" minOccurs="0"></xs:element>
+<xs:element name="fechaDeCreacion" type="xs:string" minOccurs="0"></xs:element>
+<xs:element name="imagen" type="xs:string" minOccurs="0"></xs:element>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="DataCursoDTO">
+<xs:sequence>
+<xs:element name="instituto" type="tns:DataInstitutoDTO" minOccurs="0"></xs:element>
+<xs:element name="nombreCurso" type="xs:string" minOccurs="0"></xs:element>
+<xs:element name="descCurso" type="xs:string" minOccurs="0"></xs:element>
+<xs:element name="duracion" type="xs:int"></xs:element>
+<xs:element name="cantHoras" type="xs:int"></xs:element>
+<xs:element name="cantCred" type="xs:int"></xs:element>
+<xs:element name="fechaReg" type="xs:string" minOccurs="0"></xs:element>
+<xs:element name="url" type="xs:string" minOccurs="0"></xs:element>
+<xs:element name="previas" type="xs:string" nillable="true" minOccurs="0" maxOccurs="unbounded"></xs:element>
+<xs:element name="programas" type="xs:string" nillable="true" minOccurs="0" maxOccurs="unbounded"></xs:element>
+<xs:element name="categorias" type="xs:string" nillable="true" minOccurs="0" maxOccurs="unbounded"></xs:element>
+<xs:element name="imagen" type="xs:string" minOccurs="0"></xs:element>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="DataInstitutoDTO">
+<xs:sequence>
+<xs:element name="nombreI" type="xs:string" minOccurs="0"></xs:element>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="consultarTodosLosProgramas">
+<xs:sequence></xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="consultarTodosLosProgramasResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:DataProgramaFormacionDTO" minOccurs="0" maxOccurs="unbounded"></xs:element>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="existeProgramaDeFormacion">
+<xs:sequence>
+<xs:element name="nombre" type="xs:string" minOccurs="0"></xs:element>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="existeProgramaDeFormacionResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:boolean"></xs:element>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="guardarProgramaDeFormacion">
+<xs:sequence>
+<xs:element name="nombre" type="xs:string" minOccurs="0"></xs:element>
+<xs:element name="descripcion" type="xs:string" minOccurs="0"></xs:element>
+<xs:element name="fechaInicio" type="xs:string" minOccurs="0"></xs:element>
+<xs:element name="fechaFin" type="xs:string" minOccurs="0"></xs:element>
+<xs:element name="imagen" type="xs:string" minOccurs="0"></xs:element>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="guardarProgramaDeFormacionResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:DataProgramaFormacionDTO" minOccurs="0"></xs:element>
+</xs:sequence>
+</xs:complexType>
+</xs:schema>

@@ -1,14 +1,16 @@
 package com.grupo9.edext.grupo9.servidor_web.servlets.usuario;
 
-import com.grupo9.edext.grupo9.interfaces.IServidorCentral;
-import com.grupo9.edext.grupo9.miscelanea.Fabrica;
-import com.grupo9.edext.grupo9.servidor_central.dominio.DataUsuario;
+import com.grupo9.edext.grupo9.servidor_web.soap.SoapClientFactory;
+import com.grupo9.edext.grupo9.servidor_web.web_service_client.usuario.DataUsuarioDTO;
+import com.grupo9.edext.grupo9.servidor_web.web_service_client.usuario.UsuarioWebService;
+
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+
 import java.io.IOException;
 
 @WebServlet("/seguir-usuario")
@@ -18,7 +20,7 @@ public class SeguirUsuarioServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession(false);
-        DataUsuario usuarioLogueado = (session != null) ? (DataUsuario) session.getAttribute("usuarioLogueado") : null;
+        DataUsuarioDTO usuarioLogueado = (session != null) ? (DataUsuarioDTO) session.getAttribute("usuarioLogueado") : null;
 
         if (usuarioLogueado == null) {
             response.sendRedirect(request.getContextPath() + "/login");
@@ -29,15 +31,16 @@ public class SeguirUsuarioServlet extends HttpServlet {
         String accion = request.getParameter("accion");
 
         if (targetNick != null && !targetNick.trim().isEmpty()) {
-            IServidorCentral servidorCentral = Fabrica.getInstance().getIServidorCentral();
+            UsuarioWebService usuarioPort = SoapClientFactory.getInstance().getUsuarioPort();
             try {
-                if ("dejar".equalsIgnoreCase(accion)) {
-                    servidorCentral.dejarDeSeguirUsuario(usuarioLogueado.getNickname(), targetNick.trim());
-                } else {
-                    servidorCentral.seguirUsuario(usuarioLogueado.getNickname(), targetNick.trim());
+                if (usuarioPort != null) {
+                    if ("dejar".equalsIgnoreCase(accion)) {
+                        usuarioPort.dejarDeSeguirUsuario(usuarioLogueado.getNickname(), targetNick.trim());
+                    } else {
+                        usuarioPort.seguirUsuario(usuarioLogueado.getNickname(), targetNick.trim());
+                    }
                 }
-            } catch (Exception e) {
-                // Registrar o ignorar error
+            } catch (Exception ignored) {
             }
         }
 

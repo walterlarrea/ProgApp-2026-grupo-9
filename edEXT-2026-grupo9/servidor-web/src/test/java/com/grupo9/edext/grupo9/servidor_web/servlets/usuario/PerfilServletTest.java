@@ -1,22 +1,25 @@
 package com.grupo9.edext.grupo9.servidor_web.servlets.usuario;
 
-import com.grupo9.edext.grupo9.interfaces.IServidorCentral;
-import com.grupo9.edext.grupo9.miscelanea.Fabrica;
-import com.grupo9.edext.grupo9.servidor_central.dominio.DataDocente;
-import com.grupo9.edext.grupo9.servidor_central.dominio.DataEstudiante;
-import com.grupo9.edext.grupo9.servidor_central.dominio.DataProgramaFormacion;
-import com.grupo9.edext.grupo9.servidor_central.dominio.DataUsuario;
+import com.grupo9.edext.grupo9.servidor_web.soap.SoapClientFactory;
+import com.grupo9.edext.grupo9.servidor_web.web_service_client.curso.CursoWebService;
+import com.grupo9.edext.grupo9.servidor_web.web_service_client.instituto.InstitutoWebService;
+import com.grupo9.edext.grupo9.servidor_web.web_service_client.usuario.DataDocenteDTO;
+import com.grupo9.edext.grupo9.servidor_web.web_service_client.usuario.DataEstudianteDTO;
+import com.grupo9.edext.grupo9.servidor_web.web_service_client.usuario.DataInscProgramaDTO;
+import com.grupo9.edext.grupo9.servidor_web.web_service_client.usuario.DataUsuarioDTO;
+import com.grupo9.edext.grupo9.servidor_web.web_service_client.usuario.UsuarioWebService;
+
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.time.LocalDate;
 import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.Collections;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -24,7 +27,10 @@ import static org.mockito.Mockito.*;
 public class PerfilServletTest {
 
     private PerfilServlet servlet;
-    private IServidorCentral servidor;
+    private UsuarioWebService usuarioPort;
+    private InstitutoWebService instPort;
+    private CursoWebService cursoPort;
+
     private HttpServletRequest request;
     private HttpServletResponse response;
     private HttpSession session;
@@ -33,7 +39,14 @@ public class PerfilServletTest {
     @BeforeEach
     public void setUp() {
         servlet = new PerfilServlet();
-        servidor = Fabrica.getInstance().getIServidorCentral();
+        usuarioPort = mock(UsuarioWebService.class);
+        instPort = mock(InstitutoWebService.class);
+        cursoPort = mock(CursoWebService.class);
+
+        SoapClientFactory.getInstance().setUsuarioPort(usuarioPort);
+        SoapClientFactory.getInstance().setInstitutoPort(instPort);
+        SoapClientFactory.getInstance().setCursoPort(cursoPort);
+
         request = mock(HttpServletRequest.class);
         response = mock(HttpServletResponse.class);
         session = mock(HttpSession.class);
@@ -54,18 +67,18 @@ public class PerfilServletTest {
 
     @Test
     public void testDoGetEstudianteConInscripciones() throws Exception {
-        String sufijo = Long.toString(System.currentTimeMillis());
-        String nick = "estPerfil_" + sufijo;
-        String prog = "ProgPerfil_" + sufijo;
+        String nick = "estPerfil";
+        DataEstudianteDTO estudiante = new DataEstudianteDTO();
+        estudiante.setNickname(nick);
+        estudiante.setTipo("Estudiante");
 
-        servidor.registrarEstudiante(nick, "Est", "Perfil", nick + "@test.com", LocalDate.of(2000, 1, 1), null);
-        servidor.guardarProgramaDeFormacion(new DataProgramaFormacion(
-                prog, "Desc", new HashSet<>(), LocalDate.now(), LocalDate.now().plusMonths(2), LocalDate.now(), null));
-        servidor.inscribirseAPrograma(LocalDate.now(), nick, prog);
+        DataInscProgramaDTO insc = new DataInscProgramaDTO();
+        insc.setProgramaNombre("ProgPerfil");
+        estudiante.getInscripcionesProgramas().add(insc);
 
-        DataUsuario usuario = servidor.consultarUsuario(nick);
         when(request.getSession(false)).thenReturn(session);
-        when(session.getAttribute("usuarioLogueado")).thenReturn(usuario);
+        when(session.getAttribute("usuarioLogueado")).thenReturn(estudiante);
+        when(usuarioPort.consultarUsuario(nick)).thenReturn(estudiante);
 
         servlet.doGet(request, response);
 
@@ -82,20 +95,18 @@ public class PerfilServletTest {
 
     @Test
     public void testDoGetDocenteInscripcionesVacias() throws Exception {
-        String sufijo = Long.toString(System.currentTimeMillis());
-        String instNombre = "InstPerfilDoc_" + sufijo;
-        servidor.guardarInstituto(new com.grupo9.edext.grupo9.servidor_central.dominio.DataInstituto(instNombre));
+        String nick = "docPerfil";
+        DataDocenteDTO docente = new DataDocenteDTO();
+        docente.setNickname(nick);
+        docente.setTipo("Docente");
 
-        String nick = "docPerfil_" + sufijo;
-        servidor.registrarDocente(nick, "Doc", "Perfil", nick + "@test.com", LocalDate.of(1980, 1, 1), null, instNombre);
-
-        DataUsuario usuario = servidor.consultarUsuario(nick);
         when(request.getSession(false)).thenReturn(session);
-        when(session.getAttribute("usuarioLogueado")).thenReturn(usuario);
+        when(session.getAttribute("usuarioLogueado")).thenReturn(docente);
+        when(usuarioPort.consultarUsuario(nick)).thenReturn(docente);
 
         servlet.doGet(request, response);
 
-        verify(request).setAttribute(eq("inscripcionesProgramas"), eq(java.util.Collections.emptySet()));
+        verify(request).setAttribute(eq("inscripcionesProgramas"), eq(Collections.emptyList()));
         verify(request).getRequestDispatcher("/webUsuario/perfil.jsp");
         verify(dispatcher).forward(request, response);
     }

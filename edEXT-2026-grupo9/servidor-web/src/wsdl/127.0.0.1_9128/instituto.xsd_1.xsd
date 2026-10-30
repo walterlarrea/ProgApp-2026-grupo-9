@@ -1,0 +1,70 @@
+﻿<?xml version="1.0" encoding="UTF-8"?><!-- Published by XML-WS Runtime (https://github.com/eclipse-ee4j/metro-jax-ws). Runtime's version is XML-WS Runtime 4.0.3 git-revision#a57c222. --><xs:schema xmlns:tns="http://web_service.grupo9.edext.grupo9.com/" xmlns:xs="http://www.w3.org/2001/XMLSchema" version="1.0" targetNamespace="http://web_service.grupo9.edext.grupo9.com/">
+
+<xs:element name="buscarInstituto" type="tns:buscarInstituto"></xs:element>
+
+<xs:element name="buscarInstitutoResponse" type="tns:buscarInstitutoResponse"></xs:element>
+
+<xs:element name="consultarTodosLosInstitutos" type="tns:consultarTodosLosInstitutos"></xs:element>
+
+<xs:element name="consultarTodosLosInstitutosResponse" type="tns:consultarTodosLosInstitutosResponse"></xs:element>
+
+<xs:element name="existeInstituto" type="tns:existeInstituto"></xs:element>
+
+<xs:element name="existeInstitutoResponse" type="tns:existeInstitutoResponse"></xs:element>
+
+<xs:element name="guardarInstituto" type="tns:guardarInstituto"></xs:element>
+
+<xs:element name="guardarInstitutoResponse" type="tns:guardarInstitutoResponse"></xs:element>
+
+<xs:complexType name="guardarInstituto">
+<xs:sequence>
+<xs:element name="nombre" type="xs:string" minOccurs="0"></xs:element>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="guardarInstitutoResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:DataInstitutoDTO" minOccurs="0"></xs:element>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="DataInstitutoDTO">
+<xs:sequence>
+<xs:element name="nombreI" type="xs:string" minOccurs="0"></xs:element>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="buscarInstituto">
+<xs:sequence>
+<xs:element name="nombre" type="xs:string" minOccurs="0"></xs:element>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="buscarInstitutoResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:DataInstitutoDTO" minOccurs="0"></xs:element>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="consultarTodosLosInstitutos">
+<xs:sequence></xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="consultarTodosLosInstitutosResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:DataInstitutoDTO" minOccurs="0" maxOccurs="unbounded"></xs:element>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="existeInstituto">
+<xs:sequence>
+<xs:element name="nombre" type="xs:string" minOccurs="0"></xs:element>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="existeInstitutoResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:boolean"></xs:element>
+</xs:sequence>
+</xs:complexType>
+</xs:schema>

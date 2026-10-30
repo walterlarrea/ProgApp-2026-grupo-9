@@ -1,4 +1,4 @@
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+﻿<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <!DOCTYPE html>
 <html lang="es">
@@ -19,31 +19,31 @@
         <main class="main-content">
             <section class="hero-banner">
                 <div class="hero-imagen">
-                    <img src="${pageContext.request.contextPath}/imagenes/curso/${curso.imagen()}" alt="Imagen del curso"
+                    <img src="${pageContext.request.contextPath}/imagenes/curso/${curso.imagen}" alt="Imagen del curso"
                         onerror="this.onerror=null; this.src='${pageContext.request.contextPath}/imagenes/curso/curso-placeholder.jpg';">
                 </div>
 
                 <div class="hero-contenido">
-                    <h1>${curso.nombreCurso()}</h1>
-                    <p>${curso.descCurso()}</p>
+                    <h1>${curso.nombreCurso}</h1>
+                    <p>${curso.descCurso}</p>
                 </div>
             </section>
                 <div class="dato-space">
                     <h4>Instituto</h4> 
                     <div class="nav-list">
-                        <a href="${pageContext.request.contextPath}/instituto?nombre=${curso.instituto().nombreI()}">
-                            <p>${curso.instituto().nombreI()}</p>
+                        <a href="${pageContext.request.contextPath}/instituto?nombre=${curso.instituto.nombreI}">
+                            <p>${curso.instituto.nombreI}</p>
                         </a>
                     </div>
                 </div>
                 <div class="dato-space">
-                    <h4>Créditos</h4> <p class="detalle">${curso.cantCred()}</p>
+                    <h4>Créditos</h4> <p class="detalle">${curso.cantCred}</p>
                 </div>
                 <div class="dato-space">
-                    <h4>Cantidad de horas</h4> <p class="detalle">${curso.cantHoras()}</p>
+                    <h4>Cantidad de horas</h4> <p class="detalle">${curso.cantHoras}</p>
                 </div>
                 <div class="dato-space">
-                    <h4>Duración</h4> <p class="detalle">${curso.duracion()} semanas</p>
+                    <h4>Duración</h4> <p class="detalle">${curso.duracion} semanas</p>
                 </div>
                 <div class="dato-space">
                     
@@ -54,8 +54,8 @@
                     <c:when test="${not empty previas}">
                         <c:forEach var="prev" items="${previas}">
                             <li>
-                                <a href="${pageContext.request.contextPath}/curso?nombre=${prev.nombreCurso()}">
-                                    <c:out value="${prev.nombreCurso()}"/>
+                                <a href="${pageContext.request.contextPath}/curso?nombre=${prev.nombreCurso}">
+                                    <c:out value="${prev.nombreCurso}"/>
                                 </a>
                             </li>
                         </c:forEach>
@@ -66,7 +66,7 @@
                 </c:choose>
             </ol>
                 <div class="dato-space">
-                    <h4>URL</h4> <p class="detalle">${curso.url()}</p>
+                    <h4>URL</h4> <p class="detalle">${curso.url}</p>
                 </div>
             <div class="dato-space">
             <h2>Ediciones</h2> 

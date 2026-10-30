@@ -1,237 +1,184 @@
 package com.grupo9.edext.grupo9.servidor_web.servlets.entidad;
 
-import com.grupo9.edext.grupo9.interfaces.IServidorCentral;
-import com.grupo9.edext.grupo9.miscelanea.Fabrica;
-import com.grupo9.edext.grupo9.servidor_central.dominio.DataCurso;
-import com.grupo9.edext.grupo9.servidor_central.dominio.DataDocente;
-import com.grupo9.edext.grupo9.servidor_central.dominio.DataEdicionCurso;
-import com.grupo9.edext.grupo9.servidor_central.dominio.DataInscEdicion;
-import com.grupo9.edext.grupo9.servidor_central.dominio.DataInstituto;
-import com.grupo9.edext.grupo9.mensajes.*;
+import com.grupo9.edext.grupo9.servidor_web.soap.SoapClientFactory;
+import com.grupo9.edext.grupo9.servidor_web.web_service_client.curso.CursoWebService;
+import com.grupo9.edext.grupo9.servidor_web.web_service_client.curso.DataCursoDTO;
+import com.grupo9.edext.grupo9.servidor_web.web_service_client.edicion_de_curso.DataDocenteDTO;
+import com.grupo9.edext.grupo9.servidor_web.web_service_client.edicion_de_curso.DataEdicionCursoDTO;
+import com.grupo9.edext.grupo9.servidor_web.web_service_client.edicion_de_curso.DataInscEdicionDTO;
+import com.grupo9.edext.grupo9.servidor_web.web_service_client.edicion_de_curso.EdicionDeCursoWebService;
+import com.grupo9.edext.grupo9.servidor_web.web_service_client.edicion_de_curso.ErrorRepetidos_Exception;
+import com.grupo9.edext.grupo9.servidor_web.web_service_client.instituto.DataInstitutoDTO;
+import com.grupo9.edext.grupo9.servidor_web.web_service_client.instituto.InstitutoWebService;
+
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.http.Part;
-import java.time.LocalDate;
-import java.io.IOException;
-import java.util.Collections;
-import java.util.Set;
-import java.util.HashSet;
-import java.io.File;
 
-//para ver detalles de la edición
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 @MultipartConfig
 @WebServlet(name = "EdicionCursoServlet", urlPatterns = {"/edicionCurso"})
 public class EdicionCursoServlet extends HttpServlet {
-    IServidorCentral servidorCentral = Fabrica.getInstance().getIServidorCentral();
-    //sidebar (en todo momento)
-    Set<DataInstituto> institutos = Collections.emptySet();
-    Set<DataCurso> cursos = Collections.emptySet();
-    String estadoDb = "Conectado al Servidor Central";
-    //exclusivo edición
-    Set<DataEdicionCurso> ediciones = Collections.emptySet();
-    DataDocente[] docentes = new DataDocente[0];
-    Set<DataInscEdicion> inscriptos = Collections.emptySet();
-    LocalDate fechaReg = LocalDate.now();
-        
+
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException { 
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String nombre = request.getParameter("nombre");
         String accion = request.getParameter("accion");
         String nombreInst = request.getParameter("instituto");
-        String nombreCurso = request.getParameter("curso");
-        DataEdicionCurso edicion = null;
-        DataInstituto instituto = null;
-        
-        
-        if ("alta".equals(accion)) { //si voy a dar de alta una edición
+
+        List<DataInstitutoDTO> institutos = Collections.emptyList();
+        List<DataCursoDTO> cursos = Collections.emptyList();
+        List<DataDocenteDTO> docentes = Collections.emptyList();
+        List<DataInscEdicionDTO> inscriptos = Collections.emptyList();
+        DataEdicionCursoDTO edicion = null;
+        String estadoDb = "Conectado al Servidor Central";
+
+        InstitutoWebService instPort = SoapClientFactory.getInstance().getInstitutoPort();
+        CursoWebService cursoPort = SoapClientFactory.getInstance().getCursoPort();
+        EdicionDeCursoWebService edicionPort = SoapClientFactory.getInstance().getEdicionCursoPort();
+
+        if ("alta".equals(accion)) {
             try {
-                if(servidorCentral != null){
-                    institutos = servidorCentral.consultarTodosLosInstitutos();
-
-                    if(nombreInst != null && !nombreInst.isBlank()){
-                        instituto = servidorCentral.buscarInstituto(nombreInst);
-
-                        if(instituto != null){
-                            cursos = servidorCentral.cursosPorInstituto(nombreInst);
-                            docentes = servidorCentral.traerDocentes(instituto);
-                        }else{
-                            cursos = Collections.emptySet();
-                            docentes = new DataDocente[0];
-                        }
-                    }else{
-                        cursos = Collections.emptySet();
-                        docentes = new DataDocente[0];
+                if (instPort != null) {
+                    institutos = instPort.consultarTodosLosInstitutos();
+                }
+                if (nombreInst != null && !nombreInst.isBlank()) {
+                    if (cursoPort != null) {
+                        cursos = cursoPort.cursosPorInstituto(nombreInst);
+                    }
+                    if (edicionPort != null) {
+                        docentes = edicionPort.traerDocentesPorInstituto(nombreInst);
                     }
                 }
-            }catch (Exception e){
-                estadoDb = "Error al cargar cursos y docentes: " + e.getMessage();e.printStackTrace();
+            } catch (Exception e) {
+                estadoDb = "Error al cargar cursos y docentes: " + e.getMessage();
             }
 
             request.setAttribute("institutos", institutos);
             request.setAttribute("cursos", cursos);
             request.setAttribute("docentes", docentes);
+            request.setAttribute("estadoDb", estadoDb);
 
             request.getRequestDispatcher("/webEdicion/alta-edicion.jsp").forward(request, response);
             return;
         }
-        
-        //continúo por acá si sólo es consulta
+
         try {
-            if (servidorCentral != null) {
-                edicion = servidorCentral.consultarUnaEdicionCurso(nombre);
-                institutos = servidorCentral.consultarTodosLosInstitutos();
-                cursos = servidorCentral.consultarTodosLosCursos();
+            if (instPort != null) {
+                institutos = instPort.consultarTodosLosInstitutos();
+            }
+            if (cursoPort != null) {
+                cursos = cursoPort.consultarTodosLosCursos();
+            }
+            if (edicionPort != null && nombre != null && !nombre.isBlank()) {
+                edicion = edicionPort.consultarUnaEdicionCurso(nombre);
                 if (edicion != null) {
-                    docentes = servidorCentral.buscarDocentes(edicion);
-                    inscriptos = servidorCentral.buscarInscriptos(edicion);
+                    docentes = edicionPort.buscarDocentesEdicion(nombre);
+                    inscriptos = edicionPort.buscarInscriptosEdicion(nombre);
                 }
-            } 
+            }
         } catch (Exception e) {
             estadoDb = "Servidor Central activo (sin conexión a base de datos o vacía: " + e.getMessage() + ")";
-            getServletContext().log("No se pudo cargar la edición de curso: " + nombre, e);
             request.setAttribute("errorCarga", "No fue posible cargar los datos de la edición solicitada.");
         }
-               
+
         request.setAttribute("edicion", edicion);
         request.setAttribute("institutos", institutos);
         request.setAttribute("cursos", cursos);
         request.setAttribute("docentes", docentes);
         request.setAttribute("inscriptos", inscriptos);
+        request.setAttribute("estadoDb", estadoDb);
 
         request.getRequestDispatcher("/webEdicion/verInfo-edicion.jsp").forward(request, response);
     }
-        
-    
-    //para alta de edición
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String nombreEdi = request.getParameter("nombreEdi");
         String nombreCurso = request.getParameter("curso");
         String nombreInst = request.getParameter("instituto");
         String[] nombresDocentes = request.getParameterValues("docentes");
-        LocalDate fInicio = LocalDate.parse(request.getParameter("fInicio"));
-        LocalDate fFin = LocalDate.parse(request.getParameter("fFin"));
+        String fInicio = request.getParameter("fInicio");
+        String fFin = request.getParameter("fFin");
         String cupoParam = request.getParameter("cupo");
         Part imagenPart = request.getPart("imagen");
-        
+
         String imagen = "edicion-placeholder.jpg";
-        DataInstituto instituto = null;
-        DataDocente[] docentes = null;
-        Set<DataDocente> docentesSeleccionados = new HashSet<>();
-        Set<DataCurso> cursos = null;
-        DataCurso dataCurso = null;
         Integer cupo = (cupoParam == null || cupoParam.isBlank()) ? null : Integer.valueOf(cupoParam);
-        
-        try{
-            if(servidorCentral != null){
-                instituto = servidorCentral.buscarInstituto(nombreInst);
-                docentes = servidorCentral.traerDocentes(instituto);
-                cursos = servidorCentral.cursosPorInstituto(nombreInst);
-                //buscar un curso asociado
-                for (DataCurso curso : cursos) {
-                    if (curso.nombreCurso().equals(nombreCurso)) {
-                        dataCurso = curso;
-                        break;
-                    }
-                }
-            }
-        }catch (Exception e){
-            estadoDb = "Servidor Central activo (sin conexión a base de datos o vacía: " + e.getMessage() + ")";
-        }
-        
-        //seleccionar docentes...
-        if(nombresDocentes != null){
-            for(String nickname : nombresDocentes){
-                for(DataDocente docente : docentes){
-                    if(docente.getNickname().equals(nickname)){
-                        docentesSeleccionados.add(docente);
-                        break;
-                    }
-                }
-            }
-        }
-        
-        //procesar/guardar imagen
+
         if (imagenPart != null && imagenPart.getSize() > 0) {
             imagen = imagenPart.getSubmittedFileName();
             String rutaUploads = getServletContext().getRealPath("/imagenes/edicionCurso");
             File carpeta = new File(rutaUploads);
-
             if (!carpeta.exists()) {
                 carpeta.mkdirs();
             }
             imagenPart.write(rutaUploads + File.separator + imagen);
         }
-        
+
+        EdicionDeCursoWebService edicionPort = SoapClientFactory.getInstance().getEdicionCursoPort();
+        InstitutoWebService instPort = SoapClientFactory.getInstance().getInstitutoPort();
+        CursoWebService cursoPort = SoapClientFactory.getInstance().getCursoPort();
+
         if (nombresDocentes == null || nombresDocentes.length == 0) {
             request.setAttribute("error", "Debe seleccionar al menos un docente.");
-            try {
-                if (servidorCentral != null) {
-                    institutos = servidorCentral.consultarTodosLosInstitutos();
-
-                    if (nombreInst != null && !nombreInst.isBlank()) {
-                        instituto = servidorCentral.buscarInstituto(nombreInst);
-                        docentes = servidorCentral.traerDocentes(instituto);
-                        cursos = servidorCentral.cursosPorInstituto(nombreInst);
-                    }
-                }
-            } catch (Exception e) {
-                throw new ServletException("Error al recargar los datos del formulario.", e);
-            }
-
-            request.setAttribute("institutos", institutos);
-            request.setAttribute("docentes", docentes);
-            request.setAttribute("cursos", cursos);
-            
+            cargarDatosFormulario(request, instPort, cursoPort, edicionPort, nombreInst);
             request.getRequestDispatcher("/webEdicion/alta-edicion.jsp").forward(request, response);
             return;
         }
-        
+
         try {
-            if (servidorCentral.existeEdicionCurso(nombreEdi)) {
-                throw new ErrorRepetidos("Ya existe una edición con ese nombre.");
+            if (edicionPort == null) {
+                throw new ServletException("Servicio de ediciones no disponible");
             }
-            //registrar edición...
-            DataEdicionCurso nuevaEdicion = new DataEdicionCurso(nombreEdi, dataCurso, fInicio, fFin, cupo, docentesSeleccionados, new HashSet<>(), fechaReg, imagen);
-            servidorCentral.guardarEdicionCurso(nuevaEdicion);
-            request.getSession().setAttribute("mensajeExito","😎");
-            //vuekvo al menú principal..
+            if (edicionPort.existeEdicionCurso(nombreEdi)) {
+                throw new ErrorRepetidos_Exception("Ya existe una edición con ese nombre.", null);
+            }
+
+            List<String> docsList = Arrays.asList(nombresDocentes);
+            edicionPort.guardarEdicionCurso(nombreEdi, nombreCurso, fInicio, fFin, cupo, docsList, imagen);
+            request.getSession().setAttribute("mensajeExito", "😎");
             response.sendRedirect(request.getContextPath() + "/home");
-        }catch(ErrorRepetidos e){
+        } catch (ErrorRepetidos_Exception e) {
             request.setAttribute("error", e.getMessage());
             request.setAttribute("nombreEdi", nombreEdi);
             request.setAttribute("cursoSeleccionado", nombreCurso);
             request.setAttribute("institutoSeleccionado", nombreInst);
-            request.setAttribute("fInicio", request.getParameter("fInicio"));
-            request.setAttribute("fFin", request.getParameter("fFin"));
+            request.setAttribute("fInicio", fInicio);
+            request.setAttribute("fFin", fFin);
             request.setAttribute("cupo", cupoParam);
-            request.setAttribute("docentesSeleccionados", docentesSeleccionados);
-            //cargo los datos de nuevo si tirar error, en caso de que el nombre ya exista
-            cargarDatosFormulario(request, nombreInst);
+
+            cargarDatosFormulario(request, instPort, cursoPort, edicionPort, nombreInst);
             request.getRequestDispatcher("/webEdicion/alta-edicion.jsp").forward(request, response);
         }
     }
-    
-    private void cargarDatosFormulario( HttpServletRequest request, String nombreInst) throws ServletException {
+
+    private void cargarDatosFormulario(HttpServletRequest request, InstitutoWebService instPort,
+                                       CursoWebService cursoPort, EdicionDeCursoWebService edicionPort,
+                                       String nombreInst) {
         try {
-            if (servidorCentral != null) {
-                institutos = servidorCentral.consultarTodosLosInstitutos();
-                request.setAttribute("institutos", institutos);
-
-                if (nombreInst != null && !nombreInst.isBlank()) {
-                    DataInstituto instituto = servidorCentral.buscarInstituto(nombreInst);
-
-                    request.setAttribute("docentes",servidorCentral.traerDocentes(instituto));
-
-                    request.setAttribute("cursos", servidorCentral.cursosPorInstituto(nombreInst));
+            if (instPort != null) {
+                request.setAttribute("institutos", instPort.consultarTodosLosInstitutos());
+            }
+            if (nombreInst != null && !nombreInst.isBlank()) {
+                if (edicionPort != null) {
+                    request.setAttribute("docentes", edicionPort.traerDocentesPorInstituto(nombreInst));
+                }
+                if (cursoPort != null) {
+                    request.setAttribute("cursos", cursoPort.cursosPorInstituto(nombreInst));
                 }
             }
-        } catch (Exception e) {
-            throw new ServletException("Error al recargar los datos del formulario.", e);
+        } catch (Exception ignored) {
         }
     }
 }

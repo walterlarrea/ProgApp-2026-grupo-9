@@ -1,9 +1,10 @@
 package com.grupo9.edext.grupo9.servidor_web.servlets;
 
-import com.grupo9.edext.grupo9.interfaces.IServidorCentral;
-import com.grupo9.edext.grupo9.miscelanea.Fabrica;
-import com.grupo9.edext.grupo9.servidor_central.dominio.DataCurso;
-import com.grupo9.edext.grupo9.servidor_central.dominio.DataInstituto;
+import com.grupo9.edext.grupo9.servidor_web.soap.SoapClientFactory;
+import com.grupo9.edext.grupo9.servidor_web.web_service_client.curso.CursoWebService;
+import com.grupo9.edext.grupo9.servidor_web.web_service_client.curso.DataCursoDTO;
+import com.grupo9.edext.grupo9.servidor_web.web_service_client.instituto.DataInstitutoDTO;
+import com.grupo9.edext.grupo9.servidor_web.web_service_client.instituto.InstitutoWebService;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -13,22 +14,25 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 import java.util.Collections;
-import java.util.Set;
+import java.util.List;
 
 @WebServlet(name = "HomeServlet", urlPatterns = {"/home", ""})
 public class HomeServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        Set<DataInstituto> institutos = Collections.emptySet();
-        Set<DataCurso> cursos = Collections.emptySet();
+        List<DataInstitutoDTO> institutos = Collections.emptyList();
+        List<DataCursoDTO> cursos = Collections.emptyList();
         String estadoDb = "Conectado al Servidor Central";
 
         try {
-            IServidorCentral servidorCentral = Fabrica.getInstance().getIServidorCentral();
-            if (servidorCentral != null) {
-                institutos = servidorCentral.consultarTodosLosInstitutos();
-                cursos = servidorCentral.consultarTodosLosCursos();
+            InstitutoWebService instPort = SoapClientFactory.getInstance().getInstitutoPort();
+            CursoWebService cursoPort = SoapClientFactory.getInstance().getCursoPort();
+            if (instPort != null) {
+                institutos = instPort.consultarTodosLosInstitutos();
+            }
+            if (cursoPort != null) {
+                cursos = cursoPort.consultarTodosLosCursos();
             }
         } catch (Exception e) {
             estadoDb = "Servidor Central activo (sin conexión a base de datos o vacía: " + e.getMessage() + ")";

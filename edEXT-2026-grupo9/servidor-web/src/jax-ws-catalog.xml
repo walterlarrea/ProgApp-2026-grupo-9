@@ -1,5 +1,20 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog" prefer="system">
-    <system systemId="http://127.0.0.1:9128/servidor-central?wsdl" uri="wsdl/127.0.0.1_9128/servidor-central.wsdl"/>
-    <system systemId="http://127.0.0.1:9128/servidor-central?xsd=1" uri="wsdl/127.0.0.1_9128/servidor-central.xsd_1.xsd"/>
+    <system systemId="http://127.0.0.1:9128/programa_de_formacion?wsdl" uri="wsdl/127.0.0.1_9128/programa_de_formacion.wsdl"/>
+    <system systemId="http://127.0.0.1:9128/programa_de_formacion?xsd=1" uri="wsdl/127.0.0.1_9128/programa_de_formacion.xsd_1.xsd"/>
+
+    <system systemId="http://127.0.0.1:9128/curso?wsdl" uri="wsdl/127.0.0.1_9128/curso.wsdl"/>
+    <system systemId="http://127.0.0.1:9128/curso?xsd=1" uri="wsdl/127.0.0.1_9128/curso.xsd_1.xsd"/>
+
+    <system systemId="http://127.0.0.1:9128/edicion_de_curso?wsdl" uri="wsdl/127.0.0.1_9128/edicion_de_curso.wsdl"/>
+    <system systemId="http://127.0.0.1:9128/edicion_de_curso?xsd=1" uri="wsdl/127.0.0.1_9128/edicion_de_curso.xsd_1.xsd"/>
+
+    <system systemId="http://127.0.0.1:9128/instituto?wsdl" uri="wsdl/127.0.0.1_9128/instituto.wsdl"/>
+    <system systemId="http://127.0.0.1:9128/instituto?xsd=1" uri="wsdl/127.0.0.1_9128/instituto.xsd_1.xsd"/>
+
+    <system systemId="http://127.0.0.1:9128/usuario?wsdl" uri="wsdl/127.0.0.1_9128/usuario.wsdl"/>
+    <system systemId="http://127.0.0.1:9128/usuario?xsd=1" uri="wsdl/127.0.0.1_9128/usuario.xsd_1.xsd"/>
+
+    <system systemId="http://127.0.0.1:9128/busqueda?wsdl" uri="wsdl/127.0.0.1_9128/busqueda.wsdl"/>
+    <system systemId="http://127.0.0.1:9128/busqueda?xsd=1" uri="wsdl/127.0.0.1_9128/busqueda.xsd_1.xsd"/>
 </catalog>

@@ -1,8 +1,9 @@
 package com.grupo9.edext.grupo9.servidor_web.servlets.usuario;
 
-import com.grupo9.edext.grupo9.miscelanea.Fabrica;
-import com.grupo9.edext.grupo9.servidor_central.dominio.DataUsuario;
-import com.grupo9.edext.grupo9.mensajes.ErrorNoExiste;
+import com.grupo9.edext.grupo9.servidor_web.soap.SoapClientFactory;
+import com.grupo9.edext.grupo9.servidor_web.web_service_client.usuario.DataUsuarioDTO;
+import com.grupo9.edext.grupo9.servidor_web.web_service_client.usuario.ErrorNoExiste_Exception;
+import com.grupo9.edext.grupo9.servidor_web.web_service_client.usuario.UsuarioWebService;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -10,6 +11,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+
 import java.io.IOException;
 
 @WebServlet("/login")
@@ -31,12 +33,16 @@ public class LoginServlet extends HttpServlet {
             return;
         }
 
+        UsuarioWebService usuarioPort = SoapClientFactory.getInstance().getUsuarioPort();
         try {
-            DataUsuario usuario = Fabrica.getInstance().getIServidorCentral().iniciarSesion(nicknameOEmail.trim(), password.trim());
+            if (usuarioPort == null) {
+                throw new ServletException("Servicio de usuarios no disponible");
+            }
+            DataUsuarioDTO usuario = usuarioPort.iniciarSesion(nicknameOEmail.trim(), password.trim());
             HttpSession session = request.getSession(true);
             session.setAttribute("usuarioLogueado", usuario);
             response.sendRedirect(request.getContextPath() + "/home");
-        } catch (ErrorNoExiste e) {
+        } catch (ErrorNoExiste_Exception e) {
             request.setAttribute("error", e.getMessage());
             request.getRequestDispatcher("/webUsuario/login.jsp").forward(request, response);
         } catch (Exception e) {

@@ -1,23 +1,27 @@
 package com.grupo9.edext.grupo9.servidor_web.servlets.usuario;
 
-import com.grupo9.edext.grupo9.interfaces.IServidorCentral;
-import com.grupo9.edext.grupo9.mensajes.ErrorNoExiste;
-import com.grupo9.edext.grupo9.mensajes.ErrorRepetidos;
-import com.grupo9.edext.grupo9.miscelanea.Fabrica;
-import com.grupo9.edext.grupo9.servidor_central.dominio.DataCurso;
-import com.grupo9.edext.grupo9.servidor_central.dominio.DataInstituto;
-import com.grupo9.edext.grupo9.servidor_central.dominio.DataUsuario;
+import com.grupo9.edext.grupo9.servidor_web.soap.SoapClientFactory;
+import com.grupo9.edext.grupo9.servidor_web.web_service_client.curso.CursoWebService;
+import com.grupo9.edext.grupo9.servidor_web.web_service_client.curso.DataCursoDTO;
+import com.grupo9.edext.grupo9.servidor_web.web_service_client.instituto.DataInstitutoDTO;
+import com.grupo9.edext.grupo9.servidor_web.web_service_client.instituto.InstitutoWebService;
+import com.grupo9.edext.grupo9.servidor_web.web_service_client.usuario.DataUsuarioDTO;
+import com.grupo9.edext.grupo9.servidor_web.web_service_client.usuario.ErrorNoExiste_Exception;
+import com.grupo9.edext.grupo9.servidor_web.web_service_client.usuario.ErrorRepetidos_Exception;
+import com.grupo9.edext.grupo9.servidor_web.web_service_client.usuario.UsuarioWebService;
+
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.Collections;
-import java.util.Set;
+import java.util.List;
 
 @WebServlet("/usuario")
 public class UsuarioServlet extends HttpServlet {
@@ -34,27 +38,44 @@ public class UsuarioServlet extends HttpServlet {
             return;
         }
 
+        UsuarioWebService usuarioPort = SoapClientFactory.getInstance().getUsuarioPort();
+        InstitutoWebService instPort = SoapClientFactory.getInstance().getInstitutoPort();
+        CursoWebService cursoPort = SoapClientFactory.getInstance().getCursoPort();
+
         try {
-            IServidorCentral servidorCentral = Fabrica.getInstance().getIServidorCentral();
-            DataUsuario usuarioConsultado = servidorCentral.consultarUsuario(nickname.trim());
+            if (usuarioPort == null) {
+                throw new ServletException("Servicio de usuarios no disponible");
+            }
+            DataUsuarioDTO usuarioConsultado = usuarioPort.consultarUsuario(nickname.trim());
             HttpSession session = request.getSession(false);
-            DataUsuario usuarioLogueado = (session != null) ? (DataUsuario) session.getAttribute("usuarioLogueado") : null;
+            DataUsuarioDTO usuarioLogueado = (session != null) ? (DataUsuarioDTO) session.getAttribute("usuarioLogueado") : null;
             boolean propio = usuarioLogueado != null && nickname.trim().equals(usuarioLogueado.getNickname());
-            boolean siguiendo = usuarioLogueado != null && !propio
-                    && servidorCentral.estaSiguiendoUsuario(usuarioLogueado.getNickname(), nickname.trim());
+            boolean siguiendo = false;
+            if (usuarioLogueado != null && !propio) {
+                try {
+                    siguiendo = usuarioPort.estaSiguiendoUsuario(usuarioLogueado.getNickname(), nickname.trim());
+                } catch (Exception ignored) {
+                }
+            }
 
             request.setAttribute("usuario", usuarioConsultado);
             request.setAttribute("propio", propio);
             request.setAttribute("siguiendo", siguiendo);
             request.setAttribute("loSigue", siguiendo);
 
-            Set<DataInstituto> institutos = servidorCentral.consultarTodosLosInstitutos();
-            Set<DataCurso> cursos = servidorCentral.consultarTodosLosCursos();
-            request.setAttribute("institutos", institutos != null ? institutos : Collections.emptySet());
-            request.setAttribute("cursos", cursos != null ? cursos : Collections.emptySet());
+            List<DataInstitutoDTO> institutos = Collections.emptyList();
+            List<DataCursoDTO> cursos = Collections.emptyList();
+            if (instPort != null) {
+                institutos = instPort.consultarTodosLosInstitutos();
+            }
+            if (cursoPort != null) {
+                cursos = cursoPort.consultarTodosLosCursos();
+            }
+            request.setAttribute("institutos", institutos != null ? institutos : Collections.emptyList());
+            request.setAttribute("cursos", cursos != null ? cursos : Collections.emptyList());
 
             request.getRequestDispatcher("/webUsuario/verInfo-usuario.jsp").forward(request, response);
-        } catch (ErrorNoExiste e) {
+        } catch (ErrorNoExiste_Exception e) {
             response.sendError(HttpServletResponse.SC_NOT_FOUND, e.getMessage());
         } catch (Exception e) {
             throw new ServletException("No se pudo consultar el usuario.", e);
@@ -65,7 +86,7 @@ public class UsuarioServlet extends HttpServlet {
     public void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession(false);
-        DataUsuario seguidor = (session == null) ? null : (DataUsuario) session.getAttribute("usuarioLogueado");
+        DataUsuarioDTO seguidor = (session == null) ? null : (DataUsuarioDTO) session.getAttribute("usuarioLogueado");
         if (seguidor == null) {
             response.sendRedirect(request.getContextPath() + "/login");
             return;
@@ -80,18 +101,21 @@ public class UsuarioServlet extends HttpServlet {
             return;
         }
 
+        UsuarioWebService usuarioPort = SoapClientFactory.getInstance().getUsuarioPort();
         try {
-            IServidorCentral servidor = Fabrica.getInstance().getIServidorCentral();
+            if (usuarioPort == null) {
+                throw new ServletException("Servicio de usuarios no disponible");
+            }
             if ("seguir".equals(accion)) {
-                servidor.seguirUsuario(seguidor.getNickname(), seguido);
+                usuarioPort.seguirUsuario(seguidor.getNickname(), seguido);
             } else if ("dejar".equals(accion)) {
-                servidor.dejarDeSeguirUsuario(seguidor.getNickname(), seguido);
+                usuarioPort.dejarDeSeguirUsuario(seguidor.getNickname(), seguido);
             } else {
                 response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Acción no válida.");
                 return;
             }
             response.sendRedirect(destino + "&mensaje=" + URLEncoder.encode("Seguimiento actualizado.", StandardCharsets.UTF_8));
-        } catch (ErrorRepetidos | ErrorNoExiste e) {
+        } catch (ErrorRepetidos_Exception | ErrorNoExiste_Exception e) {
             response.sendRedirect(destino + "&error=" + URLEncoder.encode(e.getMessage(), StandardCharsets.UTF_8));
         } catch (Exception e) {
             throw new ServletException("No se pudo actualizar el seguimiento.", e);
