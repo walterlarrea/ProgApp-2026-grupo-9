@@ -162,111 +162,54 @@ VALUES
 	('Talleres plenarios - 2026', 'danny'),
 	('Seminarios de Resolución de Problemas - 2026', 'timmy');
 
-INSERT INTO `inscripciones_a_ediciones` (`fechaInscE`, `estudiane_nickname`, `edicion_nombreEdi`)
+INSERT INTO `inscripciones_a_ediciones` (`fechaInscE`, `estudiane_nickname`, `edicion_nombreEdi`, `estado`)
 VALUES
-	('2010-02-20', 'eleven11', 'Flor del Ceibo - 2010'),
-	('2010-02-25', 'chechi', 'Flor del Ceibo - 2010'),
-	('2012-07-12', 'costas', 'Flor del Ceibo - 2012'),
-	('2012-07-15', 'roro', 'Flor del Ceibo - 2012'),
-	('2012-07-30', 'weiss', 'Flor del Ceibo - 2012'),
-	('2025-03-10', 'roro', 'Flor del Ceibo - 2025'),
-	('2025-03-15', 'jeffw', 'Flor del Ceibo - 2025'),
-	('2024-07-25', 'chechi', 'Dalavuelta - 2025'),
-	('2024-07-28', 'eleven11', 'Dalavuelta - 2025'),
-	('2024-08-02', 'roro', 'Dalavuelta - 2025'),
-	('2024-08-10', 'costas', 'Dalavuelta - 2025'),
-	('2024-08-15', 'jeffw', 'Dalavuelta - 2025'),
-	('2025-07-18', 'costas', 'Extensionismo Industrial - 2025'),
-	('2025-07-20', 'chechi', 'Extensionismo Industrial - 2025'),
-	('2025-07-29', 'eleven11', 'Extensionismo Industrial - 2025'),
-	('2025-08-05', 'weiss', 'Extensionismo Industrial - 2025'),
-	('2026-02-23', 'roro', 'Inclusión Energética - 2026'),
-	('2026-02-25', 'weiss', 'Inclusión Energética - 2026'),
-	('2026-02-28', 'chechi', 'Inclusión Energética - 2026'),
-	('2026-03-03', 'eleven11', 'Inclusión Energética - 2026'),
-	('2017-02-18', 'weiss', 'Taller de robótica educativa - 2024'),
-	('2024-02-20', 'roro', 'Taller de robótica educativa - 2024'),
-	('2024-03-03', 'eleven11', 'Taller de robótica educativa - 2024'),
-	('2024-03-05', 'chechi', 'Taller de robótica educativa - 2024'),
-	('2026-02-18', 'jeffw', 'Taller de robótica educativa - 2026'),
-	('2026-02-22', 'costas', 'Taller de robótica educativa - 2026'),
-	('2026-08-18', 'weiss', 'Taller de robótica educativa - 2026-2'),
-	('2026-08-22', 'chechi', 'Taller de robótica educativa - 2026-2'),
-	('2026-09-03', 'roro', 'Taller de robótica educativa - 2026-2'),
-	('2026-07-13', 'chechi', 'Participación en investigación sobre el empleo del juego Komikan como recurso didáctico en la Escuela - 2026'),
-	('2026-07-20', 'weiss', 'Participación en investigación sobre el empleo del juego Komikan como recurso didáctico en la Escuela - 2026'),
-	('2026-07-22', 'roro', 'Participación en investigación sobre el empleo del juego Komikan como recurso didáctico en la Escuela - 2026'),
-	('2026-06-04', 'weiss', 'Herramientas de apoyo a la enseñanza de inglés. Instalación y evaluación - 26'),
-	('2026-07-18', 'eleven11', 'Herramientas de apoyo a la enseñanza de inglés. Instalación y evaluación - 26'),
-	('2026-08-20', 'jeffw', 'Herramientas de apoyo a la enseñanza de inglés. Instalación y evaluación - 26'),
-	('2026-07-12', 'chechi', 'MicroBit - 2026'),
-	('2026-07-14', 'roro', 'MicroBit - 2026'),
-	('2026-07-25', 'eleven11', 'MicroBit - 2026'),
-	('2026-08-05', 'jeffw', 'MicroBit - 2026'),
-	('2026-03-05', 'costas', 'Talleres plenarios - 2026'),
-	('2026-03-04', 'weiss', 'Talleres plenarios - 2026'),
-	('2026-03-07', 'roro', 'Talleres plenarios - 2026'),
-	('2026-07-15', 'weiss', 'Seminarios de Resolución de Problemas - 2026'),
-	('2026-07-20', 'costas', 'Seminarios de Resolución de Problemas - 2026'),
-	('2026-08-06', 'roro', 'Seminarios de Resolución de Problemas - 2026'),
-	('2026-08-30', 'chechi', 'Seminarios de Resolución de Problemas - 2026');
-
-UPDATE `inscripciones_a_ediciones`
-SET `fechaInscE` = CASE
-	WHEN `edicion_nombreEdi` = 'Flor del Ceibo - 2010' AND `estudiane_nickname` = 'eleven11' THEN '2017-02-20'
-	WHEN `edicion_nombreEdi` = 'Flor del Ceibo - 2010' AND `estudiane_nickname` = 'chechi' THEN '2017-02-25'
-	WHEN `edicion_nombreEdi` = 'Flor del Ceibo - 2012' AND `estudiane_nickname` = 'costas' THEN '2019-07-12'
-	WHEN `edicion_nombreEdi` = 'Flor del Ceibo - 2012' AND `estudiane_nickname` = 'roro' THEN '2019-07-15'
-	WHEN `edicion_nombreEdi` = 'Flor del Ceibo - 2012' AND `estudiane_nickname` = 'weiss' THEN '2019-07-30'
-	WHEN `edicion_nombreEdi` = 'Taller de robótica educativa - 2024' AND `estudiane_nickname` = 'weiss' THEN '2024-02-18'
-	ELSE `fechaInscE`
-END;
-
-UPDATE `inscripciones_a_ediciones`
-SET `estado` = 'ACEPTADA'
-WHERE (`edicion_nombreEdi`, `estudiane_nickname`) IN (
-	('Flor del Ceibo - 2010', 'eleven11'), ('Flor del Ceibo - 2010', 'chechi'),
-	('Flor del Ceibo - 2012', 'costas'), ('Flor del Ceibo - 2012', 'weiss'),
-	('Flor del Ceibo - 2025', 'roro'), ('Flor del Ceibo - 2025', 'jeffw'),
-	('Dalavuelta - 2025', 'chechi'), ('Dalavuelta - 2025', 'roro'), ('Dalavuelta - 2025', 'costas'),
-	('Extensionismo Industrial - 2025', 'costas'), ('Extensionismo Industrial - 2025', 'chechi'),
-	('Extensionismo Industrial - 2025', 'eleven11'), ('Extensionismo Industrial - 2025', 'weiss'),
-	('Inclusión Energética - 2026', 'roro'), ('Inclusión Energética - 2026', 'chechi'),
-	('Taller de robótica educativa - 2024', 'eleven11'),
-	('Taller de robótica educativa - 2026', 'jeffw'), ('Taller de robótica educativa - 2026', 'costas'),
-	('Participación en investigación sobre el empleo del juego Komikan como recurso didáctico en la Escuela - 2026', 'chechi'),
-	('Participación en investigación sobre el empleo del juego Komikan como recurso didáctico en la Escuela - 2026', 'weiss'),
-	('Participación en investigación sobre el empleo del juego Komikan como recurso didáctico en la Escuela - 2026', 'roro'),
-	('Talleres plenarios - 2026', 'weiss'), ('Talleres plenarios - 2026', 'roro'),
-	('Seminarios de Resolución de Problemas - 2026', 'weiss'),
-	('Seminarios de Resolución de Problemas - 2026', 'roro')
-);
-
-UPDATE `inscripciones_a_ediciones`
-SET `estado` = 'RECHAZADA'
-WHERE (`edicion_nombreEdi`, `estudiane_nickname`) IN (
-	('Flor del Ceibo - 2012', 'roro'),
-	('Dalavuelta - 2025', 'eleven11'), ('Dalavuelta - 2025', 'jeffw'),
-	('Inclusión Energética - 2026', 'weiss'), ('Inclusión Energética - 2026', 'eleven11'),
-	('Taller de robótica educativa - 2024', 'weiss'), ('Taller de robótica educativa - 2024', 'roro'),
-	('Taller de robótica educativa - 2026', 'roro'),
-	('Talleres plenarios - 2026', 'costas'),
-	('Seminarios de Resolución de Problemas - 2026', 'costas'),
-	('Seminarios de Resolución de Problemas - 2026', 'chechi')
-);
-
-UPDATE `inscripciones_a_ediciones`
-SET `estado` = 'INSCRIPTO'
-WHERE (`edicion_nombreEdi`, `estudiane_nickname`) IN (
-	('Taller de robótica educativa - 2026-2', 'weiss'),
-	('Taller de robótica educativa - 2026-2', 'chechi'),
-	('Taller de robótica educativa - 2026-2', 'roro'),
-	('Herramientas de apoyo a la enseñanza de inglés. Instalación y evaluación - 26', 'weiss'),
-	('Herramientas de apoyo a la enseñanza de inglés. Instalación y evaluación - 26', 'eleven11'),
-	('Herramientas de apoyo a la enseñanza de inglés. Instalación y evaluación - 26', 'jeffw'),
-	('MicroBit - 2026', 'chechi'), ('MicroBit - 2026', 'roro'),
-	('MicroBit - 2026', 'eleven11'), ('MicroBit - 2026', 'jeffw')
-);
+	('2017-02-20', 'eleven11', 'Flor del Ceibo - 2010', 'ACEPTADA'),
+	('2017-02-25', 'chechi', 'Flor del Ceibo - 2010', 'ACEPTADA'),
+	('2019-07-12', 'costas', 'Flor del Ceibo - 2012', 'ACEPTADA'),
+	('2019-07-15', 'roro', 'Flor del Ceibo - 2012', 'RECHAZADA'),
+	('2019-07-30', 'weiss', 'Flor del Ceibo - 2012', 'ACEPTADA'),
+	('2025-03-10', 'roro', 'Flor del Ceibo - 2025', 'ACEPTADA'),
+	('2025-03-15', 'jeffw', 'Flor del Ceibo - 2025', 'ACEPTADA'),
+	('2024-07-25', 'chechi', 'Dalavuelta - 2025', 'ACEPTADA'),
+	('2024-07-28', 'eleven11', 'Dalavuelta - 2025', 'RECHAZADA'),
+	('2024-08-02', 'roro', 'Dalavuelta - 2025', 'ACEPTADA'),
+	('2024-08-10', 'costas', 'Dalavuelta - 2025', 'ACEPTADA'),
+	('2024-08-15', 'jeffw', 'Dalavuelta - 2025', 'RECHAZADA'),
+	('2025-07-18', 'costas', 'Extensionismo Industrial - 2025', 'ACEPTADA'),
+	('2025-07-20', 'chechi', 'Extensionismo Industrial - 2025', 'ACEPTADA'),
+	('2025-07-29', 'eleven11', 'Extensionismo Industrial - 2025', 'ACEPTADA'),
+	('2025-08-05', 'weiss', 'Extensionismo Industrial - 2025', 'ACEPTADA'),
+	('2026-02-23', 'roro', 'Inclusión Energética - 2026', 'ACEPTADA'),
+	('2026-02-25', 'weiss', 'Inclusión Energética - 2026', 'RECHAZADA'),
+	('2026-02-28', 'chechi', 'Inclusión Energética - 2026', 'ACEPTADA'),
+	('2026-03-03', 'eleven11', 'Inclusión Energética - 2026', 'RECHAZADA'),
+	('2024-02-18', 'weiss', 'Taller de robótica educativa - 2024', 'RECHAZADA'),
+	('2024-02-20', 'roro', 'Taller de robótica educativa - 2024', 'RECHAZADA'),
+	('2024-03-03', 'eleven11', 'Taller de robótica educativa - 2024', 'ACEPTADA'),
+	('2024-03-05', 'chechi', 'Taller de robótica educativa - 2024', 'RECHAZADA'),
+	('2026-02-18', 'jeffw', 'Taller de robótica educativa - 2026', 'ACEPTADA'),
+	('2026-02-22', 'costas', 'Taller de robótica educativa - 2026', 'ACEPTADA'),
+	('2026-08-18', 'weiss', 'Taller de robótica educativa - 2026-2', 'INSCRIPTO'),
+	('2026-08-22', 'chechi', 'Taller de robótica educativa - 2026-2', 'INSCRIPTO'),
+	('2026-09-03', 'roro', 'Taller de robótica educativa - 2026-2', 'INSCRIPTO'),
+	('2026-07-13', 'chechi', 'Participación en investigación sobre el empleo del juego Komikan como recurso didáctico en la Escuela - 2026', 'ACEPTADA'),
+	('2026-07-20', 'weiss', 'Participación en investigación sobre el empleo del juego Komikan como recurso didáctico en la Escuela - 2026', 'ACEPTADA'),
+	('2026-07-22', 'roro', 'Participación en investigación sobre el empleo del juego Komikan como recurso didáctico en la Escuela - 2026', 'ACEPTADA'),
+	('2026-06-04', 'weiss', 'Herramientas de apoyo a la enseñanza de inglés. Instalación y evaluación - 26', 'INSCRIPTO'),
+	('2026-07-18', 'eleven11', 'Herramientas de apoyo a la enseñanza de inglés. Instalación y evaluación - 26', 'INSCRIPTO'),
+	('2026-08-20', 'jeffw', 'Herramientas de apoyo a la enseñanza de inglés. Instalación y evaluación - 26', 'INSCRIPTO'),
+	('2026-07-12', 'chechi', 'MicroBit - 2026', 'INSCRIPTO'),
+	('2026-07-14', 'roro', 'MicroBit - 2026', 'INSCRIPTO'),
+	('2026-07-25', 'eleven11', 'MicroBit - 2026', 'INSCRIPTO'),
+	('2026-08-05', 'jeffw', 'MicroBit - 2026', 'INSCRIPTO'),
+	('2026-03-05', 'costas', 'Talleres plenarios - 2026', 'RECHAZADA'),
+	('2026-03-04', 'weiss', 'Talleres plenarios - 2026', 'ACEPTADA'),
+	('2026-03-07', 'roro', 'Talleres plenarios - 2026', 'ACEPTADA'),
+	('2026-07-15', 'weiss', 'Seminarios de Resolución de Problemas - 2026', 'ACEPTADA'),
+	('2026-07-20', 'costas', 'Seminarios de Resolución de Problemas - 2026', 'RECHAZADA'),
+	('2026-08-06', 'roro', 'Seminarios de Resolución de Problemas - 2026', 'ACEPTADA'),
+	('2026-08-30', 'chechi', 'Seminarios de Resolución de Problemas - 2026', 'RECHAZADA');
 
 INSERT INTO `programas_de_formacion` (`nombre`, `descripcion`, `fechaInicio`, `fechaFin`, `fechaDeCreacion`, `imagen`)
 VALUES
