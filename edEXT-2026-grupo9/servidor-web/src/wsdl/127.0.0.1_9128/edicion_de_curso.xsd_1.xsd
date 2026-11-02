@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="UTF-8"?><!-- Published by XML-WS Runtime (https://github.com/eclipse-ee4j/metro-jax-ws). Runtime's version is XML-WS Runtime 4.0.3 git-revision#a57c222. --><xs:schema xmlns:tns="http://web_service.grupo9.edext.grupo9.com/" xmlns:xs="http://www.w3.org/2001/XMLSchema" version="1.0" targetNamespace="http://web_service.grupo9.edext.grupo9.com/">
+<?xml version="1.0" encoding="UTF-8"?><!-- Published by XML-WS Runtime (https://github.com/eclipse-ee4j/metro-jax-ws). Runtime's version is XML-WS Runtime 4.0.3 git-revision#a57c222. --><xs:schema xmlns:tns="http://web_service.grupo9.edext.grupo9.com/" xmlns:xs="http://www.w3.org/2001/XMLSchema" version="1.0" targetNamespace="http://web_service.grupo9.edext.grupo9.com/">
 
 <xs:element name="ErrorEstadoInvalido" type="tns:ErrorEstadoInvalido"></xs:element>
 
@@ -41,6 +41,18 @@
 <xs:element name="traerEdicionesPorCurso" type="tns:traerEdicionesPorCurso"></xs:element>
 
 <xs:element name="traerEdicionesPorCursoResponse" type="tns:traerEdicionesPorCursoResponse"></xs:element>
+
+<xs:element name="obtenerEdicionVigente" type="tns:obtenerEdicionVigente"></xs:element>
+
+<xs:element name="obtenerEdicionVigenteResponse" type="tns:obtenerEdicionVigenteResponse"></xs:element>
+
+<xs:element name="registrarCalificacion" type="tns:registrarCalificacion"></xs:element>
+
+<xs:element name="registrarCalificacionResponse" type="tns:registrarCalificacionResponse"></xs:element>
+
+<xs:element name="cerrarEdicionCurso" type="tns:cerrarEdicionCurso"></xs:element>
+
+<xs:element name="cerrarEdicionCursoResponse" type="tns:cerrarEdicionCursoResponse"></xs:element>
 
 <xs:complexType name="traerDocentesPorInstituto">
 <xs:sequence>
@@ -121,6 +133,7 @@
 <xs:element name="docentes" type="xs:string" nillable="true" minOccurs="0" maxOccurs="unbounded"></xs:element>
 <xs:element name="fechaPub" type="xs:string" minOccurs="0"></xs:element>
 <xs:element name="imagen" type="xs:string" minOccurs="0"></xs:element>
+<xs:element name="cerrada" type="xs:boolean" minOccurs="0"></xs:element>
 </xs:sequence>
 </xs:complexType>
 
@@ -207,6 +220,7 @@
 <xs:element name="estudiante" type="tns:DataEstudianteDTO" minOccurs="0"></xs:element>
 <xs:element name="edicion" type="xs:string" minOccurs="0"></xs:element>
 <xs:element name="estado" type="tns:estadoInscripcion" minOccurs="0"></xs:element>
+<xs:element name="nota" type="xs:int" minOccurs="0"></xs:element>
 </xs:sequence>
 </xs:complexType>
 
@@ -219,6 +233,40 @@
 </xs:complexType>
 
 <xs:complexType name="cambiarEstadoInscripcionResponse">
+<xs:sequence></xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="obtenerEdicionVigente">
+<xs:sequence>
+<xs:element name="nombreCurso" type="xs:string" minOccurs="0"></xs:element>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="obtenerEdicionVigenteResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:DataEdicionCursoDTO" minOccurs="0"></xs:element>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="registrarCalificacion">
+<xs:sequence>
+<xs:element name="nombreEdicion" type="xs:string" minOccurs="0"></xs:element>
+<xs:element name="nicknameEstudiante" type="xs:string" minOccurs="0"></xs:element>
+<xs:element name="nota" type="xs:int" minOccurs="0"></xs:element>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="registrarCalificacionResponse">
+<xs:sequence></xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="cerrarEdicionCurso">
+<xs:sequence>
+<xs:element name="nombreEdicion" type="xs:string" minOccurs="0"></xs:element>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="cerrarEdicionCursoResponse">
 <xs:sequence></xs:sequence>
 </xs:complexType>
 
