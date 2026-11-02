@@ -1,4 +1,4 @@
-﻿<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <%@ taglib prefix="fn" uri="jakarta.tags.functions" %>
 <!DOCTYPE html>
@@ -34,13 +34,13 @@
                 </div>
             </c:if>
 
-            <!-- Formulario de Selección: Instituto y Curso -->
+            <!-- Formulario de Selección: Instituto, Curso y Edición -->
             <form action="${pageContext.request.contextPath}/evaluacionDocente" method="get">
                 <div class="dato-space">
                     <label for="instituto"><strong>Instituto:</strong></label>
                     <br>
                     <select id="instituto" name="instituto" style="width: 35%; padding: 6px; margin-top: 4px;"
-                            onchange="var curso = this.form.elements.namedItem('curso'); if (curso) curso.value = ''; this.form.submit();">
+                            onchange="var curso = this.form.elements.namedItem('curso'); var edicion = this.form.elements.namedItem('edicion'); if (curso) curso.value = ''; if (edicion) edicion.value = ''; this.form.submit();">
                         <option value="">-- Seleccione un instituto --</option>
                         <c:forEach var="inst" items="${institutos}">
                             <option value="${fn:escapeXml(inst.nombreI)}"
@@ -55,7 +55,8 @@
                     <div class="dato-space">
                         <label for="curso"><strong>Curso:</strong></label>
                         <br>
-                        <select id="curso" name="curso" style="width: 35%; padding: 6px; margin-top: 4px;" onchange="this.form.submit();">
+                        <select id="curso" name="curso" style="width: 35%; padding: 6px; margin-top: 4px;"
+                                onchange="var edicion = this.form.elements.namedItem('edicion'); if (edicion) edicion.value = ''; this.form.submit();">
                             <option value="">-- Seleccione un curso --</option>
                             <c:forEach var="c" items="${cursos}">
                                 <option value="${fn:escapeXml(c.nombreCurso)}"
@@ -66,50 +67,61 @@
                         </select>
                     </div>
                 </c:if>
+
+                <c:if test="${not empty param.curso}">
+                    <div class="dato-space">
+                        <label for="edicion"><strong>Edición del curso:</strong></label>
+                        <br>
+                        <select id="edicion" name="edicion" style="width: 35%; padding: 6px; margin-top: 4px;" onchange="this.form.submit();">
+                            <option value="">-- Seleccione una edición --</option>
+                            <c:forEach var="ed" items="${ediciones}">
+                                <option value="${fn:escapeXml(ed.nombreEdi)}"
+                                    ${(param.edicion eq ed.nombreEdi or param.nombreEdi eq ed.nombreEdi) ? 'selected' : ''}>
+                                    <c:out value="${ed.nombreEdi}"/> -
+                                    <c:out value="${ed.fechaInicio}"/> a
+                                    <c:out value="${ed.fechaFin}"/>
+                                </option>
+                            </c:forEach>
+                        </select>
+                    </div>
+                </c:if>
             </form>
 
-            <!-- Datos de la Edición Vigente -->
-            <c:if test="${not empty param.curso}">
+            <!-- Datos de la Edición Seleccionada -->
+            <c:if test="${not empty edicionSeleccionada}">
+                <section class="dato-space" style="background: #f8fafc; padding: 16px; border-radius: 8px; border: 1px solid #e2e8f0;">
+                    <h2 style="margin-bottom: 0.5rem; color: #1e293b;">
+                        Edición: <c:out value="${edicionSeleccionada.nombreEdi}"/>
+                    </h2>
+                    <p><strong>Curso:</strong> <c:out value="${edicionSeleccionada.cursoAsoc.nombreCurso}"/></p>
+                    <p><strong>Período:</strong> <c:out value="${edicionSeleccionada.fechaInicio}"/> al <c:out value="${edicionSeleccionada.fechaFin}"/></p>
+                    <p><strong>Cupo:</strong> <c:out value="${edicionSeleccionada.cupo != null ? edicionSeleccionada.cupo : 'Sin límite'}"/></p>
+                    <p><strong>Estado del curso:</strong>
+                        <c:choose>
+                            <c:when test="${edicionCerrada}">
+                                <span id="badgeEstadoCurso" class="badge" style="background-color: #ef4444; color: white; padding: 3px 8px; border-radius: 4px;">CERRADA</span>
+                            </c:when>
+                            <c:otherwise>
+                                <span id="badgeEstadoCurso" class="badge" style="background-color: #10b981; color: white; padding: 3px 8px; border-radius: 4px;">ABIERTA</span>
+                            </c:otherwise>
+                        </c:choose>
+                    </p>
+                </section>
+
                 <c:choose>
-                    <c:when test="${empty edicionVigente}">
-                        <div class="alerta-info dato-space">
-                            <p><strong>Aviso:</strong> No existe una edición vigente asociada al curso <em><c:out value="${param.curso}"/></em>.</p>
+                    <c:when test="${!docenteParticipa}">
+                        <div class="alerta-info dato-space" style="background: #fef2f2; border-color: #fecaca; color: #991b1b;">
+                            <p>Usted no figura como docente asignado a esta edición de curso. Solo los docentes participantes pueden registrar evaluaciones.</p>
                         </div>
                     </c:when>
 
                     <c:otherwise>
-                        <section class="dato-space" style="background: #f8fafc; padding: 16px; border-radius: 8px; border: 1px solid #e2e8f0;">
-                            <h2 style="margin-bottom: 0.5rem; color: #1e293b;">
-                                Edición Vigente: <c:out value="${edicionVigente.nombreEdi}"/>
-                            </h2>
-                            <p><strong>Curso:</strong> <c:out value="${edicionVigente.cursoAsoc.nombreCurso}"/></p>
-                            <p><strong>Período:</strong> <c:out value="${edicionVigente.fechaInicio}"/> al <c:out value="${edicionVigente.fechaFin}"/></p>
-                            <p><strong>Cupo:</strong> <c:out value="${edicionVigente.cupo != null ? edicionVigente.cupo : 'Sin límite'}"/></p>
-                            <p><strong>Estado del curso:</strong>
-                                <c:choose>
-                                    <c:when test="${edicionCerrada}">
-                                        <span id="badgeEstadoCurso" class="badge" style="background-color: #ef4444; color: white; padding: 3px 8px; border-radius: 4px;">CERRADA</span>
-                                    </c:when>
-                                    <c:otherwise>
-                                        <span id="badgeEstadoCurso" class="badge" style="background-color: #10b981; color: white; padding: 3px 8px; border-radius: 4px;">ABIERTA</span>
-                                    </c:otherwise>
-                                </c:choose>
-                            </p>
-                        </section>
-
-                        <c:choose>
-                            <c:when test="${!docenteParticipa}">
-                                <div class="alerta-info dato-space" style="background: #fef2f2; border-color: #fecaca; color: #991b1b;">
-                                    <p>Usted no figura como docente asignado a esta edición de curso. Solo los docentes participantes pueden registrar evaluaciones.</p>
-                                </div>
-                            </c:when>
-
-                            <c:otherwise>
-                                <!-- Tabla de Estudiantes Aceptados y Formulario AJAX -->
-                                <form id="formEvaluaciones" action="${pageContext.request.contextPath}/evaluacionDocente" method="post">
-                                    <input type="hidden" name="instituto" value="${fn:escapeXml(param.instituto)}" />
-                                    <input type="hidden" name="curso" value="${fn:escapeXml(param.curso)}" />
-                                    <input type="hidden" name="nombreEdi" value="${fn:escapeXml(edicionVigente.nombreEdi)}" />
+                        <!-- Tabla de Estudiantes Aceptados y Formulario AJAX -->
+                        <form id="formEvaluaciones" action="${pageContext.request.contextPath}/evaluacionDocente" method="post">
+                            <input type="hidden" name="instituto" value="${fn:escapeXml(param.instituto)}" />
+                            <input type="hidden" name="curso" value="${fn:escapeXml(param.curso)}" />
+                            <input type="hidden" name="edicion" value="${fn:escapeXml(edicionSeleccionada.nombreEdi)}" />
+                            <input type="hidden" name="nombreEdi" value="${fn:escapeXml(edicionSeleccionada.nombreEdi)}" />
 
                                     <div class="dato-space">
                                         <h3 style="margin-bottom: 0.5rem; color: #334155;">Estudiantes Aceptados en la Edición</h3>
@@ -134,7 +146,7 @@
                                                                     <c:out value="${insc.estudiante.nombre}"/> <c:out value="${insc.estudiante.apellido}"/>
                                                                 </td>
                                                                 <td style="padding: 10px;">
-                                                                    <c:out value="${insc.estudiante.correo}"/>
+                                                                    <c:out value="${insc.estudiante.email}"/>
                                                                 </td>
                                                                 <td style="padding: 10px; text-align: center;">
                                                                     <c:choose>
@@ -191,8 +203,6 @@
                                 </form>
                             </c:otherwise>
                         </c:choose>
-                    </c:otherwise>
-                </c:choose>
             </c:if>
         </main>
     </div>

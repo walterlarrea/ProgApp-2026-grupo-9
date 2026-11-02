@@ -9,8 +9,9 @@ import com.grupo9.edext.grupo9.servidor_web.web_service_client.edicion_de_curso.
 import com.grupo9.edext.grupo9.servidor_web.web_service_client.edicion_de_curso.EdicionDeCursoWebService;
 import com.grupo9.edext.grupo9.servidor_web.web_service_client.edicion_de_curso.EstadoInscripcion;
 import com.grupo9.edext.grupo9.servidor_web.web_service_client.instituto.DataInstitutoDTO;
-import com.grupo9.edext.grupo9.servidor_web.web_service_client.instituto.InstitutoWebService;
 import com.grupo9.edext.grupo9.servidor_web.web_service_client.usuario.DataDocenteDTO;
+import com.grupo9.edext.grupo9.servidor_web.web_service_client.usuario.DataUsuarioDTO;
+import com.grupo9.edext.grupo9.servidor_web.web_service_client.usuario.UsuarioWebService;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -25,8 +26,12 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
 
 @WebServlet(name = "EvaluacionDocenteServlet", urlPatterns = {"/evaluacionDocente", "/evaluacionesDocente"})
 public class EvaluacionDocenteServlet extends HttpServlet {
@@ -58,13 +63,17 @@ public class EvaluacionDocenteServlet extends HttpServlet {
             }
         }
 
-        InstitutoWebService instPort = SoapClientFactory.getInstance().getInstitutoPort();
-        CursoWebService cursoPort = SoapClientFactory.getInstance().getCursoPort();
+        UsuarioWebService usuarioPort = SoapClientFactory.getInstance().getUsuarioPort();
         EdicionDeCursoWebService edicionPort = SoapClientFactory.getInstance().getEdicionCursoPort();
+        CursoWebService cursoPort = SoapClientFactory.getInstance().getCursoPort();
 
-        List<DataInstitutoDTO> institutos = Collections.emptyList();
+        Map<String, DataInstitutoDTO> institutosPorNombre = new LinkedHashMap<>();
+        Map<String, DataCursoDTO> cursosPorNombre = new LinkedHashMap<>();
+        Set<String> nombresCursosDelDocente = new HashSet<>();
+        List<DataEdicionCursoDTO> edicionesDelDocente = new ArrayList<>();
         List<DataCursoDTO> cursos = Collections.emptyList();
-        DataEdicionCursoDTO edicionVigente = null;
+        List<DataEdicionCursoDTO> ediciones = Collections.emptyList();
+        DataEdicionCursoDTO edicionSeleccionada = null;
         List<DataInscEdicionDTO> inscriptosAceptados = new ArrayList<>();
         boolean docenteParticipa = false;
         boolean todasEvaluadas = false;
@@ -72,58 +81,135 @@ public class EvaluacionDocenteServlet extends HttpServlet {
 
         String nombreInstituto = request.getParameter("instituto");
         String nombreCurso = request.getParameter("curso");
+        String nombreEdicion = request.getParameter("edicion");
+        if (nombreEdicion == null || nombreEdicion.isBlank()) {
+            nombreEdicion = request.getParameter("nombreEdi");
+        }
 
         try {
-            if (instPort != null) {
-                institutos = instPort.consultarTodosLosInstitutos();
+            if (usuarioPort == null || edicionPort == null || cursoPort == null) {
+                throw new IllegalStateException("Servicios web no disponibles.");
             }
 
-            if (nombreInstituto != null && !nombreInstituto.isBlank() && cursoPort != null) {
-                cursos = cursoPort.cursosPorInstituto(nombreInstituto);
+            DataDocenteDTO docenteActualizado = docenteEnSesion;
+            try {
+                DataUsuarioDTO u = usuarioPort.consultarUsuario(docenteEnSesion.getNickname());
+                if (u instanceof DataDocenteDTO d) {
+                    docenteActualizado = d;
+                    if (session != null) {
+                        session.setAttribute("usuarioLogueado", docenteActualizado);
+                    }
+                }
+            } catch (Exception ignored) {
+                // Si la consulta falla, utilizamos el docente en sesión
             }
 
-            if (nombreCurso != null && !nombreCurso.isBlank() && edicionPort != null) {
-                edicionVigente = edicionPort.obtenerEdicionVigente(nombreCurso);
-
-                if (edicionVigente != null) {
-                    edicionCerrada = Boolean.TRUE.equals(edicionVigente.isCerrada());
-
-                    if (edicionVigente.getDocentes() != null) {
-                        for (String nickDoc : edicionVigente.getDocentes()) {
-                            if (docenteEnSesion.getNickname() != null
-                                    && docenteEnSesion.getNickname().equalsIgnoreCase(nickDoc)) {
-                                docenteParticipa = true;
-                                break;
-                            }
-                        }
+            List<String> nombresEdicionesDocente = docenteActualizado.getEdiciones();
+            if (nombresEdicionesDocente != null) {
+                for (String nombreEdicionDocente : nombresEdicionesDocente) {
+                    if (nombreEdicionDocente == null || nombreEdicionDocente.isBlank()) {
+                        continue;
                     }
 
-                    if (docenteParticipa) {
-                        List<DataInscEdicionDTO> todasInsc = edicionPort.buscarInscriptosEdicion(edicionVigente.getNombreEdi());
-                        if (todasInsc != null) {
-                            todasEvaluadas = true;
-                            for (DataInscEdicionDTO insc : todasInsc) {
-                                if (insc.getEstado() == EstadoInscripcion.ACEPTADA) {
-                                    inscriptosAceptados.add(insc);
-                                    if (insc.getNota() == null) {
-                                        todasEvaluadas = false;
-                                    }
-                                }
-                            }
-                            if (inscriptosAceptados.isEmpty()) {
+                    DataEdicionCursoDTO edicion = edicionPort.consultarUnaEdicionCurso(nombreEdicionDocente);
+                    if (edicion == null) {
+                        continue;
+                    }
+                    edicionesDelDocente.add(edicion);
+
+                    if (edicion.getCursoAsoc() != null && edicion.getCursoAsoc().getNombreCurso() != null) {
+                        nombresCursosDelDocente.add(edicion.getCursoAsoc().getNombreCurso());
+                    }
+                }
+            }
+
+            List<DataCursoDTO> todosLosCursos = cursoPort.consultarTodosLosCursos();
+            if (todosLosCursos != null) {
+                for (DataCursoDTO curso : todosLosCursos) {
+                    if (curso != null && nombresCursosDelDocente.contains(curso.getNombreCurso())
+                            && curso.getInstituto() != null && curso.getInstituto().getNombreI() != null) {
+                        cursosPorNombre.putIfAbsent(curso.getNombreCurso(), curso);
+                        DataInstitutoDTO di = new DataInstitutoDTO();
+                        di.setNombreI(curso.getInstituto().getNombreI());
+                        institutosPorNombre.putIfAbsent(curso.getInstituto().getNombreI(), di);
+                    }
+                }
+            }
+
+            DataInstitutoDTO institutoSeleccionado = institutosPorNombre.get(nombreInstituto);
+            if (institutoSeleccionado != null) {
+                cursos = new ArrayList<>();
+                for (DataCursoDTO curso : cursosPorNombre.values()) {
+                    if (curso.getInstituto() != null && Objects.equals(curso.getInstituto().getNombreI(), institutoSeleccionado.getNombreI())) {
+                        cursos.add(curso);
+                    }
+                }
+            }
+
+            DataCursoDTO cursoSeleccionado = null;
+            for (DataCursoDTO curso : cursos) {
+                if (nombreCurso != null && nombreCurso.equals(curso.getNombreCurso())) {
+                    cursoSeleccionado = curso;
+                    break;
+                }
+            }
+
+            if (cursoSeleccionado != null) {
+                List<DataEdicionCursoDTO> edicionesDelCurso = new ArrayList<>();
+                for (DataEdicionCursoDTO edicion : edicionesDelDocente) {
+                    if (edicion.getCursoAsoc() != null
+                            && Objects.equals(edicion.getCursoAsoc().getNombreCurso(), cursoSeleccionado.getNombreCurso())) {
+                        edicionesDelCurso.add(edicion);
+                    }
+                }
+                ediciones = edicionesDelCurso;
+            }
+
+            for (DataEdicionCursoDTO edicion : ediciones) {
+                if (nombreEdicion != null && nombreEdicion.equals(edicion.getNombreEdi())) {
+                    edicionSeleccionada = edicion;
+                    break;
+                }
+            }
+
+            if (edicionSeleccionada != null) {
+                edicionCerrada = Boolean.TRUE.equals(edicionSeleccionada.isCerrada());
+                docenteParticipa = true;
+
+                List<DataInscEdicionDTO> todasInsc = edicionPort.buscarInscriptosEdicion(edicionSeleccionada.getNombreEdi());
+                if (todasInsc != null) {
+                    todasEvaluadas = true;
+                    for (DataInscEdicionDTO insc : todasInsc) {
+                        if (insc.getEstado() == EstadoInscripcion.ACEPTADA) {
+                            inscriptosAceptados.add(insc);
+                            if (insc.getNota() == null) {
                                 todasEvaluadas = false;
                             }
                         }
                     }
+                    if (inscriptosAceptados.isEmpty()) {
+                        todasEvaluadas = false;
+                    }
                 }
             }
         } catch (Exception e) {
+            institutosPorNombre.clear();
+            cursos = Collections.emptyList();
+            ediciones = Collections.emptyList();
+            edicionSeleccionada = null;
+            inscriptosAceptados.clear();
             request.setAttribute("mensajeError", "Error al cargar la información: " + e.getMessage());
         }
 
-        request.setAttribute("institutos", institutos);
+        request.setAttribute("institutos", institutosPorNombre.values());
+        request.setAttribute("institutosDoc", institutosPorNombre.values());
         request.setAttribute("cursos", cursos);
-        request.setAttribute("edicionVigente", edicionVigente);
+        request.setAttribute("cursosDoc", cursos);
+        request.setAttribute("ediciones", ediciones);
+        request.setAttribute("edicionesDoc", ediciones);
+        request.setAttribute("edicionSeleccionada", edicionSeleccionada);
+        request.setAttribute("edicionVigente", edicionSeleccionada);
+        request.setAttribute("edicionSeleccionadaDoc", edicionSeleccionada);
         request.setAttribute("docenteParticipa", docenteParticipa);
         request.setAttribute("inscriptosAceptados", inscriptosAceptados);
         request.setAttribute("todasEvaluadas", todasEvaluadas);
@@ -162,6 +248,9 @@ public class EvaluacionDocenteServlet extends HttpServlet {
 
         String accion = request.getParameter("accion");
         String nombreEdicion = request.getParameter("nombreEdi");
+        if (nombreEdicion == null || nombreEdicion.isBlank()) {
+            nombreEdicion = request.getParameter("edicion");
+        }
         String nombreInstituto = request.getParameter("instituto");
         String nombreCurso = request.getParameter("curso");
 
@@ -184,7 +273,7 @@ public class EvaluacionDocenteServlet extends HttpServlet {
                 if (session != null) {
                     session.setAttribute("mensajeError", "Servicio web de ediciones no disponible.");
                 }
-                redirigir(request, response, nombreInstituto, nombreCurso);
+                redirigir(request, response, nombreInstituto, nombreCurso, nombreEdicion);
             }
             return;
         }
@@ -254,7 +343,7 @@ public class EvaluacionDocenteServlet extends HttpServlet {
                     session.setAttribute("mensajeError", mensajeResultado.replace("\n", "<br>"));
                 }
             }
-            redirigir(request, response, nombreInstituto, nombreCurso);
+            redirigir(request, response, nombreInstituto, nombreCurso, nombreEdicion);
         }
     }
 
@@ -272,11 +361,14 @@ public class EvaluacionDocenteServlet extends HttpServlet {
         gson.toJson(respMap, response.getWriter());
     }
 
-    private void redirigir(HttpServletRequest request, HttpServletResponse response, String instituto, String curso)
-            throws IOException {
-        String url = request.getContextPath() + "/evaluacionDocente?instituto="
-                + URLEncoder.encode(instituto != null ? instituto : "", StandardCharsets.UTF_8)
-                + "&curso=" + URLEncoder.encode(curso != null ? curso : "", StandardCharsets.UTF_8);
-        response.sendRedirect(url);
+    private void redirigir(HttpServletRequest request, HttpServletResponse response,
+                           String instituto, String curso, String edicion) throws IOException {
+        StringBuilder url = new StringBuilder(request.getContextPath()).append("/evaluacionDocente?");
+        url.append("instituto=").append(URLEncoder.encode(instituto != null ? instituto : "", StandardCharsets.UTF_8));
+        url.append("&curso=").append(URLEncoder.encode(curso != null ? curso : "", StandardCharsets.UTF_8));
+        if (edicion != null && !edicion.isBlank()) {
+            url.append("&edicion=").append(URLEncoder.encode(edicion, StandardCharsets.UTF_8));
+        }
+        response.sendRedirect(url.toString());
     }
 }

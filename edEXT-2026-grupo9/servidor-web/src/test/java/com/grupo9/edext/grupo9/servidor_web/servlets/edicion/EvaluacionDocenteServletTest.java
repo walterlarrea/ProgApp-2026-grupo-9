@@ -10,10 +10,10 @@ import com.grupo9.edext.grupo9.servidor_web.web_service_client.edicion_de_curso.
 import com.grupo9.edext.grupo9.servidor_web.web_service_client.edicion_de_curso.DataInscEdicionDTO;
 import com.grupo9.edext.grupo9.servidor_web.web_service_client.edicion_de_curso.EdicionDeCursoWebService;
 import com.grupo9.edext.grupo9.servidor_web.web_service_client.edicion_de_curso.EstadoInscripcion;
-import com.grupo9.edext.grupo9.servidor_web.web_service_client.instituto.DataInstitutoDTO;
 import com.grupo9.edext.grupo9.servidor_web.web_service_client.instituto.InstitutoWebService;
 import com.grupo9.edext.grupo9.servidor_web.web_service_client.usuario.DataDocenteDTO;
 import com.grupo9.edext.grupo9.servidor_web.web_service_client.usuario.DataUsuarioDTO;
+import com.grupo9.edext.grupo9.servidor_web.web_service_client.usuario.UsuarioWebService;
 
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.http.HttpServletRequest;
@@ -38,6 +38,7 @@ import static org.mockito.Mockito.*;
 class EvaluacionDocenteServletTest {
 
     private EvaluacionDocenteServlet servlet;
+    private UsuarioWebService usuarioPort;
     private InstitutoWebService institutoPort;
     private CursoWebService cursoPort;
     private EdicionDeCursoWebService edicionPort;
@@ -50,10 +51,12 @@ class EvaluacionDocenteServletTest {
     @BeforeEach
     void setUp() {
         servlet = new EvaluacionDocenteServlet();
+        usuarioPort = mock(UsuarioWebService.class);
         institutoPort = mock(InstitutoWebService.class);
         cursoPort = mock(CursoWebService.class);
         edicionPort = mock(EdicionDeCursoWebService.class);
 
+        SoapClientFactory.getInstance().setUsuarioPort(usuarioPort);
         SoapClientFactory.getInstance().setInstitutoPort(institutoPort);
         SoapClientFactory.getInstance().setCursoPort(cursoPort);
         SoapClientFactory.getInstance().setEdicionCursoPort(edicionPort);
@@ -93,10 +96,13 @@ class EvaluacionDocenteServletTest {
     void cargaEdicionVigenteYFiltraEstudiantesAceptados() throws Exception {
         DataDocenteDTO docente = new DataDocenteDTO();
         docente.setNickname("profeJuan");
+        docente.getEdiciones().add("ProgApp-2026");
         when(session.getAttribute("usuarioLogueado")).thenReturn(docente);
+        when(usuarioPort.consultarUsuario("profeJuan")).thenReturn(docente);
 
         when(request.getParameter("instituto")).thenReturn("INCO");
         when(request.getParameter("curso")).thenReturn("ProgApp");
+        when(request.getParameter("edicion")).thenReturn("ProgApp-2026");
 
         DataEdicionCursoDTO edicion = new DataEdicionCursoDTO();
         edicion.setNombreEdi("ProgApp-2026");
@@ -108,7 +114,10 @@ class EvaluacionDocenteServletTest {
         cDto.setNombreCurso("ProgApp");
         edicion.setCursoAsoc(cDto);
 
-        when(edicionPort.obtenerEdicionVigente("ProgApp")).thenReturn(edicion);
+        when(edicionPort.consultarUnaEdicionCurso("ProgApp-2026")).thenReturn(edicion);
+
+        DataCursoDTO curso = curso("ProgApp", "INCO");
+        when(cursoPort.consultarTodosLosCursos()).thenReturn(List.of(curso));
 
         DataInscEdicionDTO inscAceptada = new DataInscEdicionDTO();
         DataEstudianteDTO est1 = new DataEstudianteDTO();
@@ -127,7 +136,7 @@ class EvaluacionDocenteServletTest {
 
         servlet.doGet(request, response);
 
-        verify(request).setAttribute(eq("edicionVigente"), eq(edicion));
+        verify(request).setAttribute(eq("edicionSeleccionada"), eq(edicion));
         verify(request).setAttribute(eq("docenteParticipa"), eq(true));
 
         ArgumentCaptor<Object> captor = ArgumentCaptor.forClass(Object.class);
@@ -140,6 +149,41 @@ class EvaluacionDocenteServletTest {
 
         verify(request).getRequestDispatcher("/webEdicion/evaluacion-docente.jsp");
         verify(dispatcher).forward(request, response);
+    }
+
+    @Test
+    void ignoraCursosYEdicionesQueNoPertenecenAlDocente() throws Exception {
+        DataDocenteDTO docenteSesion = new DataDocenteDTO();
+        docenteSesion.setNickname("profesor");
+        DataDocenteDTO docenteActualizado = new DataDocenteDTO();
+        docenteActualizado.setNickname("profesor");
+        docenteActualizado.getEdiciones().add("edicion-docente");
+
+        DataEdicionCursoDTO edicionDocente = new DataEdicionCursoDTO();
+        edicionDocente.setNombreEdi("edicion-docente");
+        com.grupo9.edext.grupo9.servidor_web.web_service_client.edicion_de_curso.DataCursoDTO cEdi =
+                new com.grupo9.edext.grupo9.servidor_web.web_service_client.edicion_de_curso.DataCursoDTO();
+        cEdi.setNombreCurso("Curso docente");
+        edicionDocente.setCursoAsoc(cEdi);
+
+        when(session.getAttribute("usuarioLogueado")).thenReturn(docenteSesion);
+        when(usuarioPort.consultarUsuario("profesor")).thenReturn(docenteActualizado);
+        when(edicionPort.consultarUnaEdicionCurso("edicion-docente")).thenReturn(edicionDocente);
+
+        DataCursoDTO cursoDocente = curso("Curso docente", "Instituto docente");
+        DataCursoDTO cursoAjeno = curso("Curso ajeno", "Instituto ajeno");
+
+        when(cursoPort.consultarTodosLosCursos()).thenReturn(List.of(cursoDocente, cursoAjeno));
+        when(request.getParameter("instituto")).thenReturn("Instituto ajeno");
+        when(request.getParameter("curso")).thenReturn("Curso ajeno");
+        when(request.getParameter("edicion")).thenReturn("edicion-ajena");
+
+        servlet.doGet(request, response);
+
+        verify(edicionPort, never()).buscarInscriptosEdicion(any());
+        verify(request).setAttribute(eq("cursos"), eq(java.util.Collections.emptyList()));
+        verify(request).setAttribute(eq("ediciones"), eq(java.util.Collections.emptyList()));
+        verify(request).setAttribute("edicionSeleccionada", null);
     }
 
     @Test
@@ -251,5 +295,15 @@ class EvaluacionDocenteServletTest {
         assertEquals("cerrar", json.get("accion").getAsString());
         assertTrue(json.get("cerrada").getAsBoolean());
         assertTrue(json.get("mensaje").getAsString().contains("cerrado exitosamente"));
+    }
+
+    private DataCursoDTO curso(String nombreCurso, String nombreInstituto) {
+        DataCursoDTO c = new DataCursoDTO();
+        c.setNombreCurso(nombreCurso);
+        com.grupo9.edext.grupo9.servidor_web.web_service_client.curso.DataInstitutoDTO inst =
+                new com.grupo9.edext.grupo9.servidor_web.web_service_client.curso.DataInstitutoDTO();
+        inst.setNombreI(nombreInstituto);
+        c.setInstituto(inst);
+        return c;
     }
 }
