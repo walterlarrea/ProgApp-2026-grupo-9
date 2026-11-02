@@ -13,8 +13,13 @@ public class DataEdicionCurso {
     private Set<DataInscEdicion> inscripciones;
     private LocalDate fechaPub;
     private String imagen;
+    private boolean cerrada;
     
     public DataEdicionCurso(String nombreEdi, DataCurso cursoAsoc, LocalDate fechaInicio, LocalDate fechaFin, Integer cupo, Set<DataDocente> docentes, Set<DataInscEdicion> inscripciones, LocalDate fechaPub, String imagen) {
+        this(nombreEdi, cursoAsoc, fechaInicio, fechaFin, cupo, docentes, inscripciones, fechaPub, imagen, false);
+    }
+
+    public DataEdicionCurso(String nombreEdi, DataCurso cursoAsoc, LocalDate fechaInicio, LocalDate fechaFin, Integer cupo, Set<DataDocente> docentes, Set<DataInscEdicion> inscripciones, LocalDate fechaPub, String imagen, boolean cerrada) {
         this.nombreEdi = nombreEdi;
         this.cursoAsoc = cursoAsoc;
         this.fechaInicio = fechaInicio;
@@ -24,6 +29,7 @@ public class DataEdicionCurso {
         this.inscripciones = inscripciones;
         this.fechaPub = fechaPub;
         this.imagen = imagen;
+        this.cerrada = cerrada;
     }
 
     public String getNombreEdi() {
@@ -92,5 +98,13 @@ public class DataEdicionCurso {
     
     public void setImagen(String imagen){
         this.imagen = imagen;
+    }
+
+    public boolean isCerrada() {
+        return cerrada;
+    }
+
+    public void setCerrada(boolean cerrada) {
+        this.cerrada = cerrada;
     }
 }

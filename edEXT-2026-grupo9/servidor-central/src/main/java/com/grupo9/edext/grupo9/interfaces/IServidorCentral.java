@@ -64,6 +64,13 @@ public interface IServidorCentral {
 
     public Boolean existeEdicionCurso(String nombre);
 
+    public DataEdicionCurso obtenerEdicionVigente(String nombreCurso);
+
+    public void registrarCalificacion(String nombreEdicion, String nicknameEstudiante, Integer nota)
+            throws ErrorNoExiste, ErrorEstadoInvalido;
+
+    public void cerrarEdicionCurso(String nombreEdicion) throws ErrorNoExiste, ErrorEstadoInvalido;
+
     // Cursos
     public DataCurso guardarCurso(DataCurso nuevoCurso) throws ErrorRepetidos;
 

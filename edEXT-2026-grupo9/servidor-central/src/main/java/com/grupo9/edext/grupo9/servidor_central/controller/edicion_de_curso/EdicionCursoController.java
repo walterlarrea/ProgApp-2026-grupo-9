@@ -71,16 +71,18 @@ public class EdicionCursoController implements IEdicionCurso {
 
             //para obtener los inscriptos
             Set<DataInscEdicion> datosInscriptos = new HashSet<>();
-            for(InscEdicion inscriptos : ed.getInscripciones()){
-                Estudiante estudiante = inscriptos.getEstudiante();
-                DataEstudiante datosEst = new DataEstudiante(estudiante.getNickname(),estudiante.getNombre(),estudiante.getApellido(),estudiante.getEmail(), estudiante.getFechaNac(), null);
-                DataInscEdicion datosInsc = new DataInscEdicion(inscriptos.getFechaInscE(), datosEst, inscriptos.getEdicion().getNombreEdi(), inscriptos.getEstado());
-                datosInscriptos.add(datosInsc);
+            if (ed.getInscripciones() != null) {
+                for(InscEdicion inscriptos : ed.getInscripciones()){
+                    Estudiante estudiante = inscriptos.getEstudiante();
+                    DataEstudiante datosEst = new DataEstudiante(estudiante.getNickname(),estudiante.getNombre(),estudiante.getApellido(),estudiante.getEmail(), estudiante.getFechaNac(), null);
+                    DataInscEdicion datosInsc = new DataInscEdicion(inscriptos.getFechaInscE(), datosEst, inscriptos.getEdicion().getNombreEdi(), inscriptos.getEstado(), inscriptos.getNota());
+                    datosInscriptos.add(datosInsc);
+                }
             }
             
             //docentes
             Set<DataDocente> datosDocentes = DataRecordMapper.toData(ed.getDocentes());
-            return new DataEdicionCurso(ed.getNombreEdi(), DataRecordMapper.toData(ed.getCursoAsoc()), ed.getFechaInicio(), ed.getFechaFin(), ed.getCupo(), datosDocentes, datosInscriptos, ed.getFechaPub(), ed.getImagen()); 
+            return new DataEdicionCurso(ed.getNombreEdi(), DataRecordMapper.toData(ed.getCursoAsoc()), ed.getFechaInicio(), ed.getFechaFin(), ed.getCupo(), datosDocentes, datosInscriptos, ed.getFechaPub(), ed.getImagen(), ed.isCerrada()); 
         }else{
             throw new ErrorNoExiste("La Edición " + nEdi + " no está registrada.");
         }
@@ -214,5 +216,101 @@ public class EdicionCursoController implements IEdicionCurso {
             System.out.println("[SERVIDOR] Persistencia FALLÓ al consultar la edición: " + nombre);
             throw e;
         }
+    }
+
+    @Override
+    public DataEdicionCurso obtenerEdicionVigente(String nombreCurso) {
+        if (nombreCurso == null || nombreCurso.isBlank()) {
+            return null;
+        }
+        ManejadorEdiciones me = ManejadorEdiciones.getInstance();
+        LocalDate hoy = LocalDate.now();
+        EdicionCurso candidata = null;
+
+        for (EdicionCurso ed : me.getTodasLasEdiciones()) {
+            if (ed.getCursoAsoc() != null && nombreCurso.equals(ed.getCursoAsoc().getNombreCurso())) {
+                if (!ed.isCerrada()) {
+                    boolean enRango = (ed.getFechaInicio() == null || !hoy.isBefore(ed.getFechaInicio()))
+                            && (ed.getFechaFin() == null || !hoy.isAfter(ed.getFechaFin()));
+                    if (enRango) {
+                        try {
+                            return consultarEdicionCurso(ed.getNombreEdi());
+                        } catch (ErrorNoExiste ignored) {
+                            return DataRecordMapper.toData(ed);
+                        }
+                    }
+                    if (candidata == null || (ed.getFechaFin() != null && candidata.getFechaFin() != null && ed.getFechaFin().isAfter(candidata.getFechaFin()))) {
+                        candidata = ed;
+                    }
+                }
+            }
+        }
+        if (candidata != null) {
+            try {
+                return consultarEdicionCurso(candidata.getNombreEdi());
+            } catch (ErrorNoExiste ignored) {
+                return DataRecordMapper.toData(candidata);
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public void registrarCalificacion(String nombreEdicion, String nicknameEstudiante, Integer nota)
+            throws ErrorNoExiste, ErrorEstadoInvalido {
+        if (nota == null || nota < 1 || nota > 12) {
+            throw new IllegalArgumentException("La nota debe estar comprendida entre 1 y 12.");
+        }
+
+        ManejadorEdiciones me = ManejadorEdiciones.getInstance();
+        EdicionCurso edicion = me.obtenerEdicion(nombreEdicion);
+        if (edicion == null) {
+            throw new ErrorNoExiste("La Edición " + nombreEdicion + " no existe.");
+        }
+
+        if (edicion.isCerrada()) {
+            throw new ErrorEstadoInvalido("La edición está cerrada. No se pueden modificar las notas ingresadas.");
+        }
+
+        if (edicion.getInscripciones() != null) {
+            for (InscEdicion inscripcion : edicion.getInscripciones()) {
+                if (inscripcion.getEstudiante() != null
+                        && nicknameEstudiante.equalsIgnoreCase(inscripcion.getEstudiante().getNickname())) {
+                    if (inscripcion.getEstado() != EstadoInscripcion.ACEPTADA) {
+                        throw new ErrorEstadoInvalido("El estudiante " + nicknameEstudiante + " no tiene inscripción aceptada.");
+                    }
+                    inscripcion.setNota(nota);
+                    me.actualizarInscripcion(inscripcion);
+                    return;
+                }
+            }
+        }
+        throw new ErrorNoExiste("El estudiante " + nicknameEstudiante + " no está inscripto en la edición.");
+    }
+
+    @Override
+    public void cerrarEdicionCurso(String nombreEdicion) throws ErrorNoExiste, ErrorEstadoInvalido {
+        ManejadorEdiciones me = ManejadorEdiciones.getInstance();
+        EdicionCurso edicion = me.obtenerEdicion(nombreEdicion);
+        if (edicion == null) {
+            throw new ErrorNoExiste("La Edición " + nombreEdicion + " no existe.");
+        }
+
+        if (edicion.isCerrada()) {
+            throw new ErrorEstadoInvalido("La edición ya se encuentra cerrada.");
+        }
+
+        if (edicion.getInscripciones() != null) {
+            for (InscEdicion inscripcion : edicion.getInscripciones()) {
+                if (inscripcion.getEstado() == EstadoInscripcion.ACEPTADA && inscripcion.getNota() == null) {
+                    throw new ErrorEstadoInvalido("No se puede cerrar la edición: el estudiante "
+                            + (inscripcion.getEstudiante() != null ? inscripcion.getEstudiante().getNickname() : "")
+                            + " no tiene nota asignada.");
+                }
+            }
+        }
+
+        edicion.setCerrada(true);
+        me.actualizarEdicion(edicion);
     }
 }

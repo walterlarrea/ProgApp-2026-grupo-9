@@ -193,6 +193,7 @@ public class DtoRecordMapper {
         dto.setCupo(edicion.getCupo());
         dto.setFechaPub(toText(edicion.getFechaPub()));
         dto.setImagen(edicion.getImagen());
+        dto.setCerrada(edicion.isCerrada());
         if (edicion.getDocentes() != null) {
             for (DataDocente docente : edicion.getDocentes()) {
                 if (docente != null && docente.getNickname() != null) {
@@ -212,6 +213,7 @@ public class DtoRecordMapper {
         dto.setEstudiante(toDTO(inscripcion.getEstudiante()));
         dto.setEdicion(inscripcion.getEdicion());
         dto.setEstado(inscripcion.getEstado());
+        dto.setNota(inscripcion.getNota());
         return dto;
     }
 
