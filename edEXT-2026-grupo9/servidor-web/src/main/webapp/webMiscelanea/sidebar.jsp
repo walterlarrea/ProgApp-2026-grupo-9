@@ -1,4 +1,4 @@
-﻿<%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <!-- Barra lateral fija (sidebar) -->
         <aside class="sidebar">
             <c:if test="${not empty sessionScope.usuarioLogueado}">
@@ -29,6 +29,7 @@
                     <!-- <li><a href="${pageContext.request.contextPath}/programas">Alta programa</a></li> -->
                     <li><a href="${pageContext.request.contextPath}/inscriptosDocente">Ver inscriptos</a></li>
                     <li><a href="${pageContext.request.contextPath}/inscripcionesDocente">Ver inscripciones pendientes</a></li>
+                    <li><a href="${pageContext.request.contextPath}/evaluacionDocente">Ingresar evaluaciones</a></li>
                 </ul>
             </div>
             </c:if>
