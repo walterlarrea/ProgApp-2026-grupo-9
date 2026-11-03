@@ -84,6 +84,10 @@ public interface IServidorCentral {
 
     public DataCurso buscarCurso(String nombre);
 
+    public void valorarCurso(String nombreCurso, String nicknameEstudiante, int puntaje) throws ErrorNoExiste, ErrorRepetidos;
+
+    public List<DataCurso> cursosParticipaEstudiante(String nicknameEstudiante);
+
     // Busqueda
     public HashSet<DataCurso> buscarCursos(String query);
 

@@ -1,12 +1,13 @@
 package com.grupo9.edext.grupo9.servidor_central.controller.curso;
 
 import com.grupo9.edext.grupo9.servidor_central.controller.DataRecordMapper;
-import com.grupo9.edext.grupo9.servidor_central.controller.curso.Categoria;
 import com.grupo9.edext.grupo9.servidor_central.controller.instituto.Instituto;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataCurso;
 import com.grupo9.edext.grupo9.mensajes.*;
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class CursoController implements ICurso {
@@ -106,5 +107,23 @@ public class CursoController implements ICurso {
             System.out.println(e);
         }
         return null;
+    }
+
+    @Override
+    public void valorarCurso(String nombreCurso, String nicknameEstudiante, int puntaje) throws ErrorNoExiste, ErrorRepetidos {
+        System.out.println("[SERVIDOR] Valorar curso " + nombreCurso + " por estudiante " + nicknameEstudiante + " con puntaje " + puntaje);
+        this.manejadorCurso.valorarCurso(nombreCurso, nicknameEstudiante, puntaje);
+    }
+
+    @Override
+    public List<DataCurso> cursosParticipaEstudiante(String nicknameEstudiante) {
+        System.out.println("[SERVIDOR] Consultar cursos en los que participa el estudiante " + nicknameEstudiante);
+        try {
+            return this.manejadorCurso.cursosParticipaEstudiante(nicknameEstudiante);
+        } catch (Exception e) {
+            System.out.println("[SERVIDOR] Persistencia FALLÓ al consultar cursos del estudiante: " + nicknameEstudiante);
+            System.out.println(e);
+            return Collections.emptyList();
+        }
     }
 }

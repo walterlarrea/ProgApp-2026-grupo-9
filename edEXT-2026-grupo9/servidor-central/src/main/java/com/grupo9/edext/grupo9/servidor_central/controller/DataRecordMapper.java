@@ -56,6 +56,10 @@ public class DataRecordMapper {
     }
 
     public static DataCurso toData(Curso curso) {
+        return toData(curso, null);
+    }
+
+    public static DataCurso toData(Curso curso, String nicknameEstudiante) {
         if (curso == null) {
             return null;
         }
@@ -66,6 +70,11 @@ public class DataRecordMapper {
                 : curso.getCategorias().stream()
                         .map(Categoria::getNombreCategoria)
                         .collect(Collectors.toCollection(HashSet::new));
+        
+        Double promedio = curso.getPuntajePromedio();
+        int cantVal = curso.getCantidadValoraciones();
+        Integer valEst = nicknameEstudiante != null ? curso.getValoracionEstudiante(nicknameEstudiante) : null;
+
         DataCurso dataCurso = new DataCurso(
                 toData(curso.getInstituto()),
                 curso.getNombreCurso(),
@@ -78,7 +87,10 @@ public class DataRecordMapper {
                 dataPrevias,
                 new HashSet<>(), // programas
                 categorias,
-                curso.getImagen());
+                curso.getImagen(),
+                promedio,
+                cantVal,
+                valEst);
 
         return dataCurso;
     }

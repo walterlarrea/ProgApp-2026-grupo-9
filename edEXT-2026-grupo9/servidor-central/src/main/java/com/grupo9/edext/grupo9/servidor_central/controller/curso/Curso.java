@@ -40,6 +40,8 @@ public class Curso implements Serializable {
     @JoinTable(name = "categorias_cursos", joinColumns = @JoinColumn(name = "curso_nombreCurso"), inverseJoinColumns = @JoinColumn(name = "categoria_nombreCategoria"))
     private Set<Categoria> categorias = new HashSet<>();
     private String imagen;
+    @OneToMany(mappedBy = "curso", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    private Set<Valoracion> valoraciones = new HashSet<>();
 
     public Curso() {
     }
@@ -171,5 +173,40 @@ public class Curso implements Serializable {
 
     public void setImagen(String imagen) {
         this.imagen = imagen;
+    }
+
+    public Set<Valoracion> getValoraciones() {
+        return valoraciones;
+    }
+
+    public void setValoraciones(Set<Valoracion> valoraciones) {
+        this.valoraciones = valoraciones;
+    }
+
+    public double getPuntajePromedio() {
+        if (valoraciones == null || valoraciones.isEmpty()) {
+            return 0.0;
+        }
+        double suma = 0.0;
+        for (Valoracion v : valoraciones) {
+            suma += v.getPuntaje();
+        }
+        return Math.round((suma / valoraciones.size()) * 10.0) / 10.0;
+    }
+
+    public int getCantidadValoraciones() {
+        return valoraciones == null ? 0 : valoraciones.size();
+    }
+
+    public Integer getValoracionEstudiante(String nickname) {
+        if (valoraciones == null || nickname == null) {
+            return null;
+        }
+        for (Valoracion v : valoraciones) {
+            if (v.getEstudiante() != null && nickname.equalsIgnoreCase(v.getEstudiante().getNickname())) {
+                return v.getPuntaje();
+            }
+        }
+        return null;
     }
 }

@@ -1,4 +1,4 @@
-﻿<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <!DOCTYPE html>
 <html lang="es">
@@ -47,6 +47,19 @@
                 </div>
                 <div class="dato-space">
                     
+                </div>
+                <div class="dato-space">
+                    <h4>Valoración promedio</h4>
+                    <p class="detalle">
+                        <c:choose>
+                            <c:when test="${curso.cantValoraciones > 0}">
+                                <span style="color: #d97706; font-weight: bold;">★ ${curso.puntajePromedio} / 5</span> (${curso.cantValoraciones} ${curso.cantValoraciones == 1 ? 'valoración' : 'valoraciones'})
+                            </c:when>
+                            <c:otherwise>
+                                Sin valoraciones
+                            </c:otherwise>
+                        </c:choose>
+                    </p>
                 </div>
                 <h4>Previas del curso</h4> 
                 <ol class="nav-list">

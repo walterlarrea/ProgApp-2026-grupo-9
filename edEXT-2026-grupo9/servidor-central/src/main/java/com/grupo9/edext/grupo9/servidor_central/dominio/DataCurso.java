@@ -15,5 +15,24 @@ public record DataCurso(
         Set<DataCurso> previas,
         Set<DataProgramaFormacion> programas,
         Set<String> categorias,
-        String imagen) {
+        String imagen,
+        Double puntajePromedio,
+        int cantValoraciones,
+        Integer valoracionEstudiante) {
+
+    public DataCurso(
+            DataInstituto instituto,
+            String nombreCurso,
+            String descCurso,
+            int duracion,
+            int cantHoras,
+            int cantCred,
+            LocalDate fechaReg,
+            String url,
+            Set<DataCurso> previas,
+            Set<DataProgramaFormacion> programas,
+            Set<String> categorias,
+            String imagen) {
+        this(instituto, nombreCurso, descCurso, duracion, cantHoras, cantCred, fechaReg, url, previas, programas, categorias, imagen, 0.0, 0, null);
+    }
 }

@@ -124,6 +124,9 @@ public class DtoRecordMapper {
         if (curso.categorias() != null) {
             dto.getCategorias().addAll(curso.categorias());
         }
+        dto.setPuntajePromedio(curso.puntajePromedio());
+        dto.setCantValoraciones(curso.cantValoraciones());
+        dto.setValoracionEstudiante(curso.valoracionEstudiante());
         return dto;
     }
 

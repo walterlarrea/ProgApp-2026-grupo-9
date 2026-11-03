@@ -24,6 +24,7 @@
       <class>com.grupo9.edext.grupo9.servidor_central.controller.programa_de_formacion.ProgramaDeFormacion</class>
       <class>com.grupo9.edext.grupo9.servidor_central.controller.programa_de_formacion.InscripcionPrograma</class>
       <class>com.grupo9.edext.grupo9.servidor_central.controller.curso.Categoria</class>
+      <class>com.grupo9.edext.grupo9.servidor_central.controller.curso.Valoracion</class>
 
 
     <properties>

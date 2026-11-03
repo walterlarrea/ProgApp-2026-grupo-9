@@ -11,6 +11,12 @@
             
             <c:if test="${sessionScope.usuarioLogueado.tipo == 'Estudiante'}">
             <div class="seccion">
+                <h3>Cursos</h3>
+                <ul class="nav-list">
+                    <li><a href="${pageContext.request.contextPath}/misCursos">Mis cursos</a></li>
+                </ul>
+            </div>
+            <div class="seccion">
                 <h3>Inscripciones</h3>
                 <ul class="nav-list">
                     <li><a href="${pageContext.request.contextPath}/inscripcion?accion=insc">Inscribirme</a></li>

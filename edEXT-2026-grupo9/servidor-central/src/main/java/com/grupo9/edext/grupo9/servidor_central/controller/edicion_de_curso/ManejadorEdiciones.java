@@ -76,6 +76,9 @@ public class ManejadorEdiciones {
         if (curso.getCategorias() != null) {
             Hibernate.initialize(curso.getCategorias());
         }
+        if (curso.getValoraciones() != null) {
+            Hibernate.initialize(curso.getValoraciones());
+        }
         if (curso.getPrevias() != null) {
             Hibernate.initialize(curso.getPrevias());
             for (Curso previa : curso.getPrevias()) {

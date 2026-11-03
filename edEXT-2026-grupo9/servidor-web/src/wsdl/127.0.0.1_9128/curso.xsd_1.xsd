@@ -1,4 +1,6 @@
-﻿<?xml version="1.0" encoding="UTF-8"?><!-- Published by XML-WS Runtime (https://github.com/eclipse-ee4j/metro-jax-ws). Runtime's version is XML-WS Runtime 4.0.3 git-revision#a57c222. --><xs:schema xmlns:tns="http://web_service.grupo9.edext.grupo9.com/" xmlns:xs="http://www.w3.org/2001/XMLSchema" version="1.0" targetNamespace="http://web_service.grupo9.edext.grupo9.com/">
+<?xml version="1.0" encoding="UTF-8"?><!-- Published by XML-WS Runtime (https://github.com/eclipse-ee4j/metro-jax-ws). Runtime's version is XML-WS Runtime 4.0.3 git-revision#a57c222. --><xs:schema xmlns:tns="http://web_service.grupo9.edext.grupo9.com/" xmlns:xs="http://www.w3.org/2001/XMLSchema" version="1.0" targetNamespace="http://web_service.grupo9.edext.grupo9.com/">
+
+<xs:element name="ErrorNoExiste" type="tns:ErrorNoExiste"></xs:element>
 
 <xs:element name="ErrorRepetidos" type="tns:ErrorRepetidos"></xs:element>
 
@@ -14,6 +16,10 @@
 
 <xs:element name="cursosNoRelacionadosConUnProgDeFormacionResponse" type="tns:cursosNoRelacionadosConUnProgDeFormacionResponse"></xs:element>
 
+<xs:element name="cursosParticipaEstudiante" type="tns:cursosParticipaEstudiante"></xs:element>
+
+<xs:element name="cursosParticipaEstudianteResponse" type="tns:cursosParticipaEstudianteResponse"></xs:element>
+
 <xs:element name="cursosPorInstituto" type="tns:cursosPorInstituto"></xs:element>
 
 <xs:element name="cursosPorInstitutoResponse" type="tns:cursosPorInstitutoResponse"></xs:element>
@@ -25,6 +31,10 @@
 <xs:element name="guardarCurso" type="tns:guardarCurso"></xs:element>
 
 <xs:element name="guardarCursoResponse" type="tns:guardarCursoResponse"></xs:element>
+
+<xs:element name="valorarCurso" type="tns:valorarCurso"></xs:element>
+
+<xs:element name="valorarCursoResponse" type="tns:valorarCursoResponse"></xs:element>
 
 <xs:complexType name="buscarCurso">
 <xs:sequence>
@@ -52,6 +62,9 @@
 <xs:element name="programas" type="xs:string" nillable="true" minOccurs="0" maxOccurs="unbounded"></xs:element>
 <xs:element name="categorias" type="xs:string" nillable="true" minOccurs="0" maxOccurs="unbounded"></xs:element>
 <xs:element name="imagen" type="xs:string" minOccurs="0"></xs:element>
+<xs:element name="puntajePromedio" type="xs:double" minOccurs="0"></xs:element>
+<xs:element name="cantValoraciones" type="xs:int"></xs:element>
+<xs:element name="valoracionEstudiante" type="xs:int" minOccurs="0"></xs:element>
 </xs:sequence>
 </xs:complexType>
 
@@ -98,6 +111,12 @@
 </xs:sequence>
 </xs:complexType>
 
+<xs:complexType name="ErrorNoExiste">
+<xs:sequence>
+<xs:element name="message" type="xs:string" minOccurs="0"></xs:element>
+</xs:sequence>
+</xs:complexType>
+
 <xs:complexType name="cursosNoRelacionadosConUnProgDeFormacion">
 <xs:sequence>
 <xs:element name="idProgramaDeFormacion" type="xs:string" minOccurs="0"></xs:element>
@@ -105,6 +124,18 @@
 </xs:complexType>
 
 <xs:complexType name="cursosNoRelacionadosConUnProgDeFormacionResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:DataCursoDTO" minOccurs="0" maxOccurs="unbounded"></xs:element>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="cursosParticipaEstudiante">
+<xs:sequence>
+<xs:element name="nicknameEstudiante" type="xs:string" minOccurs="0"></xs:element>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="cursosParticipaEstudianteResponse">
 <xs:sequence>
 <xs:element name="return" type="tns:DataCursoDTO" minOccurs="0" maxOccurs="unbounded"></xs:element>
 </xs:sequence>
@@ -132,5 +163,17 @@
 <xs:sequence>
 <xs:element name="return" type="tns:DataCursoDTO" minOccurs="0" maxOccurs="unbounded"></xs:element>
 </xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="valorarCurso">
+<xs:sequence>
+<xs:element name="nombreCurso" type="xs:string" minOccurs="0"></xs:element>
+<xs:element name="nicknameEstudiante" type="xs:string" minOccurs="0"></xs:element>
+<xs:element name="puntaje" type="xs:int"></xs:element>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="valorarCursoResponse">
+<xs:sequence></xs:sequence>
 </xs:complexType>
 </xs:schema>
