@@ -76,6 +76,12 @@
                 </c:choose>
             </ol>
             </div>
+            
+            <c:if test="${sessionScope.usuarioLogueado.tipo == 'Estudiante'}">    
+            <div class="btn-der">
+                <button type="submit" class="btn btn-primary">Inscribirse</button>
+            </div>
+            </c:if>
             <c:if test="${sessionScope.usuarioLogueado.tipo == 'Docente'}">
             <h2>Inscriptos</h2>
             <div class="table-container">

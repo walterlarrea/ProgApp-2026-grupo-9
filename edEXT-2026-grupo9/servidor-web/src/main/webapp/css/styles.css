@@ -572,7 +572,7 @@ body {
 }
 
 .salir a::before {
-	content: '↪';
+	content: ' ';
 	margin-right: 8px;
 	font-size: 20px;
 	font-weight: bold;
@@ -1089,7 +1089,7 @@ textarea {
 
 .popup-contenido p {
 	margin-bottom: 1.5rem;
-	animation: aparecerPopup 7s ease-out;
+	animation: aparecerPopup 3s ease-out;
 }
 
 @keyframes aparecerPopup {

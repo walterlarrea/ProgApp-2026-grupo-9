@@ -14,6 +14,7 @@
                 <h3>Cursos</h3>
                 <ul class="nav-list">
                     <li><a href="${pageContext.request.contextPath}/misCursos">Mis cursos</a></li>
+                    <li><a href="${pageContext.request.contextPath}/evaluacionEstudiante">Ver evaluaciones</a></li>
                 </ul>
             </div>
             <div class="seccion">
@@ -30,7 +31,7 @@
                 <h3>Cursos</h3>
                 <ul class="nav-list">
                     <li><a href="${pageContext.request.contextPath}/curso?accion=alta">Alta curso</a></li>
-                    <li><a href="${pageContext.request.contextPath}/edicionCurso?accion=alta">Alta edición</a></li>
+                    <li><a href="${pageContext.request.contextPath}/edicionCurso?accion=alta">Alta edici�n</a></li>
                     <!-- La opción de abajo queda deshabilitada ya que no es un requerimiento actualmente -->
                     <!-- <li><a href="${pageContext.request.contextPath}/programas">Alta programa</a></li> -->
                     <li><a href="${pageContext.request.contextPath}/inscriptosDocente">Ver inscriptos</a></li>
@@ -66,16 +67,4 @@
                     <a href="<%= request.getContextPath() %>/home">Ver todos los cursos</a>
                 </div>
             </div>
-                
-                <c:if test="${not empty sessionScope.usuarioLogueado}">
-                <div class="salir">
-                    <div class="nav-list">
-                        <a href="${pageContext.request.contextPath}/logout">Salir</a>
-                    </div>
-                </div>
-                </c:if>
-            <!-- <div class="status-box">
-                <small>Estado:</small>
-                <span class="badge badge-success"><c:out value="${estadoDb}"/></span>
-            </div> -->
-</aside>
+        </aside>

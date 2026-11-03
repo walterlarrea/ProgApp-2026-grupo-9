@@ -34,8 +34,8 @@
                 <h2>Datos</h2>
                 
                 <label for="instituto"><br>Instituto</br></label>
-                <select id="instituto" name="instituto" style="width: 30%" required>
-                <option value="" ${empty institutoSeleccionado ? 'selected' : ''}>Seleccione un instituto</option>
+                <select id="instituto" name="instituto" style="width: 30%; padding: 6px; margin-top: 4px;" required>
+                <option value="" ${empty institutoSeleccionado ? 'selected' : ''}> -- Seleccione un instituto -- </option>
                     <c:forEach var="instituto" items="${institutos}">
                         <option value="${instituto.nombreI}" ${institutoSeleccionado eq instituto.nombreI ? 'selected' : ''}>
                             <c:out value="${instituto.nombreI}"/>
@@ -46,8 +46,8 @@
                 
                 <br>
                 <label for="curso"><br>Curso perteneciente</br></label>
-                <select id="curso" name="curso" style="width: 30%" required>
-                    <option value="">Seleccione un curso</option>
+                <select id="curso" name="curso" style="width: 30%; padding: 6px; margin-top: 4px;" required>
+                    <option value=""> -- Seleccione un curso -- </option>
                     <c:forEach var="curso" items="${cursos}">
                         <option value="${curso.nombreCurso}" ${cursoSeleccionado eq curso.nombreCurso ? 'selected' : ''}>
                             <c:out value="${curso.nombreCurso}"/>
@@ -58,8 +58,8 @@
                 <script src="${pageContext.request.contextPath}/js/cargarCursosInsc.js"></script>
                 
                 <label for="edicion"><br>Edición a inscribirse</br></label>
-                <select id="edicion" name="edicion" style="width: 30%" required>
-                    <option value="">Seleccione una edición</option>
+                <select id="edicion" name="edicion" style="width: 30%; padding: 6px; margin-top: 4px;" required>
+                    <option value=""> -- Seleccione una edición -- </option>
                         <c:forEach var="edi" items="${ediciones}">
                             <option value="${edi.nombreEdi}" ${edicionSeleccionada eq edi.nombreEdi ? 'selected' : ''}>
                                 <c:out value="${edi.nombreEdi}"/>
