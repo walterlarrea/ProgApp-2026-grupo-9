@@ -43,67 +43,65 @@
 
                 <c:otherwise>
                     <form id="formValoraciones" action="${pageContext.request.contextPath}/misCursos" method="post">
-                        <div class="dato-space">
-                            <table class="inscriptos-table" style="width: 100%; border-collapse: collapse; margin-top: 10px;">
-                                <thead>
-                                    <tr>
-                                        <th style="width: 100px;">Imagen</th>
-                                        <th>Curso</th>
-                                        <th>Instituto</th>
-                                        <th style="text-align: center;">Puntaje Promedio</th>
-                                        <th style="text-align: center;">Tu Valoración (1 a 5)</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <c:forEach var="c" items="${cursos}">
-                                        <tr id="fila-curso-${fn:escapeXml(c.nombreCurso)}" style="border-bottom: 1px solid #e2e8f0;">
-                                            <td style="padding: 10px; text-align: center;">
-                                                <img src="${pageContext.request.contextPath}/imagenes/curso/${c.imagen}"
-                                                     alt="Imagen del curso"
-                                                     style="width: 65px; height: 45px; object-fit: cover; border-radius: 4px;"
-                                                     onerror="this.onerror=null; this.src='${pageContext.request.contextPath}/imagenes/curso/curso-placeholder.jpg';" />
-                                            </td>
-                                            <td style="padding: 10px;" class="nav-list">
-                                                <a href="${pageContext.request.contextPath}/curso?nombre=${fn:escapeXml(c.nombreCurso)}" style="font-weight: 600; font-size: 1rem;">
+                        <div class="mis-cursos-lista">
+                            <c:forEach var="c" items="${cursos}">
+                                <article class="mis-curso-card" id="fila-curso-${fn:escapeXml(c.nombreCurso)}">
+                                    <!-- Foto del Curso -->
+                                    <div class="mis-curso-media">
+                                        <img src="${pageContext.request.contextPath}/imagenes/curso/${c.imagen}"
+                                             alt="Imagen del curso ${fn:escapeXml(c.nombreCurso)}"
+                                             class="mis-curso-img"
+                                             onerror="this.onerror=null; this.src='${pageContext.request.contextPath}/imagenes/curso/curso-placeholder.jpg';" />
+                                    </div>
+
+                                    <!-- Información Principal: Título grande, Instituto, Descripción amplia -->
+                                    <div class="mis-curso-info">
+                                        <div class="mis-curso-header">
+                                            <c:if test="${not empty c.instituto && not empty c.instituto.nombreI}">
+                                                <span class="tag"><c:out value="${c.instituto.nombreI}"/></span>
+                                            </c:if>
+                                            <h2 class="mis-curso-titulo">
+                                                <a href="${pageContext.request.contextPath}/curso?nombre=${fn:escapeXml(c.nombreCurso)}">
                                                     <c:out value="${c.nombreCurso}"/>
                                                 </a>
-                                                <p style="margin: 4px 0 0; color: #64748b; font-size: 0.85rem; max-width: 450px;">
-                                                    <c:out value="${c.descCurso}"/>
-                                                </p>
-                                            </td>
-                                            <td style="padding: 10px;">
-                                                <c:out value="${c.instituto != null ? c.instituto.nombreI : '-'}"/>
-                                            </td>
-                                            <td style="padding: 10px; text-align: center;">
+                                            </h2>
+                                        </div>
+                                        <p class="mis-curso-desc">
+                                            <c:out value="${c.descCurso}"/>
+                                        </p>
+                                    </div>
+
+                                    <!-- Sección Lateral Compacta: Puntajes y Calificación -->
+                                    <div class="mis-curso-stats">
+                                        <div class="mis-curso-stat-item">
+                                            <span class="stat-titulo">Promedio</span>
+                                            <div class="stat-promedio-valor">
                                                 <c:choose>
                                                     <c:when test="${c.cantValoraciones > 0}">
-                                                        <span style="font-size: 1.1rem; font-weight: bold; color: #d97706;">
-                                                            ★ <c:out value="${c.puntajePromedio}"/>
-                                                        </span>
-                                                        <br>
-                                                        <small style="color: #64748b;">
-                                                            (<c:out value="${c.cantValoraciones}"/> <c:out value="${c.cantValoraciones == 1 ? 'voto' : 'votos'}"/>)
-                                                        </small>
+                                                        <span class="stat-estrellas">★ <c:out value="${c.puntajePromedio}"/></span>
+                                                        <span class="stat-votos">(<c:out value="${c.cantValoraciones}"/> <c:out value="${c.cantValoraciones == 1 ? 'voto' : 'votos'}"/>)</span>
                                                     </c:when>
                                                     <c:otherwise>
-                                                        <span style="color: #64748b; font-style: italic;">Sin valoraciones</span>
+                                                        <span class="stat-sin-votos">Sin valoraciones</span>
                                                     </c:otherwise>
                                                 </c:choose>
-                                            </td>
-                                            <td style="padding: 10px; text-align: center;" id="col-valoracion-${fn:escapeXml(c.nombreCurso)}">
+                                            </div>
+                                        </div>
+
+                                        <div class="mis-curso-stat-item">
+                                            <span class="stat-titulo">Tu Valoración</span>
+                                            <div id="col-valoracion-${fn:escapeXml(c.nombreCurso)}" class="stat-valoracion-contenedor">
                                                 <c:choose>
                                                     <c:when test="${c.valoracionEstudiante != null && c.valoracionEstudiante > 0}">
-                                                        <span class="badge badge-success" style="font-size: 0.95rem; padding: 6px 12px; font-weight: 600;">
+                                                        <span class="badge badge-success stat-badge-enviada">
                                                             ★ <c:out value="${c.valoracionEstudiante}"/> / 5
                                                         </span>
-                                                        <br>
-                                                        <small style="color: #64748b; font-style: italic;">(Valoración enviada)</small>
+                                                        <small class="stat-subtexto-enviado">(Valoración enviada)</small>
                                                     </c:when>
                                                     <c:otherwise>
                                                         <select name="valoracion-${fn:escapeXml(c.nombreCurso)}"
-                                                                class="select-valoracion"
-                                                                data-curso="${fn:escapeXml(c.nombreCurso)}"
-                                                                style="padding: 6px 10px; border: 1px solid #cbd5e1; border-radius: 4px; font-size: 0.9rem;">
+                                                                class="select-valoracion stat-select-valoracion"
+                                                                data-curso="${fn:escapeXml(c.nombreCurso)}">
                                                             <option value="">-- Asignar puntaje --</option>
                                                             <option value="1">★ 1 - Muy insatisfecho</option>
                                                             <option value="2">★ 2 - Insatisfecho</option>
@@ -113,11 +111,11 @@
                                                         </select>
                                                     </c:otherwise>
                                                 </c:choose>
-                                            </td>
-                                        </tr>
-                                    </c:forEach>
-                                </tbody>
-                            </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </article>
+                            </c:forEach>
                         </div>
 
                         <div class="btn-der" style="margin-top: 25px; margin-bottom: 30px;">

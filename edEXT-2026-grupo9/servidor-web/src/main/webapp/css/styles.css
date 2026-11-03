@@ -1013,3 +1013,218 @@ textarea {
 	border-radius: 5px;
 	margin-bottom: 15px;
 }
+
+/* Mis Cursos - Tarjetas de ancho completo */
+.mis-cursos-lista {
+	display: flex;
+	flex-direction: column;
+	gap: 1.25rem;
+	width: 100%;
+	margin-top: 1rem;
+}
+
+.mis-curso-card {
+	background: var(--bg-card);
+	border: 1px solid var(--border-color);
+	border-radius: 10px;
+	padding: 1.25rem 1.5rem;
+	display: flex;
+	flex-direction: row;
+	align-items: stretch;
+	gap: 1.5rem;
+	width: 100%;
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+	transition:
+		transform 0.2s ease,
+		box-shadow 0.2s ease,
+		border-color 0.2s ease;
+}
+
+.mis-curso-card:hover {
+	transform: translateY(-2px);
+	box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+	border-color: #cbd5e1;
+}
+
+.mis-curso-media {
+	flex-shrink: 0;
+	width: 160px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.mis-curso-img {
+	width: 160px;
+	height: 110px;
+	object-fit: cover;
+	border-radius: 8px;
+	border: 1px solid var(--border-color);
+	background-color: #f1f5f9;
+	display: block;
+}
+
+.mis-curso-info {
+	flex: 1;
+	min-width: 0;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+}
+
+.mis-curso-header {
+	margin-bottom: 0.5rem;
+}
+
+.mis-curso-header .tag {
+	margin-bottom: 0.35rem;
+}
+
+.mis-curso-titulo {
+	font-size: 1.35rem;
+	font-weight: 700;
+	line-height: 1.3;
+	margin: 0;
+}
+
+.mis-curso-titulo a {
+	color: var(--text-primary);
+	text-decoration: none;
+	transition: color 0.15s ease;
+}
+
+.mis-curso-titulo a:hover {
+	color: var(--primary);
+	text-decoration: underline;
+}
+
+.mis-curso-desc {
+	color: var(--text-secondary);
+	font-size: 0.95rem;
+	line-height: 1.6;
+	margin: 0;
+	overflow-wrap: anywhere;
+}
+
+.mis-curso-stats {
+	width: 210px;
+	min-width: 200px;
+	flex-shrink: 0;
+	border-left: 1px solid var(--border-color);
+	padding-left: 1.5rem;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	gap: 1rem;
+}
+
+.mis-curso-stat-item {
+	display: flex;
+	flex-direction: column;
+	gap: 0.25rem;
+}
+
+.mis-curso-stat-item .stat-titulo {
+	font-size: 0.75rem;
+	font-weight: 600;
+	text-transform: uppercase;
+	letter-spacing: 0.04em;
+	color: var(--text-secondary);
+}
+
+.stat-promedio-valor {
+	display: flex;
+	align-items: baseline;
+	gap: 0.35rem;
+	flex-wrap: wrap;
+}
+
+.stat-estrellas {
+	font-size: 1.15rem;
+	font-weight: 700;
+	color: #d97706;
+}
+
+.stat-votos {
+	font-size: 0.8rem;
+	color: var(--text-secondary);
+}
+
+.stat-sin-votos {
+	font-size: 0.85rem;
+	color: var(--text-secondary);
+	font-style: italic;
+}
+
+.stat-valoracion-contenedor {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+}
+
+.stat-badge-enviada {
+	font-size: 0.95rem;
+	padding: 6px 12px;
+	font-weight: 600;
+}
+
+.stat-subtexto-enviado {
+	display: block;
+	color: var(--text-secondary);
+	font-style: italic;
+	font-size: 0.8rem;
+	margin-top: 3px;
+}
+
+.stat-select-valoracion {
+	width: 100%;
+	padding: 0.45rem 0.6rem;
+	border: 1px solid var(--border-color);
+	border-radius: 6px;
+	font-size: 0.85rem;
+	background-color: #ffffff;
+	color: var(--text-primary);
+	cursor: pointer;
+	outline: none;
+	transition: border-color 0.2s;
+}
+
+.stat-select-valoracion:focus {
+	border-color: var(--primary);
+}
+
+@media (max-width: 860px) {
+	.mis-curso-card {
+		flex-direction: column;
+		align-items: stretch;
+		gap: 1rem;
+		padding: 1.25rem;
+	}
+
+	.mis-curso-media {
+		width: 100%;
+		height: 180px;
+	}
+
+	.mis-curso-img {
+		width: 100%;
+		height: 100%;
+	}
+
+	.mis-curso-stats {
+		width: 100%;
+		min-width: 0;
+		border-left: none;
+		border-top: 1px solid var(--border-color);
+		padding-left: 0;
+		padding-top: 1rem;
+		flex-direction: row;
+		justify-content: space-between;
+		align-items: center;
+		flex-wrap: wrap;
+	}
+
+	.stat-valoracion-contenedor {
+		align-items: flex-end;
+	}
+}
