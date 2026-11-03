@@ -200,24 +200,27 @@ public class DataRecordMapper {
                 toEntity(dataEdicion.getDocentes()),
                 inscripciones,
                 dataEdicion.getFechaPub(),
-                dataEdicion.getImagen());
+                dataEdicion.getImagen(),
+                dataEdicion.isCerrada());
     }
 
     public static DataEdicionCurso toData(EdicionCurso edicion) {
         // Inscripciones
         Set<DataInscEdicion> inscripciones = new HashSet<>();
-        for (InscEdicion insc : edicion.getInscripciones()) {
-            Estudiante estudiante = insc.getEstudiante();
-            DataEstudiante dataEstudiante = new DataEstudiante(
-                    estudiante.getNickname(),
-                    estudiante.getNombre(),
-                    estudiante.getApellido(),
-                    estudiante.getEmail(),
-                    estudiante.getFechaNac(),
-                    null);
-            DataInscEdicion dataInsc = new DataInscEdicion(insc.getFechaInscE(), dataEstudiante,
-                    insc.getEdicion().getNombreEdi(), insc.getEstado());
-            inscripciones.add(dataInsc);
+        if (edicion.getInscripciones() != null) {
+            for (InscEdicion insc : edicion.getInscripciones()) {
+                Estudiante estudiante = insc.getEstudiante();
+                DataEstudiante dataEstudiante = new DataEstudiante(
+                        estudiante.getNickname(),
+                        estudiante.getNombre(),
+                        estudiante.getApellido(),
+                        estudiante.getEmail(),
+                        estudiante.getFechaNac(),
+                        null);
+                DataInscEdicion dataInsc = new DataInscEdicion(insc.getFechaInscE(), dataEstudiante,
+                        insc.getEdicion().getNombreEdi(), insc.getEstado(), insc.getNota());
+                inscripciones.add(dataInsc);
+            }
         }
 
         return new DataEdicionCurso(
@@ -229,7 +232,8 @@ public class DataRecordMapper {
                 toData(edicion.getDocentes()),
                 inscripciones,
                 edicion.getFechaPub(),
-                edicion.getImagen());
+                edicion.getImagen(),
+                edicion.isCerrada());
     }
 
     public static Set<Docente> toEntity(Set<DataDocente> datos) {

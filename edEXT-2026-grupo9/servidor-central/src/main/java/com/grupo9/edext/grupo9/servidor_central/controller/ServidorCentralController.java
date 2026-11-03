@@ -207,6 +207,23 @@ class ServidorCentralController implements IServidorCentral {
         this.edicionCursoCtrl.cambiarEstadoInscripcion(nombreEdicion, nicknameEstudiante, nuevoEstado);
     }
 
+    @Override
+    public DataEdicionCurso obtenerEdicionVigente(String nombreCurso) {
+        return this.edicionCursoCtrl.obtenerEdicionVigente(nombreCurso);
+    }
+
+    @Override
+    public void registrarCalificacion(String nombreEdicion, String nicknameEstudiante, Integer nota)
+            throws ErrorNoExiste, com.grupo9.edext.grupo9.mensajes.ErrorEstadoInvalido {
+        this.edicionCursoCtrl.registrarCalificacion(nombreEdicion, nicknameEstudiante, nota);
+    }
+
+    @Override
+    public void cerrarEdicionCurso(String nombreEdicion)
+            throws ErrorNoExiste, com.grupo9.edext.grupo9.mensajes.ErrorEstadoInvalido {
+        this.edicionCursoCtrl.cerrarEdicionCurso(nombreEdicion);
+    }
+
     // Cursos
     @Override
     public DataCurso guardarCurso(DataCurso nuevoCurso) throws ErrorRepetidos {
@@ -343,4 +360,3 @@ class ServidorCentralController implements IServidorCentral {
         return this.usuarioCtrl.esSeguidor(seguidorNick, seguidoNick);
     }
 }
-

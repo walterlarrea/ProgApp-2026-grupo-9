@@ -36,60 +36,6 @@ public class EdicionCursoControllerTest {
         usuarioController = new UsuarioController();
     }
 
-    /*@Test
-    public void testAltaYConsultarEdicionCurso() {
-        String nombreInst = "InstEdicion_" + System.currentTimeMillis();
-        DataInstituto inst = institutoController.guardarNuevoInstituto(new DataInstituto(nombreInst));
-
-        String nombreCurso = "CursoEdicion_" + System.currentTimeMillis();
-        DataCurso curso = cursoController.guardarNuevoCurso(new DataCurso(
-                inst, nombreCurso, "Desc", 6, 40, 4, LocalDate.now(), "http://test.com", new HashSet<>(), new HashSet<>(), null
-        ));
-
-        String nombreEdicion = "EdicionTest_" + System.currentTimeMillis();
-        DataEdicionCurso nuevaEdicion = new DataEdicionCurso(
-                nombreEdicion, curso, LocalDate.of(2024, 3, 1), LocalDate.of(2024, 7, 1),
-                25, new HashSet<>(), new HashSet<>(), LocalDate.now(), null
-        );
-
-        assertDoesNotThrow(() -> {
-            DataEdicionCurso res = edicionController.guardarNuevaEdicionCurso(nuevaEdicion);
-            assertNotNull(res);
-            assertEquals(nombreEdicion, res.getNombreEdi());
-
-            DataEdicionCurso consultada = edicionController.consultarEdicionCurso(nombreEdicion);
-            assertNotNull(consultada);
-            assertEquals(nombreEdicion, consultada.getNombreEdi());
-            assertEquals(25, consultada.getCupo());
-        });
-    }*/
-
-    /*@Test
-    public void testInscripcionEstudianteExitosaYDuplicada() {
-        String nombreInst = "InstInsc_" + System.currentTimeMillis();
-        DataInstituto inst = institutoController.guardarNuevoInstituto(new DataInstituto(nombreInst));
-
-        String nombreCurso = "CursoInsc_" + System.currentTimeMillis();
-        DataCurso curso = cursoController.guardarNuevoCurso(new DataCurso(
-                inst, nombreCurso, "Desc", 6, 40, 4, LocalDate.now(), "http://test.com", new HashSet<>(), new HashSet<>(), null
-        ));
-
-        String nombreEdicion = "EdInsc_" + System.currentTimeMillis();
-        edicionController.guardarNuevaEdicionCurso(new DataEdicionCurso(
-                nombreEdicion, curso, LocalDate.now(), LocalDate.now().plusMonths(3), 30, new HashSet<>(), new HashSet<>(), LocalDate.now(), null
-        ));
-
-        String nickEst = "estInsc_" + System.currentTimeMillis();
-        assertDoesNotThrow(() -> {
-            usuarioController.registrarEstudiante(nickEst, "Alumno", "Inscripto", "estinsc_" + System.currentTimeMillis() + "@test.com", LocalDate.of(2001, 1, 1), null, "1234");
-            edicionController.inscribirNuevoEstudiante(LocalDate.now(), nickEst, nombreEdicion);
-        });
-
-        assertThrows(ErrorRepetidos.class, () -> {
-            edicionController.inscribirNuevoEstudiante(LocalDate.now(), nickEst, nombreEdicion);
-        });
-    }*/
-
     @Test
     public void testConsultarEdicionInexistente() {
         String edicionInexistente = "EdInexistente_" + System.currentTimeMillis();
@@ -142,16 +88,6 @@ public class EdicionCursoControllerTest {
         assertEquals("Nombre", datos.getInscripciones().iterator().next().getEstudiante().getNombre());
     }
 
-    /*@Test
-    public void testInscripcionEstudianteInexistente() {
-        String edicionInexistente = "EdInexistente_" + System.currentTimeMillis();
-        String estudianteInexistente = "EstInexistente_" + System.currentTimeMillis();
-
-        assertThrows(ErrorNoExiste.class, () -> {
-            edicionController.inscribirNuevoEstudiante(LocalDate.now(), estudianteInexistente, edicionInexistente);
-        });
-    }*/
-
     @Test
     public void testAltaEdicionDuplicadaLanzaExcepcion() {
         String nombreEdi = "EdicionDup_" + System.currentTimeMillis();
@@ -176,6 +112,73 @@ public class EdicionCursoControllerTest {
             assertNotNull(edicionController.traerEstudiantes());
             DataInstituto dataInst = institutoController.guardarNuevoInstituto(new DataInstituto("InstDocentes_" + System.currentTimeMillis()));
             assertNotNull(edicionController.traerDocentes(DataRecordMapper.toEntity(dataInst)));
+        });
+    }
+
+    @Test
+    public void testRegistrarCalificacionYCerrarEdicion() {
+        String sufijo = String.valueOf(System.currentTimeMillis());
+        String nombreEdicion = "EdicionEval_" + sufijo;
+        String nombreCurso = "CursoEval_" + sufijo;
+        EntityManager em = UtensiliosJPA.getEntityManagerFactory().createEntityManager();
+
+        try {
+            em.getTransaction().begin();
+            Instituto instituto = new Instituto("InstEval_" + sufijo);
+            Curso curso = new Curso(instituto, nombreCurso, "Desc", 1, 1, 1,
+                    LocalDate.now(), null, new HashSet<>(), new HashSet<>(), null);
+            Estudiante estudiante = new Estudiante("EstEval_" + sufijo, "Nombre", "Apellido",
+                    "est-eval-" + sufijo + "@test.com", LocalDate.of(2000, 1, 1), null);
+            HashSet<InscEdicion> inscripciones = new HashSet<>();
+            EdicionCurso edicion = new EdicionCurso(nombreEdicion, curso, LocalDate.now().minusDays(5), LocalDate.now().plusDays(10),
+                    10, new HashSet<>(), inscripciones, LocalDate.now(), null, false);
+            InscEdicion insc = new InscEdicion(LocalDate.now(), estudiante, edicion, EstadoInscripcion.ACEPTADA, null);
+            inscripciones.add(insc);
+
+            em.persist(instituto);
+            em.persist(curso);
+            em.persist(estudiante);
+            em.persist(edicion);
+            em.persist(insc);
+            em.getTransaction().commit();
+
+            ManejadorEdiciones.getInstance().addEdicion(edicion);
+        } finally {
+            em.close();
+        }
+
+        // 1. Edición vigente
+        DataEdicionCurso vigente = edicionController.obtenerEdicionVigente(nombreCurso);
+        assertNotNull(vigente);
+        assertEquals(nombreEdicion, vigente.getNombreEdi());
+        assertFalse(vigente.isCerrada());
+
+        // 2. Validación de rango de nota
+        assertThrows(IllegalArgumentException.class, () -> {
+            edicionController.registrarCalificacion(nombreEdicion, "EstEval_" + sufijo, 0);
+        });
+        assertThrows(IllegalArgumentException.class, () -> {
+            edicionController.registrarCalificacion(nombreEdicion, "EstEval_" + sufijo, 13);
+        });
+
+        // 3. No permite cerrar con estudiantes sin nota
+        assertThrows(Exception.class, () -> {
+            edicionController.cerrarEdicionCurso(nombreEdicion);
+        });
+
+        // 4. Registro exitoso
+        assertDoesNotThrow(() -> {
+            edicionController.registrarCalificacion(nombreEdicion, "EstEval_" + sufijo, 10);
+        });
+
+        // 5. Cierre exitoso
+        assertDoesNotThrow(() -> {
+            edicionController.cerrarEdicionCurso(nombreEdicion);
+        });
+
+        // 6. Posterior al cierre, no se puede modificar notas
+        assertThrows(Exception.class, () -> {
+            edicionController.registrarCalificacion(nombreEdicion, "EstEval_" + sufijo, 12);
         });
     }
 }

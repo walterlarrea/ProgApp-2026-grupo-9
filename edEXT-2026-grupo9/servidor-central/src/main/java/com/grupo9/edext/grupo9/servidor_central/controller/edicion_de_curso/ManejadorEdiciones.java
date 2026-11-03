@@ -109,6 +109,10 @@ public class ManejadorEdiciones {
     public EdicionCurso obtenerEdicion(String nombreEC){
         return ((EdicionCurso)edCurso.get(nombreEC));
     }
+
+    public Collection<EdicionCurso> getTodasLasEdiciones(){
+        return edCurso.values();
+    }
     
     public EdicionCurso[] getEdiciones(Curso curso){
         System.out.println("Cantidad de ediciones en el Map: " + edCurso.size());
@@ -143,6 +147,25 @@ public class ManejadorEdiciones {
         try{
             et.begin();
             em.merge(ie);
+            et.commit();  
+        }catch(Exception e){
+            if (et.isActive()) et.rollback();
+            e.printStackTrace();
+            throw e;
+        }finally{
+            em.close();
+        }
+    }
+
+    public void actualizarEdicion(EdicionCurso ed){
+        if (ed != null && ed.getNombreEdi() != null) {
+            edCurso.put(ed.getNombreEdi(), ed);
+        }
+        em = UtensiliosJPA.getEntityManagerFactory().createEntityManager();
+        EntityTransaction et = em.getTransaction();
+        try{
+            et.begin();
+            em.merge(ed);
             et.commit();  
         }catch(Exception e){
             if (et.isActive()) et.rollback();

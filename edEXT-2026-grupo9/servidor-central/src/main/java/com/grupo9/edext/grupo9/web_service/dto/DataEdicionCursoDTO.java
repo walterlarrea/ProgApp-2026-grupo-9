@@ -24,6 +24,7 @@ public class DataEdicionCursoDTO implements Serializable {
     private List<String> docentes = new ArrayList<>();
     private String fechaPub;
     private String imagen;
+    private Boolean cerrada = false;
 
     public DataEdicionCursoDTO() {
     }
@@ -90,5 +91,13 @@ public class DataEdicionCursoDTO implements Serializable {
 
     public void setImagen(String imagen) {
         this.imagen = imagen;
+    }
+
+    public Boolean isCerrada() {
+        return cerrada;
+    }
+
+    public void setCerrada(Boolean cerrada) {
+        this.cerrada = cerrada;
     }
 }

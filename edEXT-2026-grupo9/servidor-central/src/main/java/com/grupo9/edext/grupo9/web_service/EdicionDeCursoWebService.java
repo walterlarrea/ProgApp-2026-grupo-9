@@ -180,4 +180,27 @@ public class EdicionDeCursoWebService {
         EstadoInscripcion estadoEnum = EstadoInscripcion.valueOf(nuevoEstado.trim().toUpperCase());
         servidorCentral.cambiarEstadoInscripcion(nombreEdicion, nicknameEstudiante, estadoEnum);
     }
+
+    @WebMethod(operationName = "obtenerEdicionVigente")
+    public DataEdicionCursoDTO obtenerEdicionVigente(@WebParam(name = "nombreCurso") String nombreCurso) {
+        IServidorCentral servidorCentral = ServidorCentralFactory.getServidorCentral();
+        DataEdicionCurso edicion = servidorCentral.obtenerEdicionVigente(nombreCurso);
+        return DtoRecordMapper.toDTO(edicion);
+    }
+
+    @WebMethod(operationName = "registrarCalificacion")
+    public void registrarCalificacion(
+            @WebParam(name = "nombreEdicion") String nombreEdicion,
+            @WebParam(name = "nicknameEstudiante") String nicknameEstudiante,
+            @WebParam(name = "nota") Integer nota) throws ErrorNoExiste, ErrorEstadoInvalido {
+        IServidorCentral servidorCentral = ServidorCentralFactory.getServidorCentral();
+        servidorCentral.registrarCalificacion(nombreEdicion, nicknameEstudiante, nota);
+    }
+
+    @WebMethod(operationName = "cerrarEdicionCurso")
+    public void cerrarEdicionCurso(@WebParam(name = "nombreEdicion") String nombreEdicion)
+            throws ErrorNoExiste, ErrorEstadoInvalido {
+        IServidorCentral servidorCentral = ServidorCentralFactory.getServidorCentral();
+        servidorCentral.cerrarEdicionCurso(nombreEdicion);
+    }
 }

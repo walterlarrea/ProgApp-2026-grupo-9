@@ -2,6 +2,8 @@ package com.grupo9.edext.grupo9.servidor_central.controller;
 
 import com.grupo9.edext.grupo9.servidor_central.controller.curso.Curso;
 import com.grupo9.edext.grupo9.servidor_central.controller.edicion_de_curso.EdicionCurso;
+import com.grupo9.edext.grupo9.servidor_central.controller.edicion_de_curso.EstadoInscripcion;
+import com.grupo9.edext.grupo9.servidor_central.controller.edicion_de_curso.InscEdicion;
 import com.grupo9.edext.grupo9.servidor_central.controller.instituto.Instituto;
 import com.grupo9.edext.grupo9.servidor_central.controller.programa_de_formacion.InscripcionPrograma;
 import com.grupo9.edext.grupo9.servidor_central.controller.programa_de_formacion.ProgramaDeFormacion;
@@ -90,8 +92,6 @@ public class DataRecordMapperTest {
         assertEquals(60, curso.getCantHoras());
         assertEquals(5, curso.getCantCred());
         assertEquals("img/curso101.png", curso.getImagen());
-//        assertNotNull(curso.getCategorias());
-//        assertEquals(2, curso.getCategorias().size());
 
         DataCurso dataCursoConverted = DataRecordMapper.toData(curso);
         assertNotNull(dataCursoConverted);
@@ -151,16 +151,35 @@ public class DataRecordMapperTest {
 
         DataEdicionCurso dataEd = new DataEdicionCurso(
                 "Edición 2024", dataCurso, LocalDate.of(2024, 3, 1), LocalDate.of(2024, 7, 1),
-                30, new HashSet<>(), new HashSet<>(), LocalDate.now(), null);
+                30, new HashSet<>(), new HashSet<>(), LocalDate.now(), null, true);
 
         EdicionCurso ed = DataRecordMapper.toEntity(dataEd);
         assertNotNull(ed);
         assertEquals("Edición 2024", ed.getNombreEdi());
         assertEquals(30, ed.getCupo());
+        assertTrue(ed.isCerrada());
 
         DataEdicionCurso dataEdConverted = DataRecordMapper.toData(ed);
         assertNotNull(dataEdConverted);
         assertEquals("Edición 2024", dataEdConverted.getNombreEdi());
+        assertTrue(dataEdConverted.isCerrada());
+    }
+
+    @Test
+    public void testInscEdicionConNotaMapper() {
+        Instituto inst = new Instituto("InstNota");
+        Curso curso = new Curso(inst, "CursoNota", "Desc", 1, 1, 1, LocalDate.now(), null, new HashSet<>(), new HashSet<>(), null);
+        EdicionCurso ed = new EdicionCurso("EdNota", curso, LocalDate.now(), LocalDate.now().plusMonths(1), 10, new HashSet<>(), new HashSet<>(), LocalDate.now(), null, false);
+        Estudiante est = new Estudiante("nickNota", "Est", "Nota", "nota@test.com", LocalDate.of(2000, 1, 1), null);
+        InscEdicion insc = new InscEdicion(LocalDate.now(), est, ed, EstadoInscripcion.ACEPTADA, 11);
+        ed.getInscripciones().add(insc);
+
+        DataEdicionCurso dataEd = DataRecordMapper.toData(ed);
+        assertNotNull(dataEd);
+        assertEquals(1, dataEd.getInscripciones().size());
+        DataInscEdicion dataInsc = dataEd.getInscripciones().iterator().next();
+        assertEquals(11, dataInsc.getNota());
+        assertEquals(EstadoInscripcion.ACEPTADA, dataInsc.getEstado());
     }
 
     @Test

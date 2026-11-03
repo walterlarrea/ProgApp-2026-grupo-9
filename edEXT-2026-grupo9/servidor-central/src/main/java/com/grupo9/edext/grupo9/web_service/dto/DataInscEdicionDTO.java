@@ -16,6 +16,7 @@ public class DataInscEdicionDTO implements Serializable {
     private DataEstudianteDTO estudiante;
     private String edicion;
     private EstadoInscripcion estado;
+    private Integer nota;
 
     public DataInscEdicionDTO() {
     }
@@ -50,5 +51,13 @@ public class DataInscEdicionDTO implements Serializable {
 
     public void setEstado(EstadoInscripcion estado) {
         this.estado = estado;
+    }
+
+    public Integer getNota() {
+        return nota;
+    }
+
+    public void setNota(Integer nota) {
+        this.nota = nota;
     }
 }

@@ -26,10 +26,15 @@ public class EdicionCurso {
     private Set<InscEdicion> inscripciones;
     private LocalDate fechaPub;
     private String imagen;
+    private boolean cerrada = false;
     
     public EdicionCurso(){}
     
     public EdicionCurso(String nombreEdi, Curso cursoAsoc, LocalDate fechaInicio, LocalDate fechaFin, Integer cupo, Set<Docente> docentes, Set<InscEdicion> inscripciones, LocalDate fechaPub, String imagen) {
+        this(nombreEdi, cursoAsoc, fechaInicio, fechaFin, cupo, docentes, inscripciones, fechaPub, imagen, false);
+    }
+
+    public EdicionCurso(String nombreEdi, Curso cursoAsoc, LocalDate fechaInicio, LocalDate fechaFin, Integer cupo, Set<Docente> docentes, Set<InscEdicion> inscripciones, LocalDate fechaPub, String imagen, boolean cerrada) {
         this.nombreEdi = nombreEdi;
         this.cursoAsoc = cursoAsoc;
         this.fechaInicio = fechaInicio;
@@ -39,6 +44,7 @@ public class EdicionCurso {
         this.inscripciones = inscripciones;
         this.fechaPub = fechaPub;
         this.imagen = imagen;
+        this.cerrada = cerrada;
     }
 
     public String getNombreEdi() {
@@ -117,5 +123,13 @@ public class EdicionCurso {
     
     public void setImagen(String imagen){
         this.imagen = imagen;
+    }
+
+    public boolean isCerrada() {
+        return cerrada;
+    }
+
+    public void setCerrada(boolean cerrada) {
+        this.cerrada = cerrada;
     }
 }

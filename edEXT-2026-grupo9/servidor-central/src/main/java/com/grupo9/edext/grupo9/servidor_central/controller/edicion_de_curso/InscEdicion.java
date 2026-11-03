@@ -20,6 +20,7 @@ public class InscEdicion {
     private EdicionCurso edicion;
     @Enumerated(EnumType.STRING)
     private EstadoInscripcion estado;
+    private Integer nota;
     
     public InscEdicion(){}
 
@@ -28,6 +29,15 @@ public class InscEdicion {
         this.estudiante = estudiante;
         this.edicion = edicion;
         this.estado = EstadoInscripcion.INSCRIPTO;
+        this.nota = null;
+    }
+
+    public InscEdicion(LocalDate fechaInscE, Estudiante estudiante, EdicionCurso edicion, EstadoInscripcion estado, Integer nota) {
+        this.fechaInscE = fechaInscE;
+        this.estudiante = estudiante;
+        this.edicion = edicion;
+        this.estado = estado;
+        setNota(nota);
     }
 
     public Long getId() {
@@ -60,5 +70,16 @@ public class InscEdicion {
         }
 
         this.estado = nuevoEstado;
+    }
+
+    public Integer getNota() {
+        return nota;
+    }
+
+    public void setNota(Integer nota) {
+        if (nota != null && (nota < 1 || nota > 12)) {
+            throw new IllegalArgumentException("La nota debe estar entre 1 y 12.");
+        }
+        this.nota = nota;
     }
 }
