@@ -11,6 +11,7 @@ public record ResultadoBusquedaExtendida(
         String descVisibleHighlighted,
         String href,
         String tipoCss,
-        String fechaCreacion
+        String fechaCreacion,
+        String imagenUrl
 ) {
 }
