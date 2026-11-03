@@ -2,7 +2,7 @@
 <%@page import="java.util.Map, java.util.HashMap, java.util.ArrayList, com.grupo9.edext.grupo9.servidor_web.servlets.busqueda.ResultadoBusquedaExtendida"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" data-bs-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
