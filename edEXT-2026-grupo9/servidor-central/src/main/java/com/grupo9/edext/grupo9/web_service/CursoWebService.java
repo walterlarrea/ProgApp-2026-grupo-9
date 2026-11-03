@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Set;
 
 import com.grupo9.edext.grupo9.interfaces.IServidorCentral;
+import com.grupo9.edext.grupo9.mensajes.ErrorNoExiste;
 import com.grupo9.edext.grupo9.mensajes.ErrorRepetidos;
 import com.grupo9.edext.grupo9.servidor_central.controller.ServidorCentralFactory;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataCurso;
@@ -103,5 +104,22 @@ public class CursoWebService {
 
         DataCurso guardado = servidorCentral.guardarCurso(nuevoCurso);
         return DtoRecordMapper.toDTO(guardado);
+    }
+
+    @WebMethod(operationName = "valorarCurso")
+    public void valorarCurso(
+            @WebParam(name = "nombreCurso") String nombreCurso,
+            @WebParam(name = "nicknameEstudiante") String nicknameEstudiante,
+            @WebParam(name = "puntaje") int puntaje) throws ErrorNoExiste, ErrorRepetidos {
+        IServidorCentral servidorCentral = ServidorCentralFactory.getServidorCentral();
+        servidorCentral.valorarCurso(nombreCurso, nicknameEstudiante, puntaje);
+    }
+
+    @WebMethod(operationName = "cursosParticipaEstudiante")
+    public List<DataCursoDTO> cursosParticipaEstudiante(
+            @WebParam(name = "nicknameEstudiante") String nicknameEstudiante) {
+        IServidorCentral servidorCentral = ServidorCentralFactory.getServidorCentral();
+        List<DataCurso> cursos = servidorCentral.cursosParticipaEstudiante(nicknameEstudiante);
+        return DtoRecordMapper.toDTOList(cursos, DataCursoDTO.class);
     }
 }

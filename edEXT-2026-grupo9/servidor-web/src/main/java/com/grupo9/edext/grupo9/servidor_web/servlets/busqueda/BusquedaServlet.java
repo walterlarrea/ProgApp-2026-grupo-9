@@ -7,6 +7,7 @@ import com.grupo9.edext.grupo9.servidor_web.web_service_client.busqueda.DataCurs
 import com.grupo9.edext.grupo9.servidor_web.web_service_client.busqueda.DataProgramaFormacionDTO;
 import com.grupo9.edext.grupo9.servidor_web.web_service_client.busqueda.DataUsuarioDTO;
 import com.grupo9.edext.grupo9.servidor_web.web_service_client.busqueda.ResultadoBusquedaDTO;
+import com.grupo9.edext.grupo9.servidor_web.web_service_client.busqueda.TipoBusqueda;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -14,6 +15,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.URLEncoder;
@@ -86,6 +88,7 @@ public class BusquedaServlet extends HttpServlet {
         String parametro;
         String href;
         String fechaCreacion;
+        String rawImagen;
         Object data;
 
         switch (resultado.getTipo()) {
@@ -102,6 +105,7 @@ public class BusquedaServlet extends HttpServlet {
                 href = contextPath + ruta + "?nombre="
                         + URLEncoder.encode(parametro, StandardCharsets.UTF_8);
                 fechaCreacion = curso != null && curso.getFechaReg() != null ? curso.getFechaReg() : "-";
+                rawImagen = curso != null ? curso.getImagen() : null;
             }
             case USUARIO -> {
                 DataUsuarioDTO usuario = resultado.getUsuario();
@@ -109,13 +113,27 @@ public class BusquedaServlet extends HttpServlet {
                 tipoVisible = "Usuario";
                 nombreVisible = (usuario != null ? usuario.getNombre() : "") + " " + (usuario != null ? usuario.getApellido() : "");
                 nombreVisibleHighlighted = highlightQueryInText(nombreVisible, query);
-                descVisibleHighlighted = "";
+                
+                String infoUsuario = "";
+                if (usuario != null) {
+                    StringBuilder sb = new StringBuilder();
+                    if (usuario.getNickname() != null && !usuario.getNickname().isBlank()) {
+                        sb.append("@").append(usuario.getNickname());
+                    }
+                    if (usuario.getEmail() != null && !usuario.getEmail().isBlank()) {
+                        if (sb.length() > 0) sb.append(" • ");
+                        sb.append(usuario.getEmail());
+                    }
+                    infoUsuario = sb.toString();
+                }
+                descVisibleHighlighted = highlightQueryInText(infoUsuario, query);
 
                 ruta = "/usuario";
                 parametro = usuario != null ? usuario.getNickname() : "";
                 href = contextPath + ruta + "?nombre="
                         + URLEncoder.encode(parametro, StandardCharsets.UTF_8);
                 fechaCreacion = "-";
+                rawImagen = usuario != null ? usuario.getImagen() : null;
             }
             case PROGRAMA_FORMACION -> {
                 DataProgramaFormacionDTO programa = resultado.getPrograma();
@@ -130,12 +148,41 @@ public class BusquedaServlet extends HttpServlet {
                 href = contextPath + ruta + "?nombre="
                         + URLEncoder.encode(parametro, StandardCharsets.UTF_8);
                 fechaCreacion = programa != null && programa.getFechaDeCreacion() != null ? programa.getFechaDeCreacion() : "-";
+                rawImagen = programa != null ? programa.getImagen() : null;
             }
             default -> throw new IllegalArgumentException("Tipo de búsqueda no soportado: " + resultado.getTipo());
         }
 
         String tipoCss = resultado.getTipo().name().toLowerCase(java.util.Locale.ROOT);
+        String imagenUrl = resolverUrlImagen(rawImagen, resultado.getTipo(), contextPath);
         return new ResultadoBusquedaExtendida(
-                resultado.getTipo(), data, tipoVisible, nombreVisible, nombreVisibleHighlighted, descVisibleHighlighted, href, tipoCss, fechaCreacion);
+                resultado.getTipo(), data, tipoVisible, nombreVisible, nombreVisibleHighlighted, descVisibleHighlighted, href, tipoCss, fechaCreacion, imagenUrl);
+    }
+
+    private String resolverUrlImagen(String rawImagen, TipoBusqueda tipo, String contextPath) {
+        String fallback = contextPath + "/imagenes/curso/curso-placeholder.jpg";
+        if (rawImagen == null || rawImagen.isBlank()) {
+            return tipo == TipoBusqueda.USUARIO ? null : fallback;
+        }
+        rawImagen = rawImagen.trim();
+        if (rawImagen.startsWith("http://") || rawImagen.startsWith("https://")) {
+            return rawImagen;
+        }
+        if (rawImagen.startsWith("imagenes/") || rawImagen.startsWith("/imagenes/")
+                || rawImagen.startsWith("uploads/") || rawImagen.startsWith("/uploads/")) {
+            return contextPath + (rawImagen.startsWith("/") ? rawImagen : "/" + rawImagen);
+        }
+        if (tipo == TipoBusqueda.CURSO) {
+            return contextPath + "/imagenes/curso/" + rawImagen;
+        } else if (tipo == TipoBusqueda.PROGRAMA_FORMACION) {
+            return contextPath + "/imagenes/programas/" + rawImagen;
+        } else if (tipo == TipoBusqueda.USUARIO) {
+            File f = new File(rawImagen);
+            if (f.isAbsolute()) {
+                return contextPath + "/imagen?path=" + URLEncoder.encode(rawImagen, StandardCharsets.UTF_8);
+            }
+            return contextPath + "/imagenes/usuarios/" + rawImagen;
+        }
+        return tipo == TipoBusqueda.USUARIO ? null : fallback;
     }
 }

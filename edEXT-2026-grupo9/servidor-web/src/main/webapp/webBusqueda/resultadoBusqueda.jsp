@@ -6,7 +6,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>edEXT - Cursos</title>
+    <title>edEXT - Búsqueda</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/styles.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@6.0.0-alpha.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-B/GM4XqrwHnWXNOWMbloTmrYXZg10cakYGmpfsR/bbzQ6JAJI4ihuyADKLnBgrCe" crossorigin="anonymous">
     <script type="module" src="https://cdn.jsdelivr.net/npm/bootstrap@6.0.0-alpha.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-1a/pXj49ZQ1aHEmrJ+gMw1otqoVsYwlEnlD8mIfY2TV03r20Y0CN7uqx1tQogjPL" crossorigin="anonymous"></script>
@@ -37,25 +37,20 @@
                         <div class="menu" id="opciones-filtro-busqueda">
                             <%
                                 HashMap<String, String> optionesFiltro = (HashMap<String, String>) request.getAttribute("filtros");
-                                for (Map.Entry<String, String> filtro : optionesFiltro.entrySet()) {
+                                if (optionesFiltro != null) {
+                                    for (Map.Entry<String, String> filtro : optionesFiltro.entrySet()) {
                             %>
                                     <button class="menu-item" type="button" data-bs-value="<%= filtro.getKey() %>">
                                         <%= filtro.getValue() %>
                                         <svg class="menu-item-check" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 16 16"><path d="m2 7 4 5 8-8"/></svg>
                                     </button>
                             <%
+                                    }
                                 }
                             %>
                         </div>
                     </div>
                     <div class="d-flex flex-row gap-3 align-items-center">
-<!--                        <label for="filtros-busqueda">Ordenar por: </label>
-                        <select id="filtros-busqueda" name="filtros-busqueda">
-                            <option value="0">Selecciona una opción</option>
-                            <option value="alfabetico">Alfabéticamente (A-Z a-z)</option>
-                            <option value="anio-publicacion">Año (descendente)</option>
-                        </select>-->
-                        
                         <label class="text-nowrap" for="orden-busqueda">Ordenar por: </label>
                         <button class="form-control combobox-toggle boton-ordenar-busqueda" type="button"
                             id="orden-busqueda"
@@ -77,28 +72,56 @@
                 <ol class="lista-busqueda" id="resultados-busqueda">
                     <%
                         ArrayList<ResultadoBusquedaExtendida> resultados = (ArrayList<ResultadoBusquedaExtendida>) request.getAttribute("listaResultados");
-                        for (ResultadoBusquedaExtendida resultado : resultados) {
+                        if (resultados != null && !resultados.isEmpty()) {
+                            for (ResultadoBusquedaExtendida resultado : resultados) {
                     %>
                             <li class="resultado-busqueda" data-tipo="<%= resultado.tipoCss() %>" data-fecha-creacion="<%= resultado.fechaCreacion() %>" data-nombre-visible="<%= resultado.nombreVisible() %>">
-                                <a href="<%= resultado.href() %>" class="w-100">
-                                    <div class="d-flex flex-column w-100">
-                                        <div class="d-inline-flex">
+                                <a href="<%= resultado.href() %>" class="resultado-card-link">
+                                    <div class="resultado-busqueda-media">
+                                        <% if (resultado.tipo() == com.grupo9.edext.grupo9.servidor_web.web_service_client.busqueda.TipoBusqueda.USUARIO) { %>
+                                            <% if (resultado.imagenUrl() != null && !resultado.imagenUrl().isBlank()) { %>
+                                                <img src="<%= resultado.imagenUrl() %>"
+                                                     alt="Foto de <%= resultado.nombreVisible() %>"
+                                                     class="resultado-busqueda-img"
+                                                     onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+                                                <div class="profile-avatar-placeholder resultado-busqueda-placeholder" style="display:none;">
+                                                    <span>Sin foto</span>
+                                                </div>
+                                            <% } else { %>
+                                                <div class="profile-avatar-placeholder resultado-busqueda-placeholder">
+                                                    <span>Sin foto</span>
+                                                </div>
+                                            <% } %>
+                                        <% } else { %>
+                                            <img src="<%= resultado.imagenUrl() != null && !resultado.imagenUrl().isBlank() ? resultado.imagenUrl() : request.getContextPath() + "/imagenes/curso/curso-placeholder.jpg" %>"
+                                                 alt="Imagen de <%= resultado.nombreVisible() %>"
+                                                 class="resultado-busqueda-img"
+                                                 onerror="this.onerror=null; this.src='<%= request.getContextPath() %>/imagenes/curso/curso-placeholder.jpg';" />
+                                        <% } %>
+                                    </div>
+                                    <div class="resultado-busqueda-info">
+                                        <div class="resultado-busqueda-header">
                                             <span class="resultado-tipo flex-shrink-0" data-tipo="<%= resultado.tipoCss() %>"><%= resultado.tipoVisible() %></span>
-                                            <span class="flex-grow-1 resultado-titulo overflow-hidden text-truncate"><%= resultado.nombreVisibleHighlighted() %></span>
-                                            <%
-                                                if (resultado.fechaCreacion() != null){
-                                            %>
-                                                <span class="fs-sm"><%= resultado.fechaCreacion() %></span>
-                                            <%
-                                                }
-                                            %>
+                                            <% if (resultado.fechaCreacion() != null && !"-".equals(resultado.fechaCreacion())) { %>
+                                                <span class="resultado-busqueda-fecha"><%= resultado.fechaCreacion() %></span>
+                                            <% } %>
                                         </div>
-                                        <p>
-                                            <%= resultado.descVisibleHighlighted() %>
-                                        </p>
+                                        <h3 class="resultado-busqueda-titulo"><%= resultado.nombreVisibleHighlighted() %></h3>
+                                        <% if (resultado.descVisibleHighlighted() != null && !resultado.descVisibleHighlighted().isBlank()) { %>
+                                            <p class="resultado-busqueda-desc">
+                                                <%= resultado.descVisibleHighlighted() %>
+                                            </p>
+                                        <% } %>
                                     </div>
                                 </a>
                             </li>
+                    <%
+                            }
+                        } else {
+                    %>
+                            <div class="empty-state">
+                                <p>No se encontraron resultados para tu búsqueda.</p>
+                            </div>
                     <%
                         }
                     %>

@@ -3,50 +3,42 @@ package com.grupo9.edext.grupo9.servidor_central.controller.edicion_de_curso;
 import com.grupo9.edext.grupo9.miscelanea.UtensiliosJPA;
 import com.grupo9.edext.grupo9.servidor_central.controller.curso.Curso;
 import com.grupo9.edext.grupo9.servidor_central.controller.usuario.Docente;
+import com.grupo9.edext.grupo9.servidor_central.controller.usuario.Estudiante;
+import com.grupo9.edext.grupo9.servidor_central.controller.DataRecordMapper;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataDocente;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataEdicionCurso;
+import com.grupo9.edext.grupo9.servidor_central.dominio.DataEstudiante;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataInscEdicion;
 import jakarta.persistence.criteria.*;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.List;
 import jakarta.persistence.*;
 import java.util.Set;
 import org.hibernate.Hibernate;
 
-
 public class ManejadorEdiciones {
-    private Map<String, EdicionCurso> edCurso;
     private static ManejadorEdiciones instance = null;
-    private EntityManager em;
-    
-    private ManejadorEdiciones(){
-        edCurso = new HashMap<String, EdicionCurso>();
-        cargarEdicionesDesdeBD();
-    }
-    
-    private void cargarEdicionesDesdeBD() {
-    em = UtensiliosJPA.getEntityManagerFactory().createEntityManager();
-    try {
-        List<EdicionCurso> lista = em.createQuery("SELECT edc FROM EdicionCurso edc", EdicionCurso.class).getResultList();
-        for (EdicionCurso edC : lista) {
-            inicializarRelaciones(edC);
-            edCurso.put(edC.getNombreEdi(), edC);
-        }
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            em.close();
-        }
+
+    private ManejadorEdiciones() {
     }
 
-    void inicializarRelaciones(EdicionCurso edicion) {
+    public static ManejadorEdiciones getInstance() {
+        if (instance == null) {
+            instance = new ManejadorEdiciones();
+        }
+        return instance;
+    }
+
+    public void inicializarRelaciones(EdicionCurso edicion) {
+        if (edicion == null) {
+            return;
+        }
+
         if (edicion.getInscripciones() != null) {
             for (InscEdicion inscripcion : edicion.getInscripciones()) {
-                if (inscripcion.getEstudiante() != null) {
+                if (inscripcion != null && inscripcion.getEstudiante() != null) {
                     Hibernate.initialize(inscripcion.getEstudiante());
                 }
             }
@@ -76,6 +68,9 @@ public class ManejadorEdiciones {
         if (curso.getCategorias() != null) {
             Hibernate.initialize(curso.getCategorias());
         }
+        if (curso.getValoraciones() != null) {
+            Hibernate.initialize(curso.getValoraciones());
+        }
         if (curso.getPrevias() != null) {
             Hibernate.initialize(curso.getPrevias());
             for (Curso previa : curso.getPrevias()) {
@@ -83,143 +78,203 @@ public class ManejadorEdiciones {
             }
         }
     }
-    
-    public static ManejadorEdiciones getInstance(){
-        if(instance == null)
-            instance = new ManejadorEdiciones();
-        return instance;
-    }
-    
-    public void addEdicion(EdicionCurso ed){
-        String nombreEC = ed.getNombreEdi();
-        edCurso.put(nombreEC, ed);
-        em = UtensiliosJPA.getEntityManagerFactory().createEntityManager();
-        EntityTransaction et = em.getTransaction();
-        try{
-            et.begin();
-            em.persist(ed);
-            et.commit();  
-        }catch(Exception e){
-            if (et.isActive()) et.rollback();
-            e.printStackTrace();    
+
+    public void addEdicion(EdicionCurso ed) {
+        if (ed == null || ed.getNombreEdi() == null) {
+            return;
         }
-        em.close();
-    }
-    
-    public EdicionCurso obtenerEdicion(String nombreEC){
-        return ((EdicionCurso)edCurso.get(nombreEC));
-    }
-
-    public Collection<EdicionCurso> getTodasLasEdiciones(){
-        return edCurso.values();
-    }
-    
-    public EdicionCurso[] getEdiciones(Curso curso){
-        System.out.println("Cantidad de ediciones en el Map: " + edCurso.size());
-        Collection<EdicionCurso> todas = edCurso.values();
-        Collection<EdicionCurso> filtradas = new java.util.ArrayList<>();
-
-        for (EdicionCurso edicion : todas) {
-            if (edicion.getCursoAsoc() != null && edicion.getCursoAsoc().getNombreCurso().equals(curso.getNombreCurso())) {
-                filtradas.add(edicion);
+        EntityManager em = UtensiliosJPA.getEntityManagerFactory().createEntityManager();
+        EntityTransaction et = em.getTransaction();
+        try {
+            et.begin();
+            EdicionCurso existente = em.find(EdicionCurso.class, ed.getNombreEdi());
+            if (existente == null) {
+                if (ed.getCursoAsoc() != null && ed.getCursoAsoc().getNombreCurso() != null) {
+                    Curso managedCurso = em.find(Curso.class, ed.getCursoAsoc().getNombreCurso());
+                    if (managedCurso != null) {
+                        ed.setCursoAsoc(managedCurso);
+                    }
+                }
+                if (ed.getDocentes() != null && !ed.getDocentes().isEmpty()) {
+                    Set<Docente> managedDocentes = new HashSet<>();
+                    for (Docente doc : ed.getDocentes()) {
+                        Docente managedDoc = em.find(Docente.class, doc.getNickname());
+                        if (managedDoc != null) {
+                            managedDocentes.add(managedDoc);
+                        } else {
+                            managedDocentes.add(doc);
+                        }
+                    }
+                    ed.setDocentes(managedDocentes);
+                }
+                em.persist(ed);
+            } else {
+                em.merge(ed);
             }
-        }
-        return filtradas.toArray(new EdicionCurso[0]);
-    }
-    
-    public void addInscripcion(InscEdicion ie){
-        em = UtensiliosJPA.getEntityManagerFactory().createEntityManager();
-        EntityTransaction et = em.getTransaction();
-        try{
-            et.begin();
-            em.persist(ie);
-            et.commit();  
-        }catch(Exception e){
-            if (et.isActive()) et.rollback();
-            e.printStackTrace();    
-        }
-        em.close();
-    }
-
-    public void actualizarInscripcion(InscEdicion ie){
-        em = UtensiliosJPA.getEntityManagerFactory().createEntityManager();
-        EntityTransaction et = em.getTransaction();
-        try{
-            et.begin();
-            em.merge(ie);
-            et.commit();  
-        }catch(Exception e){
-            if (et.isActive()) et.rollback();
+            et.commit();
+        } catch (Exception e) {
+            if (et.isActive()) {
+                et.rollback();
+            }
             e.printStackTrace();
-            throw e;
-        }finally{
+        } finally {
             em.close();
         }
     }
 
-    public void actualizarEdicion(EdicionCurso ed){
-        if (ed != null && ed.getNombreEdi() != null) {
-            edCurso.put(ed.getNombreEdi(), ed);
+    public EdicionCurso obtenerEdicion(String nombreEC) {
+        if (nombreEC == null) {
+            return null;
         }
-        em = UtensiliosJPA.getEntityManagerFactory().createEntityManager();
+        EntityManager em = UtensiliosJPA.getEntityManagerFactory().createEntityManager();
+        try {
+            EdicionCurso ed = em.find(EdicionCurso.class, nombreEC);
+            if (ed != null) {
+                inicializarRelaciones(ed);
+            }
+            return ed;
+        } finally {
+            em.close();
+        }
+    }
+
+    public Collection<EdicionCurso> getTodasLasEdiciones() {
+        EntityManager em = UtensiliosJPA.getEntityManagerFactory().createEntityManager();
+        try {
+            List<EdicionCurso> lista = em.createQuery("SELECT edc FROM EdicionCurso edc", EdicionCurso.class).getResultList();
+            for (EdicionCurso ed : lista) {
+                inicializarRelaciones(ed);
+            }
+            return lista;
+        } finally {
+            em.close();
+        }
+    }
+
+    public EdicionCurso[] getEdiciones(Curso curso) {
+        if (curso == null || curso.getNombreCurso() == null) {
+            return new EdicionCurso[0];
+        }
+        EntityManager em = UtensiliosJPA.getEntityManagerFactory().createEntityManager();
+        try {
+            TypedQuery<EdicionCurso> query = em.createQuery(
+                "SELECT edc FROM EdicionCurso edc WHERE edc.cursoAsoc.nombreCurso = :nombreCurso",
+                EdicionCurso.class
+            );
+            query.setParameter("nombreCurso", curso.getNombreCurso());
+            List<EdicionCurso> lista = query.getResultList();
+            for (EdicionCurso ed : lista) {
+                inicializarRelaciones(ed);
+            }
+            return lista.toArray(new EdicionCurso[0]);
+        } finally {
+            em.close();
+        }
+    }
+
+    public void addInscripcion(InscEdicion ie) {
+        EntityManager em = UtensiliosJPA.getEntityManagerFactory().createEntityManager();
         EntityTransaction et = em.getTransaction();
-        try{
+        try {
             et.begin();
-            em.merge(ed);
-            et.commit();  
-        }catch(Exception e){
-            if (et.isActive()) et.rollback();
+            em.persist(ie);
+            et.commit();
+        } catch (Exception e) {
+            if (et.isActive()) {
+                et.rollback();
+            }
+            e.printStackTrace();
+        } finally {
+            em.close();
+        }
+    }
+
+    public void actualizarInscripcion(InscEdicion ie) {
+        EntityManager em = UtensiliosJPA.getEntityManagerFactory().createEntityManager();
+        EntityTransaction et = em.getTransaction();
+        try {
+            et.begin();
+            em.merge(ie);
+            et.commit();
+        } catch (Exception e) {
+            if (et.isActive()) {
+                et.rollback();
+            }
             e.printStackTrace();
             throw e;
-        }finally{
+        } finally {
+            em.close();
+        }
+    }
+
+    public void actualizarEdicion(EdicionCurso ed) {
+        EntityManager em = UtensiliosJPA.getEntityManagerFactory().createEntityManager();
+        EntityTransaction et = em.getTransaction();
+        try {
+            et.begin();
+            em.merge(ed);
+            et.commit();
+        } catch (Exception e) {
+            if (et.isActive()) {
+                et.rollback();
+            }
+            e.printStackTrace();
+            throw e;
+        } finally {
             em.close();
         }
     }
 
     public void removerInscripcionesDeEstudiante(String nickname) {
-        if (nickname == null || edCurso == null) return;
-        for (EdicionCurso ed : edCurso.values()) {
-            if (ed.getInscripciones() != null) {
-                ed.getInscripciones().removeIf(insc -> 
-                    insc.getEstudiante() != null && nickname.equalsIgnoreCase(insc.getEstudiante().getNickname())
-                );
-            }
-        }
+        // Las inscripciones se eliminan directamente en la base de datos (e.g. en UsuarioController.bajaUsuario)
     }
 
     public void removerDocenteDeEdiciones(String nickname) {
-        if (nickname == null || edCurso == null) return;
-        for (EdicionCurso ed : edCurso.values()) {
-            if (ed.getDocentes() != null) {
-                ed.getDocentes().removeIf(doc -> 
-                    doc != null && nickname.equalsIgnoreCase(doc.getNickname())
-                );
-            }
-        }
+        // Las asignaciones de docentes se eliminan directamente en la base de datos (e.g. en UsuarioController.bajaUsuario)
     }
-    
-    public DataDocente[] traerDocenteDeSuEdi(DataEdicionCurso edicion){
-        try {
-            Set<DataDocente> docentes = edicion.getDocentes();
-            if (docentes == null || docentes.isEmpty()) {
-                return new DataDocente[0];
-            }
-            return docentes.toArray(new DataDocente[0]);
-        } catch (Exception e) {
-            throw e;
+
+    public DataDocente[] traerDocenteDeSuEdi(DataEdicionCurso edicion) {
+        if (edicion == null) {
+            return new DataDocente[0];
         }
+        if (edicion.getDocentes() != null && !edicion.getDocentes().isEmpty()) {
+            return edicion.getDocentes().toArray(new DataDocente[0]);
+        }
+        EdicionCurso ed = obtenerEdicion(edicion.getNombreEdi());
+        if (ed != null && ed.getDocentes() != null) {
+            return DataRecordMapper.toData(ed.getDocentes()).toArray(new DataDocente[0]);
+        }
+        return new DataDocente[0];
     }
-    
+
     public Set<DataInscEdicion> traerInscripcionesDeEdicion(DataEdicionCurso edicion) {
-        if (edicion == null || edicion.getInscripciones() == null) {
+        if (edicion == null) {
             return Collections.emptySet();
         }
-        return edicion.getInscripciones();
+        if (edicion.getInscripciones() != null && !edicion.getInscripciones().isEmpty()) {
+            return edicion.getInscripciones();
+        }
+        EdicionCurso ed = obtenerEdicion(edicion.getNombreEdi());
+        if (ed != null && ed.getInscripciones() != null) {
+            Set<DataInscEdicion> datosInscriptos = new HashSet<>();
+            for (InscEdicion inscriptos : ed.getInscripciones()) {
+                Estudiante estudiante = inscriptos.getEstudiante();
+                DataEstudiante datosEst = estudiante != null
+                        ? new DataEstudiante(estudiante.getNickname(), estudiante.getNombre(), estudiante.getApellido(), estudiante.getEmail(), estudiante.getFechaNac(), null)
+                        : null;
+                DataInscEdicion datosInsc = new DataInscEdicion(inscriptos.getFechaInscE(), datosEst, inscriptos.getEdicion().getNombreEdi(), inscriptos.getEstado(), inscriptos.getNota());
+                datosInscriptos.add(datosInsc);
+            }
+            return datosInscriptos;
+        }
+        return Collections.emptySet();
     }
-    
-    public Boolean existeEdicion(String nombre) {
-        EntityManager emConsulta = UtensiliosJPA.getEntityManagerFactory().createEntityManager();
 
+    public Boolean existeEdicion(String nombre) {
+        if (nombre == null) {
+            return false;
+        }
+        EntityManager emConsulta = UtensiliosJPA.getEntityManagerFactory().createEntityManager();
         try {
             CriteriaBuilder cBuilder = emConsulta.getCriteriaBuilder();
             CriteriaQuery<EdicionCurso> cQuery = cBuilder.createQuery(EdicionCurso.class);

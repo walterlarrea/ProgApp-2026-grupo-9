@@ -3,6 +3,7 @@ package com.grupo9.edext.grupo9.servidor_central.controller.curso;
 import com.grupo9.edext.grupo9.servidor_central.dominio.DataCurso;
 import com.grupo9.edext.grupo9.mensajes.*;
 import java.util.HashSet;
+import java.util.List;
 
 public interface ICurso {
     public DataCurso guardarNuevoCurso(DataCurso nuevoCurso) throws ErrorRepetidos;
@@ -11,4 +12,6 @@ public interface ICurso {
     public Boolean existeCurso(String nombre);
     public HashSet<DataCurso> cursosNoRelacionadosConUnProgDeFormacion(String idProgramaDeFormacion);
     public DataCurso traerCurso(String nombre);
+    public void valorarCurso(String nombreCurso, String nicknameEstudiante, int puntaje) throws ErrorNoExiste, ErrorRepetidos;
+    public List<DataCurso> cursosParticipaEstudiante(String nicknameEstudiante);
 }

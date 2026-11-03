@@ -42,6 +42,18 @@ public class ImagenServlet extends HttpServlet {
             // Probar recurso dentro del contexto web (webapp)
             String resourcePath = path.startsWith("/") ? path : "/" + path;
             in = getServletContext().getResourceAsStream(resourcePath);
+            if (in == null && !path.contains("/") && !path.contains("\\")) {
+                in = getServletContext().getResourceAsStream("/imagenes/usuarios/" + path);
+                if (in == null) {
+                    in = getServletContext().getResourceAsStream("/imagenes/programas/" + path);
+                }
+                if (in == null) {
+                    in = getServletContext().getResourceAsStream("/imagenes/curso/" + path);
+                }
+                if (in == null) {
+                    in = getServletContext().getResourceAsStream("/imagenes/edicionCurso/" + path);
+                }
+            }
         }
 
         if (in == null) {

@@ -145,7 +145,8 @@ public class EdicionCursoController implements IEdicionCurso {
             }
         }
 
-        InscEdicion inscripcion = new InscEdicion(fInsc, est, ed);
+        EstadoInscripcion estadoFinal = estado != null ? estado : EstadoInscripcion.INSCRIPTO;
+        InscEdicion inscripcion = new InscEdicion(fInsc, est, ed, estadoFinal, null);
         if (est.getInscripciones() != null) {
             est.getInscripciones().add(inscripcion);
         }

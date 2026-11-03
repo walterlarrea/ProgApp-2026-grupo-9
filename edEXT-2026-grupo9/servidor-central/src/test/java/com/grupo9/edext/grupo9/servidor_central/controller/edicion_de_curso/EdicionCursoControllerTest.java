@@ -181,4 +181,51 @@ public class EdicionCursoControllerTest {
             edicionController.registrarCalificacion(nombreEdicion, "EstEval_" + sufijo, 12);
         });
     }
+
+    @Test
+    public void testEdicionesConsultadasDirectamenteDesdeBD() throws Exception {
+        String sufijo = String.valueOf(System.currentTimeMillis());
+        String nombreEdicion = "EdicionBD_" + sufijo;
+        String nombreCurso = "CursoBD_" + sufijo;
+        EntityManager em = UtensiliosJPA.getEntityManagerFactory().createEntityManager();
+
+        try {
+            em.getTransaction().begin();
+            Instituto instituto = new Instituto("InstBD_" + sufijo);
+            Curso curso = new Curso(instituto, nombreCurso, "Desc", 1, 1, 1,
+                    LocalDate.now(), null, new HashSet<>(), new HashSet<>(), null);
+            EdicionCurso edicion = new EdicionCurso(nombreEdicion, curso, LocalDate.now(), LocalDate.now().plusMonths(1),
+                    15, new HashSet<>(), new HashSet<>(), LocalDate.now(), null, false);
+
+            em.persist(instituto);
+            em.persist(curso);
+            em.persist(edicion);
+            em.getTransaction().commit();
+        } finally {
+            em.close();
+        }
+
+        // Se debe consultar directamente la BD sin necesidad de registrar previamente en memoria
+        DataEdicionCurso dataEd = edicionController.consultarEdicionCurso(nombreEdicion);
+        assertNotNull(dataEd);
+        assertEquals(nombreEdicion, dataEd.getNombreEdi());
+        assertEquals(15, dataEd.getCupo());
+
+        // Actualizamos directamente en la base de datos
+        EntityManager emUpdate = UtensiliosJPA.getEntityManagerFactory().createEntityManager();
+        try {
+            emUpdate.getTransaction().begin();
+            EdicionCurso edBD = emUpdate.find(EdicionCurso.class, nombreEdicion);
+            assertNotNull(edBD);
+            edBD.setCupo(30);
+            emUpdate.getTransaction().commit();
+        } finally {
+            emUpdate.close();
+        }
+
+        // La consulta debe reflejar inmediatamente el valor actualizado de la BD
+        DataEdicionCurso dataEdActualizada = edicionController.consultarEdicionCurso(nombreEdicion);
+        assertNotNull(dataEdActualizada);
+        assertEquals(30, dataEdActualizada.getCupo());
+    }
 }

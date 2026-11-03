@@ -28,6 +28,9 @@ public class DataCursoDTO implements Serializable {
     private List<String> programas = new ArrayList<>();
     private List<String> categorias = new ArrayList<>();
     private String imagen;
+    private Double puntajePromedio;
+    private int cantValoraciones;
+    private Integer valoracionEstudiante;
 
     public DataCursoDTO() {
     }
@@ -126,5 +129,29 @@ public class DataCursoDTO implements Serializable {
 
     public void setImagen(String imagen) {
         this.imagen = imagen;
+    }
+
+    public Double getPuntajePromedio() {
+        return puntajePromedio;
+    }
+
+    public void setPuntajePromedio(Double puntajePromedio) {
+        this.puntajePromedio = puntajePromedio;
+    }
+
+    public int getCantValoraciones() {
+        return cantValoraciones;
+    }
+
+    public void setCantValoraciones(int cantValoraciones) {
+        this.cantValoraciones = cantValoraciones;
+    }
+
+    public Integer getValoracionEstudiante() {
+        return valoracionEstudiante;
+    }
+
+    public void setValoracionEstudiante(Integer valoracionEstudiante) {
+        this.valoracionEstudiante = valoracionEstudiante;
     }
 }

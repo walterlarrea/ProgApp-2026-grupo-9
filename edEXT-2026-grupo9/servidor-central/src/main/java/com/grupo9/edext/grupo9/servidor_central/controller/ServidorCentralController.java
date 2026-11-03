@@ -255,6 +255,16 @@ class ServidorCentralController implements IServidorCentral {
         return this.cursoCtrl.traerCurso(nombre);
     }
 
+    @Override
+    public void valorarCurso(String nombreCurso, String nicknameEstudiante, int puntaje) throws ErrorNoExiste, ErrorRepetidos {
+        this.cursoCtrl.valorarCurso(nombreCurso, nicknameEstudiante, puntaje);
+    }
+
+    @Override
+    public List<DataCurso> cursosParticipaEstudiante(String nicknameEstudiante) {
+        return this.cursoCtrl.cursosParticipaEstudiante(nicknameEstudiante);
+    }
+
     // Institutos
     @Override
     public DataInstituto guardarInstituto(DataInstituto nuevoInstituto) {
