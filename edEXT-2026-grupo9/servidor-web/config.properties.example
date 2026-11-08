@@ -1,0 +1,10 @@
+# ==============================================================================
+# Servidor Web - Configuracion (config.properties)
+# ==============================================================================
+# Direccion y puerto del Servidor Central (Web Services SOAP)
+# Debe ser accesible por red desde la maquina del Servidor Web
+ws.central.host=127.0.0.1
+ws.central.port=9128
+
+# Opcional: URL completa
+# ws.central.url=http://192.168.1.50:9128/

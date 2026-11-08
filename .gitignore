@@ -65,4 +65,8 @@ Desktop.ini
 
 .vscode/
 .cargo/
-**/target/
+**/target/
+
+# Configuration files
+config.properties
+.env
