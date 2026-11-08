@@ -1,0 +1,30 @@
+# ==============================================================================
+# edEXT 2026 - Archivo de Configuracion General (config.properties)
+# ==============================================================================
+# Puede copiarse a:
+# 1) Directorio local de ejecucion: ./config.properties
+# 2) Directorio del usuario: ~/.edext/config.properties (o C:\Users\<Usuario>\.edext\config.properties)
+# 3) O indicarse por parametro JVM: -Dconfig.path=/ruta/a/config.properties
+
+# ------------------------------------------------------------------------------
+# SERVIDOR CENTRAL: Base de Datos MySQL
+# ------------------------------------------------------------------------------
+db.url=jdbc:mysql://localhost:3306/edEXT?serverTimezone=UTC
+db.user=root
+db.password=
+
+# ------------------------------------------------------------------------------
+# SERVIDOR CENTRAL: Publicacion de Web Services SOAP
+# Usar 0.0.0.0 para escuchar en todas las interfaces de red (permite conexiones remotas)
+# ------------------------------------------------------------------------------
+ws.host=http://0.0.0.0
+ws.port=9128
+
+# ------------------------------------------------------------------------------
+# SERVIDOR WEB: Conexion hacia el Servidor Central
+# Colocar aqui la direccion IP y puerto de la maquina donde corre el Servidor Central
+# ------------------------------------------------------------------------------
+ws.central.host=127.0.0.1
+ws.central.port=9128
+# Alternativamente, se puede especificar la URL completa:
+# ws.central.url=http://192.168.1.50:9128/

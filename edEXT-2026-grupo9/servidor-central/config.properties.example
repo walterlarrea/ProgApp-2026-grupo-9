@@ -1,0 +1,12 @@
+# ==============================================================================
+# Servidor Central - Configuracion (config.properties)
+# ==============================================================================
+# Base de datos MySQL
+db.url=jdbc:mysql://localhost:3306/edEXT?serverTimezone=UTC
+db.user=root
+db.password=
+
+# Publicacion de Web Services SOAP
+# 0.0.0.0 permite que clientes de la red local puedan conectarse
+ws.host=http://0.0.0.0
+ws.port=9128
