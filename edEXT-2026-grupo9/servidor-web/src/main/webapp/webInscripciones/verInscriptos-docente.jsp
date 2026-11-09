@@ -30,9 +30,9 @@
                 <div class="dato-space">
                     <label for="instituto">Instituto</label>
                     <br>
-                    <select id="instituto" name="instituto" style="width: 30%"
+                    <select id="instituto" name="instituto" style="width: 30%; padding: 6px; margin-top: 4px;"
                         onchange="var curso = this.form.elements.namedItem('curso'); var edicion = this.form.elements.namedItem('edicion'); if (curso) curso.value = ''; if (edicion) edicion.value = ''; this.form.submit()">
-                        <option value="">Seleccione un instituto</option>
+                        <option value=""> -- Seleccione un instituto -- </option>
                         <c:forEach var="instituto" items="${institutosDoc}">
                             <option value="${fn:escapeXml(instituto.nombreI)}"
                                 ${param.instituto eq instituto.nombreI ? 'selected' : ''}>
@@ -46,9 +46,9 @@
                     <div class="dato-space">
                         <label for="curso">Curso</label>
                         <br>
-                        <select id="curso" name="curso" style="width: 30%"
+                        <select id="curso" name="curso" style="width: 30%; padding: 6px; margin-top: 4px;"
                             onchange="var edicion = this.form.elements.namedItem('edicion'); if (edicion) edicion.value = ''; this.form.submit()">
-                            <option value="">Seleccione un curso</option>
+                            <option value=""> -- Seleccione un curso -- </option>
                             <c:forEach var="curso" items="${cursosDoc}">
                                 <option value="${fn:escapeXml(curso.nombreCurso)}"
                                     ${param.curso eq curso.nombreCurso ? 'selected' : ''}>
@@ -63,8 +63,8 @@
                     <div class="dato-space">
                         <label for="edicion">Edición del curso</label>
                         <br>
-                        <select id="edicion" name="edicion" onchange="this.form.submit()"  style="width: 30%">
-                            <option value="">Seleccione una edición</option>
+                        <select id="edicion" name="edicion" onchange="this.form.submit()"  style="width: 30%; padding: 6px; margin-top: 4px;">
+                            <option value=""> -- Seleccione una edición -- </option>
                             <c:forEach var="edicion" items="${edicionesDoc}">
                                 <option value="${fn:escapeXml(edicion.nombreEdi)}"
                                     ${param.edicion eq edicion.nombreEdi ? 'selected' : ''}>

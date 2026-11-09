@@ -572,7 +572,7 @@ body {
 }
 
 .salir a::before {
-	content: '↪';
+	content: ' ';
 	margin-right: 8px;
 	font-size: 20px;
 	font-weight: bold;
@@ -1089,7 +1089,7 @@ textarea {
 
 .popup-contenido p {
 	margin-bottom: 1.5rem;
-	animation: aparecerPopup 7s ease-out;
+	animation: aparecerPopup 3s ease-out;
 }
 
 @keyframes aparecerPopup {
@@ -1334,4 +1334,25 @@ textarea {
 	.stat-valoracion-contenedor {
 		align-items: flex-end;
 	}
+}
+
+/* Estado de una edicion de curso (abierta / cerrada) */
+.badge-abierta,
+.badge-cerrada {
+	display: inline-block;
+	margin-left: 0.4rem;
+	color: white;
+	padding: 3px 8px;
+	border-radius: 4px;
+	font-size: 0.75rem;
+	font-weight: 700;
+	letter-spacing: 0.03em;
+}
+
+.badge-abierta {
+	background-color: #10b981;
+}
+
+.badge-cerrada {
+	background-color: #ef4444;
 }

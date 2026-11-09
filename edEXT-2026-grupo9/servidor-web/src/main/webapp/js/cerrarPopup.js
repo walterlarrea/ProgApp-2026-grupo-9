@@ -16,7 +16,7 @@ function mostrarPopup(mensaje, titulo, icono) {
         popup.innerHTML = `
             <div class="popup-contenido">
                 <div class="popup-icono" id="popupIcono">✓</div>
-                <h2 id="tituloPopup">¡Aviso!</h2>
+                <h2 id="tituloPopup">¡Registrado!</h2>
                 <p id="mensajePopup"></p>
                 <button type="button" id="btnCerrarPopup" class="btn btn-primary" onclick="cerrarPopup()">Aceptar</button>
             </div>

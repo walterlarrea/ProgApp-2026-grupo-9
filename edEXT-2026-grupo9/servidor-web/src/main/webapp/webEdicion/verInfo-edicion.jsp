@@ -1,5 +1,6 @@
 ﻿<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<%@ taglib prefix="fn" uri="jakarta.tags.functions" %>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -76,6 +77,29 @@
                 </c:choose>
             </ol>
             </div>
+            
+            <c:if test="${not empty edicion}">
+            <div class="dato-space" style="display: flex; justify-content: space-between; align-items: center;">
+                <p>
+                    <strong>Estado del curso:</strong>
+                    <c:choose>
+                        <c:when test="${edicion.isCerrada() eq true}">
+                            <span class="badge-cerrada">CERRADA</span>
+                        </c:when>
+                        <c:otherwise>
+                            <span class="badge-abierta">ABIERTA</span>
+                        </c:otherwise>
+                    </c:choose>
+                </p>
+                <c:if test="${sessionScope.usuarioLogueado.tipo == 'Estudiante' and edicion.isCerrada() ne true}">
+                    <form action="${pageContext.request.contextPath}/inscripcion" method="post">
+                        <input type="hidden" name="directa" value="1">
+                        <input type="hidden" name="edicion" value="${fn:escapeXml(edicion.nombreEdi)}">
+                        <button type="submit" class="btn btn-primary">Inscribirse</button>
+                    </form>
+                </c:if>
+            </div>
+            </c:if>
             <c:if test="${sessionScope.usuarioLogueado.tipo == 'Docente'}">
             <h2>Inscriptos</h2>
             <div class="table-container">
@@ -129,5 +153,10 @@
             </c:if>
         </main>
     </div>
+
+    <%-- Aviso cuando la inscripción directa es rechazada (el éxito se muestra en /home con el mismo popup) --%>
+    <jsp:include page="../webMiscelanea/popup-mensaje.jsp">
+        <jsp:param name="icono" value="!"/>
+    </jsp:include>
 </body>
 </html>

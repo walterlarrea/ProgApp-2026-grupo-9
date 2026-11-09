@@ -33,7 +33,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
-@WebServlet(name = "EvaluacionDocenteServlet", urlPatterns = {"/evaluacionDocente", "/evaluacionesDocente"})
+@WebServlet(name = "EvaluacionDocenteServlet", urlPatterns = {"/evaluacionDocente", "/evaluacionesDocente", "/verEvaluacionesDocente"})
 public class EvaluacionDocenteServlet extends HttpServlet {
 
     private final Gson gson = new Gson();
@@ -41,6 +41,9 @@ public class EvaluacionDocenteServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        // Caso de uso "Ver resultados de evaluaciones": mismo flujo, pero solo ediciones cerradas y vista de solo lectura
+        boolean modoVer = "/verEvaluacionesDocente".equals(request.getServletPath());
+
         HttpSession session = request.getSession(false);
         Object usuarioEnSesion = session == null ? null : session.getAttribute("usuarioLogueado");
         if (!(usuarioEnSesion instanceof DataDocenteDTO docenteEnSesion)) {
@@ -113,6 +116,9 @@ public class EvaluacionDocenteServlet extends HttpServlet {
 
                     DataEdicionCursoDTO edicion = edicionPort.consultarUnaEdicionCurso(nombreEdicionDocente);
                     if (edicion == null) {
+                        continue;
+                    }
+                    if (modoVer && !Boolean.TRUE.equals(edicion.isCerrada())) {
                         continue;
                     }
                     edicionesDelDocente.add(edicion);
@@ -215,7 +221,8 @@ public class EvaluacionDocenteServlet extends HttpServlet {
         request.setAttribute("todasEvaluadas", todasEvaluadas);
         request.setAttribute("edicionCerrada", edicionCerrada);
 
-        request.getRequestDispatcher("/webEdicion/evaluacion-docente.jsp").forward(request, response);
+        String vista = modoVer ? "/webEdicion/ver-evaluaciones-docente.jsp" : "/webEdicion/evaluacion-docente.jsp";
+        request.getRequestDispatcher(vista).forward(request, response);
     }
 
     @Override
