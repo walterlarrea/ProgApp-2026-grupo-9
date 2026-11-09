@@ -81,7 +81,7 @@
             <c:if test="${not empty edicion}">
             <div class="dato-space" style="display: flex; justify-content: space-between; align-items: center;">
                 <p>
-                    <strong>Estado del curso:</strong>
+                    <strong>Estado de edición: </strong>
                     <c:choose>
                         <c:when test="${edicion.isCerrada() eq true}">
                             <span class="badge-cerrada">CERRADA</span>
