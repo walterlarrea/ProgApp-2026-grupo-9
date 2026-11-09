@@ -1,5 +1,6 @@
 package com.grupo9.edext.grupo9.servidor_web.servlets.usuario;
 
+import com.google.gson.JsonObject;
 import com.grupo9.edext.grupo9.servidor_web.soap.SoapClientFactory;
 import com.grupo9.edext.grupo9.servidor_web.web_service_client.curso.CursoWebService;
 import com.grupo9.edext.grupo9.servidor_web.web_service_client.curso.DataCursoDTO;
@@ -50,13 +51,8 @@ public class UsuarioServlet extends HttpServlet {
             HttpSession session = request.getSession(false);
             DataUsuarioDTO usuarioLogueado = (session != null) ? (DataUsuarioDTO) session.getAttribute("usuarioLogueado") : null;
             boolean propio = usuarioLogueado != null && nickname.trim().equals(usuarioLogueado.getNickname());
-            boolean siguiendo = false;
-            if (usuarioLogueado != null && !propio) {
-                try {
-                    siguiendo = usuarioPort.estaSiguiendoUsuario(usuarioLogueado.getNickname(), nickname.trim());
-                } catch (Exception ignored) {
-                }
-            }
+            boolean siguiendo = usuarioLogueado != null && !propio
+                    && usuarioPort.estaSiguiendoUsuario(usuarioLogueado.getNickname(), nickname.trim());
 
             request.setAttribute("usuario", usuarioConsultado);
             request.setAttribute("propio", propio);
@@ -87,7 +83,22 @@ public class UsuarioServlet extends HttpServlet {
             throws ServletException, IOException {
         HttpSession session = request.getSession(false);
         DataUsuarioDTO seguidor = (session == null) ? null : (DataUsuarioDTO) session.getAttribute("usuarioLogueado");
+
+        boolean isAjax = "XMLHttpRequest".equalsIgnoreCase(request.getHeader("X-Requested-With"))
+                || (request.getHeader("Accept") != null && request.getHeader("Accept").contains("application/json"))
+                || "true".equalsIgnoreCase(request.getParameter("ajax"));
+
         if (seguidor == null) {
+            if (isAjax) {
+                response.setContentType("application/json");
+                response.setCharacterEncoding("UTF-8");
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                JsonObject json = new JsonObject();
+                json.addProperty("success", false);
+                json.addProperty("error", "Debe iniciar sesión para realizar esta acción.");
+                response.getWriter().write(json.toString());
+                return;
+            }
             response.sendRedirect(request.getContextPath() + "/login");
             return;
         }
@@ -97,6 +108,16 @@ public class UsuarioServlet extends HttpServlet {
         String destino = request.getContextPath() + "/usuario?nombre="
                 + URLEncoder.encode(seguido == null ? "" : seguido, StandardCharsets.UTF_8);
         if (seguido == null || seguido.isBlank() || seguido.equals(seguidor.getNickname())) {
+            if (isAjax) {
+                response.setContentType("application/json");
+                response.setCharacterEncoding("UTF-8");
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                JsonObject json = new JsonObject();
+                json.addProperty("success", false);
+                json.addProperty("error", "No se puede seguir a este usuario.");
+                response.getWriter().write(json.toString());
+                return;
+            }
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "No se puede seguir a este usuario.");
             return;
         }
@@ -106,18 +127,65 @@ public class UsuarioServlet extends HttpServlet {
             if (usuarioPort == null) {
                 throw new ServletException("Servicio de usuarios no disponible");
             }
+            boolean nuevoEstado = false;
             if ("seguir".equals(accion)) {
                 usuarioPort.seguirUsuario(seguidor.getNickname(), seguido);
+                nuevoEstado = true;
             } else if ("dejar".equals(accion)) {
                 usuarioPort.dejarDeSeguirUsuario(seguidor.getNickname(), seguido);
+                nuevoEstado = false;
             } else {
+                if (isAjax) {
+                    response.setContentType("application/json");
+                    response.setCharacterEncoding("UTF-8");
+                    response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                    JsonObject json = new JsonObject();
+                    json.addProperty("success", false);
+                    json.addProperty("error", "Acción no válida.");
+                    response.getWriter().write(json.toString());
+                    return;
+                }
                 response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Acción no válida.");
                 return;
             }
+
+            if (isAjax) {
+                response.setContentType("application/json");
+                response.setCharacterEncoding("UTF-8");
+                JsonObject json = new JsonObject();
+                json.addProperty("success", true);
+                json.addProperty("siguiendo", nuevoEstado);
+                json.addProperty("targetNick", seguido);
+                try {
+                    List<String> seg = usuarioPort.obtenerSeguidos(seguidor.getNickname());
+                    json.addProperty("seguidosCount", seg != null ? seg.size() : 0);
+                } catch (Exception ignored) {}
+                response.getWriter().write(json.toString());
+                return;
+            }
+
             response.sendRedirect(destino + "&mensaje=" + URLEncoder.encode("Seguimiento actualizado.", StandardCharsets.UTF_8));
         } catch (ErrorRepetidos_Exception | ErrorNoExiste_Exception e) {
+            if (isAjax) {
+                response.setContentType("application/json");
+                response.setCharacterEncoding("UTF-8");
+                JsonObject json = new JsonObject();
+                json.addProperty("success", false);
+                json.addProperty("error", e.getMessage());
+                response.getWriter().write(json.toString());
+                return;
+            }
             response.sendRedirect(destino + "&error=" + URLEncoder.encode(e.getMessage(), StandardCharsets.UTF_8));
         } catch (Exception e) {
+            if (isAjax) {
+                response.setContentType("application/json");
+                response.setCharacterEncoding("UTF-8");
+                JsonObject json = new JsonObject();
+                json.addProperty("success", false);
+                json.addProperty("error", e.getMessage());
+                response.getWriter().write(json.toString());
+                return;
+            }
             throw new ServletException("No se pudo actualizar el seguimiento.", e);
         }
     }

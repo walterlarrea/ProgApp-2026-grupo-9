@@ -3,7 +3,10 @@
 <%@ page import="com.grupo9.edext.grupo9.servidor_web.web_service_client.usuario.DataUsuarioDTO" %>
 <%@ page import="com.grupo9.edext.grupo9.servidor_web.web_service_client.usuario.DataEstudianteDTO" %>
 <%@ page import="com.grupo9.edext.grupo9.servidor_web.web_service_client.usuario.DataDocenteDTO" %>
-<%@ page import="java.time.format.DateTimeFormatter" %>
+<%@ page import="com.grupo9.edext.grupo9.servidor_web.web_service_client.edicion_de_curso.DataEdicionCursoDTO" %>
+<%@ page import="com.grupo9.edext.grupo9.servidor_web.web_service_client.curso.DataCursoDTO" %>
+<%@ page import="java.util.List" %>
+<%@ page import="java.util.Set" %>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -12,68 +15,12 @@
     <title>edEXT - Mi Perfil</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/styles.css">
     <style>
-        .seguidos-container {
-            margin-top: 2rem;
-            padding-top: 1.5rem;
-            border-top: 1px solid var(--border-color);
+        .tab-pane {
+            display: none;
         }
-        .seguidos-scroll {
-            display: flex;
-            gap: 1rem;
-            overflow-x: auto;
-            padding: 0.5rem 0 1rem 0;
-        }
-        .seguido-card {
-            min-width: 160px;
-            background: #ffffff;
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 1rem;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-        }
-        .seguido-avatar {
-            width: 56px;
-            height: 56px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 2px solid var(--primary);
-            margin-bottom: 0.5rem;
-        }
-        .seguido-avatar-placeholder {
-            width: 56px;
-            height: 56px;
-            border-radius: 50%;
-            background-color: #f1f5f9;
-            color: #64748b;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.75rem;
-            border: 1px dashed #cbd5e1;
-            margin-bottom: 0.5rem;
-        }
-        .seguido-name {
-            font-size: 0.9rem;
-            font-weight: 600;
-            color: var(--text-primary);
-            text-decoration: none;
-            margin-bottom: 0.25rem;
-            max-width: 140px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-        }
-        .seguido-name:hover {
-            color: var(--primary);
-        }
-        .seguido-nick {
-            font-size: 0.8rem;
-            color: var(--text-secondary);
-            margin-bottom: 0.75rem;
+        .tab-pane.active {
+            display: block !important;
+            animation: tabFadeIn 0.25s ease-in-out;
         }
     </style>
 </head>
@@ -90,6 +37,11 @@
         <main class="main-content">
             <%
                 DataUsuarioDTO userObj = (DataUsuarioDTO) request.getAttribute("usuario");
+                List<DataUsuarioDTO> seguidosList = (List<DataUsuarioDTO>) request.getAttribute("usuariosSeguidos");
+                List<DataUsuarioDTO> seguidoresList = (List<DataUsuarioDTO>) request.getAttribute("usuariosSeguidores");
+                Set<String> seguidosNicks = (Set<String>) request.getAttribute("seguidosNicks");
+                int cantSeguidos = (seguidosList != null) ? seguidosList.size() : 0;
+                int cantSeguidores = (seguidoresList != null) ? seguidoresList.size() : 0;
             %>
             <div class="profile-container">
                 <c:if test="${param.mensaje != null}">
@@ -138,116 +90,244 @@
                     </div>
                 </div>
 
-                <!-- Datos de Usuario -->
-                <div class="profile-info-grid">
-                    <div class="info-item">
-                        <div class="info-label">Nickname</div>
-                        <div class="info-value"><c:out value="${usuario.nickname}"/></div>
-                    </div>
-                    <div class="info-item">
-                        <div class="info-label">Nombre</div>
-                        <div class="info-value"><c:out value="${usuario.nombre != null ? usuario.nombre : '-'}"/></div>
-                    </div>
-                    <div class="info-item">
-                        <div class="info-label">Apellido</div>
-                        <div class="info-value"><c:out value="${usuario.apellido != null ? usuario.apellido : '-'}"/></div>
-                    </div>
-                    <div class="info-item">
-                        <div class="info-label">Correo Electrónico</div>
-                        <div class="info-value"><c:out value="${usuario.email}"/></div>
-                    </div>
-                    <div class="info-item">
-                        <div class="info-label">Fecha de Nacimiento</div>
-                        <div class="info-value">
-                            <% 
-                                if (userObj != null && userObj.getFechaNac() != null) {
-                                    try {
-                                        java.time.LocalDate fn = java.time.LocalDate.parse(userObj.getFechaNac().trim());
-                                        out.print(fn.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
-                                    } catch (Exception e) {
-                                        out.print(userObj.getFechaNac());
-                                    }
-                                } else {
-                                    out.print("-");
-                                }
-                            %>
-                        </div>
-                    </div>
-                    <c:if test="${usuario.tipo == 'Docente'}">
+                <!-- Pestañas de Navegación del Perfil -->
+                <nav class="profile-tabs-header" role="tablist">
+                    <button type="button" class="profile-tab-btn active" data-tab="tab-general" onclick="openTab('tab-general', this)" role="tab" aria-selected="true">
+                        Información General
+                    </button>
+                    <button type="button" class="profile-tab-btn" data-tab="tab-cursos" onclick="openTab('tab-cursos', this)" role="tab" aria-selected="false">
+                        <c:choose>
+                            <c:when test="${usuario.tipo == 'Docente'}">Mis Cursos y Ediciones</c:when>
+                            <c:otherwise>Cursos inscriptos</c:otherwise>
+                        </c:choose>
+                    </button>
+                    <button type="button" class="profile-tab-btn" data-tab="tab-seguidores" onclick="openTab('tab-seguidores', this)" role="tab" aria-selected="false">
+                        Seguidores <span class="profile-tab-badge" id="badge-seguidores"><%= cantSeguidores %></span>
+                    </button>
+                    <button type="button" class="profile-tab-btn" data-tab="tab-seguidos" onclick="openTab('tab-seguidos', this)" role="tab" aria-selected="false">
+                        Seguidos <span class="profile-tab-badge count-seguidos" id="badge-seguidos"><%= cantSeguidos %></span>
+                    </button>
+                </nav>
+
+                <!-- TAB 1: INFORMACIÓN GENERAL -->
+                <section id="tab-general" class="tab-pane active" role="tabpanel">
+                    <div class="profile-info-grid">
                         <div class="info-item">
-                            <div class="info-label">Instituto</div>
-                            <div class="info-value"><c:out value="${usuario.nombreInst != null ? usuario.nombreInst : '-'}"/></div>
+                            <div class="info-label">Nickname</div>
+                            <div class="info-value"><c:out value="${usuario.nickname}"/></div>
                         </div>
-                    </c:if>
-                </div>
+                        <div class="info-item">
+                            <div class="info-label">Nombre</div>
+                            <div class="info-value"><c:out value="${usuario.nombre != null ? usuario.nombre : '-'}"/></div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">Apellido</div>
+                            <div class="info-value"><c:out value="${usuario.apellido != null ? usuario.apellido : '-'}"/></div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">Correo Electrónico</div>
+                            <div class="info-value"><c:out value="${usuario.email}"/></div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">Fecha de Nacimiento</div>
+                            <div class="info-value"><c:out value="${usuario.fechaNac != null ? usuario.fechaNac : '-'}"/></div>
+                        </div>
+                        <c:if test="${usuario.tipo == 'Docente'}">
+                            <div class="info-item">
+                                <div class="info-label">Instituto</div>
+                                <div class="info-value"><c:out value="${usuario.nombreInst != null ? usuario.nombreInst : '-'}"/></div>
+                            </div>
+                        </c:if>
+                    </div>
+                </section>
 
-                <c:if test="${usuario.tipo == 'Estudiante'}">
-                    <section class="ediciones-section">
-                        <h3>Programas de formación</h3>
-                        <c:choose>
-                            <c:when test="${not empty inscripcionesProgramas}">
-                                <ul class="ediciones-list">
-                                    <c:forEach var="inscripcion" items="${inscripcionesProgramas}">
-                                        <li><a class="edicion-card" href="${pageContext.request.contextPath}/programa?nombre=${inscripcion.programaNombre}">
-                                            <span class="edicion-title"><c:out value="${inscripcion.programaNombre}"/></span>
-                                            <span><c:out value="${inscripcion.fechaInscP}"/></span>
-                                        </a></li>
-                                    </c:forEach>
-                                </ul>
-                            </c:when>
-                            <c:otherwise><p class="text-muted">No estás inscrito en programas de formación.</p></c:otherwise>
-                        </c:choose>
-                    </section>
-                </c:if>
-
-                <!-- Ediciones de Cursos -->
-                <div class="ediciones-section">
-                    <h3>
-                        <c:choose>
-                            <c:when test="${usuario.tipo == 'Docente'}">Ediciones dictadas</c:when>
-                            <c:otherwise>Ediciones de curso inscriptas</c:otherwise>
-                        </c:choose>
-                    </h3>
-
-                    <%
-                        java.util.List<String> edicionesSet = new java.util.ArrayList<>();
-                        if (userObj instanceof DataEstudianteDTO) {
-                            edicionesSet = ((DataEstudianteDTO) userObj).getEdicionesInscriptas();
-                        } else if (userObj instanceof DataDocenteDTO) {
-                            edicionesSet = ((DataDocenteDTO) userObj).getEdiciones();
-                        }
-                        pageContext.setAttribute("edicionesSet", edicionesSet);
-                    %>
-
+                <!-- TAB 2: CURSOS -->
+                <section id="tab-cursos" class="tab-pane" role="tabpanel">
                     <c:choose>
-                        <c:when test="${not empty edicionesSet}">
-                            <ul class="ediciones-list">
-                                <c:forEach var="edi" items="${edicionesSet}">
-                                    <li>
-                                        <a href="${pageContext.request.contextPath}/edicionCurso?nombre=${edi}" class="edicion-card">
-                                            <span class="edicion-title"><c:out value="${edi}"/></span>
-                                            <span>→</span>
-                                        </a>
-                                    </li>
-                                </c:forEach>
-                            </ul>
+                        <c:when test="${usuario.tipo == 'Docente'}">
+                            <!-- Vista para Docente -->
+                            <c:if test="${not empty listaCursosDocente}">
+                                <h3 style="margin-bottom: 0.75rem; color: var(--text-primary);">Cursos Dictados</h3>
+                                <div class="cursos-perfil-grid" style="margin-bottom: 2rem;">
+                                    <c:forEach var="cur" items="${listaCursosDocente}">
+                                        <div class="curso-perfil-card">
+                                            <div class="curso-perfil-header">
+                                                <img src="${pageContext.request.contextPath}/imagen?path=${cur.imagen}" alt="${cur.nombreCurso}" class="curso-perfil-img" onerror="this.src='${pageContext.request.contextPath}/imagenes/curso/curso-placeholder.jpg';">
+                                                <div>
+                                                    <a href="${pageContext.request.contextPath}/curso?nombre=${cur.nombreCurso}" class="curso-perfil-title">
+                                                        <c:out value="${cur.nombreCurso}"/>
+                                                    </a>
+                                                    <span class="text-muted" style="font-size: 0.8rem;"><c:out value="${cur.instituto != null ? cur.instituto.nombreI : ''}"/></span>
+                                                </div>
+                                            </div>
+                                            <p style="font-size: 0.85rem; color: #475569; margin-bottom: 1rem;">
+                                                <c:out value="${cur.descCurso}"/>
+                                            </p>
+                                            <div class="curso-perfil-links">
+                                                <a href="${pageContext.request.contextPath}/curso?nombre=${cur.nombreCurso}" class="btn btn-outline btn-sm" style="width: 100%; text-align: center;">
+                                                    Ver Curso
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </c:forEach>
+                                </div>
+                            </c:if>
+
+                            <h3 style="margin-bottom: 0.75rem; color: var(--text-primary);">Ediciones de Curso Asignadas</h3>
                         </c:when>
                         <c:otherwise>
-                            <div style="padding: 1rem; color: #64748b;">
-                                <p>No tienes ediciones de curso registradas por el momento.</p>
+                            <!-- Vista para Estudiante -->
+                            <h3 style="margin-bottom: 0.75rem; color: var(--text-primary);">Cursos y Ediciones en los que estás inscripto</h3>
+                        </c:otherwise>
+                    </c:choose>
+
+                    <c:choose>
+                        <c:when test="${not empty listaEdiciones}">
+                            <div class="cursos-perfil-grid">
+                                <c:forEach var="edicion" items="${listaEdiciones}">
+                                    <div class="curso-perfil-card">
+                                        <div>
+                                            <div class="curso-perfil-header">
+                                                <c:choose>
+                                                    <c:when test="${not empty edicion.imagen}">
+                                                        <img src="${pageContext.request.contextPath}/imagen?path=${edicion.imagen}" alt="${edicion.nombreEdi}" class="curso-perfil-img" onerror="this.src='${pageContext.request.contextPath}/imagenes/edicionCurso/edicion-placeholder.jpg';">
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <img src="${pageContext.request.contextPath}/imagenes/edicionCurso/edicion-placeholder.jpg" alt="${edicion.nombreEdi}" class="curso-perfil-img">
+                                                    </c:otherwise>
+                                                </c:choose>
+                                                <div>
+                                                    <c:if test="${not empty edicion.cursoAsoc}">
+                                                        <a href="${pageContext.request.contextPath}/curso?nombre=${edicion.cursoAsoc.nombreCurso}" class="curso-perfil-title" title="Ver Curso">
+                                                            <c:out value="${edicion.cursoAsoc.nombreCurso}"/>
+                                                        </a>
+                                                    </c:if>
+                                                    <div class="curso-perfil-edicion">
+                                                        Edición: <strong><c:out value="${edicion.nombreEdi}"/></strong>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="curso-perfil-fechas">
+                                                <span>🗓 Vigencia: <c:out value="${edicion.fechaInicio != null ? edicion.fechaInicio : '-'}"/> al <c:out value="${edicion.fechaFin != null ? edicion.fechaFin : '-'}"/></span>
+                                                <c:if test="${edicion.cupo != null}">
+                                                    <br><span>👥 Cupo: <c:out value="${edicion.cupo}"/></span>
+                                                </c:if>
+                                            </div>
+                                        </div>
+
+                                        <div class="curso-perfil-links">
+                                            <c:if test="${not empty edicion.cursoAsoc}">
+                                                <a href="${pageContext.request.contextPath}/curso?nombre=${edicion.cursoAsoc.nombreCurso}" class="btn btn-outline btn-sm" style="flex: 1; text-align: center;">
+                                                    Curso
+                                                </a>
+                                            </c:if>
+                                            <a href="${pageContext.request.contextPath}/edicionCurso?nombre=${edicion.nombreEdi}" class="btn btn-primary btn-sm" style="flex: 1; text-align: center;">
+                                                Ver Edición
+                                            </a>
+                                        </div>
+                                    </div>
+                                </c:forEach>
+                            </div>
+                        </c:when>
+                        <c:otherwise>
+                            <div style="padding: 2rem; background: #f8fafc; border-radius: 8px; border: 1px dashed var(--border-color); text-align: center;">
+                                <p style="color: #64748b; margin-bottom: 1rem;">No tienes cursos o ediciones registrados en este momento.</p>
+                                <a href="${pageContext.request.contextPath}/busqueda" class="btn btn-primary btn-sm">Explorar Cursos</a>
                             </div>
                         </c:otherwise>
                     </c:choose>
-                </div>
+                </section>
 
-                <!-- Barra de Usuarios que sigo -->
-                <div class="seguidos-container">
-                    <h3>Usuarios que sigo (<c:out value="${empty usuariosSeguidos ? 0 : usuariosSeguidos.size()}"/>)</h3>
+                <!-- TAB 3: SEGUIDORES (Los que me siguen) -->
+                <section id="tab-seguidores" class="tab-pane" role="tabpanel">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                        <h3 style="color: var(--text-primary); margin: 0;">
+                            Usuarios que te siguen (<span id="count-seguidores"><%= cantSeguidores %></span>)
+                        </h3>
+                    </div>
+
+                    <c:choose>
+                        <c:when test="${not empty usuariosSeguidores}">
+                            <div class="usuarios-tab-grid">
+                                <c:forEach var="seguidor" items="${usuariosSeguidores}">
+                                    <div class="usuario-card-tab" id="card-seguidor-${seguidor.nickname}">
+                                        <c:choose>
+                                            <c:when test="${not empty seguidor.imagen}">
+                                                <c:choose>
+                                                    <c:when test="${seguidor.imagen.startsWith('http://') || seguidor.imagen.startsWith('https://')}">
+                                                        <c:set var="segImg" value="${seguidor.imagen}" />
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <c:url var="segImg" value="/imagen">
+                                                            <c:param name="path" value="${seguidor.imagen}" />
+                                                        </c:url>
+                                                    </c:otherwise>
+                                                </c:choose>
+                                                <img src="${segImg}" alt="${seguidor.nickname}" class="usuario-tab-avatar" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                                <div class="usuario-tab-placeholder" style="display:none;">
+                                                    <span>Sin foto</span>
+                                                </div>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <div class="usuario-tab-placeholder">
+                                                    <span>Sin foto</span>
+                                                </div>
+                                            </c:otherwise>
+                                        </c:choose>
+
+                                        <a href="${pageContext.request.contextPath}/usuario?nickname=${seguidor.nickname}" class="usuario-tab-name" title="${seguidor.nombre} ${seguidor.apellido}">
+                                            <c:out value="${not empty seguidor.nombre ? seguidor.nombre : seguidor.nickname}"/>
+                                            <c:if test="${not empty seguidor.apellido}"> <c:out value="${seguidor.apellido}"/></c:if>
+                                        </a>
+                                        <span class="usuario-tab-nick">@<c:out value="${seguidor.nickname}"/></span>
+                                        <span class="usuario-tab-badge-follow">Te sigue</span>
+
+                                        <div class="usuario-tab-actions">
+                                            <%
+                                                DataUsuarioDTO itemSeg = (DataUsuarioDTO) pageContext.getAttribute("seguidor");
+                                                boolean yoLoSigo = seguidosNicks != null && itemSeg != null && seguidosNicks.contains(itemSeg.getNickname());
+                                            %>
+                                            <form action="${pageContext.request.contextPath}/seguir-usuario" method="post" class="form-seguir-ajax" style="width: 100%;">
+                                                <input type="hidden" name="nickname" value="${seguidor.nickname}">
+                                                <% if (yoLoSigo) { %>
+                                                    <input type="hidden" name="accion" value="dejar">
+                                                    <button type="submit" class="btn btn-outline btn-sm" style="width: 100%; color: #dc2626; border-color: #fca5a5;">
+                                                        Dejar de seguir
+                                                    </button>
+                                                <% } else { %>
+                                                    <input type="hidden" name="accion" value="seguir">
+                                                    <button type="submit" class="btn btn-primary btn-sm" style="width: 100%;">
+                                                        + Seguir
+                                                    </button>
+                                                <% } %>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </c:forEach>
+                            </div>
+                        </c:when>
+                        <c:otherwise>
+                            <div style="padding: 2rem; background: #f8fafc; border-radius: 8px; border: 1px dashed var(--border-color); text-align: center;">
+                                <p style="color: #64748b;">Aún no tienes seguidores registrados.</p>
+                            </div>
+                        </c:otherwise>
+                    </c:choose>
+                </section>
+
+                <!-- TAB 4: SEGUIDOS (Los que yo sigo) -->
+                <section id="tab-seguidos" class="tab-pane" role="tabpanel">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                        <h3 style="color: var(--text-primary); margin: 0;">
+                            Usuarios que sigo (<span class="count-seguidos" id="count-seguidos"><%= cantSeguidos %></span>)
+                        </h3>
+                    </div>
+
                     <c:choose>
                         <c:when test="${not empty usuariosSeguidos}">
-                            <div class="seguidos-scroll">
+                            <div class="usuarios-tab-grid">
                                 <c:forEach var="seguido" items="${usuariosSeguidos}">
-                                    <div class="seguido-card">
+                                    <div class="usuario-card-tab seguido-card-seguidos" id="card-seguido-${seguido.nickname}">
                                         <c:choose>
                                             <c:when test="${not empty seguido.imagen}">
                                                 <c:choose>
@@ -260,45 +340,84 @@
                                                         </c:url>
                                                     </c:otherwise>
                                                 </c:choose>
-                                                <img src="${sImg}" alt="${seguido.nickname}" class="seguido-avatar" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                                                <div class="seguido-avatar-placeholder" style="display:none;">
+                                                <img src="${sImg}" alt="${seguido.nickname}" class="usuario-tab-avatar" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                                <div class="usuario-tab-placeholder" style="display:none;">
                                                     <span>Sin foto</span>
                                                 </div>
                                             </c:when>
                                             <c:otherwise>
-                                                <div class="seguido-avatar-placeholder">
+                                                <div class="usuario-tab-placeholder">
                                                     <span>Sin foto</span>
                                                 </div>
                                             </c:otherwise>
                                         </c:choose>
 
-                                        <a href="${pageContext.request.contextPath}/usuario?nickname=${seguido.nickname}" class="seguido-name" title="${seguido.nombre} ${seguido.apellido}">
+                                        <a href="${pageContext.request.contextPath}/usuario?nickname=${seguido.nickname}" class="usuario-tab-name" title="${seguido.nombre} ${seguido.apellido}">
                                             <c:out value="${not empty seguido.nombre ? seguido.nombre : seguido.nickname}"/>
+                                            <c:if test="${not empty seguido.apellido}"> <c:out value="${seguido.apellido}"/></c:if>
                                         </a>
-                                        <span class="seguido-nick">@<c:out value="${seguido.nickname}"/></span>
-                                        
-                                        <form action="${pageContext.request.contextPath}/seguir-usuario" method="post" style="margin-top: auto; width: 100%;">
-                                            <input type="hidden" name="nickname" value="${seguido.nickname}">
-                                            <input type="hidden" name="accion" value="dejar">
-                                            <button type="submit" class="btn btn-outline btn-sm" style="width: 100%; color: #dc2626; border-color: #fca5a5;">
-                                                Dejar de seguir
-                                            </button>
-                                        </form>
+                                        <span class="usuario-tab-nick">@<c:out value="${seguido.nickname}"/></span>
+
+                                        <div class="usuario-tab-actions">
+                                            <form action="${pageContext.request.contextPath}/seguir-usuario" method="post" class="form-seguir-ajax" style="width: 100%;">
+                                                <input type="hidden" name="nickname" value="${seguido.nickname}">
+                                                <input type="hidden" name="accion" value="dejar">
+                                                <button type="submit" class="btn btn-outline btn-sm" style="width: 100%; color: #dc2626; border-color: #fca5a5;">
+                                                    Dejar de seguir
+                                                </button>
+                                            </form>
+                                        </div>
                                     </div>
                                 </c:forEach>
                             </div>
                         </c:when>
                         <c:otherwise>
-                            <div style="padding: 1rem 0; color: #64748b;">
-                                <p>No estás siguiendo a ningún usuario actualmente.</p>
+                            <div style="padding: 2rem; background: #f8fafc; border-radius: 8px; border: 1px dashed var(--border-color); text-align: center;">
+                                <p style="color: #64748b;">No estás siguiendo a ningún usuario actualmente.</p>
                             </div>
                         </c:otherwise>
                     </c:choose>
-                </div>
+                </section>
 
             </div>
         </main>
     </div>
 
+    <!-- Script para cambiar de pestañas -->
+    <script>
+        function openTab(targetId, btnElement) {
+            const tabButtons = document.querySelectorAll('.profile-tab-btn');
+            const tabPanes = document.querySelectorAll('.tab-pane');
+
+            tabButtons.forEach(b => {
+                b.classList.remove('active');
+                b.setAttribute('aria-selected', 'false');
+            });
+            tabPanes.forEach(p => p.classList.remove('active'));
+
+            if (btnElement) {
+                btnElement.classList.add('active');
+                btnElement.setAttribute('aria-selected', 'true');
+            }
+
+            const targetPane = document.getElementById(targetId);
+            if (targetPane) {
+                targetPane.classList.add('active');
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const tabButtons = document.querySelectorAll('.profile-tab-btn');
+            tabButtons.forEach(btn => {
+                btn.addEventListener('click', function () {
+                    const targetId = this.getAttribute('data-tab');
+                    openTab(targetId, this);
+                });
+            });
+        });
+    </script>
+
+    <!-- Script para seguir / dejar de seguir mediante AJAX sin refrescar -->
+    <script src="${pageContext.request.contextPath}/js/seguimientoAjax.js"></script>
 </body>
 </html>
