@@ -37,28 +37,17 @@
                     <li><a href="${pageContext.request.contextPath}/inscriptosDocente">Ver inscriptos</a></li>
                     <li><a href="${pageContext.request.contextPath}/inscripcionesDocente">Ver inscripciones pendientes</a></li>
                     <li><a href="${pageContext.request.contextPath}/evaluacionDocente">Ingresar evaluaciones</a></li>
+                    <li><a href="${pageContext.request.contextPath}/verEvaluacionesDocente">Ver evaluaciones</a></li>
                 </ul>
             </div>
             </c:if>
                 
             <div class="seccion">
             <h3>Institutos</h3>
-            <ul class="nav-list">
-                <c:choose>
-                    <c:when test="${not empty institutos}">
-                        <c:forEach var="inst" items="${institutos}">
-                            <li>
-                                <a class="corte-texto" href="${pageContext.request.contextPath}/instituto?nombre=${inst.nombreI}">
-                                    <c:out value="${inst.nombreI}"/>
-                                </a>
-                            </li>
-                        </c:forEach>
-                    </c:when>
-                    <c:otherwise>
-                        <li class="empty-hint">Sin institutos disponibles</li>
-                    </c:otherwise>
-                </c:choose>
+            <ul class="nav-list" id="sidebar-institutos" data-context-path="${pageContext.request.contextPath}">
+                <li class="empty-hint">Cargando institutos...</li>
             </ul>
+            <script src="${pageContext.request.contextPath}/js/sidebarInstitutos.js"></script>
             </div>
             
             <div class="seccion">

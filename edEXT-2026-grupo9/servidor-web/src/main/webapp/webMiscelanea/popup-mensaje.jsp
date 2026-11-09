@@ -8,7 +8,7 @@
     - icono: Ícono o texto dentro del círculo superior (default: '✓')
     - visible: 'true' o 'false' para controlar la visibilidad inicial en la carga
 --%>
-<c:set var="popupTitulo" value="${not empty param.titulo ? param.titulo : (not empty requestScope.tituloPopup ? requestScope.tituloPopup : (not empty sessionScope.tituloPopup ? sessionScope.tituloPopup : '¡Aviso!'))}" />
+<c:set var="popupTitulo" value="${not empty param.titulo ? param.titulo : (not empty requestScope.tituloPopup ? requestScope.tituloPopup : (not empty sessionScope.tituloPopup ? sessionScope.tituloPopup : '¡Registrado!'))}" />
 <c:set var="popupMensaje" value="${not empty param.mensaje ? param.mensaje : (not empty requestScope.mensajePopup ? requestScope.mensajePopup : (not empty sessionScope.mensajeExito ? sessionScope.mensajeExito : ''))}" />
 <c:set var="popupIcono" value="${not empty param.icono ? param.icono : '✓'}" />
 <c:set var="popupVisible" value="${not empty param.visible ? param.visible : (not empty popupMensaje ? 'true' : 'false')}" />

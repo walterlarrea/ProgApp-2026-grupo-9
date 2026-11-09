@@ -37,7 +37,7 @@
             <!-- Formulario de Selección: Instituto, Curso y Edición -->
             <form action="${pageContext.request.contextPath}/evaluacionDocente" method="get">
                 <div class="dato-space">
-                    <label for="instituto"><strong>Instituto:</strong></label>
+                    <label for="instituto"><strong>Instituto</strong></label>
                     <br>
                     <select id="instituto" name="instituto" style="width: 30%; padding: 6px; margin-top: 4px;"
                             onchange="var curso = this.form.elements.namedItem('curso'); var edicion = this.form.elements.namedItem('edicion'); if (curso) curso.value = ''; if (edicion) edicion.value = ''; this.form.submit();">
@@ -53,7 +53,7 @@
 
                 <c:if test="${not empty param.instituto}">
                     <div class="dato-space">
-                        <label for="curso"><strong>Curso:</strong></label>
+                        <label for="curso"><strong>Curso</strong></label>
                         <br>
                         <select id="curso" name="curso" style="width: 30%; padding: 6px; margin-top: 4px;"
                                 onchange="var edicion = this.form.elements.namedItem('edicion'); if (edicion) edicion.value = ''; this.form.submit();">
@@ -70,7 +70,7 @@
 
                 <c:if test="${not empty param.curso}">
                     <div class="dato-space">
-                        <label for="edicion"><strong>Edición del curso:</strong></label>
+                        <label for="edicion"><strong>Edición del curso</strong></label>
                         <br>
                         <select id="edicion" name="edicion" style="width: 30%; padding: 6px; margin-top: 4px;" onchange="this.form.submit();">
                             <option value="">-- Seleccione una edición --</option>

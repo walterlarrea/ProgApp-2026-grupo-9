@@ -149,6 +149,12 @@ public class InscripcionServlet extends HttpServlet {
         String nickname = usuario.getNickname();
         EdicionDeCursoWebService edicionPort = SoapClientFactory.getInstance().getEdicionCursoPort();
 
+        // Inscripción directa desde el detalle de una edición (botón "Inscribirse")
+        if ("1".equals(request.getParameter("directa"))) {
+            inscribirDirecto(request, response, session, usuario, nombreEdi, edicionPort);
+            return;
+        }
+
         try {
             if (edicionPort == null) {
                 throw new ServletException("Servicio de ediciones no disponible");
@@ -160,6 +166,49 @@ public class InscripcionServlet extends HttpServlet {
             request.setAttribute("error", e.getMessage());
             cargarDatosFormulario(request, nombreInst, nombreCurso, nombreEdi);
             request.getRequestDispatcher("/webEdicion/inscribir-edicion.jsp").forward(request, response);
+        }
+    }
+
+    /**
+     * Inscribe al estudiante logueado directamente a la edición indicada. Rechaza si no es estudiante,
+     * si la edición no existe o está cerrada, o si ya está inscripto. El éxito reutiliza el popup
+     * "¡Registrado!" (mensajeExito en sesión + /home); los rechazos vuelven al detalle con un popup de aviso.
+     */
+    private void inscribirDirecto(HttpServletRequest request, HttpServletResponse response, HttpSession session,
+            DataUsuarioDTO usuario, String nombreEdi, EdicionDeCursoWebService edicionPort) throws IOException {
+        String volver = request.getContextPath() + "/edicionCurso?nombre="
+                + java.net.URLEncoder.encode(nombreEdi == null ? "" : nombreEdi, java.nio.charset.StandardCharsets.UTF_8);
+        try {
+            if (!(usuario instanceof DataEstudianteDTO)) {
+                throw new IllegalStateException("Solo los estudiantes pueden inscribirse a una edición.");
+            }
+            if (edicionPort == null) {
+                throw new IllegalStateException("Servicio de ediciones no disponible.");
+            }
+            DataEdicionCursoDTO edicion = nombreEdi == null || nombreEdi.isBlank()
+                    ? null : edicionPort.consultarUnaEdicionCurso(nombreEdi);
+            if (edicion == null) {
+                throw new IllegalStateException("La edición indicada no existe.");
+            }
+            if (Boolean.TRUE.equals(edicion.isCerrada())) {
+                throw new IllegalStateException("La edición está cerrada y ya no admite inscripciones.");
+            }
+            List<DataInscEdicionDTO> inscriptos = edicionPort.buscarInscriptosEdicion(nombreEdi);
+            if (inscriptos != null) {
+                for (DataInscEdicionDTO insc : inscriptos) {
+                    if (insc != null && insc.getEstudiante() != null
+                            && usuario.getNickname().equals(insc.getEstudiante().getNickname())) {
+                        throw new IllegalStateException("Ya estás inscripto en esta edición.");
+                    }
+                }
+            }
+            edicionPort.inscribirEstudiante(LocalDate.now().toString(), usuario.getNickname(), nombreEdi, "INSCRIPTO");
+            session.setAttribute("mensajeExito", "😎");
+            response.sendRedirect(request.getContextPath() + "/home");
+        } catch (Exception e) {
+            session.setAttribute("tituloPopup", "No se pudo inscribir");
+            session.setAttribute("mensajeExito", e.getMessage());
+            response.sendRedirect(volver);
         }
     }
 

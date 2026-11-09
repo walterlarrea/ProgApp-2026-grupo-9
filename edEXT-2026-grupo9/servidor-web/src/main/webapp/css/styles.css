@@ -1335,3 +1335,24 @@ textarea {
 		align-items: flex-end;
 	}
 }
+
+/* Estado de una edicion de curso (abierta / cerrada) */
+.badge-abierta,
+.badge-cerrada {
+	display: inline-block;
+	margin-left: 0.4rem;
+	color: white;
+	padding: 3px 8px;
+	border-radius: 4px;
+	font-size: 0.75rem;
+	font-weight: 700;
+	letter-spacing: 0.03em;
+}
+
+.badge-abierta {
+	background-color: #10b981;
+}
+
+.badge-cerrada {
+	background-color: #ef4444;
+}

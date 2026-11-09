@@ -17,7 +17,7 @@
             <section class="hero-banner">
                 <div class="hero-contenido">
                     <h1>Tus Evaluaciones</h1>
-                    <p>Evaluaciones de las ediciones a las que te has inscripto</p>
+                    <p>Resultados de las ediciones cerradas en las que fuiste aceptado</p>
                 </div>
             </section>
 
@@ -32,10 +32,49 @@
                     <c:out value="${mensajeError}" escapeXml="false"/>
                 </div>
             </c:if>
-            
-            <form action="${pageContext.request.contextPath}/evaluacionEstudiante" method="get">
-            
-            </form>
+
+            <div class="table-container">
+                <table class="inscriptos-table">
+                    <thead>
+                        <tr>
+                            <th>Edición</th>
+                            <th>Fecha <br>inscripción</th>
+                            <th>Evaluación</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <c:choose>
+                            <c:when test="${not empty evaluaciones}">
+                                <c:forEach var="insc" items="${evaluaciones}">
+                                    <tr>
+                                        <td class="nav-list">
+                                            <a href="${pageContext.request.contextPath}/edicionCurso?nombre=${fn:escapeXml(insc.edicion)}">
+                                                <c:out value="${insc.edicion}"/>
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <c:out value="${insc.fechaInscE}"/>
+                                        </td>
+                                        <td>
+                                            <span class="estado-badge">
+                                                <c:out value="${insc.nota != null ? insc.nota : 'Sin calificar'}"/>
+                                            </span>
+                                        </td>
+                                    </tr>
+                                </c:forEach>
+                            </c:when>
+                            <c:otherwise>
+                                <tr>
+                                    <td colspan="3" class="empty-table">
+                                        No tienes evaluaciones en ediciones cerradas.
+                                    </td>
+                                </tr>
+                            </c:otherwise>
+                        </c:choose>
+                    </tbody>
+                </table>
+            </div>
+        </main>
     </div>
 </body>
 </html>
