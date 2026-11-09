@@ -95,7 +95,7 @@
                     </h2>
                     <p><strong>Curso:</strong> <c:out value="${edicionSeleccionada.cursoAsoc.nombreCurso}"/></p>
                     <p><strong>Período:</strong> <c:out value="${edicionSeleccionada.fechaInicio}"/> al <c:out value="${edicionSeleccionada.fechaFin}"/></p>
-                    <p><strong>Cupo:</strong> <c:out value="${edicionSeleccionada.cupo != null ? edicionSeleccionada.cupo : 'Sin límite'}"/></p>
+                    <p><strong>Cupo:</strong> <c:out value="${edicionSeleccionada.cupo != null ? edicionSeleccionada.cupo : 'Libre'}"/></p>
                     <p><strong>Estado del curso:</strong>
                         <c:choose>
                             <c:when test="${edicionCerrada}">

@@ -1089,7 +1089,7 @@ textarea {
 
 .popup-contenido p {
 	margin-bottom: 1.5rem;
-	animation: aparecerPopup 3s ease-out;
+	animation: aparecerPopup 1s ease-out;
 }
 
 @keyframes aparecerPopup {
