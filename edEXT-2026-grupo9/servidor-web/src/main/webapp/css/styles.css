@@ -572,7 +572,7 @@ body {
 }
 
 .salir a::before {
-	content: ' ';
+	content: '↪';
 	margin-right: 8px;
 	font-size: 20px;
 	font-weight: bold;
@@ -1089,7 +1089,7 @@ textarea {
 
 .popup-contenido p {
 	margin-bottom: 1.5rem;
-	animation: aparecerPopup 3s ease-out;
+	animation: aparecerPopup 7s ease-out;
 }
 
 @keyframes aparecerPopup {
@@ -1336,23 +1336,237 @@ textarea {
 	}
 }
 
-/* Estado de una edicion de curso (abierta / cerrada) */
-.badge-abierta,
-.badge-cerrada {
-	display: inline-block;
-	margin-left: 0.4rem;
-	color: white;
-	padding: 3px 8px;
-	border-radius: 4px;
+
+/* ==========================================================================
+   Pestañas de Perfil de Usuario (Tabs) y Vistas Asociadas
+   ========================================================================== */
+.profile-tabs-header {
+	display: flex;
+	border-bottom: 2px solid var(--border-color);
+	margin-bottom: 1.75rem;
+	gap: 0.5rem;
+	overflow-x: auto;
+}
+
+.profile-tab-btn {
+	padding: 0.85rem 1.4rem;
+	background: transparent;
+	border: none;
+	border-bottom: 3px solid transparent;
+	font-size: 0.95rem;
+	font-weight: 600;
+	color: var(--text-secondary);
+	cursor: pointer;
+	transition: all 0.2s ease;
+	display: inline-flex;
+	align-items: center;
+	gap: 0.5rem;
+	white-space: nowrap;
+	text-decoration: none;
+}
+
+.profile-tab-btn:hover {
+	color: var(--primary);
+	background-color: #f8fafc;
+}
+
+.profile-tab-btn.active {
+	color: var(--primary);
+	border-bottom-color: var(--primary);
+	background: rgba(37, 99, 235, 0.05);
+	border-radius: 6px 6px 0 0;
+}
+
+.profile-tab-badge {
+	background-color: #e2e8f0;
+	color: #334155;
 	font-size: 0.75rem;
 	font-weight: 700;
-	letter-spacing: 0.03em;
+	padding: 0.15rem 0.55rem;
+	border-radius: 9999px;
 }
 
-.badge-abierta {
-	background-color: #10b981;
+.profile-tab-btn.active .profile-tab-badge {
+	background-color: var(--primary);
+	color: #ffffff;
 }
 
-.badge-cerrada {
-	background-color: #ef4444;
+.tab-pane {
+	display: none;
+}
+
+.tab-pane.active {
+	display: block;
+	animation: tabFadeIn 0.25s ease-in-out;
+}
+
+@keyframes tabFadeIn {
+	from {
+		opacity: 0;
+		transform: translateY(4px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+/* Grilla de Usuarios (Seguidores / Seguidos) */
+.usuarios-tab-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+	gap: 1.25rem;
+	margin-top: 1rem;
+}
+
+.usuario-card-tab {
+	background: #ffffff;
+	border: 1px solid var(--border-color);
+	border-radius: 10px;
+	padding: 1.25rem;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	text-align: center;
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+	transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.usuario-card-tab:hover {
+	transform: translateY(-2px);
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.usuario-tab-avatar {
+	width: 68px;
+	height: 68px;
+	border-radius: 50%;
+	object-fit: cover;
+	border: 2px solid var(--primary);
+	margin-bottom: 0.75rem;
+}
+
+.usuario-tab-placeholder {
+	width: 68px;
+	height: 68px;
+	border-radius: 50%;
+	background-color: #f1f5f9;
+	color: #64748b;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 0.8rem;
+	border: 2px dashed #cbd5e1;
+	margin-bottom: 0.75rem;
+}
+
+.usuario-tab-name {
+	font-size: 1rem;
+	font-weight: 700;
+	color: var(--text-primary);
+	text-decoration: none;
+	margin-bottom: 0.2rem;
+	max-width: 200px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.usuario-tab-name:hover {
+	color: var(--primary);
+}
+
+.usuario-tab-nick {
+	font-size: 0.85rem;
+	color: var(--text-secondary);
+	margin-bottom: 0.5rem;
+}
+
+.usuario-tab-badge-follow {
+	font-size: 0.75rem;
+	padding: 0.2rem 0.5rem;
+	border-radius: 4px;
+	background-color: #e0f2fe;
+	color: #0369a1;
+	margin-bottom: 0.85rem;
+	font-weight: 500;
+}
+
+.usuario-tab-actions {
+	margin-top: auto;
+	width: 100%;
+}
+
+/* Grilla de Cursos en Perfil */
+.cursos-perfil-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+	gap: 1.25rem;
+	margin-top: 1rem;
+}
+
+.curso-perfil-card {
+	background: #ffffff;
+	border: 1px solid var(--border-color);
+	border-radius: 10px;
+	padding: 1.25rem;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+	transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.curso-perfil-card:hover {
+	transform: translateY(-2px);
+	box-shadow: 0 4px 12px rgba(37, 99, 235, 0.1);
+	border-color: #93c5fd;
+}
+
+.curso-perfil-header {
+	display: flex;
+	align-items: center;
+	gap: 0.75rem;
+	margin-bottom: 0.75rem;
+}
+
+.curso-perfil-img {
+	width: 52px;
+	height: 52px;
+	border-radius: 8px;
+	object-fit: cover;
+	border: 1px solid var(--border-color);
+}
+
+.curso-perfil-title {
+	font-size: 1.05rem;
+	font-weight: 700;
+	color: var(--text-primary);
+	text-decoration: none;
+	display: block;
+}
+
+.curso-perfil-title:hover {
+	color: var(--primary);
+}
+
+.curso-perfil-edicion {
+	font-size: 0.9rem;
+	color: var(--text-secondary);
+	margin-bottom: 0.5rem;
+}
+
+.curso-perfil-fechas {
+	font-size: 0.8rem;
+	color: #64748b;
+	background-color: #f8fafc;
+	padding: 0.4rem 0.6rem;
+	border-radius: 6px;
+	margin-bottom: 1rem;
+}
+
+.curso-perfil-links {
+	display: flex;
+	gap: 0.5rem;
+	margin-top: auto;
 }
