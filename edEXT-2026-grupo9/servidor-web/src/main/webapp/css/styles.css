@@ -372,6 +372,7 @@ body {
 }
 
 .card {
+	position: relative;
 	background: var(--bg-card);
 	border: 1px solid var(--border-color);
 	border-radius: 8px;
@@ -384,6 +385,32 @@ body {
 	transition:
 		transform 0.2s,
 		box-shadow 0.2s;
+}
+
+.card-link {
+	text-decoration: none;
+	color: inherit;
+	cursor: pointer;
+}
+
+.card-link:hover {
+	text-decoration: none;
+	color: inherit;
+}
+
+.card-visitas {
+	position: absolute;
+	top: 1rem;
+	right: 1.25rem;
+	font-size: 0.75rem;
+	color: var(--text-secondary);
+	opacity: 0.65;
+	display: inline-flex;
+	align-items: center;
+	gap: 4px;
+	font-weight: 500;
+	pointer-events: none;
+	user-select: none;
 }
 
 .card:hover {
@@ -422,6 +449,12 @@ body {
 	white-space: normal;
 }
 
+.card-body {
+	display: flex;
+	flex-direction: column;
+	flex: 1;
+}
+
 .card-body p {
 	color: var(--text-secondary);
 	font-size: 0.9rem;
@@ -429,6 +462,7 @@ body {
 	max-width: 100%;
 	overflow-wrap: anywhere;
 	white-space: normal;
+	flex: 1;
 }
 
 .meta-info {
@@ -438,6 +472,7 @@ body {
 	color: var(--text-secondary);
 	padding-top: 0.5rem;
 	border-top: 1px solid var(--border-color);
+	margin-top: auto;
 }
 
 .card-footer {

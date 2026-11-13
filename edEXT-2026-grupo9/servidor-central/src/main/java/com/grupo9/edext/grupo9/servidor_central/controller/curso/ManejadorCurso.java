@@ -74,6 +74,7 @@ public class ManejadorCurso {
     
     public HashSet<DataCurso> traerTodos(){
         try {
+            em.clear();
             CriteriaBuilder cBuilder = em.getCriteriaBuilder();
             CriteriaQuery<Curso> cQuery = cBuilder.createQuery(Curso.class);
 
