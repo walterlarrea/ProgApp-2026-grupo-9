@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="UTF-8"?><!-- Published by XML-WS Runtime (https://github.com/eclipse-ee4j/metro-jax-ws). Runtime's version is XML-WS Runtime 4.0.3 git-revision#a57c222. --><xs:schema xmlns:tns="http://web_service.grupo9.edext.grupo9.com/" xmlns:xs="http://www.w3.org/2001/XMLSchema" version="1.0" targetNamespace="http://web_service.grupo9.edext.grupo9.com/">
+<?xml version="1.0" encoding="UTF-8"?><!-- Published by XML-WS Runtime (https://github.com/eclipse-ee4j/metro-jax-ws). Runtime's version is XML-WS Runtime 4.0.3 git-revision#a57c222. --><xs:schema xmlns:tns="http://web_service.grupo9.edext.grupo9.com/" xmlns:xs="http://www.w3.org/2001/XMLSchema" version="1.0" targetNamespace="http://web_service.grupo9.edext.grupo9.com/">
 
 <xs:element name="buscarCursos" type="tns:buscarCursos"></xs:element>
 
@@ -42,6 +42,14 @@
 <xs:element name="programas" type="xs:string" nillable="true" minOccurs="0" maxOccurs="unbounded"></xs:element>
 <xs:element name="categorias" type="xs:string" nillable="true" minOccurs="0" maxOccurs="unbounded"></xs:element>
 <xs:element name="imagen" type="xs:string" minOccurs="0"></xs:element>
+<xs:element name="puntajePromedio" type="xs:double" minOccurs="0"></xs:element>
+<xs:element name="cantValoraciones" type="xs:int"></xs:element>
+<xs:element name="valoracionEstudiante" type="xs:int" minOccurs="0"></xs:element>
+<xs:element name="cantVal1" type="xs:int"></xs:element>
+<xs:element name="cantVal2" type="xs:int"></xs:element>
+<xs:element name="cantVal3" type="xs:int"></xs:element>
+<xs:element name="cantVal4" type="xs:int"></xs:element>
+<xs:element name="cantVal5" type="xs:int"></xs:element>
 </xs:sequence>
 </xs:complexType>
 

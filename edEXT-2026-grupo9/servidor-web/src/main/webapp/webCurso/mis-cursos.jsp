@@ -75,7 +75,10 @@
                                     <div class="mis-curso-stats">
                                         <div class="mis-curso-stat-item">
                                             <span class="stat-titulo">Promedio</span>
-                                            <div class="stat-promedio-valor">
+                                            <div id="stat-promedio-${fn:escapeXml(c.nombreCurso)}"
+                                                 class="stat-promedio-valor"
+                                                 data-promedio="${c.cantValoraciones > 0 && c.puntajePromedio != null ? c.puntajePromedio : 0}"
+                                                 data-votos="${c.cantValoraciones}">
                                                 <c:choose>
                                                     <c:when test="${c.cantValoraciones > 0}">
                                                         <span class="stat-estrellas">★ <c:out value="${c.puntajePromedio}"/></span>
@@ -93,22 +96,36 @@
                                             <div id="col-valoracion-${fn:escapeXml(c.nombreCurso)}" class="stat-valoracion-contenedor">
                                                 <c:choose>
                                                     <c:when test="${c.valoracionEstudiante != null && c.valoracionEstudiante > 0}">
-                                                        <span class="badge badge-success stat-badge-enviada">
-                                                            ★ <c:out value="${c.valoracionEstudiante}"/> / 5
-                                                        </span>
+                                                        <div class="rating-stars-readonly" aria-label="Valoración enviada: ${c.valoracionEstudiante} de 5" style="margin-bottom: 4px;">
+                                                            <c:forEach var="s" begin="1" end="5">
+                                                                <svg class="star-icon ${s <= c.valoracionEstudiante ? 'active' : ''}" viewBox="0 0 24 24" aria-hidden="true">
+                                                                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+                                                                </svg>
+                                                            </c:forEach>
+                                                        </div>
                                                         <small class="stat-subtexto-enviado">(Valoración enviada)</small>
                                                     </c:when>
                                                     <c:otherwise>
-                                                        <select name="valoracion-${fn:escapeXml(c.nombreCurso)}"
-                                                                class="select-valoracion stat-select-valoracion"
-                                                                data-curso="${fn:escapeXml(c.nombreCurso)}">
-                                                            <option value="">-- Asignar puntaje --</option>
-                                                            <option value="1">★ 1 - Muy insatisfecho</option>
-                                                            <option value="2">★ 2 - Insatisfecho</option>
-                                                            <option value="3">★ 3 - Regular</option>
-                                                            <option value="4">★ 4 - Satisfecho</option>
-                                                            <option value="5">★ 5 - Muy satisfecho</option>
-                                                        </select>
+                                                        <div class="rating-stars-selector" data-curso="${fn:escapeXml(c.nombreCurso)}">
+                                                            <input type="hidden"
+                                                                   name="valoracion-${fn:escapeXml(c.nombreCurso)}"
+                                                                   class="select-valoracion stat-input-valoracion"
+                                                                   data-curso="${fn:escapeXml(c.nombreCurso)}"
+                                                                   value="">
+                                                            <div class="rating-stars-group" role="radiogroup" aria-label="Valoración para ${fn:escapeXml(c.nombreCurso)}">
+                                                                <c:forEach var="s" begin="1" end="5">
+                                                                    <button type="button"
+                                                                            class="star-btn"
+                                                                            data-value="${s}"
+                                                                            aria-label="${s} de 5 estrellas"
+                                                                            title="${s} de 5 estrellas">
+                                                                        <svg class="star-icon" viewBox="0 0 24 24" aria-hidden="true">
+                                                                            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+                                                                        </svg>
+                                                                    </button>
+                                                                </c:forEach>
+                                                            </div>
+                                                        </div>
                                                     </c:otherwise>
                                                 </c:choose>
                                             </div>

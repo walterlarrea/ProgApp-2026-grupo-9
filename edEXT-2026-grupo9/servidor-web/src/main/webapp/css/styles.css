@@ -372,6 +372,7 @@ body {
 }
 
 .card {
+	position: relative;
 	background: var(--bg-card);
 	border: 1px solid var(--border-color);
 	border-radius: 8px;
@@ -384,6 +385,32 @@ body {
 	transition:
 		transform 0.2s,
 		box-shadow 0.2s;
+}
+
+.card-link {
+	text-decoration: none;
+	color: inherit;
+	cursor: pointer;
+}
+
+.card-link:hover {
+	text-decoration: none;
+	color: inherit;
+}
+
+.card-visitas {
+	position: absolute;
+	top: 1rem;
+	right: 1.25rem;
+	font-size: 0.75rem;
+	color: var(--text-secondary);
+	opacity: 0.65;
+	display: inline-flex;
+	align-items: center;
+	gap: 4px;
+	font-weight: 500;
+	pointer-events: none;
+	user-select: none;
 }
 
 .card:hover {
@@ -422,6 +449,12 @@ body {
 	white-space: normal;
 }
 
+.card-body {
+	display: flex;
+	flex-direction: column;
+	flex: 1;
+}
+
 .card-body p {
 	color: var(--text-secondary);
 	font-size: 0.9rem;
@@ -429,6 +462,7 @@ body {
 	max-width: 100%;
 	overflow-wrap: anywhere;
 	white-space: normal;
+	flex: 1;
 }
 
 .meta-info {
@@ -438,6 +472,7 @@ body {
 	color: var(--text-secondary);
 	padding-top: 0.5rem;
 	border-top: 1px solid var(--border-color);
+	margin-top: auto;
 }
 
 .card-footer {
@@ -711,6 +746,7 @@ body {
 .resultado-busqueda-header {
 	display: flex;
 	align-items: center;
+	justify-content: space-between;
 	gap: 0.75rem;
 	margin-bottom: 0.35rem;
 }
@@ -732,6 +768,50 @@ body {
 .resultado-busqueda:hover .resultado-busqueda-titulo {
 	color: var(--primary);
 	text-decoration: underline;
+}
+
+.resultado-busqueda-rating {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	/* margin: -0.2rem 0 0.5rem 0; */
+}
+
+.resultado-rating-score {
+	font-size: 0.95rem;
+	font-weight: 700;
+	color: #1e293b;
+	line-height: 1;
+}
+
+.resultado-rating-stars {
+	display: inline-flex;
+	align-items: center;
+	gap: 2px;
+}
+
+.star-icon-search {
+	width: 14px;
+	height: 14px;
+	fill: #f1f5f9;
+	stroke: #cbd5e1;
+	stroke-width: 1.4;
+	stroke-linejoin: round;
+	stroke-linecap: round;
+	transition:
+		fill 0.2s ease,
+		stroke 0.2s ease;
+}
+
+.star-icon-search.active {
+	fill: #60a5fa; /* Azul claro idéntico a las estrellitas del sistema */
+	stroke: #2563eb;
+}
+
+.resultado-rating-total {
+	font-size: 0.82rem;
+	color: #64748b;
+	line-height: 1;
 }
 
 .resultado-busqueda-desc {
@@ -1104,7 +1184,6 @@ textarea {
 	}
 }
 
-
 .mensaje-exito {
 	color: #2e7d32;
 	background-color: #e8f5e9;
@@ -1267,6 +1346,7 @@ textarea {
 	display: flex;
 	flex-direction: column;
 	align-items: flex-start;
+	gap: 0.35rem;
 }
 
 .stat-badge-enviada {
@@ -1283,21 +1363,226 @@ textarea {
 	margin-top: 3px;
 }
 
-.stat-select-valoracion {
-	width: 100%;
-	padding: 0.45rem 0.6rem;
-	border: 1px solid var(--border-color);
-	border-radius: 6px;
-	font-size: 0.85rem;
-	background-color: #ffffff;
-	color: var(--text-primary);
-	cursor: pointer;
-	outline: none;
-	transition: border-color 0.2s;
+/* Componente de Valoración con 5 Estrellas */
+.rating-stars-selector {
+	display: inline-flex;
+	flex-direction: column;
+	align-items: flex-start;
+	vertical-align: top;
+	gap: 4px;
 }
 
-.stat-select-valoracion:focus {
-	border-color: var(--primary);
+.rating-stars-group,
+.rating-stars-readonly {
+	display: inline-flex;
+	flex-direction: row;
+	align-items: center;
+	gap: 6px;
+	flex-wrap: nowrap;
+}
+
+.star-btn {
+	background: transparent;
+	border: none;
+	padding: 2px;
+	margin: 0;
+	cursor: pointer;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	line-height: 1;
+	border-radius: 4px;
+	outline: none;
+	transition: transform 0.15s ease;
+}
+
+.star-btn:hover {
+	transform: scale(1.18);
+}
+
+.star-btn:focus-visible {
+	outline: 2px solid var(--primary, #2563eb);
+	outline-offset: 2px;
+}
+
+.star-icon {
+	width: 26px;
+	height: 26px;
+	fill: #f1f5f9;
+	stroke: #94a3b8;
+	stroke-width: 1.5;
+	stroke-linejoin: round;
+	stroke-linecap: round;
+	transition:
+		fill 0.2s ease,
+		stroke 0.2s ease;
+}
+
+/* Relleno azul claro al seleccionar o previsualizar (hover) */
+.rating-stars-group.is-hovering .star-btn .star-icon {
+	fill: #f1f5f9;
+	stroke: #94a3b8;
+}
+
+.rating-stars-group.is-hovering .star-btn.hover .star-icon {
+	fill: #60a5fa; /* Relleno azul claro */
+	stroke: #2563eb;
+}
+
+.rating-stars-group:not(.is-hovering) .star-btn.active .star-icon {
+	fill: #60a5fa; /* Relleno azul claro */
+	stroke: #2563eb;
+}
+
+.rating-stars-readonly .star-icon {
+	width: 22px;
+	height: 22px;
+	fill: #f1f5f9;
+	stroke: #cbd5e1;
+}
+
+.rating-stars-readonly .star-icon.active {
+	fill: #60a5fa; /* Relleno azul claro */
+	stroke: #2563eb;
+}
+
+/* ==========================================================================
+   Widget de Desglose de Valoraciones (Histograma / Average Rating Card)
+   ========================================================================== */
+.rating-breakdown-container {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	gap: 3rem;
+	margin: 1.25rem 0 1.5rem 0;
+	flex-wrap: wrap;
+}
+
+.rating-breakdown-bars {
+	display: flex;
+	flex-direction: column;
+	gap: 7px;
+	min-width: 260px;
+	max-width: 380px;
+	width: 100%;
+}
+
+.rating-bar-row {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	font-size: 0.88rem;
+	color: #4b5563;
+}
+
+.rating-bar-label {
+	width: 45px;
+	text-align: right;
+	white-space: nowrap;
+	color: #555555;
+	font-size: 0.86rem;
+}
+
+.rating-bar-track-wrap {
+	flex: 1;
+	display: flex;
+	align-items: center;
+	height: 18px;
+	border-left: 2px solid #8e9cae;
+	position: relative;
+	max-width: 220px;
+}
+
+.rating-bar-fill {
+	height: 100%;
+	transition: width 0.35s ease;
+	min-width: 0;
+}
+
+.rating-bar-fill.bar-5 {
+	background-color: #79a81b; /* Verde oliva/hoja */
+}
+
+.rating-bar-fill.bar-4 {
+	background-color: #9ecc1c; /* Verde lima */
+}
+
+.rating-bar-fill.bar-3 {
+	background-color: #fab416; /* Amarillo/ámbar */
+}
+
+.rating-bar-fill.bar-2 {
+	background-color: #f38224; /* Naranja */
+}
+
+.rating-bar-fill.bar-1 {
+	background-color: #f25822; /* Naranja rojizo */
+}
+
+.rating-bar-count {
+	min-width: 40px;
+	text-align: left;
+	color: #555555;
+	font-size: 0.86rem;
+	margin-left: 8px;
+}
+
+/* Tarjeta de Valoración Promedio (Average Rating) */
+.rating-summary-card {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	background-color: #f8fafc;
+	border: 1px solid #e2e8f0;
+	border-radius: 12px;
+	padding: 1.25rem 2.25rem;
+	min-width: 180px;
+	box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+}
+
+.rating-summary-title {
+	font-size: 0.92rem;
+	font-weight: 600;
+	color: #475569;
+	margin-bottom: 2px;
+	text-align: center;
+}
+
+.rating-summary-score {
+	font-size: 2.85rem;
+	font-weight: 600;
+	color: #334155;
+	line-height: 1.05;
+	margin: 4px 0 2px 0;
+	text-align: center;
+}
+
+.rating-summary-stars {
+	display: inline-flex;
+	align-items: center;
+	gap: 3px;
+	margin: 4px 0;
+}
+
+.rating-summary-stars .star-icon-small {
+	width: 17px;
+	height: 17px;
+	fill: #cbd5e1;
+	stroke: #94a3b8;
+	stroke-width: 1.2;
+}
+
+.rating-summary-stars .star-icon-small.active {
+	fill: #60a5fa; /* Azul claro idéntico a las estrellitas del sistema */
+	stroke: #2563eb;
+}
+
+.rating-summary-total {
+	font-size: 0.88rem;
+	color: #64748b;
+	margin-top: 2px;
+	text-align: center;
 }
 
 @media (max-width: 860px) {
@@ -1335,7 +1620,6 @@ textarea {
 		align-items: flex-end;
 	}
 }
-
 
 /* ==========================================================================
    Pestañas de Perfil de Usuario (Tabs) y Vistas Asociadas
@@ -1429,7 +1713,9 @@ textarea {
 	align-items: center;
 	text-align: center;
 	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-	transition: transform 0.2s, box-shadow 0.2s;
+	transition:
+		transform 0.2s,
+		box-shadow 0.2s;
 }
 
 .usuario-card-tab:hover {
@@ -1514,7 +1800,9 @@ textarea {
 	flex-direction: column;
 	justify-content: space-between;
 	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-	transition: transform 0.2s, box-shadow 0.2s;
+	transition:
+		transform 0.2s,
+		box-shadow 0.2s;
 }
 
 .curso-perfil-card:hover {

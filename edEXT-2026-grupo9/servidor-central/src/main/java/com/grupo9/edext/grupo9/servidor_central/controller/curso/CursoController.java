@@ -126,4 +126,27 @@ public class CursoController implements ICurso {
             return Collections.emptyList();
         }
     }
+
+    @Override
+    public void registrarVisitaCurso(String nombreCurso) {
+        System.out.println("[SERVIDOR] Registra visita para el curso " + nombreCurso);
+        try {
+            this.manejadorCurso.registrarVisitaCurso(nombreCurso);
+        } catch (Exception e) {
+            System.out.println("[SERVIDOR] Persistencia FALLÓ al registrar visita para el curso: " + nombreCurso);
+            System.out.println(e);
+        }
+    }
+
+    @Override
+    public int obtenerVisitasCurso(String nombreCurso) {
+        System.out.println("[SERVIDOR] Consulta visitas del curso " + nombreCurso);
+        try {
+            return this.manejadorCurso.obtenerVisitasCurso(nombreCurso);
+        } catch (Exception e) {
+            System.out.println("[SERVIDOR] Persistencia FALLÓ al consultar visitas del curso: " + nombreCurso);
+            System.out.println(e);
+            return 0;
+        }
+    }
 }

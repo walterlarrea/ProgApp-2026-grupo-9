@@ -36,6 +36,14 @@
 
 <xs:element name="valorarCursoResponse" type="tns:valorarCursoResponse"></xs:element>
 
+<xs:element name="registrarVisitaCurso" type="tns:registrarVisitaCurso"></xs:element>
+
+<xs:element name="registrarVisitaCursoResponse" type="tns:registrarVisitaCursoResponse"></xs:element>
+
+<xs:element name="obtenerVisitasCurso" type="tns:obtenerVisitasCurso"></xs:element>
+
+<xs:element name="obtenerVisitasCursoResponse" type="tns:obtenerVisitasCursoResponse"></xs:element>
+
 <xs:complexType name="buscarCurso">
 <xs:sequence>
 <xs:element name="nombre" type="xs:string" minOccurs="0"></xs:element>
@@ -65,6 +73,12 @@
 <xs:element name="puntajePromedio" type="xs:double" minOccurs="0"></xs:element>
 <xs:element name="cantValoraciones" type="xs:int"></xs:element>
 <xs:element name="valoracionEstudiante" type="xs:int" minOccurs="0"></xs:element>
+<xs:element name="cantVal1" type="xs:int"></xs:element>
+<xs:element name="cantVal2" type="xs:int"></xs:element>
+<xs:element name="cantVal3" type="xs:int"></xs:element>
+<xs:element name="cantVal4" type="xs:int"></xs:element>
+<xs:element name="cantVal5" type="xs:int"></xs:element>
+<xs:element name="cantidadVisitas" type="xs:int"></xs:element>
 </xs:sequence>
 </xs:complexType>
 
@@ -175,5 +189,27 @@
 
 <xs:complexType name="valorarCursoResponse">
 <xs:sequence></xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="registrarVisitaCurso">
+<xs:sequence>
+<xs:element name="nombreCurso" type="xs:string" minOccurs="0"></xs:element>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="registrarVisitaCursoResponse">
+<xs:sequence></xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="obtenerVisitasCurso">
+<xs:sequence>
+<xs:element name="nombreCurso" type="xs:string" minOccurs="0"></xs:element>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="obtenerVisitasCursoResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:int"></xs:element>
+</xs:sequence>
 </xs:complexType>
 </xs:schema>

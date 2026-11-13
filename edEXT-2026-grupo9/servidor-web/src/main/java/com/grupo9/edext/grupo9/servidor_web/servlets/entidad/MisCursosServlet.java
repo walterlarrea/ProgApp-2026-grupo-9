@@ -208,8 +208,54 @@ public class MisCursosServlet extends HttpServlet {
 
         if (isAjax) {
             int statusCode = !exitosos.isEmpty() ? HttpServletResponse.SC_OK : HttpServletResponse.SC_BAD_REQUEST;
-            responderJson(response, statusCode, !exitosos.isEmpty(), mensaje, exitosos);
+            Map<String, Map<String, Object>> promedios = new HashMap<>();
+            if (!exitosos.isEmpty()) {
+                try {
+                    List<DataCursoDTO> cursosEst = cursoPort.cursosParticipaEstudiante(estudiante.getNickname());
+                    if (cursosEst != null) {
+                        for (DataCursoDTO c : cursosEst) {
+                            if (exitosos.contains(c.getNombreCurso())) {
+                                Map<String, Object> info = new HashMap<>();
+                                info.put("puntajePromedio", c.getPuntajePromedio());
+                                info.put("cantValoraciones", c.getCantValoraciones());
+                                info.put("cantVal1", c.getCantVal1());
+                                info.put("cantVal2", c.getCantVal2());
+                                info.put("cantVal3", c.getCantVal3());
+                                info.put("cantVal4", c.getCantVal4());
+                                info.put("cantVal5", c.getCantVal5());
+                                promedios.put(c.getNombreCurso(), info);
+                            }
+                        }
+                    }
+                } catch (Exception ignored) {
+                }
+
+                for (String cNom : exitosos) {
+                    if (!promedios.containsKey(cNom)) {
+                        try {
+                            DataCursoDTO cDto = cursoPort.buscarCurso(cNom);
+                            if (cDto != null) {
+                                Map<String, Object> info = new HashMap<>();
+                                info.put("puntajePromedio", cDto.getPuntajePromedio());
+                                info.put("cantValoraciones", cDto.getCantValoraciones());
+                                info.put("cantVal1", cDto.getCantVal1());
+                                info.put("cantVal2", cDto.getCantVal2());
+                                info.put("cantVal3", cDto.getCantVal3());
+                                info.put("cantVal4", cDto.getCantVal4());
+                                info.put("cantVal5", cDto.getCantVal5());
+                                promedios.put(cNom, info);
+                            }
+                        } catch (Exception ignored) {
+                        }
+                    }
+                }
+            }
+            responderJson(response, statusCode, !exitosos.isEmpty(), mensaje, exitosos, promedios);
         } else {
+            String redirect = request.getParameter("redirect");
+            if (redirect == null || redirect.isBlank()) {
+                redirect = request.getContextPath() + "/misCursos";
+            }
             if (session != null) {
                 if (!exitosos.isEmpty()) {
                     session.setAttribute("mensajeExito", mensaje);
@@ -217,18 +263,27 @@ public class MisCursosServlet extends HttpServlet {
                     session.setAttribute("mensajeError", mensaje.replace("\n", "<br>"));
                 }
             }
-            response.sendRedirect(request.getContextPath() + "/misCursos");
+            response.sendRedirect(redirect);
         }
     }
 
     private void responderJson(HttpServletResponse response, int status, boolean success,
                               String mensaje, List<String> actualizados) throws IOException {
+        responderJson(response, status, success, mensaje, actualizados, Collections.emptyMap());
+    }
+
+    private void responderJson(HttpServletResponse response, int status, boolean success,
+                              String mensaje, List<String> actualizados,
+                              Map<String, Map<String, Object>> promedios) throws IOException {
         response.setStatus(status);
         response.setContentType("application/json;charset=UTF-8");
         Map<String, Object> respMap = new HashMap<>();
         respMap.put("success", success);
         respMap.put("mensaje", mensaje);
         respMap.put("actualizados", actualizados);
+        if (promedios != null && !promedios.isEmpty()) {
+            respMap.put("promedios", promedios);
+        }
         gson.toJson(respMap, response.getWriter());
     }
 }

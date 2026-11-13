@@ -101,12 +101,34 @@
                                     </div>
                                     <div class="resultado-busqueda-info">
                                         <div class="resultado-busqueda-header">
-                                            <span class="resultado-tipo flex-shrink-0" data-tipo="<%= resultado.tipoCss() %>"><%= resultado.tipoVisible() %></span>
-                                            <% if (resultado.fechaCreacion() != null && !"-".equals(resultado.fechaCreacion())) { %>
-                                                <span class="resultado-busqueda-fecha"><%= resultado.fechaCreacion() %></span>
+                                            <div class="resultado-busqueda-rating">
+                                                <span class="resultado-tipo flex-shrink-0" data-tipo="<%= resultado.tipoCss() %>"><%= resultado.tipoVisible() %></span>
+                                                <% if (resultado.fechaCreacion() != null && !"-".equals(resultado.fechaCreacion())) { %>
+                                                    <span class="resultado-busqueda-fecha"><%= resultado.fechaCreacion() %></span>
+                                                <% } %>
+                                            </div>
+                                            <% if (resultado.tipo() == com.grupo9.edext.grupo9.servidor_web.web_service_client.busqueda.TipoBusqueda.CURSO) { %>
+                                                <div class="resultado-busqueda-rating" aria-label="Valoración promedio: <%= resultado.puntajePromedio() != null && resultado.cantValoraciones() > 0 ? String.format(java.util.Locale.US, "%.1f", resultado.puntajePromedio()) : "0.0" %> de 5">
+                                                    <span class="resultado-rating-score"><%= (resultado.puntajePromedio() != null && resultado.cantValoraciones() > 0) ? String.format(java.util.Locale.US, "%.1f", resultado.puntajePromedio()) : "0.0" %></span>
+                                                    <% if (resultado.cantValoraciones() > 0) { %>
+                                                        <span class="resultado-rating-total">(<%= resultado.cantValoraciones() %>)</span>
+                                                    <% } %>
+                                                    <div class="resultado-rating-stars">
+                                                        <%
+                                                            double prom = (resultado.puntajePromedio() != null && resultado.cantValoraciones() > 0) ? resultado.puntajePromedio() : 0.0;
+                                                            long promRound = Math.round(prom);
+                                                            for (int s = 1; s <= 5; s++) {
+                                                        %>
+                                                            <svg class="star-icon-search <%= s <= promRound ? "active" : "" %>" viewBox="0 0 24 24" aria-hidden="true">
+                                                                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+                                                            </svg>
+                                                        <% } %>
+                                                    </div>
+                                                </div>
                                             <% } %>
                                         </div>
                                         <h3 class="resultado-busqueda-titulo"><%= resultado.nombreVisibleHighlighted() %></h3>
+                                        
                                         <% if (resultado.descVisibleHighlighted() != null && !resultado.descVisibleHighlighted().isBlank()) { %>
                                             <p class="resultado-busqueda-desc">
                                                 <%= resultado.descVisibleHighlighted() %>
