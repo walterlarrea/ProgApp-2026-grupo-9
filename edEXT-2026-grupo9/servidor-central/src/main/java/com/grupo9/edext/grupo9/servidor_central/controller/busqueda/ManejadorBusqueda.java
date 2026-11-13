@@ -43,7 +43,16 @@ public class ManejadorBusqueda {
             .setParameter("query", patron(query))
             .getResultList();
         HashSet<DataCurso> resultados = new HashSet<>();
-        cursos.forEach(curso -> resultados.add(DataRecordMapper.toData(curso)));
+        for (Curso curso : cursos) {
+            try {
+                em.refresh(curso);
+            } catch (Exception ignored) {
+            }
+            if (curso.getValoraciones() != null) {
+                curso.getValoraciones().size();
+            }
+            resultados.add(DataRecordMapper.toData(curso));
+        }
         return resultados;
     }
 

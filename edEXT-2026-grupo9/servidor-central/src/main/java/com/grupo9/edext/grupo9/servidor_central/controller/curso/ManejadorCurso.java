@@ -167,6 +167,7 @@ public class ManejadorCurso {
     
     public DataCurso traerCursoPorNombre(String nombre){
         try {
+            em.clear();
             CriteriaBuilder cBuilder = em.getCriteriaBuilder();
             CriteriaQuery<Curso> cQuery = cBuilder.createQuery(Curso.class);
             Root<Curso> rootEntry = cQuery.from(Curso.class);
@@ -178,7 +179,14 @@ public class ManejadorCurso {
                 return null;
             }
             Curso curso = query.getSingleResult();
-            return DataRecordMapper.toDataList(new HashSet<>(Set.of(curso)), DataCurso.class).iterator().next();
+            try {
+                em.refresh(curso);
+            } catch (Exception ignored) {
+            }
+            if (curso.getValoraciones() != null) {
+                curso.getValoraciones().size();
+            }
+            return DataRecordMapper.toData(curso);
         } catch (Exception e) {
             throw e;
         }
@@ -274,6 +282,58 @@ public class ManejadorCurso {
                 et.rollback();
             }
             throw e;
+        } finally {
+            emLocal.close();
+        }
+    }
+
+    public void registrarVisitaCurso(String nombreCurso) {
+        if (nombreCurso == null || nombreCurso.isBlank()) {
+            return;
+        }
+        EntityManager emLocal = UtensiliosJPA.getEntityManagerFactory().createEntityManager();
+        EntityTransaction et = emLocal.getTransaction();
+        try {
+            et.begin();
+            Curso curso = emLocal.find(Curso.class, nombreCurso);
+            if (curso != null) {
+                String jpql = "SELECT v FROM VisitaCurso v WHERE v.curso.nombreCurso = :nombre";
+                List<VisitaCurso> lista = emLocal.createQuery(jpql, VisitaCurso.class)
+                        .setParameter("nombre", nombreCurso)
+                        .getResultList();
+                if (!lista.isEmpty()) {
+                    VisitaCurso visita = lista.get(0);
+                    visita.incrementarVisitas();
+                } else {
+                    VisitaCurso nueva = new VisitaCurso(curso, 1);
+                    emLocal.persist(nueva);
+                    curso.setVisita(nueva);
+                }
+            }
+            et.commit();
+        } catch (Exception e) {
+            if (et.isActive()) {
+                et.rollback();
+            }
+            System.err.println("[ManejadorCurso] Error al registrar visita curso: " + e.getMessage());
+        } finally {
+            emLocal.close();
+        }
+    }
+
+    public int obtenerVisitasCurso(String nombreCurso) {
+        if (nombreCurso == null || nombreCurso.isBlank()) {
+            return 0;
+        }
+        EntityManager emLocal = UtensiliosJPA.getEntityManagerFactory().createEntityManager();
+        try {
+            String jpql = "SELECT v.cantidadVisitas FROM VisitaCurso v WHERE v.curso.nombreCurso = :nombre";
+            List<Integer> lista = emLocal.createQuery(jpql, Integer.class)
+                    .setParameter("nombre", nombreCurso)
+                    .getResultList();
+            return lista.isEmpty() ? 0 : lista.get(0);
+        } catch (Exception e) {
+            return 0;
         } finally {
             emLocal.close();
         }

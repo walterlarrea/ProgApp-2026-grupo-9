@@ -74,6 +74,12 @@ public class DataRecordMapper {
         Double promedio = curso.getPuntajePromedio();
         int cantVal = curso.getCantidadValoraciones();
         Integer valEst = nicknameEstudiante != null ? curso.getValoracionEstudiante(nicknameEstudiante) : null;
+        int c1 = curso.getCantidadValoraciones(1);
+        int c2 = curso.getCantidadValoraciones(2);
+        int c3 = curso.getCantidadValoraciones(3);
+        int c4 = curso.getCantidadValoraciones(4);
+        int c5 = curso.getCantidadValoraciones(5);
+        int cantVisitas = curso.getCantidadVisitas();
 
         DataCurso dataCurso = new DataCurso(
                 toData(curso.getInstituto()),
@@ -90,7 +96,13 @@ public class DataRecordMapper {
                 curso.getImagen(),
                 promedio,
                 cantVal,
-                valEst);
+                valEst,
+                c1,
+                c2,
+                c3,
+                c4,
+                c5,
+                cantVisitas);
 
         return dataCurso;
     }

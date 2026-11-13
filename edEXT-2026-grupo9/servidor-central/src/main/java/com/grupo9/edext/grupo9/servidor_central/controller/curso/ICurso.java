@@ -14,4 +14,6 @@ public interface ICurso {
     public DataCurso traerCurso(String nombre);
     public void valorarCurso(String nombreCurso, String nicknameEstudiante, int puntaje) throws ErrorNoExiste, ErrorRepetidos;
     public List<DataCurso> cursosParticipaEstudiante(String nicknameEstudiante);
+    public void registrarVisitaCurso(String nombreCurso);
+    public int obtenerVisitasCurso(String nombreCurso);
 }

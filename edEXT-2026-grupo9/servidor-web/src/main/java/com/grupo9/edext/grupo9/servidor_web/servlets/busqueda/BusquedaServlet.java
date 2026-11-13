@@ -90,6 +90,8 @@ public class BusquedaServlet extends HttpServlet {
         String fechaCreacion;
         String rawImagen;
         Object data;
+        Double puntajePromedio = null;
+        int cantValoraciones = 0;
 
         switch (resultado.getTipo()) {
             case CURSO -> {
@@ -106,6 +108,10 @@ public class BusquedaServlet extends HttpServlet {
                         + URLEncoder.encode(parametro, StandardCharsets.UTF_8);
                 fechaCreacion = curso != null && curso.getFechaReg() != null ? curso.getFechaReg() : "-";
                 rawImagen = curso != null ? curso.getImagen() : null;
+                if (curso != null) {
+                    puntajePromedio = curso.getPuntajePromedio();
+                    cantValoraciones = curso.getCantValoraciones();
+                }
             }
             case USUARIO -> {
                 DataUsuarioDTO usuario = resultado.getUsuario();
@@ -156,7 +162,7 @@ public class BusquedaServlet extends HttpServlet {
         String tipoCss = resultado.getTipo().name().toLowerCase(java.util.Locale.ROOT);
         String imagenUrl = resolverUrlImagen(rawImagen, resultado.getTipo(), contextPath);
         return new ResultadoBusquedaExtendida(
-                resultado.getTipo(), data, tipoVisible, nombreVisible, nombreVisibleHighlighted, descVisibleHighlighted, href, tipoCss, fechaCreacion, imagenUrl);
+                resultado.getTipo(), data, tipoVisible, nombreVisible, nombreVisibleHighlighted, descVisibleHighlighted, href, tipoCss, fechaCreacion, imagenUrl, puntajePromedio, cantValoraciones);
     }
 
     private String resolverUrlImagen(String rawImagen, TipoBusqueda tipo, String contextPath) {

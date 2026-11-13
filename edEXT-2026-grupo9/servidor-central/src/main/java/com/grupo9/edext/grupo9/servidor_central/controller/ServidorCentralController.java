@@ -265,6 +265,16 @@ class ServidorCentralController implements IServidorCentral {
         return this.cursoCtrl.cursosParticipaEstudiante(nicknameEstudiante);
     }
 
+    @Override
+    public void registrarVisitaCurso(String nombreCurso) {
+        this.cursoCtrl.registrarVisitaCurso(nombreCurso);
+    }
+
+    @Override
+    public int obtenerVisitasCurso(String nombreCurso) {
+        return this.cursoCtrl.obtenerVisitasCurso(nombreCurso);
+    }
+
     // Institutos
     @Override
     public DataInstituto guardarInstituto(DataInstituto nuevoInstituto) {

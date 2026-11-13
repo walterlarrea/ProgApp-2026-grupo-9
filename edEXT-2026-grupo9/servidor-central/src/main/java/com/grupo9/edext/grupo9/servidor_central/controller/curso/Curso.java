@@ -42,6 +42,8 @@ public class Curso implements Serializable {
     private String imagen;
     @OneToMany(mappedBy = "curso", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private Set<Valoracion> valoraciones = new HashSet<>();
+    @OneToOne(mappedBy = "curso", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    private VisitaCurso visita;
 
     public Curso() {
     }
@@ -198,6 +200,19 @@ public class Curso implements Serializable {
         return valoraciones == null ? 0 : valoraciones.size();
     }
 
+    public int getCantidadValoraciones(int puntaje) {
+        if (valoraciones == null || valoraciones.isEmpty()) {
+            return 0;
+        }
+        int count = 0;
+        for (Valoracion v : valoraciones) {
+            if (v.getPuntaje() == puntaje) {
+                count++;
+            }
+        }
+        return count;
+    }
+
     public Integer getValoracionEstudiante(String nickname) {
         if (valoraciones == null || nickname == null) {
             return null;
@@ -208,5 +223,17 @@ public class Curso implements Serializable {
             }
         }
         return null;
+    }
+
+    public VisitaCurso getVisita() {
+        return visita;
+    }
+
+    public void setVisita(VisitaCurso visita) {
+        this.visita = visita;
+    }
+
+    public int getCantidadVisitas() {
+        return visita == null ? 0 : visita.getCantidadVisitas();
     }
 }

@@ -8,6 +8,7 @@ import com.grupo9.edext.grupo9.servidor_web.web_service_client.edicion_de_curso.
 import com.grupo9.edext.grupo9.servidor_web.web_service_client.edicion_de_curso.EdicionDeCursoWebService;
 import com.grupo9.edext.grupo9.servidor_web.web_service_client.instituto.DataInstitutoDTO;
 import com.grupo9.edext.grupo9.servidor_web.web_service_client.instituto.InstitutoWebService;
+import com.grupo9.edext.grupo9.servidor_web.web_service_client.usuario.DataEstudianteDTO;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
@@ -15,6 +16,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.http.Part;
 
 import java.io.File;
@@ -68,6 +70,11 @@ public class CursoServlet extends HttpServlet {
 
         try {
             if (cursoPort != null && nombre != null && !nombre.isBlank()) {
+                try {
+                    cursoPort.registrarVisitaCurso(nombre);
+                } catch (Exception e) {
+                    System.err.println("[CursoServlet] Error registrando visita para " + nombre + ": " + e.getMessage());
+                }
                 curso = cursoPort.buscarCurso(nombre);
                 cursos = cursoPort.consultarTodosLosCursos();
                 if (curso != null && curso.getPrevias() != null && !curso.getPrevias().isEmpty()) {
@@ -96,12 +103,42 @@ public class CursoServlet extends HttpServlet {
             return;
         }
 
+        HttpSession session = request.getSession(false);
+        Object usuarioLogueado = session == null ? null : session.getAttribute("usuarioLogueado");
+        boolean esEstudiante = usuarioLogueado instanceof DataEstudianteDTO;
+        boolean puedeValorar = false;
+        Integer valoracionEstudiante = null;
+
+        if (esEstudiante && cursoPort != null) {
+            DataEstudianteDTO estudiante = (DataEstudianteDTO) usuarioLogueado;
+            try {
+                List<DataCursoDTO> cursosEst = cursoPort.cursosParticipaEstudiante(estudiante.getNickname());
+                if (cursosEst != null) {
+                    for (DataCursoDTO cEst : cursosEst) {
+                        if (cEst.getNombreCurso() != null && cEst.getNombreCurso().equalsIgnoreCase(curso.getNombreCurso())) {
+                            puedeValorar = true;
+                            valoracionEstudiante = cEst.getValoracionEstudiante();
+                            break;
+                        }
+                    }
+                }
+            } catch (Exception ignored) {
+            }
+        }
+
+        List<Integer> list = Arrays.asList(curso.getCantVal1(), curso.getCantVal2(), curso.getCantVal3(), curso.getCantVal4(), curso.getCantVal5());
+        int max = Collections.max(list).intValue();
+
         request.setAttribute("curso", curso);
         request.setAttribute("institutos", institutos);
         request.setAttribute("cursos", cursos);
         request.setAttribute("ediciones", ediciones);
         request.setAttribute("previas", previas);
         request.setAttribute("estadoDb", estadoDb);
+        request.setAttribute("esEstudiante", esEstudiante);
+        request.setAttribute("puedeValorar", puedeValorar);
+        request.setAttribute("valoracionEstudiante", valoracionEstudiante);
+        request.setAttribute("maxVal", max);
 
         request.getRequestDispatcher("/webCurso/verInfo-curso.jsp").forward(request, response);
     }
