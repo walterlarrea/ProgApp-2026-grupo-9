@@ -56,7 +56,7 @@
                                             <c:out value="${insc.fechaInscE}"/>
                                         </td>
                                         <td>
-                                            <span class="estado-badge">
+                                            <span style="font-weight: bold; font-size: 1.1rem; color: #1e293b;">
                                                 <c:out value="${insc.nota != null ? insc.nota : 'Sin calificar'}"/>
                                             </span>
                                         </td>

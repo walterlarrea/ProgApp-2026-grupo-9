@@ -15,6 +15,7 @@
                 <ul class="nav-list">
                     <li><a href="${pageContext.request.contextPath}/misCursos">Mis cursos</a></li>
                     <li><a href="${pageContext.request.contextPath}/evaluacionEstudiante">Ver evaluaciones</a></li>
+                    <li><a href="${pageContext.request.contextPath}/actaEstudiante">Acta</a></li>
                 </ul>
             </div>
             <div class="seccion">
@@ -32,7 +33,7 @@
                 <ul class="nav-list">
                     <li><a href="${pageContext.request.contextPath}/curso?accion=alta">Alta curso</a></li>
                     <li><a href="${pageContext.request.contextPath}/edicionCurso?accion=alta">Alta edición</a></li>
-                    <!-- La opciÃ³n de abajo queda deshabilitada ya que no es un requerimiento actualmente -->
+                    <!-- La opción de abajo queda deshabilitada ya que no es un requerimiento actualmente -->
                     <!-- <li><a href="${pageContext.request.contextPath}/programas">Alta programa</a></li> -->
                     <li><a href="${pageContext.request.contextPath}/inscriptosDocente">Ver inscriptos</a></li>
                     <li><a href="${pageContext.request.contextPath}/inscripcionesDocente">Ver inscripciones pendientes</a></li>
