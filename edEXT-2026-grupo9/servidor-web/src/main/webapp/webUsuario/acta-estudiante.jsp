@@ -44,14 +44,14 @@
                                 <c:forEach var="fila" items="${acta}">
                                     <tr>
                                         <td class="nav-list">
-                                            <a href="${pageContext.request.contextPath}/edicionCurso?nombre=${fn:escapeXml(fila.edicion)}">
-                                                <c:out value="${fila.edicion}"/>
+                                            <a href="${pageContext.request.contextPath}/edicionCurso?nombre=${fn:escapeXml(fila.key.nombreEdi)}">
+                                                <c:out value="${fila.key.nombreEdi}"/>
                                             </a>
                                         </td>
-                                        <td><c:out value="${fila.fechaFin}"/></td>
-                                        <td><c:out value="${fila.duracion}"/> semanas</td>
-                                        <td><c:out value="${fila.creditos}"/></td>
-                                        <td><strong><c:out value="${fila.nota}"/></strong></td>
+                                        <td><c:out value="${fila.key.fechaFin}"/></td>
+                                        <td><c:out value="${fila.key.cursoAsoc.duracion}"/> semanas</td>
+                                        <td><c:out value="${fila.key.cursoAsoc.cantCred}"/></td>
+                                        <td><strong><c:out value="${fila.value}"/></strong></td>
                                     </tr>
                                 </c:forEach>
                             </c:when>
@@ -68,7 +68,9 @@
             </div>
 
             <div class="btn-der">
-                <button type="button" class="btn btn-primary">Descargar en PDF</button>
+                <form action="${pageContext.request.contextPath}/actaEstudiante" method="post">
+                    <button type="submit" class="btn btn-primary">Descargar en PDF</button>
+                </form>
             </div>
         </main>
     </div>
