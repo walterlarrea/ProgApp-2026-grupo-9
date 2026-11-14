@@ -12,6 +12,21 @@ public record ResultadoBusquedaExtendida(
         String href,
         String tipoCss,
         String fechaCreacion,
-        String imagenUrl
+        String imagenUrl,
+        Double puntajePromedio,
+        int cantValoraciones
 ) {
+    public ResultadoBusquedaExtendida(
+            TipoBusqueda tipo,
+            Object data,
+            String tipoVisible,
+            String nombreVisible,
+            String nombreVisibleHighlighted,
+            String descVisibleHighlighted,
+            String href,
+            String tipoCss,
+            String fechaCreacion,
+            String imagenUrl) {
+        this(tipo, data, tipoVisible, nombreVisible, nombreVisibleHighlighted, descVisibleHighlighted, href, tipoCss, fechaCreacion, imagenUrl, null, 0);
+    }
 }

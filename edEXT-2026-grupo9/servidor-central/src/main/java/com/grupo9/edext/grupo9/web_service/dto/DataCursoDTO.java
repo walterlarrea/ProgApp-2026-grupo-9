@@ -31,6 +31,12 @@ public class DataCursoDTO implements Serializable {
     private Double puntajePromedio;
     private int cantValoraciones;
     private Integer valoracionEstudiante;
+    private int cantVal1;
+    private int cantVal2;
+    private int cantVal3;
+    private int cantVal4;
+    private int cantVal5;
+    private int cantidadVisitas;
 
     public DataCursoDTO() {
     }
@@ -153,5 +159,53 @@ public class DataCursoDTO implements Serializable {
 
     public void setValoracionEstudiante(Integer valoracionEstudiante) {
         this.valoracionEstudiante = valoracionEstudiante;
+    }
+
+    public int getCantVal1() {
+        return cantVal1;
+    }
+
+    public void setCantVal1(int cantVal1) {
+        this.cantVal1 = cantVal1;
+    }
+
+    public int getCantVal2() {
+        return cantVal2;
+    }
+
+    public void setCantVal2(int cantVal2) {
+        this.cantVal2 = cantVal2;
+    }
+
+    public int getCantVal3() {
+        return cantVal3;
+    }
+
+    public void setCantVal3(int cantVal3) {
+        this.cantVal3 = cantVal3;
+    }
+
+    public int getCantVal4() {
+        return cantVal4;
+    }
+
+    public void setCantVal4(int cantVal4) {
+        this.cantVal4 = cantVal4;
+    }
+
+    public int getCantVal5() {
+        return cantVal5;
+    }
+
+    public void setCantVal5(int cantVal5) {
+        this.cantVal5 = cantVal5;
+    }
+
+    public int getCantidadVisitas() {
+        return cantidadVisitas;
+    }
+
+    public void setCantidadVisitas(int cantidadVisitas) {
+        this.cantidadVisitas = cantidadVisitas;
     }
 }

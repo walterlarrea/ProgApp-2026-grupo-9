@@ -58,6 +58,18 @@
 <message name="valorarCursoResponse">
 <part name="parameters" element="tns:valorarCursoResponse"></part>
 </message>
+<message name="registrarVisitaCurso">
+<part name="parameters" element="tns:registrarVisitaCurso"></part>
+</message>
+<message name="registrarVisitaCursoResponse">
+<part name="parameters" element="tns:registrarVisitaCursoResponse"></part>
+</message>
+<message name="obtenerVisitasCurso">
+<part name="parameters" element="tns:obtenerVisitasCurso"></part>
+</message>
+<message name="obtenerVisitasCursoResponse">
+<part name="parameters" element="tns:obtenerVisitasCursoResponse"></part>
+</message>
 <portType name="CursoWebService">
 <operation name="cursosNoRelacionadosConUnProgDeFormacion">
 <input wsam:Action="http://web_service.grupo9.edext.grupo9.com/CursoWebService/cursosNoRelacionadosConUnProgDeFormacionRequest" message="tns:cursosNoRelacionadosConUnProgDeFormacion"></input>
@@ -93,6 +105,14 @@
 <output wsam:Action="http://web_service.grupo9.edext.grupo9.com/CursoWebService/valorarCursoResponse" message="tns:valorarCursoResponse"></output>
 <fault message="tns:ErrorRepetidos" name="ErrorRepetidos" wsam:Action="http://web_service.grupo9.edext.grupo9.com/CursoWebService/valorarCurso/Fault/ErrorRepetidos"></fault>
 <fault message="tns:ErrorNoExiste" name="ErrorNoExiste" wsam:Action="http://web_service.grupo9.edext.grupo9.com/CursoWebService/valorarCurso/Fault/ErrorNoExiste"></fault>
+</operation>
+<operation name="registrarVisitaCurso">
+<input wsam:Action="http://web_service.grupo9.edext.grupo9.com/CursoWebService/registrarVisitaCursoRequest" message="tns:registrarVisitaCurso"></input>
+<output wsam:Action="http://web_service.grupo9.edext.grupo9.com/CursoWebService/registrarVisitaCursoResponse" message="tns:registrarVisitaCursoResponse"></output>
+</operation>
+<operation name="obtenerVisitasCurso">
+<input wsam:Action="http://web_service.grupo9.edext.grupo9.com/CursoWebService/obtenerVisitasCursoRequest" message="tns:obtenerVisitasCurso"></input>
+<output wsam:Action="http://web_service.grupo9.edext.grupo9.com/CursoWebService/obtenerVisitasCursoResponse" message="tns:obtenerVisitasCursoResponse"></output>
 </operation>
 </portType>
 <binding name="CursoWebServicePortBinding" type="tns:CursoWebService">
@@ -177,6 +197,24 @@
 <fault name="ErrorNoExiste">
 <soap:fault name="ErrorNoExiste" use="literal"></soap:fault>
 </fault>
+</operation>
+<operation name="registrarVisitaCurso">
+<soap:operation soapAction=""></soap:operation>
+<input>
+<soap:body use="literal"></soap:body>
+</input>
+<output>
+<soap:body use="literal"></soap:body>
+</output>
+</operation>
+<operation name="obtenerVisitasCurso">
+<soap:operation soapAction=""></soap:operation>
+<input>
+<soap:body use="literal"></soap:body>
+</input>
+<output>
+<soap:body use="literal"></soap:body>
+</output>
 </operation>
 </binding>
 <service name="CursoWebService">

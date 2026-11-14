@@ -13,6 +13,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -32,7 +33,11 @@ public class HomeServlet extends HttpServlet {
                 institutos = instPort.consultarTodosLosInstitutos();
             }
             if (cursoPort != null) {
-                cursos = cursoPort.consultarTodosLosCursos();
+                List<DataCursoDTO> lista = cursoPort.consultarTodosLosCursos();
+                if (lista != null) {
+                    cursos = new ArrayList<>(lista);
+                    cursos.sort((c1, c2) -> Integer.compare(c2.getCantidadVisitas(), c1.getCantidadVisitas()));
+                }
             }
         } catch (Exception e) {
             estadoDb = "Servidor Central activo (sin conexión a base de datos o vacía: " + e.getMessage() + ")";

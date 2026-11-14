@@ -127,6 +127,12 @@ public class DtoRecordMapper {
         dto.setPuntajePromedio(curso.puntajePromedio());
         dto.setCantValoraciones(curso.cantValoraciones());
         dto.setValoracionEstudiante(curso.valoracionEstudiante());
+        dto.setCantVal1(curso.cantVal1());
+        dto.setCantVal2(curso.cantVal2());
+        dto.setCantVal3(curso.cantVal3());
+        dto.setCantVal4(curso.cantVal4());
+        dto.setCantVal5(curso.cantVal5());
+        dto.setCantidadVisitas(curso.cantidadVisitas());
         return dto;
     }
 

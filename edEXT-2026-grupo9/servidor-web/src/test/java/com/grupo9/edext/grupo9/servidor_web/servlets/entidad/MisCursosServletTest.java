@@ -124,6 +124,39 @@ class MisCursosServletTest {
     }
 
     @Test
+    void doPostAjaxRetornaPromedioActualizado() throws Exception {
+        DataEstudianteDTO estudiante = new DataEstudianteDTO();
+        estudiante.setNickname("estudiante1");
+        when(session.getAttribute("usuarioLogueado")).thenReturn(estudiante);
+        when(request.getHeader("X-Requested-With")).thenReturn("XMLHttpRequest");
+
+        Map<String, String[]> params = new HashMap<>();
+        params.put("valoracion-Curso A", new String[]{"4"});
+        when(request.getParameterMap()).thenReturn(params);
+
+        DataCursoDTO cActualizado = new DataCursoDTO();
+        cActualizado.setNombreCurso("Curso A");
+        cActualizado.setPuntajePromedio(4.0);
+        cActualizado.setCantValoraciones(1);
+        when(cursoPort.cursosParticipaEstudiante("estudiante1")).thenReturn(List.of(cActualizado));
+
+        StringWriter sw = new StringWriter();
+        PrintWriter pw = new PrintWriter(sw);
+        when(response.getWriter()).thenReturn(pw);
+
+        servlet.doPost(request, response);
+
+        verify(cursoPort).valorarCurso("Curso A", "estudiante1", 4);
+        verify(response).setStatus(HttpServletResponse.SC_OK);
+
+        pw.flush();
+        String json = sw.toString();
+        assertTrue(json.contains("\"success\":true"));
+        assertTrue(json.contains("promedios"));
+        assertTrue(json.contains("4.0"));
+    }
+
+    @Test
     void doPostAjaxManejaErrorYaValorado() throws Exception {
         DataEstudianteDTO estudiante = new DataEstudianteDTO();
         estudiante.setNickname("estudiante1");

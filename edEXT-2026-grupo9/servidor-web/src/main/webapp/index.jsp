@@ -1,4 +1,4 @@
-﻿<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <!DOCTYPE html>
 <html lang="es">
@@ -30,7 +30,10 @@
                     <c:choose>
                         <c:when test="${not empty cursos}">
                             <c:forEach var="curso" items="${cursos}">
-                                <div class="card">
+                                <a href="${pageContext.request.contextPath}/curso?nombre=${curso.nombreCurso}" class="card card-link">
+                                    <span class="card-visitas" title="${curso.cantidadVisitas} visitas">
+                                        <c:out value="${curso.cantidadVisitas}"/> visitas
+                                    </span>
                                     <div class="card-header">
                                         <span class="tag"><c:out value="${curso.instituto.nombreI}"/></span>
                                         <h3><c:out value="${curso.nombreCurso}"/></h3>
@@ -42,10 +45,7 @@
                                             <span><strong>Duración:</strong> <c:out value="${curso.duracion}"/> semanas</span>
                                         </div>
                                     </div>
-                                    <div class="card-footer">
-                                        <a href="${pageContext.request.contextPath}/curso?nombre=${curso.nombreCurso}" class="btn btn-sm">Ver Detalle</a>
-                                    </div>
-                                </div>
+                                </a>
                             </c:forEach>
                         </c:when>
                         <c:otherwise>

@@ -27,6 +27,18 @@ public class CursoWebService {
         return DtoRecordMapper.toDTO(curso);
     }
 
+    @WebMethod(operationName = "registrarVisitaCurso")
+    public void registrarVisitaCurso(@WebParam(name = "nombreCurso") String nombreCurso) {
+        IServidorCentral servidorCentral = ServidorCentralFactory.getServidorCentral();
+        servidorCentral.registrarVisitaCurso(nombreCurso);
+    }
+
+    @WebMethod(operationName = "obtenerVisitasCurso")
+    public int obtenerVisitasCurso(@WebParam(name = "nombreCurso") String nombreCurso) {
+        IServidorCentral servidorCentral = ServidorCentralFactory.getServidorCentral();
+        return servidorCentral.obtenerVisitasCurso(nombreCurso);
+    }
+
     @WebMethod(operationName = "consultarTodosLosCursos")
     public List<DataCursoDTO> consultarTodosLosCursos() {
         IServidorCentral servidorCentral = ServidorCentralFactory.getServidorCentral();

@@ -72,14 +72,25 @@ public class InscEdicion {
         this.estado = nuevoEstado;
     }
 
+    @PostLoad
+    private void normalizarNota() {
+        if (nota != null && (nota < 1 || nota > 12)) {
+            this.nota = null;
+        }
+    }
+
     public Integer getNota() {
+        if (nota == null || nota < 1 || nota > 12) {
+            return null;
+        }
         return nota;
     }
 
     public void setNota(Integer nota) {
-        if (nota != null && (nota < 1 || nota > 12)) {
-            throw new IllegalArgumentException("La nota debe estar entre 1 y 12.");
+        if (nota == null || nota < 1 || nota > 12) {
+            this.nota = null;
+        } else {
+            this.nota = nota;
         }
-        this.nota = nota;
     }
 }

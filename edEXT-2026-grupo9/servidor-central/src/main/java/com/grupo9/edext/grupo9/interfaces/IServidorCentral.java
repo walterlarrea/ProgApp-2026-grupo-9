@@ -88,6 +88,10 @@ public interface IServidorCentral {
 
     public List<DataCurso> cursosParticipaEstudiante(String nicknameEstudiante);
 
+    public void registrarVisitaCurso(String nombreCurso);
+
+    public int obtenerVisitasCurso(String nombreCurso);
+
     // Busqueda
     public HashSet<DataCurso> buscarCursos(String query);
 
