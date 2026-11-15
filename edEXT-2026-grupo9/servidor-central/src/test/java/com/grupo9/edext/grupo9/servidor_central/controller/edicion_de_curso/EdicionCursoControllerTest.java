@@ -228,4 +228,144 @@ public class EdicionCursoControllerTest {
         assertNotNull(dataEdActualizada);
         assertEquals(30, dataEdActualizada.getCupo());
     }
+
+    @Test
+    public void testDesistirInscripcionEliminaDeBDYDeMemoria() throws Exception {
+        String sufijo = String.valueOf(System.currentTimeMillis());
+        String nombreEdicion = "EdicionDesistir_" + sufijo;
+        String nick = "EstDesistir_" + sufijo;
+
+        EntityManager em = UtensiliosJPA.getEntityManagerFactory().createEntityManager();
+        try {
+            em.getTransaction().begin();
+            Instituto instituto = new Instituto("InstitutoDesistir_" + sufijo);
+            Curso curso = new Curso(instituto, "CursoDesistir_" + sufijo, "Desc", 1, 1, 1,
+                    LocalDate.now(), null, new HashSet<>(), new HashSet<>(), null);
+            Estudiante estudiante = new Estudiante(nick, "Nombre", "Apellido",
+                    "est-desistir-" + sufijo + "@test.com", LocalDate.of(2000, 1, 1), null);
+            EdicionCurso edicion = new EdicionCurso(nombreEdicion, curso, LocalDate.now(),
+                    LocalDate.now().plusDays(10), 10, new HashSet<>(), new HashSet<>(), LocalDate.now(), null);
+            em.persist(instituto);
+            em.persist(curso);
+            em.persist(estudiante);
+            em.persist(edicion);
+            em.getTransaction().commit();
+        } finally {
+            em.close();
+        }
+
+        // Se inscribe por el flujo normal (deja al estudiante cacheado en ManejadorEstudiantes)
+        edicionController.inscripcionEdicionCurso(LocalDate.now(), nick, nombreEdicion, EstadoInscripcion.INSCRIPTO);
+        assertEquals(1, contarInscripciones(nick, nombreEdicion));
+
+        edicionController.desistirInscripcion(nombreEdicion, nick);
+
+        // 1. Se borró de la base de datos
+        assertEquals(0, contarInscripciones(nick, nombreEdicion));
+        // 2. Ya no figura en el estudiante que usa el perfil ("ediciones inscriptas")
+        Estudiante enMemoria = com.grupo9.edext.grupo9.servidor_central.controller.usuario.ManejadorEstudiantes
+                .getInstance().obtenerEstudiante(nick);
+        assertTrue(enMemoria.getInscripciones().stream()
+                .noneMatch(i -> i.getEdicion() != null && nombreEdicion.equals(i.getEdicion().getNombreEdi())));
+        // 3. Puede volver a inscribirse sin el error "ya está inscripto"
+        assertDoesNotThrow(() -> edicionController.inscripcionEdicionCurso(
+                LocalDate.now(), nick, nombreEdicion, EstadoInscripcion.INSCRIPTO));
+        assertEquals(1, contarInscripciones(nick, nombreEdicion));
+    }
+
+    @Test
+    public void testAceptarInscripcionRespetaCupo() throws Exception {
+        String sufijo = String.valueOf(System.currentTimeMillis());
+        String nombreEdicion = "EdicionCupo_" + sufijo;
+        String nick1 = "EstCupoA_" + sufijo;
+        String nick2 = "EstCupoB_" + sufijo;
+
+        EntityManager em = UtensiliosJPA.getEntityManagerFactory().createEntityManager();
+        try {
+            em.getTransaction().begin();
+            Instituto instituto = new Instituto("InstitutoCupo_" + sufijo);
+            Curso curso = new Curso(instituto, "CursoCupo_" + sufijo, "Desc", 1, 1, 1,
+                    LocalDate.now(), null, new HashSet<>(), new HashSet<>(), null);
+            // Cupo de 1 estudiante aceptado
+            EdicionCurso edicion = new EdicionCurso(nombreEdicion, curso, LocalDate.now(),
+                    LocalDate.now().plusDays(10), 1, new HashSet<>(), new HashSet<>(), LocalDate.now(), null);
+            em.persist(instituto);
+            em.persist(curso);
+            em.persist(new Estudiante(nick1, "A", "A", "cupo-a-" + sufijo + "@test.com", LocalDate.of(2000, 1, 1), null));
+            em.persist(new Estudiante(nick2, "B", "B", "cupo-b-" + sufijo + "@test.com", LocalDate.of(2000, 1, 1), null));
+            em.persist(edicion);
+            em.getTransaction().commit();
+        } finally {
+            em.close();
+        }
+
+        // Inscribirse es libre aunque se supere el cupo
+        edicionController.inscripcionEdicionCurso(LocalDate.now(), nick1, nombreEdicion, EstadoInscripcion.INSCRIPTO);
+        edicionController.inscripcionEdicionCurso(LocalDate.now(), nick2, nombreEdicion, EstadoInscripcion.INSCRIPTO);
+
+        // El primer aceptado ocupa el único lugar; el segundo no entra
+        edicionController.cambiarEstadoInscripcion(nombreEdicion, nick1, EstadoInscripcion.ACEPTADA);
+        assertThrows(com.grupo9.edext.grupo9.mensajes.ErrorEstadoInvalido.class,
+                () -> edicionController.cambiarEstadoInscripcion(nombreEdicion, nick2, EstadoInscripcion.ACEPTADA));
+
+        // Si se rechaza al primero se libera el lugar
+        edicionController.cambiarEstadoInscripcion(nombreEdicion, nick1, EstadoInscripcion.RECHAZADA);
+        assertDoesNotThrow(
+                () -> edicionController.cambiarEstadoInscripcion(nombreEdicion, nick2, EstadoInscripcion.ACEPTADA));
+    }
+
+    @Test
+    public void testDocenteVeEdicionCreadaDespuesDeCachearlo() throws Exception {
+        String sufijo = String.valueOf(System.currentTimeMillis());
+        String nickDoc = "DocCache_" + sufijo;
+        String nombreEdicion = "EdicionDocCache_" + sufijo;
+
+        com.grupo9.edext.grupo9.servidor_central.controller.usuario.Docente docente =
+                new com.grupo9.edext.grupo9.servidor_central.controller.usuario.Docente(nickDoc, "Doc", "Cache",
+                        "doc-cache-" + sufijo + "@test.com", LocalDate.of(1990, 1, 1), null, null);
+        EntityManager em = UtensiliosJPA.getEntityManagerFactory().createEntityManager();
+        Instituto instituto = new Instituto("InstitutoDocCache_" + sufijo);
+        Curso curso = new Curso(instituto, "CursoDocCache_" + sufijo, "Desc", 1, 1, 1,
+                LocalDate.now(), null, new HashSet<>(), new HashSet<>(), null);
+        try {
+            em.getTransaction().begin();
+            em.persist(instituto);
+            em.persist(curso);
+            em.persist(docente);
+            em.getTransaction().commit();
+        } finally {
+            em.close();
+        }
+
+        // El docente queda cacheado sin ediciones
+        DataDocente antes = (DataDocente) usuarioController.consultarUsuario(nickDoc);
+        assertFalse(antes.getEdiciones().contains(nombreEdicion));
+
+        // Se crea una edición con ese docente después de cachearlo
+        em = UtensiliosJPA.getEntityManagerFactory().createEntityManager();
+        try {
+            em.getTransaction().begin();
+            HashSet<com.grupo9.edext.grupo9.servidor_central.controller.usuario.Docente> docentes = new HashSet<>();
+            docentes.add(em.find(com.grupo9.edext.grupo9.servidor_central.controller.usuario.Docente.class, nickDoc));
+            em.persist(new EdicionCurso(nombreEdicion, em.find(Curso.class, curso.getNombreCurso()), LocalDate.now(),
+                    LocalDate.now().plusDays(10), 5, docentes, new HashSet<>(), LocalDate.now(), null));
+            em.getTransaction().commit();
+        } finally {
+            em.close();
+        }
+
+        DataDocente despues = (DataDocente) usuarioController.consultarUsuario(nickDoc);
+        assertTrue(despues.getEdiciones().contains(nombreEdicion));
+    }
+
+    private long contarInscripciones(String nick, String nombreEdicion) {
+        EntityManager em = UtensiliosJPA.getEntityManagerFactory().createEntityManager();
+        try {
+            return em.createQuery("SELECT COUNT(i) FROM InscEdicion i WHERE i.estudiante.nickname = :nick "
+                    + "AND i.edicion.nombreEdi = :ed", Long.class)
+                    .setParameter("nick", nick).setParameter("ed", nombreEdicion).getSingleResult();
+        } finally {
+            em.close();
+        }
+    }
 }

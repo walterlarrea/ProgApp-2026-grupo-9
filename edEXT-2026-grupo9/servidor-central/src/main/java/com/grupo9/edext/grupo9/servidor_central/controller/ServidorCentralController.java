@@ -25,8 +25,7 @@ import com.grupo9.edext.grupo9.servidor_central.dominio.ResultadoBusqueda;
 import com.grupo9.edext.grupo9.servidor_central.controller.instituto.Instituto;
 import com.grupo9.edext.grupo9.servidor_central.controller.usuario.Docente;
 import com.grupo9.edext.grupo9.servidor_central.controller.edicion_de_curso.EdicionCurso;
-import com.grupo9.edext.grupo9.mensajes.ErrorNoExiste;
-import com.grupo9.edext.grupo9.mensajes.ErrorRepetidos;
+import com.grupo9.edext.grupo9.mensajes.*;
 import com.grupo9.edext.grupo9.servidor_central.controller.curso.Curso;
 import com.grupo9.edext.grupo9.servidor_central.controller.edicion_de_curso.EstadoInscripcion;
 import com.grupo9.edext.grupo9.servidor_central.controller.usuario.Estudiante;
@@ -203,8 +202,14 @@ class ServidorCentralController implements IServidorCentral {
 
     @Override
     public void cambiarEstadoInscripcion(String nombreEdicion, String nicknameEstudiante, EstadoInscripcion nuevoEstado)
-            throws ErrorNoExiste, com.grupo9.edext.grupo9.mensajes.ErrorEstadoInvalido {
+            throws ErrorNoExiste, ErrorEstadoInvalido {
         this.edicionCursoCtrl.cambiarEstadoInscripcion(nombreEdicion, nicknameEstudiante, nuevoEstado);
+    }
+
+    @Override
+    public void desistirInscripcion(String nombreEdicion, String nicknameEstudiante)
+            throws ErrorNoExiste, ErrorEstadoInvalido {
+        this.edicionCursoCtrl.desistirInscripcion(nombreEdicion, nicknameEstudiante);
     }
 
     @Override
@@ -214,13 +219,13 @@ class ServidorCentralController implements IServidorCentral {
 
     @Override
     public void registrarCalificacion(String nombreEdicion, String nicknameEstudiante, Integer nota)
-            throws ErrorNoExiste, com.grupo9.edext.grupo9.mensajes.ErrorEstadoInvalido {
+            throws ErrorNoExiste, ErrorEstadoInvalido {
         this.edicionCursoCtrl.registrarCalificacion(nombreEdicion, nicknameEstudiante, nota);
     }
 
     @Override
     public void cerrarEdicionCurso(String nombreEdicion)
-            throws ErrorNoExiste, com.grupo9.edext.grupo9.mensajes.ErrorEstadoInvalido {
+            throws ErrorNoExiste, ErrorEstadoInvalido {
         this.edicionCursoCtrl.cerrarEdicionCurso(nombreEdicion);
     }
 

@@ -181,6 +181,14 @@ public class EdicionDeCursoWebService {
         servidorCentral.cambiarEstadoInscripcion(nombreEdicion, nicknameEstudiante, estadoEnum);
     }
 
+    @WebMethod(operationName = "desistirInscripcion")
+    public void desistirInscripcion(
+            @WebParam(name = "nombreEdicion") String nombreEdicion,
+            @WebParam(name = "nicknameEstudiante") String nicknameEstudiante) throws ErrorNoExiste, ErrorEstadoInvalido {
+        IServidorCentral servidorCentral = ServidorCentralFactory.getServidorCentral();
+        servidorCentral.desistirInscripcion(nombreEdicion, nicknameEstudiante);
+    }
+
     @WebMethod(operationName = "obtenerEdicionVigente")
     public DataEdicionCursoDTO obtenerEdicionVigente(@WebParam(name = "nombreCurso") String nombreCurso) {
         IServidorCentral servidorCentral = ServidorCentralFactory.getServidorCentral();

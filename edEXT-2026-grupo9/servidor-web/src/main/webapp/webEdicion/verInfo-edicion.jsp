@@ -92,11 +92,30 @@
                     </c:choose>
                 </p>
                 <c:if test="${sessionScope.usuarioLogueado.tipo == 'Estudiante' and edicion.isCerrada() ne true}">
-                    <form action="${pageContext.request.contextPath}/inscripcion" method="post">
-                        <input type="hidden" name="directa" value="1">
-                        <input type="hidden" name="edicion" value="${fn:escapeXml(edicion.nombreEdi)}">
-                        <button type="submit" class="btn btn-primary">Inscribirse</button>
-                    </form>
+                    <c:choose>
+                        <%-- Ya inscripto (estado INSCRIPTO): puede desistir --%>
+                        <c:when test="${estadoInscripcionUsuario == 'INSCRIPTO'}">
+                            <form action="${pageContext.request.contextPath}/inscripcion" method="post"
+                                  onsubmit="event.preventDefault(); const f = this;
+                                            mostrarConfirmacion('Se eliminará tu inscripción a esta edición.',
+                                                '¿Desistir de la edición?', () => f.submit(), '!');">
+                                <input type="hidden" name="accion" value="desistir">
+                                <input type="hidden" name="edicion" value="${fn:escapeXml(edicion.nombreEdi)}">
+                                <button type="submit" class="btn btn-danger">Desistir</button>
+                            </form>
+                        </c:when>
+                        <%-- Inscripción ya aceptada o rechazada: no se puede inscribir ni desistir --%>
+                        <c:when test="${not empty estadoInscripcionUsuario}">
+                            <span class="${estadoInscripcionUsuario == 'ACEPTADA' ? 'estado-aceptada' : 'estado-rechazada'}"><c:out value="${estadoInscripcionUsuario}"/></span>
+                        </c:when>
+                        <c:otherwise>
+                            <form action="${pageContext.request.contextPath}/inscripcion" method="post">
+                                <input type="hidden" name="directa" value="1">
+                                <input type="hidden" name="edicion" value="${fn:escapeXml(edicion.nombreEdi)}">
+                                <button type="submit" class="btn btn-primary">Inscribirse</button>
+                            </form>
+                        </c:otherwise>
+                    </c:choose>
                 </c:if>
             </div>
             </c:if>
