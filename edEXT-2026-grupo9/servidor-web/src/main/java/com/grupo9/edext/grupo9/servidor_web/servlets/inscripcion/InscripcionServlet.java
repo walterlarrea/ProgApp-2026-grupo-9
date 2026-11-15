@@ -155,6 +155,12 @@ public class InscripcionServlet extends HttpServlet {
             return;
         }
 
+        // Desistir de la inscripción desde el detalle de una edición (botón "Desistir")
+        if ("desistir".equals(request.getParameter("accion"))) {
+            desistir(request, response, session, usuario, nombreEdi, edicionPort);
+            return;
+        }
+
         try {
             if (edicionPort == null) {
                 throw new ServletException("Servicio de ediciones no disponible");
@@ -210,6 +216,35 @@ public class InscripcionServlet extends HttpServlet {
             session.setAttribute("mensajeExito", e.getMessage());
             response.sendRedirect(volver);
         }
+    }
+
+    /**
+     * Caso de uso "Desistir de inscripción a edición de curso": elimina la inscripción del estudiante
+     * logueado a la edición indicada. El servidor central valida que la edición esté ABIERTA y que la
+     * inscripción esté en estado INSCRIPTO. En ambos casos vuelve al detalle de la edición con un popup.
+     */
+    private void desistir(HttpServletRequest request, HttpServletResponse response, HttpSession session,
+            DataUsuarioDTO usuario, String nombreEdi, EdicionDeCursoWebService edicionPort) throws IOException {
+        String volver = request.getContextPath() + "/edicionCurso?nombre="
+                + java.net.URLEncoder.encode(nombreEdi == null ? "" : nombreEdi, java.nio.charset.StandardCharsets.UTF_8);
+        try {
+            if (!(usuario instanceof DataEstudianteDTO)) {
+                throw new IllegalStateException("Solo los estudiantes pueden desistir de una inscripción.");
+            }
+            if (edicionPort == null) {
+                throw new IllegalStateException("Servicio de ediciones no disponible.");
+            }
+            if (nombreEdi == null || nombreEdi.isBlank()) {
+                throw new IllegalStateException("La edición indicada no existe.");
+            }
+            edicionPort.desistirInscripcion(nombreEdi, usuario.getNickname());
+            session.setAttribute("tituloPopup", "Inscripción eliminada");
+            session.setAttribute("mensajeExito", "Desististe de la edición " + nombreEdi + ".");
+        } catch (Exception e) {
+            session.setAttribute("tituloPopup", "No se pudo desistir");
+            session.setAttribute("mensajeExito", e.getMessage());
+        }
+        response.sendRedirect(volver);
     }
 
     private void cargarDatosFormulario(HttpServletRequest request, String nombreInst, String nombreCurso, String nombreEdi) {

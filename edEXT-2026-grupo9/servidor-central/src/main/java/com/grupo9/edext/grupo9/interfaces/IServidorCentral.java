@@ -62,6 +62,9 @@ public interface IServidorCentral {
     public void cambiarEstadoInscripcion(String nombreEdicion, String nicknameEstudiante, EstadoInscripcion nuevoEstado)
             throws ErrorNoExiste, ErrorEstadoInvalido;
 
+    public void desistirInscripcion(String nombreEdicion, String nicknameEstudiante)
+            throws ErrorNoExiste, ErrorEstadoInvalido;
+
     public Boolean existeEdicionCurso(String nombre);
 
     public DataEdicionCurso obtenerEdicionVigente(String nombreCurso);

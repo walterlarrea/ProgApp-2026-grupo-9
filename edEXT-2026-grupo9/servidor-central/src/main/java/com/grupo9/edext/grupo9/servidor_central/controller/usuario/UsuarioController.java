@@ -402,17 +402,26 @@ public class UsuarioController implements IUsuario {
         return nicknames.toArray(new String[0]);
     }
 
+    /** Ejecuta una consulta JPQL que devuelve nombres de ediciones para el nickname dado. */
+    private Set<String> nombresEdiciones(String jpql, String nickname) {
+        EntityManager em = UtensiliosJPA.getEntityManagerFactory().createEntityManager();
+        try {
+            return new HashSet<>(em.createQuery(jpql, String.class)
+                    .setParameter("nick", nickname)
+                    .getResultList());
+        } finally {
+            em.close();
+        }
+    }
+
     @Override
     public DataUsuario consultarUsuario(String nickname) throws ErrorNoExiste {
         ManejadorDocente md = ManejadorDocente.getInstance();
         Docente doc = md.obtenerDocente(nickname);
         if (doc != null) {
-            Set<String> ediciones = new HashSet<>();
-            if (doc.getEdiciones() != null) {
-                for (EdicionCurso ed : doc.getEdiciones()) {
-                    ediciones.add(ed.getNombreEdi());
-                }
-            }
+            // Se consulta la BD: el docente cacheado no se entera de ediciones creadas después de cargarlo
+            Set<String> ediciones = nombresEdiciones(
+                    "SELECT e.nombreEdi FROM EdicionCurso e JOIN e.docentes d WHERE d.nickname = :nick", nickname);
             Set<String> cursos = new HashSet<>();
             DataDocente dd = new DataDocente(
                 doc.getNickname(),
@@ -433,14 +442,9 @@ public class UsuarioController implements IUsuario {
         ManejadorEstudiantes me = ManejadorEstudiantes.getInstance();
         Estudiante est = me.obtenerEstudiante(nickname);
         if (est != null) {
-            Set<String> edicionesInsc = new HashSet<>();
-            if (est.getInscripciones() != null) {
-                for (InscEdicion insc : est.getInscripciones()) {
-                    if (insc.getEdicion() != null) {
-                        edicionesInsc.add(insc.getEdicion().getNombreEdi());
-                    }
-                }
-            }
+            // Se consulta la BD: el estudiante cacheado puede tener inscripciones desactualizadas
+            Set<String> edicionesInsc = nombresEdiciones(
+                    "SELECT i.edicion.nombreEdi FROM InscEdicion i WHERE i.estudiante.nickname = :nick", nickname);
             
             Set<DataInscPrograma> inscripcionesProgramas = new HashSet<>();
             if (est.getInscripcionesProgramas() != null) {

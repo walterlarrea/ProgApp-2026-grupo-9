@@ -10,6 +10,7 @@ import com.grupo9.edext.grupo9.servidor_web.web_service_client.edicion_de_curso.
 import com.grupo9.edext.grupo9.servidor_web.web_service_client.edicion_de_curso.ErrorRepetidos_Exception;
 import com.grupo9.edext.grupo9.servidor_web.web_service_client.instituto.DataInstitutoDTO;
 import com.grupo9.edext.grupo9.servidor_web.web_service_client.instituto.InstitutoWebService;
+import com.grupo9.edext.grupo9.servidor_web.web_service_client.usuario.DataUsuarioDTO;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
@@ -17,11 +18,11 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.http.Part;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -98,6 +99,7 @@ public class EdicionCursoServlet extends HttpServlet {
         request.setAttribute("docentes", docentes);
         request.setAttribute("inscriptos", inscriptos);
         request.setAttribute("estadoDb", estadoDb);
+        request.setAttribute("estadoInscripcionUsuario", estadoInscripcionDelUsuario(request, inscriptos));
 
         request.getRequestDispatcher("/webEdicion/verInfo-edicion.jsp").forward(request, response);
     }
@@ -161,6 +163,21 @@ public class EdicionCursoServlet extends HttpServlet {
             cargarDatosFormulario(request, instPort, cursoPort, edicionPort, nombreInst);
             request.getRequestDispatcher("/webEdicion/alta-edicion.jsp").forward(request, response);
         }
+    }
+
+    private String estadoInscripcionDelUsuario(HttpServletRequest request, List<DataInscEdicionDTO> inscriptos) {
+        HttpSession session = request.getSession(false);
+        Object usuario = session == null ? null : session.getAttribute("usuarioLogueado");
+        if (!(usuario instanceof DataUsuarioDTO usuarioLogueado) || inscriptos == null) {
+            return null;
+        }
+        for (DataInscEdicionDTO insc : inscriptos) {
+            if (insc != null && insc.getEstudiante() != null
+                    && usuarioLogueado.getNickname().equalsIgnoreCase(insc.getEstudiante().getNickname())) {
+                return insc.getEstado() == null ? "INSCRIPTO" : insc.getEstado().name();
+            }
+        }
+        return null;
     }
 
     private void cargarDatosFormulario(HttpServletRequest request, InstitutoWebService instPort,

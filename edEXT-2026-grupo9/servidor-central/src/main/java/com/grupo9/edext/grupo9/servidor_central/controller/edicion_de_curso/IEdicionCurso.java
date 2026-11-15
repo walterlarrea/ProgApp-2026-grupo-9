@@ -26,6 +26,7 @@ public interface IEdicionCurso {
     public DataDocente[] traerDocentesEdicion(DataEdicionCurso edicion);
     public Set<DataInscEdicion> traerInscriptos(DataEdicionCurso edicion);
     public void cambiarEstadoInscripcion(String nombreEdicion, String nicknameEstudiante, EstadoInscripcion nuevoEstado) throws ErrorNoExiste, ErrorEstadoInvalido;
+    public void desistirInscripcion(String nombreEdicion, String nicknameEstudiante) throws ErrorNoExiste, ErrorEstadoInvalido;
     public Boolean existeEdicion(String nombre);
     public DataEdicionCurso obtenerEdicionVigente(String nombreCurso);
     public void registrarCalificacion(String nombreEdicion, String nicknameEstudiante, Integer nota) throws ErrorNoExiste, ErrorEstadoInvalido;

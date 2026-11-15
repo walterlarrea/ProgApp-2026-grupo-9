@@ -207,6 +207,30 @@ public class ManejadorEdiciones {
         }
     }
 
+    public void eliminarInscripcion(InscEdicion ie) {
+        if (ie == null || ie.getId() == null) {
+            return;
+        }
+        EntityManager em = UtensiliosJPA.getEntityManagerFactory().createEntityManager();
+        EntityTransaction et = em.getTransaction();
+        try {
+            et.begin();
+            InscEdicion managed = em.find(InscEdicion.class, ie.getId());
+            if (managed != null) {
+                em.remove(managed);
+            }
+            et.commit();
+        } catch (Exception e) {
+            if (et.isActive()) {
+                et.rollback();
+            }
+            e.printStackTrace();
+            throw e;
+        } finally {
+            em.close();
+        }
+    }
+
     public void actualizarEdicion(EdicionCurso ed) {
         EntityManager em = UtensiliosJPA.getEntityManagerFactory().createEntityManager();
         EntityTransaction et = em.getTransaction();

@@ -18,6 +18,10 @@
 
 <xs:element name="cambiarEstadoInscripcionResponse" type="tns:cambiarEstadoInscripcionResponse"></xs:element>
 
+<xs:element name="desistirInscripcion" type="tns:desistirInscripcion"></xs:element>
+
+<xs:element name="desistirInscripcionResponse" type="tns:desistirInscripcionResponse"></xs:element>
+
 <xs:element name="consultarUnaEdicionCurso" type="tns:consultarUnaEdicionCurso"></xs:element>
 
 <xs:element name="consultarUnaEdicionCursoResponse" type="tns:consultarUnaEdicionCursoResponse"></xs:element>
@@ -233,6 +237,17 @@
 </xs:complexType>
 
 <xs:complexType name="cambiarEstadoInscripcionResponse">
+<xs:sequence></xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="desistirInscripcion">
+<xs:sequence>
+<xs:element name="nombreEdicion" type="xs:string" minOccurs="0"></xs:element>
+<xs:element name="nicknameEstudiante" type="xs:string" minOccurs="0"></xs:element>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="desistirInscripcionResponse">
 <xs:sequence></xs:sequence>
 </xs:complexType>
 

@@ -154,6 +154,7 @@
             </c:if>
         </main>
     </div>
+    <script src="${pageContext.request.contextPath}/js/cerrarPopup.js"></script>
     <script
         type="text/javascript"
         src="${pageContext.request.contextPath}/js/manejarInscripcionesDocente.js"></script>

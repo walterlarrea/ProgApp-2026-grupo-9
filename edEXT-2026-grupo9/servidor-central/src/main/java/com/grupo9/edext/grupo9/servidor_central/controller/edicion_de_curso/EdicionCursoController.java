@@ -201,6 +201,18 @@ public class EdicionCursoController implements IEdicionCurso {
 
         for (InscEdicion inscripcion : edicion.getInscripciones()) {
             if (inscripcion.getEstudiante().getNickname().equals(nicknameEstudiante)) {
+                // Control de cupo: solo las inscripciones ACEPTADAS ocupan lugar.
+                if (nuevoEstado == EstadoInscripcion.ACEPTADA
+                        && inscripcion.getEstado() != EstadoInscripcion.ACEPTADA
+                        && edicion.getCupo() != null) {
+                    long aceptados = edicion.getInscripciones().stream()
+                            .filter(i -> i.getEstado() == EstadoInscripcion.ACEPTADA)
+                            .count();
+                    if (aceptados >= edicion.getCupo()) {
+                        throw new ErrorEstadoInvalido("No se pudo aceptar a " + nicknameEstudiante
+                                + ": la edición ya completó su cupo de " + edicion.getCupo() + " estudiantes aceptados.");
+                    }
+                }
                 inscripcion.cambiarEstado(nuevoEstado);
                 me.actualizarInscripcion(inscripcion);
                 return;
@@ -208,7 +220,38 @@ public class EdicionCursoController implements IEdicionCurso {
         }
         throw new ErrorNoExiste("El estudiante " + nicknameEstudiante + " no está inscripto en la edición.");
     }
-    
+
+    @Override
+    public void desistirInscripcion(String nombreEdicion, String nicknameEstudiante) throws ErrorNoExiste, ErrorEstadoInvalido {
+        ManejadorEdiciones me = ManejadorEdiciones.getInstance();
+        EdicionCurso edicion = me.obtenerEdicion(nombreEdicion);
+        if (edicion == null) {
+            throw new ErrorNoExiste("La Edición " + nombreEdicion + " no existe.");
+        }
+        if (edicion.isCerrada()) {
+            throw new ErrorEstadoInvalido("La edición está cerrada. No es posible desistir de la inscripción.");
+        }
+
+        if (edicion.getInscripciones() != null && nicknameEstudiante != null) {
+            for (InscEdicion inscripcion : edicion.getInscripciones()) {
+                if (inscripcion.getEstudiante() != null
+                        && nicknameEstudiante.equalsIgnoreCase(inscripcion.getEstudiante().getNickname())) {
+                    if (inscripcion.getEstado() != EstadoInscripcion.INSCRIPTO) {
+                        throw new ErrorEstadoInvalido("Solo se puede desistir de inscripciones en estado INSCRIPTO.");
+                    }
+                    me.eliminarInscripcion(inscripcion);
+                    // ManejadorEstudiantes cachea al estudiante junto con sus inscripciones. Se lo saca del caché
+                    // para que la próxima consulta lo recargue de la BD; si no, la inscripción borrada sigue
+                    // apareciendo en el perfil y bloquea volver a inscribirse.
+                    ManejadorEstudiantes.getInstance().removerEstudiante(inscripcion.getEstudiante().getNickname());
+                    ManejadorEstudiantes.getInstance().removerEstudiante(nicknameEstudiante);
+                    return;
+                }
+            }
+        }
+        throw new ErrorNoExiste("El estudiante " + nicknameEstudiante + " no está inscripto en la edición.");
+    }
+
     @Override
     public Boolean existeEdicion(String nombre) {
         try {

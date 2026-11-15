@@ -201,37 +201,42 @@ public class InscriptosDocenteServlet extends HttpServlet {
                 throw new IllegalStateException("Servicio de ediciones no disponible.");
             }
 
+            // Se separan rechazos y aceptaciones: primero se procesan los rechazos para que liberen cupo
+            // antes de aceptar a otros estudiantes en el mismo guardado.
+            List<String> aRechazar = new ArrayList<>();
+            List<String> aAceptar = new ArrayList<>();
             Map<String, String[]> parameterMap = request.getParameterMap();
             for (Map.Entry<String, String[]> entry : parameterMap.entrySet()) {
                 String paramName = entry.getKey();
-                if (paramName.startsWith("estado-")) {
+                String[] values = entry.getValue();
+                if (paramName.startsWith("estado-") && values != null && values.length > 0 && values[0] != null) {
                     String nickname = paramName.substring("estado-".length());
-                    String[] values = entry.getValue();
-                    if (values != null && values.length > 0 && values[0] != null) {
-                        String valorEstado = values[0].trim();
-                        String nuevoEstado = null;
-                        if ("aceptado".equalsIgnoreCase(valorEstado) || "ACEPTADA".equalsIgnoreCase(valorEstado)) {
-                            nuevoEstado = "ACEPTADA";
-                        } else if ("rechazado".equalsIgnoreCase(valorEstado) || "RECHAZADA".equalsIgnoreCase(valorEstado)) {
-                            nuevoEstado = "RECHAZADA";
-                        }
-
-                        if (nuevoEstado != null) {
-                            try {
-                                edicionPort.cambiarEstadoInscripcion(nombreEdicion, nickname, nuevoEstado);
-                            } catch (Exception e) {
-                                getServletContext().log("Aviso al cambiar estado de inscripción de " + nickname + ": " + e.getMessage());
-                            }
-                        }
+                    String valorEstado = values[0].trim();
+                    if ("aceptado".equalsIgnoreCase(valorEstado) || "ACEPTADA".equalsIgnoreCase(valorEstado)) {
+                        aAceptar.add(nickname);
+                    } else if ("rechazado".equalsIgnoreCase(valorEstado) || "RECHAZADA".equalsIgnoreCase(valorEstado)) {
+                        aRechazar.add(nickname);
                     }
                 }
             }
 
+            List<String> avisos = new ArrayList<>();
+            cambiarEstados(edicionPort, nombreEdicion, aRechazar, "RECHAZADA", avisos);
+            cambiarEstados(edicionPort, nombreEdicion, aAceptar, "ACEPTADA", avisos);
+
             if ("json".equalsIgnoreCase(format)) {
+                StringBuilder json = new StringBuilder("{\"success\":true,\"avisos\":[");
+                for (int i = 0; i < avisos.size(); i++) {
+                    if (i > 0) {
+                        json.append(',');
+                    }
+                    json.append('"').append(escaparJson(avisos.get(i))).append('"');
+                }
+                json.append("]}");
                 response.setContentType("application/json");
                 response.setCharacterEncoding("UTF-8");
                 response.setStatus(HttpServletResponse.SC_OK);
-                response.getWriter().write("{\"success\":true}");
+                response.getWriter().write(json.toString());
                 response.getWriter().flush();
             } else {
                 response.sendRedirect(request.getContextPath() + "/inscripcionesDocente?edicion="
@@ -240,5 +245,24 @@ public class InscriptosDocenteServlet extends HttpServlet {
         } catch (Exception e) {
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error interno al guardar las inscripciones.");
         }
+    }
+
+    /** Cambia el estado de cada estudiante; los rechazos del servidor (p. ej. cupo completo) se juntan en avisos. */
+    private void cambiarEstados(EdicionDeCursoWebService edicionPort, String nombreEdicion, List<String> nicknames,
+            String nuevoEstado, List<String> avisos) {
+        for (String nickname : nicknames) {
+            try {
+                edicionPort.cambiarEstadoInscripcion(nombreEdicion, nickname, nuevoEstado);
+            } catch (Exception e) {
+                getServletContext().log("Aviso al cambiar estado de inscripción de " + nickname + ": " + e.getMessage());
+                avisos.add(e.getMessage() != null ? e.getMessage()
+                        : "No se pudo cambiar el estado de " + nickname + ".");
+            }
+        }
+    }
+
+    private static String escaparJson(String texto) {
+        return texto.replace("\\", "\\\\").replace("\"", "\\\"")
+                .replace("\n", " ").replace("\r", " ").replace("\t", " ");
     }
 }

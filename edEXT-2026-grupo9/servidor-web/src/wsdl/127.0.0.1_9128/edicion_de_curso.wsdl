@@ -52,6 +52,12 @@
 <message name="cambiarEstadoInscripcionResponse">
 <part name="parameters" element="tns:cambiarEstadoInscripcionResponse"></part>
 </message>
+<message name="desistirInscripcion">
+<part name="parameters" element="tns:desistirInscripcion"></part>
+</message>
+<message name="desistirInscripcionResponse">
+<part name="parameters" element="tns:desistirInscripcionResponse"></part>
+</message>
 <message name="ErrorEstadoInvalido">
 <part name="fault" element="tns:ErrorEstadoInvalido"></part>
 </message>
@@ -118,6 +124,12 @@
 <output wsam:Action="http://web_service.grupo9.edext.grupo9.com/EdicionDeCursoWebService/cambiarEstadoInscripcionResponse" message="tns:cambiarEstadoInscripcionResponse"></output>
 <fault message="tns:ErrorNoExiste" name="ErrorNoExiste" wsam:Action="http://web_service.grupo9.edext.grupo9.com/EdicionDeCursoWebService/cambiarEstadoInscripcion/Fault/ErrorNoExiste"></fault>
 <fault message="tns:ErrorEstadoInvalido" name="ErrorEstadoInvalido" wsam:Action="http://web_service.grupo9.edext.grupo9.com/EdicionDeCursoWebService/cambiarEstadoInscripcion/Fault/ErrorEstadoInvalido"></fault>
+</operation>
+<operation name="desistirInscripcion">
+<input wsam:Action="http://web_service.grupo9.edext.grupo9.com/EdicionDeCursoWebService/desistirInscripcionRequest" message="tns:desistirInscripcion"></input>
+<output wsam:Action="http://web_service.grupo9.edext.grupo9.com/EdicionDeCursoWebService/desistirInscripcionResponse" message="tns:desistirInscripcionResponse"></output>
+<fault message="tns:ErrorNoExiste" name="ErrorNoExiste" wsam:Action="http://web_service.grupo9.edext.grupo9.com/EdicionDeCursoWebService/desistirInscripcion/Fault/ErrorNoExiste"></fault>
+<fault message="tns:ErrorEstadoInvalido" name="ErrorEstadoInvalido" wsam:Action="http://web_service.grupo9.edext.grupo9.com/EdicionDeCursoWebService/desistirInscripcion/Fault/ErrorEstadoInvalido"></fault>
 </operation>
 <operation name="guardarEdicionCurso">
 <input wsam:Action="http://web_service.grupo9.edext.grupo9.com/EdicionDeCursoWebService/guardarEdicionCursoRequest" message="tns:guardarEdicionCurso"></input>
@@ -211,6 +223,21 @@
 </output>
 </operation>
 <operation name="cambiarEstadoInscripcion">
+<soap:operation soapAction=""></soap:operation>
+<input>
+<soap:body use="literal"></soap:body>
+</input>
+<output>
+<soap:body use="literal"></soap:body>
+</output>
+<fault name="ErrorNoExiste">
+<soap:fault name="ErrorNoExiste" use="literal"></soap:fault>
+</fault>
+<fault name="ErrorEstadoInvalido">
+<soap:fault name="ErrorEstadoInvalido" use="literal"></soap:fault>
+</fault>
+</operation>
+<operation name="desistirInscripcion">
 <soap:operation soapAction=""></soap:operation>
 <input>
 <soap:body use="literal"></soap:body>
