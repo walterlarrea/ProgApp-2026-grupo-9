@@ -51,7 +51,31 @@ public class ConfigLoader {
             return currentDirFile;
         }
 
-        // 4. Directorio ~/.edext/config.properties en home de usuario
+        // 4. Directorio webapps o conf de Tomcat (catalina.base / catalina.home)
+        String catalinaBase = System.getProperty("catalina.base");
+        if (catalinaBase == null || catalinaBase.isBlank()) {
+            catalinaBase = System.getProperty("catalina.home");
+        }
+        if (catalinaBase != null && !catalinaBase.isBlank()) {
+            File tomcatWebappsFile = new File(catalinaBase, "webapps" + File.separator + "config.properties");
+            if (tomcatWebappsFile.exists()) return tomcatWebappsFile;
+            File tomcatConfFile = new File(catalinaBase, "conf" + File.separator + "config.properties");
+            if (tomcatConfFile.exists()) return tomcatConfFile;
+            File tomcatRootFile = new File(catalinaBase, "config.properties");
+            if (tomcatRootFile.exists()) return tomcatRootFile;
+        }
+
+        File relWebappsFile = new File(".." + File.separator + "webapps" + File.separator + "config.properties");
+        if (relWebappsFile.exists()) {
+            return relWebappsFile;
+        }
+
+        File relWebappsDirect = new File("webapps" + File.separator + "config.properties");
+        if (relWebappsDirect.exists()) {
+            return relWebappsDirect;
+        }
+
+        // 5. Directorio ~/.edext/config.properties en home de usuario
         String userHome = System.getProperty("user.home");
         if (userHome != null && !userHome.isBlank()) {
             File edextDirFile = new File(userHome + File.separator + ".edext" + File.separator + "config.properties");
